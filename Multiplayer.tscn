@@ -1,0 +1,160 @@
+[gd_scene format=2]
+
+[node name="Multiplayer" type="Panel"]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="Frame" type="HBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="Main" type="VBoxContainer" parent="Frame"]
+margin_right = 231.0
+margin_bottom = 600.0
+
+[node name="Displays" type="HBoxContainer" parent="Frame/Main"]
+margin_right = 231.0
+margin_bottom = 18.0
+
+[node name="Outputs" type="VBoxContainer" parent="Frame/Main/Displays"]
+margin_right = 161.0
+margin_bottom = 18.0
+
+[node name="Titles" type="HBoxContainer" parent="Frame/Main/Displays/Outputs"]
+margin_right = 161.0
+margin_bottom = 14.0
+
+[node name="Output Title" type="Label" parent="Frame/Main/Displays/Outputs/Titles"]
+margin_right = 96.0
+margin_bottom = 14.0
+text = "Output Display"
+valign = 1
+
+[node name="Lobby" type="Label" parent="Frame/Main/Displays/Outputs/Titles"]
+margin_left = 100.0
+margin_right = 161.0
+margin_bottom = 14.0
+text = "Lobby ID:"
+valign = 1
+
+[node name="Output" type="RichTextLabel" parent="Frame/Main/Displays/Outputs"]
+margin_top = 18.0
+margin_right = 161.0
+margin_bottom = 18.0
+scroll_following = true
+
+[node name="Player List" type="VBoxContainer" parent="Frame/Main/Displays"]
+margin_left = 165.0
+margin_right = 231.0
+margin_bottom = 18.0
+
+[node name="Title" type="Label" parent="Frame/Main/Displays/Player List"]
+margin_right = 66.0
+margin_bottom = 14.0
+text = "Players (0)"
+
+[node name="Players" type="VBoxContainer" parent="Frame/Main/Displays/Player List"]
+margin_top = 18.0
+margin_right = 66.0
+margin_bottom = 18.0
+
+[node name="Messaging" type="HBoxContainer" parent="Frame/Main"]
+margin_top = 22.0
+margin_right = 231.0
+margin_bottom = 46.0
+
+[node name="Chat" type="LineEdit" parent="Frame/Main/Messaging"]
+margin_right = 58.0
+margin_bottom = 24.0
+
+[node name="Send" type="Button" parent="Frame/Main/Messaging"]
+margin_left = 62.0
+margin_right = 165.0
+margin_bottom = 24.0
+text = "Send Message"
+
+[node name="Sidebar" type="VBoxContainer" parent="Frame"]
+margin_left = 235.0
+margin_right = 235.0
+margin_bottom = 600.0
+
+[node name="Options" type="Panel" parent="Frame/Sidebar"]
+
+[node name="List" type="VBoxContainer" parent="Frame/Sidebar/Options"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Title" type="Label" parent="Frame/Sidebar/Options/List"]
+margin_right = 116.0
+margin_bottom = 14.0
+text = "Options"
+
+[node name="Create Lobby" type="Button" parent="Frame/Sidebar/Options/List"]
+margin_top = 18.0
+margin_right = 116.0
+margin_bottom = 38.0
+text = "Create Lobby"
+
+[node name="Open Lobby List" type="Button" parent="Frame/Sidebar/Options/List"]
+margin_top = 42.0
+margin_right = 116.0
+margin_bottom = 62.0
+text = "Open Lobby List"
+
+[node name="Get Lobby Data" type="Button" parent="Frame/Sidebar/Options/List"]
+margin_top = 66.0
+margin_right = 116.0
+margin_bottom = 86.0
+text = "Get Lobby Data"
+
+[node name="Leave" type="Button" parent="Frame/Sidebar/Options/List"]
+margin_top = 90.0
+margin_right = 116.0
+margin_bottom = 110.0
+text = "Leave Lobby"
+
+[node name="Spacer1" type="Label" parent="Frame/Sidebar/Options/List"]
+margin_top = 114.0
+margin_right = 116.0
+margin_bottom = 128.0
+
+[node name="P2P Title" type="Label" parent="Frame/Sidebar/Options/List"]
+margin_top = 132.0
+margin_right = 116.0
+margin_bottom = 146.0
+text = "P2P Functions"
+
+[node name="SendPacket" type="Button" parent="Frame/Sidebar/Options/List"]
+margin_top = 150.0
+margin_right = 116.0
+margin_bottom = 170.0
+text = "Send Packet"
+
+[node name="Lobbies" type="Panel" parent="."]
+visible = false
+margin_left = 48.0
+margin_top = 32.0
+margin_right = 976.0
+margin_bottom = 552.0
+
+[node name="Scroll" type="ScrollContainer" parent="Lobbies"]
+margin_left = 24.0
+margin_top = 32.0
+margin_right = 904.0
+margin_bottom = 448.0
+
+[node name="List" type="VBoxContainer" parent="Lobbies/Scroll"]
+
+[node name="Refresh" type="Button" parent="Lobbies"]
+margin_left = 688.0
+margin_top = 464.0
+margin_right = 784.0
+margin_bottom = 504.0
+text = "Refresh"
+
+[node name="Button" type="Button" parent="Lobbies"]
+margin_left = 800.0
+margin_top = 464.0
+margin_right = 896.0
+margin_bottom = 504.0
+text = "Close"
