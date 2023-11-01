@@ -1,0 +1,155 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://UI/Titlescreen/Roboto-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://UI/Titlescreen/Scripts/PLAY.gd" type="Script" id=2]
+[ext_resource path="res://UI/Titlescreen/Scripts/EXIT.gd" type="Script" id=3]
+[ext_resource path="res://UI/Titlescreen/Scripts/OPTIONS.gd" type="Script" id=4]
+[ext_resource path="res://UI/Titlescreen/Scripts/global.gd" type="Script" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 143
+outline_size = 10
+outline_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 50
+outline_size = 3
+outline_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 301, 50.5 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 50
+outline_size = 3
+outline_color = Color( 0.0705882, 0.0235294, 0.0235294, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 301, 50.5 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 50
+outline_size = 3
+outline_color = Color( 0.054902, 0.00784314, 0.00784314, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 301, 51.5 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 11, 9.5 )
+
+[node name="Titlescreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -1.0
+margin_right = -1.0
+margin_bottom = -1.0
+color = Color( 0.247059, 0.4, 0.690196, 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 112.0
+margin_top = 29.0
+margin_right = 1013.0
+margin_bottom = 197.0
+custom_fonts/font = SubResource( 1 )
+text = "Clayton Demo"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_top = 0.537
+anchor_bottom = 0.537
+margin_left = -1.0
+margin_top = -256.96
+margin_right = 1077.0
+margin_bottom = 258.04
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 239.0
+margin_right = 839.0
+margin_bottom = 515.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Play" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 87.0
+margin_right = 600.0
+margin_bottom = 187.0
+rect_min_size = Vector2( 600, 100 )
+custom_fonts/font = SubResource( 6 )
+text = "Play"
+script = ExtResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="HBoxContainer/VBoxContainer/Play"]
+collision_layer = 65537
+collision_mask = 524289
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/VBoxContainer/Play/Area2D"]
+position = Vector2( 300, 49.5 )
+shape = SubResource( 3 )
+
+[node name="OPTIONS" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 207.0
+margin_right = 600.0
+margin_bottom = 307.0
+rect_min_size = Vector2( 600, 100 )
+custom_fonts/font = SubResource( 7 )
+text = "Options"
+script = ExtResource( 4 )
+
+[node name="Area2D" type="Area2D" parent="HBoxContainer/VBoxContainer/OPTIONS"]
+collision_layer = 65537
+collision_mask = 524289
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/VBoxContainer/OPTIONS/Area2D"]
+position = Vector2( 300, 49.5 )
+shape = SubResource( 4 )
+
+[node name="EXIT" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 327.0
+margin_right = 600.0
+margin_bottom = 427.0
+rect_min_size = Vector2( 600, 100 )
+custom_fonts/font = SubResource( 8 )
+text = "Exit"
+script = ExtResource( 3 )
+
+[node name="Area2D" type="Area2D" parent="HBoxContainer/VBoxContainer/EXIT"]
+collision_layer = 65537
+collision_mask = 524289
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/VBoxContainer/EXIT/Area2D"]
+position = Vector2( 300, 50.5 )
+shape = SubResource( 5 )
+
+[node name="Pointer" type="Area2D" parent="."]
+position = Vector2( 537, 579 )
+collision_layer = 524288
+collision_mask = 65536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pointer"]
+position = Vector2( 1, 0.5 )
+shape = SubResource( 9 )
+
+[connection signal="focus_entered" from="HBoxContainer/VBoxContainer/Play" to="HBoxContainer/VBoxContainer/Play" method="_on_SinglePlayerButton_focus_entered"]
+[connection signal="focus_exited" from="HBoxContainer/VBoxContainer/Play" to="HBoxContainer/VBoxContainer/Play" method="_on_SinglePlayerButton_focus_exited"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Play" to="HBoxContainer/VBoxContainer/Play" method="_on_PLAY_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Play" to="HBoxContainer/VBoxContainer/Play" method="_on_pressed"]
+[connection signal="area_entered" from="HBoxContainer/VBoxContainer/Play/Area2D" to="HBoxContainer/VBoxContainer/Play" method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="HBoxContainer/VBoxContainer/Play/Area2D" to="HBoxContainer/VBoxContainer/Play" method="_on_Area2D_area_exited"]
+[connection signal="focus_entered" from="HBoxContainer/VBoxContainer/EXIT" to="HBoxContainer/VBoxContainer/Play" method="_on_QuitButton_focus_entered"]
+[connection signal="focus_entered" from="HBoxContainer/VBoxContainer/EXIT" to="HBoxContainer/VBoxContainer/EXIT" method="_on_QuitButton_focus_entered"]
+[connection signal="focus_exited" from="HBoxContainer/VBoxContainer/EXIT" to="HBoxContainer/VBoxContainer/EXIT" method="_on_QuitButton_focus_exited"]
+[connection signal="focus_exited" from="HBoxContainer/VBoxContainer/EXIT" to="HBoxContainer/VBoxContainer/EXIT" method="_on_EXIT_focus_exited"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/EXIT" to="HBoxContainer/VBoxContainer/EXIT" method="_on_pressed"]
+[connection signal="area_entered" from="HBoxContainer/VBoxContainer/EXIT/Area2D" to="HBoxContainer/VBoxContainer/EXIT" method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="HBoxContainer/VBoxContainer/EXIT/Area2D" to="HBoxContainer/VBoxContainer/EXIT" method="_on_area_2d_area_exited"]
