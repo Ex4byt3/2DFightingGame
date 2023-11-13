@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fox_usmash.ogg-ffb55e216c7c5b8fbb8b6d3006e276a4.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/fox_usmash.ogg"
+dest_files=[ "res://.import/fox_usmash.ogg-ffb55e216c7c5b8fbb8b6d3006e276a4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

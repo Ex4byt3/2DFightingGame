@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fox_ledge_sfx.ogg-eacc0b2e00f3fc2f9cd1a0212cdc2074.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/fox_ledge_sfx.ogg"
+dest_files=[ "res://.import/fox_ledge_sfx.ogg-eacc0b2e00f3fc2f9cd1a0212cdc2074.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

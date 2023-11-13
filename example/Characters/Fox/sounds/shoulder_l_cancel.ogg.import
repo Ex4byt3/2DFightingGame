@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/shoulder_l_cancel.ogg-12f57b663deb99001de9aba73a77cfb2.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/shoulder_l_cancel.ogg"
+dest_files=[ "res://.import/shoulder_l_cancel.ogg-12f57b663deb99001de9aba73a77cfb2.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fox_dair.ogg-4a7b098b3a52aee7ab14f99638ee48b3.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/fox_dair.ogg"
+dest_files=[ "res://.import/fox_dair.ogg-4a7b098b3a52aee7ab14f99638ee48b3.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

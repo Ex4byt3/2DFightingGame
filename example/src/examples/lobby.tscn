@@ -45,9 +45,6 @@ bg_color = Color( 0.156863, 0.156863, 0.156863, 1 )
 [node name="P2P" type="Panel"]
 rect_min_size = Vector2( 1280, 720 )
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Frame" parent="." instance=ExtResource( 7 )]
 
@@ -61,7 +58,6 @@ margin_bottom = 91.0
 custom_fonts/font = ExtResource( 4 )
 text = "This example will let you test various lobby functionality; as well as P2P packet functions."
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -72,25 +68,16 @@ margin_bottom = 552.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 25
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Outputs" type="VBoxContainer" parent="Frame/Main/Displays"]
 margin_right = 580.0
 margin_bottom = 436.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Titles" type="HBoxContainer" parent="Frame/Main/Displays/Outputs"]
 margin_right = 580.0
 margin_bottom = 19.0
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Output Title" type="Label" parent="Frame/Main/Displays/Outputs/Titles"]
 margin_right = 288.0
@@ -100,9 +87,6 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 5 )
 text = "Output Display"
 valign = 1
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Lobby" type="Label" parent="Frame/Main/Displays/Outputs/Titles"]
 margin_left = 292.0
@@ -113,9 +97,6 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 5 )
 text = "Lobby ID: 0"
 valign = 1
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Output" type="RichTextLabel" parent="Frame/Main/Displays/Outputs"]
 margin_top = 23.0
@@ -127,18 +108,12 @@ custom_constants/shadow_as_outline = 50
 custom_fonts/normal_font = ExtResource( 6 )
 custom_styles/normal = SubResource( 1 )
 scroll_following = true
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="PlayerList" type="VBoxContainer" parent="Frame/Main/Displays"]
 margin_left = 605.0
 margin_right = 905.0
 margin_bottom = 436.0
 rect_min_size = Vector2( 300, 0 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Title" type="Label" parent="Frame/Main/Displays/PlayerList"]
 margin_right = 300.0
@@ -148,9 +123,6 @@ size_flags_vertical = 1
 custom_fonts/font = ExtResource( 5 )
 text = "Player List (0)"
 valign = 1
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Players" type="VBoxContainer" parent="Frame/Main/Displays/PlayerList"]
 margin_top = 23.0
@@ -158,9 +130,6 @@ margin_right = 300.0
 margin_bottom = 436.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Chat Title" type="Label" parent="Frame/Main" index="3"]
 margin_top = 577.0
@@ -169,7 +138,6 @@ margin_bottom = 596.0
 custom_fonts/font = ExtResource( 5 )
 text = "Chat"
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -178,9 +146,6 @@ margin_top = 621.0
 margin_right = 905.0
 margin_bottom = 670.0
 custom_constants/separation = 25
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Chat" type="LineEdit" parent="Frame/Main/Messaging"]
 margin_right = 730.0
@@ -195,9 +160,6 @@ editable = false
 placeholder_text = "Enter a chat message..."
 caret_blink = true
 caret_blink_speed = 0.5
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Send" type="Button" parent="Frame/Main/Messaging"]
 margin_left = 755.0
@@ -207,8 +169,10 @@ rect_min_size = Vector2( 150, 0 )
 theme = ExtResource( 2 )
 disabled = true
 text = "Send Message"
+
+[node name="Output" parent="Frame/Sidebar" index="0"]
 __meta__ = {
-"_edit_lock_": true
+"_edit_use_anchors_": false
 }
 
 [node name="Title" parent="Frame/Sidebar/Options/List" index="0"]
@@ -221,9 +185,6 @@ margin_bottom = 60.0
 theme = ExtResource( 2 )
 text = "Create Lobby"
 align = 0
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="OpenLobby List" type="Button" parent="Frame/Sidebar/Options/List" index="2"]
 margin_top = 70.0
@@ -232,9 +193,6 @@ margin_bottom = 98.0
 theme = ExtResource( 2 )
 text = "Open Lobby List"
 align = 0
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="GetLobbyData" type="Button" parent="Frame/Sidebar/Options/List" index="3"]
 margin_top = 108.0
@@ -244,72 +202,57 @@ theme = ExtResource( 2 )
 disabled = true
 text = "Get Lobby Data"
 align = 0
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Leave" type="Button" parent="Frame/Sidebar/Options/List" index="4"]
+[node name="StartGame" type="Button" parent="Frame/Sidebar/Options/List" index="4"]
 margin_top = 146.0
 margin_right = 270.0
-margin_bottom = 174.0
+margin_bottom = 166.0
+text = "Start Game"
+
+[node name="Leave" type="Button" parent="Frame/Sidebar/Options/List" index="5"]
+margin_top = 176.0
+margin_right = 270.0
+margin_bottom = 204.0
 theme = ExtResource( 2 )
 disabled = true
 text = "Leave Lobby"
 align = 0
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Spacer1" type="Label" parent="Frame/Sidebar/Options/List" index="5"]
-margin_top = 184.0
+[node name="Spacer1" type="Label" parent="Frame/Sidebar/Options/List" index="6"]
+margin_top = 214.0
 margin_right = 270.0
-margin_bottom = 206.0
+margin_bottom = 236.0
 custom_fonts/font = ExtResource( 3 )
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="P2P Title" type="Label" parent="Frame/Sidebar/Options/List" index="6"]
-margin_top = 216.0
+[node name="P2P Title" type="Label" parent="Frame/Sidebar/Options/List" index="7"]
+margin_top = 246.0
 margin_right = 270.0
-margin_bottom = 238.0
+margin_bottom = 268.0
 custom_fonts/font = ExtResource( 3 )
 text = "P2P Functions"
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="SendPacket" type="Button" parent="Frame/Sidebar/Options/List" index="7"]
-margin_top = 248.0
+[node name="SendPacket" type="Button" parent="Frame/Sidebar/Options/List" index="8"]
+margin_top = 278.0
 margin_right = 270.0
-margin_bottom = 276.0
+margin_bottom = 306.0
 theme = ExtResource( 2 )
 disabled = true
 text = "Send Test Packet"
 align = 0
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Spacer2" type="Label" parent="Frame/Sidebar/Options/List" index="8"]
-margin_top = 286.0
+[node name="Spacer2" type="Label" parent="Frame/Sidebar/Options/List" index="9"]
+margin_top = 316.0
 margin_right = 270.0
-margin_bottom = 308.0
+margin_bottom = 338.0
 custom_fonts/font = ExtResource( 3 )
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Back" type="Button" parent="Frame/Sidebar/Options/List" index="9"]
-margin_top = 318.0
+[node name="Back" type="Button" parent="Frame/Sidebar/Options/List" index="10"]
+margin_top = 348.0
 margin_right = 270.0
-margin_bottom = 346.0
+margin_bottom = 376.0
 theme = ExtResource( 2 )
 text = "Back To Main Menu"
 align = 0
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Lobbies" type="Panel" parent="."]
 visible = false
@@ -382,6 +325,7 @@ __meta__ = {
 [connection signal="pressed" from="Frame/Sidebar/Options/List/CreateLobby" to="." method="_on_Create_Lobby_pressed"]
 [connection signal="pressed" from="Frame/Sidebar/Options/List/OpenLobby List" to="." method="_on_Open_Lobby_List_pressed"]
 [connection signal="pressed" from="Frame/Sidebar/Options/List/GetLobbyData" to="." method="_on_Get_Lobby_Data_pressed"]
+[connection signal="pressed" from="Frame/Sidebar/Options/List/StartGame" to="." method="_on_StartGame_pressed"]
 [connection signal="pressed" from="Frame/Sidebar/Options/List/Leave" to="." method="_on_Leave_Lobby_pressed"]
 [connection signal="pressed" from="Frame/Sidebar/Options/List/SendPacket" to="." method="_on_Send_Packet_pressed"]
 [connection signal="pressed" from="Frame/Sidebar/Options/List/Back" to="." method="_on_Back_pressed"]

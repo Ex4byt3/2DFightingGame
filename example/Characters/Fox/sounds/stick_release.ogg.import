@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/stick_release.ogg-760edbc80db43751086a69701983ce23.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/stick_release.ogg"
+dest_files=[ "res://.import/stick_release.ogg-760edbc80db43751086a69701983ce23.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

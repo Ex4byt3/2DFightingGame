@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/button_x.ogg-6c03df92c64bd41b0a24821dfc94cdfd.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/button_x.ogg"
+dest_files=[ "res://.import/button_x.ogg-6c03df92c64bd41b0a24821dfc94cdfd.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

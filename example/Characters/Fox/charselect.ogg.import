@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/charselect.ogg-98524590f048fe8718c1c7560f53c545.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/charselect.ogg"
+dest_files=[ "res://.import/charselect.ogg-98524590f048fe8718c1c7560f53c545.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

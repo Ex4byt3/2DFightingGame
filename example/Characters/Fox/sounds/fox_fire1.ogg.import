@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fox_fire1.ogg-2421bfac6e80cdc9835fad2fa36dc393.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/fox_fire1.ogg"
+dest_files=[ "res://.import/fox_fire1.ogg-2421bfac6e80cdc9835fad2fa36dc393.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

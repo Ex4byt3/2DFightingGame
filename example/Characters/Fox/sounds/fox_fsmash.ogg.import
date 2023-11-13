@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fox_fsmash.ogg-3dbd3a043b4e6019207deab1a4395975.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/fox_fsmash.ogg"
+dest_files=[ "res://.import/fox_fsmash.ogg-3dbd3a043b4e6019207deab1a4395975.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

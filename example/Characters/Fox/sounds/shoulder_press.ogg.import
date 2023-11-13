@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/shoulder_press.ogg-c49038eda5570941c171d6c3f47ca67a.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/shoulder_press.ogg"
+dest_files=[ "res://.import/shoulder_press.ogg-c49038eda5570941c171d6c3f47ca67a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -542,3 +542,8 @@ func _connect_Steam_Signals(this_signal: String, this_function: String) -> void:
 	var SIGNAL_CONNECT: int = Steam.connect(this_signal, self, this_function)
 	if SIGNAL_CONNECT > OK:
 		print("[STEAM] Connecting "+str(this_signal)+" to "+str(this_function)+" failed: "+str(SIGNAL_CONNECT))
+
+
+func _on_StartGame_pressed():
+	get_tree().change_scene("res://Stages/Test stage.tscn")
+	pass # Replace with function body.

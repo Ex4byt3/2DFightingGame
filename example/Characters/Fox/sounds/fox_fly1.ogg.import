@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/fox_fly1.ogg-36a65ba2906d4aeb9b9ce667eb493f04.oggstr"
+
+[deps]
+
+source_file="res://Characters/Fox/sounds/fox_fly1.ogg"
+dest_files=[ "res://.import/fox_fly1.ogg-36a65ba2906d4aeb9b9ce667eb493f04.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
