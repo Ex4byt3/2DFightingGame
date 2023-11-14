@@ -1,0 +1,28 @@
+[gd_scene format=2]
+
+[node name="Output" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Status" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Title" type="Label" parent="Status"]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="ID" type="Label" parent="Status"]
+margin_top = 18.0
+margin_right = 40.0
+margin_bottom = 32.0
+
+[node name="Username" type="Label" parent="Status"]
+margin_top = 36.0
+margin_right = 40.0
+margin_bottom = 50.0
+
+[node name="Owns" type="Label" parent="Status"]
+margin_top = 54.0
+margin_right = 40.0
+margin_bottom = 68.0
