@@ -2,6 +2,7 @@ extends SGFixedNode2D
 
 const Bomb = preload("res://Bomb.tscn")
 const ONE := 65536 # 1
+var last_input_time = 0
 
 onready var rng = $NetworkRandomNumberGenerator
 
@@ -48,20 +49,21 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 
 func _network_process(input: Dictionary) -> void:
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+	var max_speed = ONE * 3
+	var acceleration_step = ONE / 4  # Smaller step for smoother transition
 
 	if input_vector.x != 0 or input_vector.y != 0:
-		if speed < ONE*4:
-			speed += ONE
+		# Gradually increase acceleration for smoother start
+		if speed < max_speed:
+			if speed < ONE / 2:  # Smaller initial speed
+				speed += acceleration_step / 2
+			else:
+				speed += acceleration_step
+			speed = min(speed, max_speed)
 		fixed_position = fixed_position.add(input_vector.mul(speed))
 	else:
-		speed = 0
-
-	# 	if speed < 16.0:
-	# 		speed += 1.0
-	# 	position += input_vector * speed
-	# else:
-	# 	speed = 0.0
-	
+		# Gradual deceleration
+		speed = max(speed - acceleration_step, 0)
 	if input.get("drop_bomb", false):
 		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position = global_position })
 	
