@@ -1,10 +1,11 @@
-extends SGFixedNode2D
+extends SGKinematicBody2D
 
 const Bomb = preload("res://Bomb.tscn")
 const ONE := 65536 # 1
 var last_input_time = 0
 
 onready var rng = $NetworkRandomNumberGenerator
+onready var debugLabel = $DebugLabel
 
 var input_prefix := "player1_"
 
@@ -48,22 +49,23 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func _network_process(input: Dictionary) -> void:
-	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
-	var max_speed = ONE * 3
-	var acceleration_step = ONE / 4  # Smaller step for smoother transition
+	# DEBUG
+	debugLabel.text = str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\n" + str(speed / ONE)
 
+	# get input vector
+	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+
+	# update speed
+	var max_speed = ONE * 16
+	var acceleration_step = ONE / 2  # Smaller step for smoother transition
 	if input_vector.x != 0 or input_vector.y != 0:
-		# Gradually increase acceleration for smoother start
-		if speed < max_speed:
-			if speed < ONE / 2:  # Smaller initial speed
-				speed += acceleration_step / 2
-			else:
-				speed += acceleration_step
-			speed = min(speed, max_speed)
-		fixed_position = fixed_position.add(input_vector.mul(speed))
+		speed = min(speed + acceleration_step, max_speed)
 	else:
-		# Gradual deceleration
 		speed = max(speed - acceleration_step, 0)
+
+	# update position based on speed // position += input_vector * speed
+	fixed_position = fixed_position.add(input_vector.mul(speed))
+
 	if input.get("drop_bomb", false):
 		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position = global_position })
 	
@@ -77,15 +79,18 @@ func _network_process(input: Dictionary) -> void:
 
 func _save_state() -> Dictionary:
 	return {
-		fixed_position = fixed_position,
+		fixed_position_x = fixed_position.x,
+		fixed_position_y = fixed_position.y,
 		speed = speed,
 		teleporting = teleporting,
 	}
 
 func _load_state(state: Dictionary) -> void:
-	fixed_position = state['fixed_position']
+	fixed_position.x = state['fixed_position_x']
+	fixed_position.y = state['fixed_position_y']
 	speed = state['speed']
 	teleporting = state['teleporting']
+	sync_to_physics_engine()
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	if old_state.get('teleporting', false) or new_state.get('teleporting', false):

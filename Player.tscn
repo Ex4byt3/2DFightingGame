@@ -8,7 +8,7 @@
 extents_x = 2097152
 extents_y = 2097152
 
-[node name="Player" type="SGFixedNode2D" groups=["network_sync"]]
+[node name="Player" type="SGKinematicBody2D" groups=["network_sync"]]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -19,3 +19,10 @@ script = ExtResource( 3 )
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="DebugLabel" type="Label" parent="."]
+margin_left = -32.0
+margin_top = -80.0
+margin_right = 14.0
+margin_bottom = -66.0
+text = "DEBUG"
