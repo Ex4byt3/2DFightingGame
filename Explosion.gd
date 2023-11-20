@@ -1,4 +1,4 @@
-extends Node2D
+extends SGFixedNode2D
 
 onready var despawn_timer = $DespawnTimer
 onready var animation_player = $NetworkAnimationPlayer
@@ -6,7 +6,8 @@ onready var animation_player = $NetworkAnimationPlayer
 const sound = preload("res://assets/explosion.wav")
 
 func _network_spawn(data: Dictionary) -> void:
-	global_position = data['position']
+	fixed_position.x = data['fixed_position_x']
+	fixed_position.y = data['fixed_position_y']
 	despawn_timer.start()
 	animation_player.play("Explode")
 	SyncManager.play_sound(str(get_path()) + ":explode", sound)

@@ -37,7 +37,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[node name="Explosion" type="Node2D"]
+[node name="Explosion" type="SGFixedNode2D"]
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]

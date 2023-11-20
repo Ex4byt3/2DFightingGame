@@ -67,7 +67,7 @@ func _network_process(input: Dictionary) -> void:
 	fixed_position = fixed_position.add(input_vector.mul(speed))
 
 	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position = global_position })
+		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
 	
 	if input.get("teleport", false):
 		var fixed_position := SGFixed.vector2(0, 0)
