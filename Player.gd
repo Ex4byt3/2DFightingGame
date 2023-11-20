@@ -70,7 +70,6 @@ func _network_process(input: Dictionary) -> void:
 		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
 	
 	if input.get("teleport", false):
-		var fixed_position := SGFixed.vector2(0, 0)
 		fixed_position.x = (rng.randi() % 1024) * ONE
 		fixed_position.y = (rng.randi() % 600) * ONE
 		teleporting = true
