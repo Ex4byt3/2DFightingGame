@@ -130,7 +130,12 @@ func _on_OnlineButton_pressed() -> void:
 	SyncManager.reset_network_adaptor()
 
 func _on_LocalButton_pressed() -> void:
+	# Original functionality (if needed in the new scene)
 	$ClientPlayer.input_prefix = "player2_"
 	main_menu.visible = false
 	SyncManager.network_adaptor = DummyNetworkAdaptor.new()
 	SyncManager.start()
+
+	# Change to the specified scene
+	get_tree().change_scene("res://Stage.tscn")
+
