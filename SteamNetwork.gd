@@ -1,10 +1,15 @@
-extends Node
+extends Node2D
 
-func prompt_session_request():
-	pass
+# Fires back a handshake when 
+func sync_handshake():
+	print("Syncing handshake")
+	if not SteamGlobal.IS_HOST:
+		pass
 
-func _on_session_accept():
+func sync_start():
+	print("Starting sync")
 	pass
 	
-func _on_session_deny():
+func sync_stop():
+	print("Stopping sync")
 	pass

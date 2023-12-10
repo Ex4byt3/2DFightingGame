@@ -38,58 +38,41 @@ anchor_bottom = 0.5
 margin_left = -150.0
 margin_top = -45.0
 margin_right = 150.0
-margin_bottom = 45.0
+margin_bottom = 21.0
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/ConnectionPanel"]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 293.0
-margin_bottom = 83.0
+margin_right = 294.0
+margin_bottom = 55.0
 columns = 2
 
-[node name="HostLabel" type="Label" parent="CanvasLayer/ConnectionPanel/GridContainer"]
+[node name="SteamIDPanel" type="Label" parent="CanvasLayer/ConnectionPanel/GridContainer"]
 margin_top = 5.0
-margin_right = 141.0
+margin_right = 142.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
-text = "Host:"
+text = "Steam ID:"
 
-[node name="HostField" type="LineEdit" parent="CanvasLayer/ConnectionPanel/GridContainer"]
-margin_left = 145.0
-margin_right = 286.0
+[node name="SteamIDField" type="LineEdit" parent="CanvasLayer/ConnectionPanel/GridContainer"]
+margin_left = 146.0
+margin_right = 287.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-text = "127.0.0.1"
-align = 2
-
-[node name="PortLabel" type="Label" parent="CanvasLayer/ConnectionPanel/GridContainer"]
-margin_top = 33.0
-margin_right = 141.0
-margin_bottom = 47.0
-size_flags_horizontal = 3
-text = "Port:"
-
-[node name="PortField" type="LineEdit" parent="CanvasLayer/ConnectionPanel/GridContainer"]
-margin_left = 145.0
-margin_top = 28.0
-margin_right = 286.0
-margin_bottom = 52.0
-size_flags_horizontal = 3
-text = "9999"
 align = 2
 
 [node name="ServerButton" type="Button" parent="CanvasLayer/ConnectionPanel/GridContainer"]
-margin_top = 56.0
-margin_right = 141.0
-margin_bottom = 76.0
+margin_top = 28.0
+margin_right = 142.0
+margin_bottom = 48.0
 size_flags_horizontal = 3
 text = "Server"
 
 [node name="ClientButton" type="Button" parent="CanvasLayer/ConnectionPanel/GridContainer"]
-margin_left = 145.0
-margin_top = 56.0
-margin_right = 286.0
-margin_bottom = 76.0
+margin_left = 146.0
+margin_top = 28.0
+margin_right = 287.0
+margin_bottom = 48.0
 size_flags_horizontal = 3
 text = "Client"
 
