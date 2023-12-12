@@ -11,7 +11,7 @@ enum PACKET_TYPE {
 	REMOTE_INPUT_TICK,
 }
 
-var emptyData: PoolByteArray = []
+var emptyData: PoolByteArray = [1]
 
 func _ready():
 	pass
@@ -45,19 +45,30 @@ func process_packet(msg: Dictionary) -> void:
 	var sender_id = msg["identity"].to_int()
 	var packet = msg["payload"]
 	
+	print(sender_id)
+	print(packet)
+	
 	var header = packet[0]
-	var data = packet.subarray(1, len(packet))
+	var data = packet.subarray(1, len(packet) - 1)
+	
+	print(header)
+	print(data)
 	
 	match header:
 		PACKET_TYPE.REMOTE_PING:
+			print("ROLLBACK, PING")
 			_remote_ping(bytes2var(data))
 		PACKET_TYPE.REMOTE_PING_BACK:
+			print("ROLLBACK, PINGBACK")
 			_remote_ping_back(bytes2var(data))
 		PACKET_TYPE.REMOTE_START:
+			print("ROLLBACK, REMOTESTART")
 			_remote_start()
 		PACKET_TYPE.REMOTE_STOP:
+			print("ROLLBACK, REMOTESTOP")
 			_remote_stop()
 		PACKET_TYPE.REMOTE_INPUT_TICK:
+			print("ROLLBACK, RECIEVEINPUTTICK")
 			_rit(sender_id, data)
 		_:
 			print("Could not match packet types from message")

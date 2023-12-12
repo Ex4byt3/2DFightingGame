@@ -15,7 +15,7 @@ const LOG_FILE_DIRECTORY = 'C:/Users/jackd/Downloads/somelogs'
 
 var logging_enabled := true
 
-var emptyData: PoolByteArray = []
+var emptyData: PoolByteArray = [1]
 
 enum SYNC_TYPE {
 	HANDSHAKE,
@@ -66,16 +66,20 @@ func process_networking_message(msg: Dictionary) -> void:
 	var packet = msg["payload"]
 	
 	var header = packet[0]
-	var data = packet.subarray(1, len(packet))
+	var data = packet.subarray(1, len(packet) - 1)
 	
 	match header:
 		SYNC_TYPE.HANDSHAKE:
+			print("SYNC,HANDSHAKE")
 			connect_to_server()
 		SYNC_TYPE.CONNECT:
+			print("SYNC,CONNECT")
 			network_peer_connected()
 		SYNC_TYPE.START:
+			print("SYNC,START")
 			network_peer_connected()
 		SYNC_TYPE.STOP:
+			print("SYNC,STOP")
 			pass
 		_: # Default
 			print("Could not match packet types from message")
