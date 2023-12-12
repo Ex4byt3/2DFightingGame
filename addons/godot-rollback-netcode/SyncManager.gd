@@ -353,6 +353,7 @@ func set_input_delay(_input_delay: int) -> void:
 	input_delay = _input_delay
 
 func add_peer(peer_id: int) -> void:
+	print("Adding peer with peer id: " + str(peer_id))
 	assert(not peers.has(peer_id), "Peer with given id already exists")
 	assert(peer_id != network_adaptor.get_network_unique_id(), "Cannot add ourselves as a peer in SyncManager")
 	

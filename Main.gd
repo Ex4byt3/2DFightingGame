@@ -88,7 +88,7 @@ func connect_to_server() -> void:
 	if SteamGlobal.IS_HOST:
 		return
 	var packet = create_networking_message(SYNC_TYPE.CONNECT, emptyData)
-	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
+	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 1)
 
 # Runs on both clients when the users establish a connection
 func network_peer_connected():
@@ -200,8 +200,8 @@ func _on_ClientButton_pressed() -> void:
 	#var peer = NetworkedMultiplayerENet.new()
 	#peer.create_client(host_field.text, int(port_field.text))
 	#get_tree().network_peer = peer
-	var packet = create_networking_message(SYNC_TYPE.CONNECT, emptyData)
-	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
+	var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
+	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 1)
 	
 	main_menu.visible = false
 	connection_panel.visible = false
@@ -241,6 +241,6 @@ func _on_network_messages_session_request(sender_id: String):
 	# We don't know what this user wants yet, but we're going to tell them
 	# we accepted their request.
 	var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
-	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
+	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 1)
 	
 	print("Steam ID of messager: " + sender_id)
