@@ -120,3 +120,14 @@ func get_network_unique_id() -> int:
 
 func is_network_master_for_node(node: Node) -> bool:
 	return node.get_meta("IS_NETWORK_MASTER", false)
+
+func _on_network_messages_session_request(sender_id: String):
+	
+	print("ROLLBACK,NETWORK SESSION REQUEST")
+	
+	var sender_id_int = sender_id.to_int()
+	
+	# Identity_Reference is equal to the steam id as a string, assigned to the
+	# int value of the steam id
+	Steam.setIdentitySteamID64("OPPONENT_ID", sender_id_int)
+	Steam.acceptSessionWithUser(sender_id)
