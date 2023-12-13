@@ -11,7 +11,7 @@ onready var sync_lost_label = $CanvasLayer/SyncLostLabel
 onready var reset_button = $CanvasLayer/ResetButton
 onready var johnny = $Johnny
 
-const LOG_FILE_DIRECTORY = 'C:/Users/jackd/Downloads/somelogs'
+const LOG_FILE_DIRECTORY = 'E:/godot-logs'
 
 var logging_enabled := true
 
@@ -77,6 +77,7 @@ func process_networking_message(msg: Dictionary) -> void:
 			network_peer_connected()
 		SYNC_TYPE.START:
 			print("SYNC,START")
+			setup_match(bytes2var(data))
 			network_peer_connected()
 		SYNC_TYPE.STOP:
 			print("SYNC,STOP")
@@ -106,6 +107,7 @@ func network_peer_connected():
 		Steam.sendMessageToUser("OPPONENT_ID", setup_packet, 0, 1)
 		
 		# Give a little time to get ping data.
+		setup_match(johnny.get_seed())
 		yield(get_tree().create_timer(2.0), "timeout")
 		SyncManager.start()
 		

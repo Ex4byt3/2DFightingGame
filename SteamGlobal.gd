@@ -11,7 +11,7 @@ var STEAM_USERNAME: String = "No one"
 
 # Rollback Logic
 var IS_HOST: bool = false
-var OPPONENT_ID: int = 76561198988801354
+var OPPONENT_ID: int = 76561198147813925
 
 func _ready() -> void:
 	print("Starting the GodotSteam Example project...")
