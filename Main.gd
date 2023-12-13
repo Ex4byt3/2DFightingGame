@@ -107,7 +107,7 @@ func network_peer_connected():
 		Steam.sendMessageToUser("OPPONENT_ID", setup_packet, 0, 1)
 		
 		# Give a little time to get ping data.
-		setup_match(johnny.get_seed())
+		setup_match({mother_seed = johnny.get_seed()})
 		yield(get_tree().create_timer(2.0), "timeout")
 		SyncManager.start()
 		
