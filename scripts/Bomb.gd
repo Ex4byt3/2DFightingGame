@@ -1,6 +1,6 @@
 extends SGFixedNode2D
 
-const Explosion = preload("res://Explosion.tscn")
+const Explosion = preload("res://scenes//Explosion.tscn")
 
 onready var explosion_timer = $ExplosionTimer
 onready var animation_player = $NetworkAnimationPlayer

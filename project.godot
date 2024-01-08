@@ -33,8 +33,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Rollback Tutorial"
-run/main_scene="res://Main.tscn"
-config/icon="res://icon.png"
+run/main_scene="res://scenes/Main.tscn"
+config/icon="res://assets/icon.png"
+
+[audio]
+
+default_bus_layout="res://sound/default_bus_layout.tres"
 
 [autoload]
 
@@ -83,7 +87,7 @@ player1_right={
 }
 player1_bomb={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":66,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
 player2_up={
@@ -108,7 +112,7 @@ player2_right={
 }
 player2_bomb={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":66,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777221,"unicode":0,"echo":false,"script":null)
  ]
 }
 player1_teleport={
@@ -121,20 +125,15 @@ player2_teleport={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":92,"unicode":0,"echo":false,"script":null)
  ]
 }
-jump_1={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
- ]
-}
 
 [network]
 
 rollback/max_buffer_size=10
 rollback/sound_manager/default_sound_bus="Sound"
-rollback/classes/message_serializer="res://CustomMessageSerializer.gd"
+rollback/classes/message_serializer="res://networking/CustomMessageSerializer.gd"
 rollback/debug/rollback_ticks=4
 rollback/debug/random_rollback_ticks=10
-rollback/log_inspector/replay_match_scene_path="res://Main.tscn"
+rollback/log_inspector/replay_match_scene_path="res://scenes/Main.tscn"
 
 [physics]
 
@@ -142,4 +141,4 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/default_environment="res://sound/default_env.tres"

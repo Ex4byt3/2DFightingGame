@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=3]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Main.gd" type="Script" id=3]
 
 [node name="Main" type="Node2D"]
-script = ExtResource( 1 )
+script = ExtResource( 3 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -124,18 +124,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ServerPlayer" parent="." instance=ExtResource( 2 )]
+[node name="ServerPlayer" parent="." instance=ExtResource( 1 )]
 position = Vector2( 229, 316 )
 fixed_position_x = 15007744
 fixed_position_y = 20709376
 
-[node name="ClientPlayer" parent="." instance=ExtResource( 2 )]
+[node name="ClientPlayer" parent="." instance=ExtResource( 1 )]
 position = Vector2( 769, 320 )
 fixed_position_x = 50397184
 fixed_position_y = 20971520
 
 [node name="Johnny" type="Node" parent="."]
-script = ExtResource( 3 )
+script = ExtResource( 2 )
+
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="."]
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/LocalButton" to="." method="_on_LocalButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/OnlineButton" to="." method="_on_OnlineButton_pressed"]

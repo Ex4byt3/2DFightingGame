@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://Player.gd" type="Script" id=2]
+[ext_resource path="res://assets/icon.png" type="Texture" id=1]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=2]
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=3]
 
 [sub_resource type="SGRectangleShape2D" id=1]
@@ -9,7 +9,6 @@ extents_x = 2097152
 extents_y = 2097152
 
 [node name="Player" type="SGKinematicBody2D" groups=["network_sync"]]
-collision_layer = 3
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -19,8 +18,6 @@ texture = ExtResource( 1 )
 script = ExtResource( 3 )
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="."]
-position = Vector2( 0, 5 )
-fixed_position_y = 327680
 shape = SubResource( 1 )
 
 [node name="DebugLabel" type="Label" parent="."]
