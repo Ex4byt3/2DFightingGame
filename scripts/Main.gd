@@ -1,29 +1,34 @@
 extends Node2D
 
 const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
+const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
+
+const LOG_FILE_DIRECTORY = 'C:/Users/jackd/Downloads/somelogs'
 
 onready var main_menu = $CanvasLayer/MainMenu
-onready var connection_panel = $CanvasLayer/ConnectionPanel
+onready var rpc_connection_panel = $CanvasLayer/ConnectionPanel
 onready var host_field = $CanvasLayer/ConnectionPanel/GridContainer/HostField
 onready var port_field = $CanvasLayer/ConnectionPanel/GridContainer/PortField
+onready var steam_connection_panel = $CanvasLayer/SteamConnectionPanel
 onready var message_label = $CanvasLayer/MessageLabel
 onready var sync_lost_label = $CanvasLayer/SyncLostLabel
 onready var reset_button = $CanvasLayer/ResetButton
 onready var johnny = $Johnny
 
-const LOG_FILE_DIRECTORY = 'C:/Users/jackd/Downloads/somelogs'
-
 var logging_enabled := true
+
 
 func _ready() -> void:
 	get_tree().connect("network_peer_connected", self, "_on_network_peer_connected")
 	get_tree().connect("network_peer_disconnected", self, "_on_network_peer_disconnected")
 	get_tree().connect("server_disconnected", self, "_on_server_disconnected")
+	
 	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
 	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
 	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
 	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
 	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
+
 
 func _on_ServerButton_pressed() -> void:
 	johnny.randomize()
@@ -31,7 +36,7 @@ func _on_ServerButton_pressed() -> void:
 	peer.create_server(int(port_field.text), 1)
 	get_tree().network_peer = peer
 	main_menu.visible = false
-	connection_panel.visible = false
+	rpc_connection_panel.visible = false
 	message_label.text = "Listening..."
 
 func _on_ClientButton_pressed() -> void:
@@ -39,7 +44,7 @@ func _on_ClientButton_pressed() -> void:
 	peer.create_client(host_field.text, int(port_field.text))
 	get_tree().network_peer = peer
 	main_menu.visible = false
-	connection_panel.visible = false
+	rpc_connection_panel.visible = false
 	message_label.text = "Connecting..."
 
 func _on_network_peer_connected(peer_id: int):
@@ -118,19 +123,26 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 	var peer = get_tree().network_peer
 	if peer:
 		peer.close_connection()
+		
+	Steam.closeSessionWithUser("OPPONENT_ID")
 	SyncManager.clear_peers()
 
 func setup_match_for_replay(my_peer_id: int, peer_ids: Array, match_info: Dictionary) -> void:
 	main_menu.visible = false
-	connection_panel.visible = false
+	rpc_connection_panel.visible = false
 	reset_button.visible = false
-
-func _on_OnlineButton_pressed() -> void:
-	connection_panel.popup_centered()
-	SyncManager.reset_network_adaptor()
 
 func _on_LocalButton_pressed() -> void:
 	$ClientPlayer.input_prefix = "player2_"
 	main_menu.visible = false
 	SyncManager.network_adaptor = DummyNetworkAdaptor.new()
 	SyncManager.start()
+
+func _on_RPCButton_pressed():
+	rpc_connection_panel.popup_centered()
+	SyncManager.reset_network_adaptor()
+
+func _on_SteamButton_pressed():
+	steam_connection_panel.popup_centered()
+	SyncManager.reset_network_adaptor()
+	SyncManager.network_adaptor = SteamNetworkAdaptor.new()

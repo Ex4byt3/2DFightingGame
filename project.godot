@@ -32,7 +32,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Rollback Tutorial"
+config/name="Demo"
 run/main_scene="res://scenes/Main.tscn"
 config/icon="res://assets/icon.png"
 
@@ -45,6 +45,7 @@ default_bus_layout="res://sound/default_bus_layout.tres"
 SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
 SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 SyncReplay="*res://addons/godot-rollback-netcode/SyncReplay.gd"
+SteamGlobal="*res://networking/SteamGlobal.gd"
 
 [debug]
 

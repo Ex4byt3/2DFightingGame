@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=2]
 [ext_resource path="res://scripts/Main.gd" type="Script" id=3]
+[ext_resource path="res://networking/SteamConnect.gd" type="Script" id=4]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
@@ -18,17 +19,25 @@ margin_left = -87.5
 margin_top = -20.0
 margin_right = 87.5
 margin_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="LocalButton" type="Button" parent="CanvasLayer/MainMenu"]
 margin_right = 86.0
 margin_bottom = 40.0
 text = "Play Locally"
 
-[node name="OnlineButton" type="Button" parent="CanvasLayer/MainMenu"]
+[node name="RPCButton" type="Button" parent="CanvasLayer/MainMenu"]
 margin_left = 90.0
-margin_right = 175.0
+margin_right = 217.0
 margin_bottom = 40.0
-text = "Play Online"
+text = "Play Online (ENet)"
+
+[node name="SteamButton" type="Button" parent="CanvasLayer/MainMenu"]
+margin_left = 221.0
+margin_right = 358.0
+margin_bottom = 40.0
+text = "Play Online (Steam)"
 
 [node name="ConnectionPanel" type="WindowDialog" parent="CanvasLayer"]
 anchor_left = 0.5
@@ -93,6 +102,58 @@ margin_bottom = 76.0
 size_flags_horizontal = 3
 text = "Client"
 
+[node name="SteamConnectionPanel" type="WindowDialog" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -150.0
+margin_top = -45.0
+margin_right = 150.0
+margin_bottom = 45.0
+script = ExtResource( 4 )
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/SteamConnectionPanel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 293.0
+margin_bottom = 83.0
+columns = 2
+
+[node name="SteamIDPanel" type="Label" parent="CanvasLayer/SteamConnectionPanel/GridContainer"]
+margin_right = 141.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Steam ID:"
+align = 1
+valign = 1
+
+[node name="SteamIDField" type="LineEdit" parent="CanvasLayer/SteamConnectionPanel/GridContainer"]
+margin_left = 145.0
+margin_right = 286.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+align = 2
+
+[node name="Steam_ServerButton" type="Button" parent="CanvasLayer/SteamConnectionPanel/GridContainer"]
+margin_top = 40.0
+margin_right = 141.0
+margin_bottom = 76.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Server"
+
+[node name="Steam_ClientButton" type="Button" parent="CanvasLayer/SteamConnectionPanel/GridContainer"]
+margin_left = 145.0
+margin_top = 40.0
+margin_right = 286.0
+margin_bottom = 76.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Client"
+
 [node name="MessageLabel" type="Label" parent="CanvasLayer"]
 anchor_right = 1.0
 margin_bottom = 14.0
@@ -140,7 +201,10 @@ script = ExtResource( 2 )
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="."]
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/LocalButton" to="." method="_on_LocalButton_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainMenu/OnlineButton" to="." method="_on_OnlineButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/RPCButton" to="." method="_on_RPCButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/SteamButton" to="." method="_on_SteamButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/ConnectionPanel/GridContainer/ServerButton" to="." method="_on_ServerButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/ConnectionPanel/GridContainer/ClientButton" to="." method="_on_ClientButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/SteamConnectionPanel/GridContainer/Steam_ServerButton" to="CanvasLayer/SteamConnectionPanel" method="_on_Steam_ServerButton_pressed"]
+[connection signal="pressed" from="CanvasLayer/SteamConnectionPanel/GridContainer/Steam_ClientButton" to="CanvasLayer/SteamConnectionPanel" method="_on_Steam_ClientButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/ResetButton" to="." method="_on_ResetButton_pressed"]
