@@ -123,12 +123,12 @@ func _rit(peer_id: int, msg: PoolByteArray) -> void:
 	emit_signal("received_input_tick", SteamGlobal.OPPONENT_ID, msg)
 	
 	# DEBUG
-	debug_counter += 1
-	if debug_counter == 120:
-		print('_rit' + str(msg))
-		print('_rit' + str(msg.size()))
-		#print(bytes2var(msg))
-		debug_counter = 0
+	# debug_counter += 1
+	# if debug_counter == 120:
+	# 	print('_rit' + str(msg))
+	# 	print('_rit' + str(msg.size()))
+	# 	#print(bytes2var(msg))
+	# 	debug_counter = 0
 
 # Changed to Global variable
 func is_network_host() -> bool:
