@@ -111,6 +111,7 @@ func send_input_tick(peer_id: int, msg: PoolByteArray) -> void:
 func _rit(peer_id: int, msg: PoolByteArray) -> void:
 	emit_signal("received_input_tick", SteamGlobal.OPPONENT_ID, msg)
 	
+	# DEBUG
 	debug_counter += 1
 	if debug_counter == 60:
 		print(msg)
