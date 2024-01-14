@@ -13,6 +13,9 @@ enum PACKET_TYPE {
 
 var emptyData: PoolByteArray = [1]
 
+var debug_counter = 0
+var debug_inputs = []
+
 func _ready():
 	pass
 	
@@ -50,19 +53,19 @@ func process_packet(msg: Dictionary) -> void:
 	
 	match header:
 		PACKET_TYPE.REMOTE_PING:
-			print("ROLLBACK, PING")
+			#print("ROLLBACK, PING")
 			_remote_ping(bytes2var(data))
 		PACKET_TYPE.REMOTE_PING_BACK:
-			print("ROLLBACK, PINGBACK")
+			#print("ROLLBACK, PINGBACK")
 			_remote_ping_back(bytes2var(data))
 		PACKET_TYPE.REMOTE_START:
-			print("ROLLBACK, REMOTESTART")
+			#print("ROLLBACK, REMOTESTART")
 			_remote_start()
 		PACKET_TYPE.REMOTE_STOP:
-			print("ROLLBACK, REMOTESTOP")
+			#print("ROLLBACK, REMOTESTOP")
 			_remote_stop()
 		PACKET_TYPE.REMOTE_INPUT_TICK:
-			print("ROLLBACK, RECIEVEINPUTTICK")
+			#print("ROLLBACK, RECIEVEINPUTTICK")
 			_rit(sender_id, data)
 		_:
 			print("Could not match packet types from message")
@@ -108,6 +111,13 @@ func send_input_tick(peer_id: int, msg: PoolByteArray) -> void:
 # _rit is short for _receive_input_tick.
 func _rit(peer_id: int, msg: PoolByteArray) -> void:
 	emit_signal("received_input_tick", SteamGlobal.OPPONENT_ID, msg)
+	
+	debug_counter += 1
+	debug_inputs.append(bytes2var(msg))
+	if debug_counter == 60:
+		print(debug_inputs)
+		debug_inputs.clear()
+		debug_counter = 0
 
 # Changed to Global variable
 func is_network_host() -> bool:
