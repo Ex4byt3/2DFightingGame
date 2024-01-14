@@ -6,6 +6,8 @@ const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
 onready var main_menu = get_node("/root/Main/CanvasLayer/MainMenu")
 onready var message_label = get_node("/root/Main/CanvasLayer/MessageLabel")
 onready var sync_lost_label = get_node("/root/Main/CanvasLayer/SyncLostLabel")
+onready var server_player = get_node("/root/Main/ServerPlayer")
+onready var client_player = get_node("/root/Main/ClientPlayer")
 onready var johnny = get_node("/root/Main/Johnny")
 onready var steam_connection_panel = self
 onready var id_field = $GridContainer/SteamIDField
@@ -89,8 +91,8 @@ func network_peer_connected():
 	message_label.text = "Connected!"
 	SyncManager.add_peer(SteamGlobal.OPPONENT_ID)
 	
-	$ServerPlayer.set_meta("IS_NETWORK_MASTER", SteamGlobal.IS_HOST)
-	$ClientPlayer.set_meta("IS_NETWORK_MASTER", not SteamGlobal.IS_HOST)
+	server_player.set_meta("IS_NETWORK_MASTER", SteamGlobal.IS_HOST)
+	client_player.set_meta("IS_NETWORK_MASTER", not SteamGlobal.IS_HOST)
 	
 	if SteamGlobal.IS_HOST:
 		message_label.text = "Starting..."
@@ -109,8 +111,8 @@ func network_peer_disconnected(peer_id: int):
 
 func setup_match(info: Dictionary) -> void:
 	johnny.set_seed(info['mother_seed'])
-	$ClientPlayer.rng.set_seed(johnny.randi())
-	$ServerPlayer.rng.set_seed(johnny.randi())
+	client_player.rng.set_seed(johnny.randi())
+	server_player.rng.set_seed(johnny.randi())
 
 func _on_server_disconnected() -> void:
 	network_peer_disconnected(SteamGlobal.OPPONENT_ID)
@@ -126,7 +128,7 @@ func _on_Steam_ServerButton_pressed() -> void:
 
 # Create a client when pressed, attempting to connect to a server
 func _on_Steam_ClientButton_pressed() -> void:
-	var opp_id = id_field.to_int()
+	var opp_id = id_field.text.to_int()
 	SteamGlobal.OPPONENT_ID = opp_id
 	Steam.setIdentitySteamID64("OPPONENT_ID", opp_id)
 	
