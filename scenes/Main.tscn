@@ -135,6 +135,7 @@ margin_right = 286.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "76561198128520705"
 align = 2
 
 [node name="Steam_ServerButton" type="Button" parent="CanvasLayer/SteamConnectionPanel/GridContainer"]
@@ -158,9 +159,6 @@ text = "Client"
 anchor_right = 1.0
 margin_bottom = 14.0
 align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ResetButton" type="Button" parent="CanvasLayer"]
 anchor_left = 1.0

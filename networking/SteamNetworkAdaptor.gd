@@ -31,12 +31,20 @@ func create_packet(header: int, data) -> PoolByteArray:
 	var packet_to_send: PoolByteArray = []
 	packet_to_send.append(header)
 	
+	#DEBUG
+	#print('create_packet header: ' + str(header))
+	#print('create_packet data: ' + str(data))
+	
 	# Checking to see if the data is already a PoolByteArray,
 	# if not then we convert it to a PoolByteArray
 	if typeof(data) != TYPE_RAW_ARRAY:
 		data = var2bytes(data)
 	
 	packet_to_send.append_array(data)
+	
+	#DEBUG
+	#print('create_packet packet_to_send: ' + str(packet_to_send))
+	
 	return packet_to_send
 
 # COULD BE COMPRESSED FURTHER
@@ -76,6 +84,9 @@ func send_ping(peer_id: int, msg: Dictionary) -> void:
 	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
 
 func _remote_ping(msg: Dictionary) -> void:
+	#DEBUG
+	print("_remote_ping msg: " + str(msg))
+	
 	emit_signal("received_ping", SteamGlobal.OPPONENT_ID, msg)
 
 func send_ping_back(peer_id: int, msg: Dictionary) -> void:
@@ -113,9 +124,10 @@ func _rit(peer_id: int, msg: PoolByteArray) -> void:
 	
 	# DEBUG
 	debug_counter += 1
-	if debug_counter == 60:
-		print(msg)
-		print(bytes2var(msg))
+	if debug_counter == 120:
+		print('_rit' + str(msg))
+		print('_rit' + str(msg.size()))
+		#print(bytes2var(msg))
 		debug_counter = 0
 
 # Changed to Global variable
