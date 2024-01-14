@@ -14,7 +14,6 @@ enum PACKET_TYPE {
 var emptyData: PoolByteArray = [1]
 
 var debug_counter = 0
-var debug_inputs = []
 
 func _ready():
 	pass
@@ -72,7 +71,7 @@ func process_packet(msg: Dictionary) -> void:
 
 
 func send_ping(peer_id: int, msg: Dictionary) -> void:
-	print("SENDING PING!")
+	#print("SENDING PING!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_PING, msg)
 	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
 
@@ -80,7 +79,7 @@ func _remote_ping(msg: Dictionary) -> void:
 	emit_signal("received_ping", SteamGlobal.OPPONENT_ID, msg)
 
 func send_ping_back(peer_id: int, msg: Dictionary) -> void:
-	print("SENDING PING BACK!")
+	#print("SENDING PING BACK!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_PING_BACK, msg)
 	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
 
@@ -88,7 +87,7 @@ func _remote_ping_back(msg: Dictionary) -> void:
 	emit_signal("received_ping_back", SteamGlobal.OPPONENT_ID, msg)
 
 func send_remote_start(peer_id: int) -> void:
-	print("SENDING REMOTE START!")
+	#print("SENDING REMOTE START!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_START, emptyData)
 	Steam.sendMessageToUser("OPPONENT_ID", packet, 8, 0)
 
@@ -96,7 +95,7 @@ func _remote_start() -> void:
 	emit_signal("received_remote_start")
 
 func send_remote_stop(peer_id: int) -> void:
-	print("SENDING REMOTE STOP!")
+	#print("SENDING REMOTE STOP!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_START, emptyData)
 	Steam.sendMessageToUser("OPPONENT_ID", packet, 8, 0)
 
@@ -104,7 +103,7 @@ func _remote_stop() -> void:
 	emit_signal("received_remote_stop")
 
 func send_input_tick(peer_id: int, msg: PoolByteArray) -> void:
-	print("SENDING INPUT TICK!")
+	#print("SENDING INPUT TICK!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_INPUT_TICK, msg)
 	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
 	
@@ -113,10 +112,9 @@ func _rit(peer_id: int, msg: PoolByteArray) -> void:
 	emit_signal("received_input_tick", SteamGlobal.OPPONENT_ID, msg)
 	
 	debug_counter += 1
-	debug_inputs.append(bytes2var(msg))
 	if debug_counter == 60:
-		print(debug_inputs)
-		debug_inputs.clear()
+		print(msg)
+		print(bytes2var(msg))
 		debug_counter = 0
 
 # Changed to Global variable

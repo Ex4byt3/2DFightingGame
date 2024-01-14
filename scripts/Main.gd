@@ -3,7 +3,7 @@ extends Node2D
 const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
 const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
 
-const LOG_FILE_DIRECTORY = 'C:/Users/jackd/Downloads/somelogs'
+const LOG_FILE_DIRECTORY = 'res://logs'
 
 onready var main_menu = $CanvasLayer/MainMenu
 onready var rpc_connection_panel = $CanvasLayer/ConnectionPanel
