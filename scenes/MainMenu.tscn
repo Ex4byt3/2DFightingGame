@@ -1,0 +1,345 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://assets/main_menu/online_button_focused.png" type="Texture" id=1]
+[ext_resource path="res://assets/main_menu/online_button.png" type="Texture" id=2]
+[ext_resource path="res://assets/main_menu/records_button_focused.png" type="Texture" id=3]
+[ext_resource path="res://assets/main_menu/local_button.png" type="Texture" id=4]
+[ext_resource path="res://assets/main_menu/buttongroup_mainmenu.tres" type="ButtonGroup" id=5]
+[ext_resource path="res://assets/main_menu/records_button.png" type="Texture" id=6]
+[ext_resource path="res://assets/main_menu/training_button.png" type="Texture" id=7]
+[ext_resource path="res://assets/main_menu/quit_button_focused.png" type="Texture" id=8]
+[ext_resource path="res://assets/main_menu/local_button_focused.png" type="Texture" id=9]
+[ext_resource path="res://assets/main_menu/quit_button.png" type="Texture" id=10]
+[ext_resource path="res://assets/main_menu/background.jpeg" type="Texture" id=11]
+[ext_resource path="res://assets/main_menu/header_background.tres" type="Texture" id=12]
+[ext_resource path="res://scripts/MainMenu.gd" type="Script" id=13]
+[ext_resource path="res://assets/main_menu/settings_button.png" type="Texture" id=14]
+[ext_resource path="res://assets/main_menu/delta_logo.png" type="Texture" id=15]
+[ext_resource path="res://assets/main_menu/settings_button_focused.png" type="Texture" id=16]
+[ext_resource path="res://assets/main_menu/submenu_tile_focused.png" type="Texture" id=17]
+[ext_resource path="res://assets/main_menu/submenu_tile.png" type="Texture" id=18]
+[ext_resource path="res://assets/main_menu/training_button_focused.png" type="Texture" id=19]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 13 )
+
+[node name="BackgroundImage" type="TextureRect" parent="."]
+self_modulate = Color( 0.694118, 0.694118, 0.694118, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 1
+
+[node name="HeaderBar" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 0.08
+
+[node name="HeaderBackground" type="TextureRect" parent="HeaderBar"]
+modulate = Color( 1, 1, 1, 0.588235 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 1
+
+[node name="SettingsButton" type="TextureButton" parent="HeaderBar"]
+anchor_left = 0.8
+anchor_top = 0.3
+anchor_right = 0.9
+anchor_bottom = 0.7
+texture_normal = ExtResource( 14 )
+texture_pressed = ExtResource( 16 )
+texture_hover = ExtResource( 16 )
+texture_focused = ExtResource( 16 )
+expand = true
+stretch_mode = 4
+
+[node name="Logo" type="TextureRect" parent="HeaderBar"]
+anchor_left = 0.01
+anchor_top = 0.05
+anchor_right = 0.294
+anchor_bottom = 0.95
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 5
+
+[node name="MenuIcons" type="VBoxContainer" parent="."]
+anchor_left = 0.02
+anchor_top = 0.12
+anchor_right = 0.1
+anchor_bottom = 0.82
+
+[node name="OnlineButton" type="TextureButton" parent="MenuIcons"]
+margin_right = 68.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 1 )
+texture_hover = ExtResource( 1 )
+texture_focused = ExtResource( 1 )
+expand = true
+stretch_mode = 4
+
+[node name="LocalButton" type="TextureButton" parent="MenuIcons"]
+margin_top = 68.0
+margin_right = 68.0
+margin_bottom = 132.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 4 )
+texture_pressed = ExtResource( 9 )
+texture_hover = ExtResource( 9 )
+texture_focused = ExtResource( 9 )
+expand = true
+stretch_mode = 4
+
+[node name="TrainingButton" type="TextureButton" parent="MenuIcons"]
+margin_top = 136.0
+margin_right = 68.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 7 )
+texture_pressed = ExtResource( 19 )
+texture_hover = ExtResource( 19 )
+texture_focused = ExtResource( 19 )
+expand = true
+stretch_mode = 4
+
+[node name="RecordsButton" type="TextureButton" parent="MenuIcons"]
+margin_top = 204.0
+margin_right = 68.0
+margin_bottom = 268.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 3 )
+texture_hover = ExtResource( 3 )
+texture_focused = ExtResource( 3 )
+expand = true
+stretch_mode = 4
+
+[node name="QuitButton" type="TextureButton" parent="MenuIcons"]
+margin_top = 272.0
+margin_right = 68.0
+margin_bottom = 336.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 8 )
+texture_hover = ExtResource( 8 )
+texture_focused = ExtResource( 8 )
+expand = true
+stretch_mode = 4
+
+[node name="OnlineSubmenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_left = 0.1
+anchor_top = 0.12
+anchor_right = 0.4
+anchor_bottom = 0.4
+
+[node name="TextureButton" type="TextureButton" parent="OnlineSubmenu"]
+margin_right = 576.0
+margin_bottom = 98.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton2" type="TextureButton" parent="OnlineSubmenu"]
+margin_top = 102.0
+margin_right = 576.0
+margin_bottom = 200.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton3" type="TextureButton" parent="OnlineSubmenu"]
+margin_top = 204.0
+margin_right = 576.0
+margin_bottom = 302.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="LocalSubmenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_left = 0.1
+anchor_top = 0.261
+anchor_right = 0.4
+anchor_bottom = 0.45
+
+[node name="TextureButton" type="TextureButton" parent="LocalSubmenu"]
+margin_right = 576.0
+margin_bottom = 100.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton2" type="TextureButton" parent="LocalSubmenu"]
+margin_top = 104.0
+margin_right = 576.0
+margin_bottom = 204.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TrainingSubmenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_left = 0.1
+anchor_top = 0.403
+anchor_right = 0.4
+anchor_bottom = 0.592
+
+[node name="TextureButton" type="TextureButton" parent="TrainingSubmenu"]
+margin_right = 576.0
+margin_bottom = 100.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton2" type="TextureButton" parent="TrainingSubmenu"]
+margin_top = 104.0
+margin_right = 576.0
+margin_bottom = 204.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="RecordsSubmenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_left = 0.1
+anchor_top = 0.542
+anchor_right = 0.4
+anchor_bottom = 0.925
+
+[node name="TextureButton" type="TextureButton" parent="RecordsSubmenu"]
+margin_right = 576.0
+margin_bottom = 100.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton2" type="TextureButton" parent="RecordsSubmenu"]
+margin_top = 104.0
+margin_right = 576.0
+margin_bottom = 204.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton3" type="TextureButton" parent="RecordsSubmenu"]
+margin_top = 208.0
+margin_right = 576.0
+margin_bottom = 308.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton4" type="TextureButton" parent="RecordsSubmenu"]
+margin_top = 312.0
+margin_right = 576.0
+margin_bottom = 413.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="QuitSubmenu" type="VBoxContainer" parent="."]
+visible = false
+anchor_left = 0.1
+anchor_top = 0.683
+anchor_right = 0.4
+anchor_bottom = 0.873
+
+[node name="TextureButton" type="TextureButton" parent="QuitSubmenu"]
+margin_right = 576.0
+margin_bottom = 100.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="TextureButton2" type="TextureButton" parent="QuitSubmenu"]
+margin_top = 104.0
+margin_right = 576.0
+margin_bottom = 205.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[connection signal="pressed" from="MenuIcons/OnlineButton" to="." method="_on_OnlineButton_pressed"]
+[connection signal="toggled" from="MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
+[connection signal="toggled" from="MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]
+[connection signal="toggled" from="MenuIcons/TrainingButton" to="." method="_on_TrainingButton_toggled"]
+[connection signal="toggled" from="MenuIcons/RecordsButton" to="." method="_on_RecordsButton_toggled"]
+[connection signal="pressed" from="MenuIcons/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="toggled" from="MenuIcons/QuitButton" to="." method="_on_QuitButton_toggled"]
