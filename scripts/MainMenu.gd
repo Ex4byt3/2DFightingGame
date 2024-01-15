@@ -1,28 +1,46 @@
 extends Control
 
-onready var online_submenu = $OnlineSubmenu
-onready var local_submenu = $LocalSubmenu
-onready var training_submenu = $TrainingSubmenu
-onready var records_submenu = $RecordsSubmenu
-onready var quit_submenu = $QuitSubmenu
+onready var online_tab = $OnlineTab
+onready var local_tab = $LocalTab
+onready var training_tab = $TrainingTab
+onready var records_tab = $RecordsTab
+onready var quit_tab = $QuitTab
+
+onready var quit_desktop = $QuitTab/DesktopButton
 
 func _ready():
 	#$MenuIcons/OnlineButton.grab_focus()
-	#Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	pass
 
 func _on_OnlineButton_toggled(button_pressed):
-	online_submenu.visible = not online_submenu.visible
+	if button_pressed == true:
+		online_tab.visible = true
+	else:
+		online_tab.visible = false
 
 func _on_LocalButton_toggled(button_pressed):
-	local_submenu.visible = not local_submenu.visible
+	if button_pressed == true:
+		local_tab.visible = true
+	else:
+		local_tab.visible = false
 
 func _on_TrainingButton_toggled(button_pressed):
-	training_submenu.visible = not training_submenu.visible
+	if button_pressed == true:
+		training_tab.visible = true
+	else:
+		training_tab.visible = false
 
 func _on_RecordsButton_toggled(button_pressed):
-	records_submenu.visible = not records_submenu.visible
+	if button_pressed == true:
+		records_tab.visible = true
+	else:
+		records_tab.visible = false
 
 func _on_QuitButton_toggled(button_pressed):
-	quit_submenu.visible = not quit_submenu.visible
+	if button_pressed == true:
+		quit_tab.visible = true
+	else:
+		quit_tab.visible = false
 
+func _on_DesktopButton_pressed():
+	get_tree().quit()

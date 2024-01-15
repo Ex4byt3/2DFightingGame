@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://assets/main_menu/online_button_focused.png" type="Texture" id=1]
 [ext_resource path="res://assets/main_menu/online_button.png" type="Texture" id=2]
@@ -19,6 +19,8 @@
 [ext_resource path="res://assets/main_menu/submenu_tile_focused.png" type="Texture" id=17]
 [ext_resource path="res://assets/main_menu/submenu_tile.png" type="Texture" id=18]
 [ext_resource path="res://assets/main_menu/training_button_focused.png" type="Texture" id=19]
+[ext_resource path="res://assets/main_menu/Bar.png" type="Texture" id=20]
+[ext_resource path="res://assets/main_menu/accentgradient_texture.tres" type="Texture" id=21]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -70,15 +72,39 @@ texture = ExtResource( 15 )
 expand = true
 stretch_mode = 5
 
-[node name="MenuIcons" type="VBoxContainer" parent="."]
+[node name="AccentBar" type="TextureRect" parent="."]
+anchor_left = 0.01
+anchor_top = 0.12
+anchor_right = 0.019
+anchor_bottom = 0.802
+margin_left = 0.47
+margin_top = 0.400002
+margin_right = -0.207001
+margin_bottom = 0.039978
+texture = ExtResource( 20 )
+expand = true
+stretch_mode = 5
+
+[node name="AccentGradient" type="TextureRect" parent="."]
+show_behind_parent = true
+anchor_top = 0.08
+anchor_right = 0.09
+anchor_bottom = 1.0
+texture = ExtResource( 21 )
+expand = true
+stretch_mode = 1
+
+[node name="MenuIcons" type="GridContainer" parent="."]
 anchor_left = 0.02
 anchor_top = 0.12
-anchor_right = 0.1
+anchor_right = 0.09
 anchor_bottom = 0.82
+custom_constants/vseparation = -1
+custom_constants/hseparation = -1
 
 [node name="OnlineButton" type="TextureButton" parent="MenuIcons"]
-margin_right = 68.0
-margin_bottom = 64.0
+margin_right = 59.0
+margin_bottom = 68.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 toggle_mode = true
@@ -91,9 +117,9 @@ expand = true
 stretch_mode = 4
 
 [node name="LocalButton" type="TextureButton" parent="MenuIcons"]
-margin_top = 68.0
-margin_right = 68.0
-margin_bottom = 132.0
+margin_top = 67.0
+margin_right = 59.0
+margin_bottom = 135.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 toggle_mode = true
@@ -106,9 +132,9 @@ expand = true
 stretch_mode = 4
 
 [node name="TrainingButton" type="TextureButton" parent="MenuIcons"]
-margin_top = 136.0
-margin_right = 68.0
-margin_bottom = 200.0
+margin_top = 134.0
+margin_right = 59.0
+margin_bottom = 202.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 toggle_mode = true
@@ -121,9 +147,9 @@ expand = true
 stretch_mode = 4
 
 [node name="RecordsButton" type="TextureButton" parent="MenuIcons"]
-margin_top = 204.0
-margin_right = 68.0
-margin_bottom = 268.0
+margin_top = 201.0
+margin_right = 59.0
+margin_bottom = 269.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 toggle_mode = true
@@ -136,8 +162,8 @@ expand = true
 stretch_mode = 4
 
 [node name="QuitButton" type="TextureButton" parent="MenuIcons"]
-margin_top = 272.0
-margin_right = 68.0
+margin_top = 268.0
+margin_right = 59.0
 margin_bottom = 336.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -150,17 +176,17 @@ texture_focused = ExtResource( 8 )
 expand = true
 stretch_mode = 4
 
-[node name="OnlineSubmenu" type="VBoxContainer" parent="."]
+[node name="OnlineTab" type="Control" parent="."]
 visible = false
-anchor_left = 0.1
+anchor_left = 0.095
 anchor_top = 0.12
-anchor_right = 0.4
-anchor_bottom = 0.4
+anchor_right = 0.395
+anchor_bottom = 0.3
 
-[node name="TextureButton" type="TextureButton" parent="OnlineSubmenu"]
-margin_right = 576.0
-margin_bottom = 98.0
-size_flags_vertical = 3
+[node name="ENETButton" type="TextureButton" parent="OnlineTab"]
+anchor_right = 1.0
+anchor_bottom = 0.5
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -168,11 +194,18 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton2" type="TextureButton" parent="OnlineSubmenu"]
-margin_top = 102.0
-margin_right = 576.0
-margin_bottom = 200.0
-size_flags_vertical = 3
+[node name="Label" type="Label" parent="OnlineTab/ENETButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "ENET"
+valign = 1
+
+[node name="SteamButton" type="TextureButton" parent="OnlineTab"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -180,29 +213,24 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton3" type="TextureButton" parent="OnlineSubmenu"]
-margin_top = 204.0
-margin_right = 576.0
-margin_bottom = 302.0
-size_flags_vertical = 3
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
-expand = true
-stretch_mode = 4
+[node name="Label" type="Label" parent="OnlineTab/SteamButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "STEAM"
+valign = 1
 
-[node name="LocalSubmenu" type="VBoxContainer" parent="."]
+[node name="LocalTab" type="Control" parent="."]
 visible = false
-anchor_left = 0.1
-anchor_top = 0.261
-anchor_right = 0.4
-anchor_bottom = 0.45
+anchor_left = 0.095
+anchor_top = 0.26
+anchor_right = 0.395
+anchor_bottom = 0.44
 
-[node name="TextureButton" type="TextureButton" parent="LocalSubmenu"]
-margin_right = 576.0
-margin_bottom = 100.0
-size_flags_vertical = 3
+[node name="VersusButton" type="TextureButton" parent="LocalTab"]
+anchor_right = 1.0
+anchor_bottom = 0.5
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -210,11 +238,18 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton2" type="TextureButton" parent="LocalSubmenu"]
-margin_top = 104.0
-margin_right = 576.0
-margin_bottom = 204.0
-size_flags_vertical = 3
+[node name="Label" type="Label" parent="LocalTab/VersusButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "VERSUS"
+valign = 1
+
+[node name="PlaceholderButton" type="TextureButton" parent="LocalTab"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -222,17 +257,24 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TrainingSubmenu" type="VBoxContainer" parent="."]
+[node name="Label" type="Label" parent="LocalTab/PlaceholderButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "PLACEHOLDER"
+valign = 1
+
+[node name="TrainingTab" type="Control" parent="."]
 visible = false
-anchor_left = 0.1
-anchor_top = 0.403
-anchor_right = 0.4
-anchor_bottom = 0.592
+anchor_left = 0.095
+anchor_top = 0.4
+anchor_right = 0.395
+anchor_bottom = 0.58
 
-[node name="TextureButton" type="TextureButton" parent="TrainingSubmenu"]
-margin_right = 576.0
-margin_bottom = 100.0
-size_flags_vertical = 3
+[node name="PracticeButton" type="TextureButton" parent="TrainingTab"]
+anchor_right = 1.0
+anchor_bottom = 0.5
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -240,11 +282,18 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton2" type="TextureButton" parent="TrainingSubmenu"]
-margin_top = 104.0
-margin_right = 576.0
-margin_bottom = 204.0
-size_flags_vertical = 3
+[node name="Label" type="Label" parent="TrainingTab/PracticeButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "PRACTICE"
+valign = 1
+
+[node name="TutorialButton" type="TextureButton" parent="TrainingTab"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -252,17 +301,24 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="RecordsSubmenu" type="VBoxContainer" parent="."]
+[node name="Label" type="Label" parent="TrainingTab/TutorialButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "TUTORIAL"
+valign = 1
+
+[node name="RecordsTab" type="Control" parent="."]
 visible = false
-anchor_left = 0.1
-anchor_top = 0.542
-anchor_right = 0.4
-anchor_bottom = 0.925
+anchor_left = 0.095
+anchor_top = 0.54
+anchor_right = 0.395
+anchor_bottom = 0.9
 
-[node name="TextureButton" type="TextureButton" parent="RecordsSubmenu"]
-margin_right = 576.0
-margin_bottom = 100.0
-size_flags_vertical = 3
+[node name="GameplayButton" type="TextureButton" parent="RecordsTab"]
+anchor_right = 1.0
+anchor_bottom = 0.25
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -270,11 +326,18 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton2" type="TextureButton" parent="RecordsSubmenu"]
-margin_top = 104.0
-margin_right = 576.0
-margin_bottom = 204.0
-size_flags_vertical = 3
+[node name="Label" type="Label" parent="RecordsTab/GameplayButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "GAMEPLAY"
+valign = 1
+
+[node name="CollectionButton" type="TextureButton" parent="RecordsTab"]
+anchor_top = 0.25
+anchor_right = 1.0
+anchor_bottom = 0.5
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -282,11 +345,18 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton3" type="TextureButton" parent="RecordsSubmenu"]
-margin_top = 208.0
-margin_right = 576.0
-margin_bottom = 308.0
-size_flags_vertical = 3
+[node name="Label" type="Label" parent="RecordsTab/CollectionButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "COLLECTION"
+valign = 1
+
+[node name="GalleryButton" type="TextureButton" parent="RecordsTab"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.75
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -294,29 +364,19 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton4" type="TextureButton" parent="RecordsSubmenu"]
-margin_top = 312.0
-margin_right = 576.0
-margin_bottom = 413.0
-size_flags_vertical = 3
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
-expand = true
-stretch_mode = 4
+[node name="Label" type="Label" parent="RecordsTab/GalleryButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "GALLERY"
+valign = 1
 
-[node name="QuitSubmenu" type="VBoxContainer" parent="."]
+[node name="FishingButton" type="TextureButton" parent="RecordsTab"]
 visible = false
-anchor_left = 0.1
-anchor_top = 0.683
-anchor_right = 0.4
-anchor_bottom = 0.873
-
-[node name="TextureButton" type="TextureButton" parent="QuitSubmenu"]
-margin_right = 576.0
-margin_bottom = 100.0
-size_flags_vertical = 3
+anchor_top = 0.75
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -324,11 +384,24 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="TextureButton2" type="TextureButton" parent="QuitSubmenu"]
-margin_top = 104.0
-margin_right = 576.0
-margin_bottom = 205.0
-size_flags_vertical = 3
+[node name="Label" type="Label" parent="RecordsTab/FishingButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "FISHING"
+valign = 1
+
+[node name="QuitTab" type="Control" parent="."]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.68
+anchor_right = 0.395
+anchor_bottom = 0.86
+
+[node name="TitleButton" type="TextureButton" parent="QuitTab"]
+anchor_right = 1.0
+anchor_bottom = 0.5
+size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
@@ -336,10 +409,36 @@ texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[connection signal="pressed" from="MenuIcons/OnlineButton" to="." method="_on_OnlineButton_pressed"]
+[node name="Label" type="Label" parent="QuitTab/TitleButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "RETURN TO TITLE"
+valign = 1
+
+[node name="DesktopButton" type="TextureButton" parent="QuitTab"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+texture_hover = ExtResource( 17 )
+texture_focused = ExtResource( 17 )
+expand = true
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="QuitTab/DesktopButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "QUIT TO DESKTOP"
+valign = 1
+
 [connection signal="toggled" from="MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
 [connection signal="toggled" from="MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]
 [connection signal="toggled" from="MenuIcons/TrainingButton" to="." method="_on_TrainingButton_toggled"]
 [connection signal="toggled" from="MenuIcons/RecordsButton" to="." method="_on_RecordsButton_toggled"]
 [connection signal="pressed" from="MenuIcons/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="toggled" from="MenuIcons/QuitButton" to="." method="_on_QuitButton_toggled"]
+[connection signal="pressed" from="QuitTab/DesktopButton" to="." method="_on_DesktopButton_pressed"]
