@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=2]
 [ext_resource path="res://scripts/Main.gd" type="Script" id=3]
 [ext_resource path="res://networking/SteamConnect.gd" type="Script" id=4]
+[ext_resource path="res://assets/floor.png" type="Texture" id=5]
+
+[sub_resource type="SGRectangleShape2D" id=1]
+extents_x = 63963136
+extents_y = 2490368
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
@@ -184,19 +189,30 @@ __meta__ = {
 }
 
 [node name="ServerPlayer" parent="." instance=ExtResource( 1 )]
-position = Vector2( 229, 316 )
-fixed_position_x = 15007744
-fixed_position_y = 20709376
+position = Vector2( 147, 319 )
+fixed_position_x = 9633792
+fixed_position_y = 20905984
 
 [node name="ClientPlayer" parent="." instance=ExtResource( 1 )]
-position = Vector2( 769, 320 )
+position = Vector2( 769, 319 )
 fixed_position_x = 50397184
-fixed_position_y = 20971520
+fixed_position_y = 20905984
 
 [node name="Johnny" type="Node" parent="."]
 script = ExtResource( 2 )
 
-[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="."]
+[node name="FloorStaticBody" type="SGStaticBody2D" parent="."]
+
+[node name="FloorCollisionShape" type="SGCollisionShape2D" parent="FloorStaticBody"]
+position = Vector2( 417, 442 )
+fixed_position_x = 27328512
+fixed_position_y = 28966912
+shape = SubResource( 1 )
+
+[node name="FloorSprite" type="Sprite" parent="FloorStaticBody"]
+position = Vector2( 418.141, 441.906 )
+scale = Vector2( 1.46998, 0.0621235 )
+texture = ExtResource( 5 )
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/LocalButton" to="." method="_on_LocalButton_pressed"]
 [connection signal="pressed" from="CanvasLayer/MainMenu/RPCButton" to="." method="_on_RPCButton_pressed"]
