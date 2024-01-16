@@ -21,8 +21,8 @@ script = ExtResource( 3 )
 shape = SubResource( 1 )
 
 [node name="DebugLabel" type="Label" parent="."]
-margin_left = -32.0
-margin_top = -80.0
-margin_right = 14.0
-margin_bottom = -66.0
+margin_left = -41.0
+margin_top = -117.0
+margin_right = 5.0
+margin_bottom = -103.0
 text = "DEBUG"
