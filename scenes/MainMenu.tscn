@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://assets/main_menu/online_button_focused.png" type="Texture" id=1]
 [ext_resource path="res://assets/main_menu/online_button.png" type="Texture" id=2]
@@ -21,6 +21,8 @@
 [ext_resource path="res://assets/main_menu/training_button_focused.png" type="Texture" id=19]
 [ext_resource path="res://assets/main_menu/Bar.png" type="Texture" id=20]
 [ext_resource path="res://assets/main_menu/accentgradient_texture.tres" type="Texture" id=21]
+[ext_resource path="res://assets/main_menu/panel_header_gradient.tres" type="Texture" id=22]
+[ext_resource path="res://assets/main_menu/buttongroup_online.tres" type="ButtonGroup" id=23]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -51,18 +53,6 @@ texture = ExtResource( 12 )
 expand = true
 stretch_mode = 1
 
-[node name="SettingsButton" type="TextureButton" parent="HeaderBar"]
-anchor_left = 0.8
-anchor_top = 0.3
-anchor_right = 0.9
-anchor_bottom = 0.7
-texture_normal = ExtResource( 14 )
-texture_pressed = ExtResource( 16 )
-texture_hover = ExtResource( 16 )
-texture_focused = ExtResource( 16 )
-expand = true
-stretch_mode = 4
-
 [node name="Logo" type="TextureRect" parent="HeaderBar"]
 anchor_left = 0.01
 anchor_top = 0.05
@@ -71,6 +61,17 @@ anchor_bottom = 0.95
 texture = ExtResource( 15 )
 expand = true
 stretch_mode = 5
+
+[node name="SettingsButton" type="TextureButton" parent="HeaderBar"]
+anchor_left = 0.8
+anchor_top = 0.3
+anchor_right = 0.9
+anchor_bottom = 0.7
+texture_normal = ExtResource( 14 )
+texture_pressed = ExtResource( 16 )
+texture_hover = ExtResource( 16 )
+expand = true
+stretch_mode = 4
 
 [node name="AccentBar" type="TextureRect" parent="."]
 anchor_left = 0.01
@@ -112,7 +113,6 @@ group = ExtResource( 5 )
 texture_normal = ExtResource( 2 )
 texture_pressed = ExtResource( 1 )
 texture_hover = ExtResource( 1 )
-texture_focused = ExtResource( 1 )
 expand = true
 stretch_mode = 4
 
@@ -127,7 +127,6 @@ group = ExtResource( 5 )
 texture_normal = ExtResource( 4 )
 texture_pressed = ExtResource( 9 )
 texture_hover = ExtResource( 9 )
-texture_focused = ExtResource( 9 )
 expand = true
 stretch_mode = 4
 
@@ -142,7 +141,6 @@ group = ExtResource( 5 )
 texture_normal = ExtResource( 7 )
 texture_pressed = ExtResource( 19 )
 texture_hover = ExtResource( 19 )
-texture_focused = ExtResource( 19 )
 expand = true
 stretch_mode = 4
 
@@ -157,7 +155,6 @@ group = ExtResource( 5 )
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 3 )
 texture_hover = ExtResource( 3 )
-texture_focused = ExtResource( 3 )
 expand = true
 stretch_mode = 4
 
@@ -172,7 +169,6 @@ group = ExtResource( 5 )
 texture_normal = ExtResource( 10 )
 texture_pressed = ExtResource( 8 )
 texture_hover = ExtResource( 8 )
-texture_focused = ExtResource( 8 )
 expand = true
 stretch_mode = 4
 
@@ -183,18 +179,19 @@ anchor_top = 0.12
 anchor_right = 0.395
 anchor_bottom = 0.3
 
-[node name="ENETButton" type="TextureButton" parent="OnlineTab"]
+[node name="RPCButton" type="TextureButton" parent="OnlineTab"]
 anchor_right = 1.0
 anchor_bottom = 0.5
 size_flags_horizontal = 3
+toggle_mode = true
+group = ExtResource( 23 )
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="OnlineTab/ENETButton"]
+[node name="Label" type="Label" parent="OnlineTab/RPCButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -206,10 +203,11 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
+toggle_mode = true
+group = ExtResource( 23 )
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -234,7 +232,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -253,7 +250,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -278,7 +274,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -297,7 +292,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -322,7 +316,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -341,7 +334,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -360,7 +352,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -380,7 +371,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -405,7 +395,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -424,7 +413,6 @@ size_flags_horizontal = 3
 texture_normal = ExtResource( 18 )
 texture_pressed = ExtResource( 17 )
 texture_hover = ExtResource( 17 )
-texture_focused = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
@@ -435,10 +423,210 @@ anchor_bottom = 1.0
 text = "QUIT TO DESKTOP"
 valign = 1
 
+[node name="RPCConnectionPanel" type="Control" parent="."]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.3
+anchor_right = 0.395
+anchor_bottom = 0.55
+
+[node name="TextureRect" type="TextureRect" parent="RPCConnectionPanel"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+texture = ExtResource( 21 )
+expand = true
+stretch_mode = 1
+
+[node name="PanelHeader" type="TextureRect" parent="RPCConnectionPanel"]
+anchor_right = 1.0
+anchor_bottom = 0.2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+texture = ExtResource( 22 )
+expand = true
+stretch_mode = 1
+
+[node name="Label" type="Label" parent="RPCConnectionPanel/PanelHeader"]
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "ENET CONNECTION"
+valign = 2
+
+[node name="GridContainer" type="GridContainer" parent="RPCConnectionPanel"]
+anchor_top = 0.23
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+columns = 2
+
+[node name="HostLabel" type="Label" parent="RPCConnectionPanel/GridContainer"]
+margin_right = 126.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "host"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="HostField" type="LineEdit" parent="RPCConnectionPanel/GridContainer"]
+margin_left = 130.0
+margin_right = 255.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="PortLabel" type="Label" parent="RPCConnectionPanel/GridContainer"]
+margin_top = 28.0
+margin_right = 126.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "port"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="PortField" type="LineEdit" parent="RPCConnectionPanel/GridContainer"]
+margin_left = 130.0
+margin_top = 28.0
+margin_right = 255.0
+margin_bottom = 52.0
+
+[node name="ServerButton" type="TextureButton" parent="RPCConnectionPanel/GridContainer"]
+margin_top = 56.0
+margin_right = 126.0
+margin_bottom = 92.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+expand = true
+
+[node name="Label" type="Label" parent="RPCConnectionPanel/GridContainer/ServerButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "SERVER"
+align = 1
+valign = 1
+
+[node name="ClientButton" type="TextureButton" parent="RPCConnectionPanel/GridContainer"]
+margin_left = 130.0
+margin_top = 56.0
+margin_right = 255.0
+margin_bottom = 92.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+expand = true
+
+[node name="Label" type="Label" parent="RPCConnectionPanel/GridContainer/ClientButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "CLIENT"
+align = 1
+valign = 1
+
+[node name="SteamConnectionPanel" type="Control" parent="."]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.3
+anchor_right = 0.395
+anchor_bottom = 0.5
+
+[node name="TextureRect" type="TextureRect" parent="SteamConnectionPanel"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+texture = ExtResource( 21 )
+expand = true
+stretch_mode = 1
+
+[node name="PanelHeader" type="TextureRect" parent="SteamConnectionPanel"]
+anchor_right = 1.0
+anchor_bottom = 0.25
+margin_right = 0.100006
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+texture = ExtResource( 22 )
+expand = true
+stretch_mode = 1
+
+[node name="Label" type="Label" parent="SteamConnectionPanel/PanelHeader"]
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "STEAM CONNECTION"
+valign = 2
+
+[node name="GridContainer" type="GridContainer" parent="SteamConnectionPanel"]
+anchor_top = 0.292
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.0320015
+margin_right = 0.100006
+size_flags_vertical = 3
+columns = 2
+
+[node name="IdLabel" type="Label" parent="SteamConnectionPanel/GridContainer"]
+margin_right = 126.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "STEAM ID"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="IdField" type="LineEdit" parent="SteamConnectionPanel/GridContainer"]
+margin_left = 130.0
+margin_right = 256.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="ServerButton" type="TextureButton" parent="SteamConnectionPanel/GridContainer"]
+margin_top = 28.0
+margin_right = 126.0
+margin_bottom = 68.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+expand = true
+
+[node name="Label" type="Label" parent="SteamConnectionPanel/GridContainer/ServerButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "SERVER"
+align = 1
+valign = 1
+
+[node name="ClientButton" type="TextureButton" parent="SteamConnectionPanel/GridContainer"]
+margin_left = 130.0
+margin_top = 28.0
+margin_right = 256.0
+margin_bottom = 68.0
+size_flags_vertical = 3
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 17 )
+expand = true
+
+[node name="Label" type="Label" parent="SteamConnectionPanel/GridContainer/ClientButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "CLIENT"
+align = 1
+valign = 1
+
+[connection signal="pressed" from="HeaderBar/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="toggled" from="MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
 [connection signal="toggled" from="MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]
 [connection signal="toggled" from="MenuIcons/TrainingButton" to="." method="_on_TrainingButton_toggled"]
 [connection signal="toggled" from="MenuIcons/RecordsButton" to="." method="_on_RecordsButton_toggled"]
-[connection signal="pressed" from="MenuIcons/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="toggled" from="MenuIcons/QuitButton" to="." method="_on_QuitButton_toggled"]
+[connection signal="toggled" from="OnlineTab/RPCButton" to="." method="_on_RPCButton_toggled"]
+[connection signal="toggled" from="OnlineTab/SteamButton" to="." method="_on_SteamButton_toggled"]
 [connection signal="pressed" from="QuitTab/DesktopButton" to="." method="_on_DesktopButton_pressed"]
