@@ -51,7 +51,8 @@ default_bus_layout="res://sound/default_bus_layout.tres"
 SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
 SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 SyncReplay="*res://addons/godot-rollback-netcode/SyncReplay.gd"
-SteamGlobal="*res://networking/SteamGlobal.gd"
+SteamInit="*res://networking/SteamInit.gd"
+NetworkGlobal="*res://networking/NetworkGlobal.gd"
 
 [debug]
 

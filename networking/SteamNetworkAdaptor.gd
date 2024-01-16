@@ -87,7 +87,7 @@ func _remote_ping(msg: Dictionary) -> void:
 	#DEBUG
 	print("_remote_ping msg: " + str(msg))
 	
-	emit_signal("received_ping", SteamGlobal.OPPONENT_ID, msg)
+	emit_signal("received_ping", NetworkGlobal.OPPONENT_ID, msg)
 
 func send_ping_back(peer_id: int, msg: Dictionary) -> void:
 	#print("SENDING PING BACK!")
@@ -95,7 +95,7 @@ func send_ping_back(peer_id: int, msg: Dictionary) -> void:
 	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 0)
 
 func _remote_ping_back(msg: Dictionary) -> void:
-	emit_signal("received_ping_back", SteamGlobal.OPPONENT_ID, msg)
+	emit_signal("received_ping_back", NetworkGlobal.OPPONENT_ID, msg)
 
 func send_remote_start(peer_id: int) -> void:
 	#print("SENDING REMOTE START!")
@@ -120,7 +120,7 @@ func send_input_tick(peer_id: int, msg: PoolByteArray) -> void:
 	
 # _rit is short for _receive_input_tick.
 func _rit(peer_id: int, msg: PoolByteArray) -> void:
-	emit_signal("received_input_tick", SteamGlobal.OPPONENT_ID, msg)
+	emit_signal("received_input_tick", NetworkGlobal.OPPONENT_ID, msg)
 	
 	# DEBUG
 	# debug_counter += 1
@@ -132,11 +132,11 @@ func _rit(peer_id: int, msg: PoolByteArray) -> void:
 
 # Changed to Global variable
 func is_network_host() -> bool:
-	return SteamGlobal.IS_HOST
+	return NetworkGlobal.IS_HOST
 
 # Changed to Global variable
 func get_network_unique_id() -> int:
-	return SteamGlobal.STEAM_ID
+	return SteamInit.STEAM_ID
 
 func is_network_master_for_node(node: Node) -> bool:
 	return node.get_meta("IS_NETWORK_MASTER", false)
