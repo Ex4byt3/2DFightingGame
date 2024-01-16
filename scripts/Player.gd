@@ -32,7 +32,7 @@ func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: 
 	return input_vector
 
 func _get_local_input() -> Dictionary:
-	var input_vector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "up", input_prefix + "down")
+	var input_vector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
 	var input := {}
 	if input_vector != SGFixed.vector2(0, 0):
 		input["input_vector_x"] = input_vector.x
@@ -69,7 +69,7 @@ func _network_process(input: Dictionary) -> void:
 			velocity.x = max(0, velocity.x - friction)
 		if velocity.x < 0:
 			velocity.x = min(0, velocity.x + friction)
-		if input_vector.y == -ONE:
+		if input_vector.y == ONE:
 			velocity.y = -16 * ONE
 
 	# update position based velocity vector // position += velocity
