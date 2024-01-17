@@ -1,5 +1,7 @@
 extends Control
 
+var game_scene = preload("res://scenes/Game.tscn")
+
 onready var online_tab = $OnlineTab
 onready var local_tab = $LocalTab
 onready var training_tab = $TrainingTab
@@ -25,6 +27,9 @@ func _on_LocalButton_toggled(button_pressed):
 		local_tab.visible = true
 		rpc_connection_panel.visible = false
 		steam_connection_panel.visible = false
+		
+		# Example of adding a game scene to the menu scene, might need to hide the menu when shown
+		# var new_game_scene = game_scene.instance()
 	else:
 		local_tab.visible = false
 

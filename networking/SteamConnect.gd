@@ -27,12 +27,25 @@ enum SYNC_TYPE {
 
 func _ready() -> void:
 	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
-	Steam.setIdentitySteamID64("OPPONENT_ID", SteamGlobal.OPPONENT_ID)
+	Steam.setIdentitySteamID64("OPP_STEAM_ID", NetworkGlobal.OPP_STEAM_ID)
 	
 func _process(delta):
 	var listOfMessages = Steam.receiveMessagesOnChannel(1, 999) #channel 1 #read up to 999 messages in buffer
 	for message in listOfMessages:
 		process_networking_message(message)
+		
+func setup_match(game_scene: Node2D) -> void:
+	
+	if NetworkGlobal.NETWORK_TYPE != 2:
+		print("Networking type is not equal to STEAM, aborting...")
+		get_tree().quit()
+	
+	if NetworkGlobal.IS_STEAM_HOST:
+		game_scene.get_node("Messages/MessageLabel").text = "Listening..."
+		pass
+	else:
+		var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
+		Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
 
 
 # Responsible for creating packets to be sent over the steam network.
@@ -71,7 +84,7 @@ func process_networking_message(msg: Dictionary) -> void:
 			network_peer_connected()
 		SYNC_TYPE.START:
 			print("SYNC,START")
-			setup_match(bytes2var(data))
+			set_match_rng(bytes2var(data))
 			network_peer_connected()
 		SYNC_TYPE.STOP:
 			print("SYNC,STOP")
@@ -80,28 +93,28 @@ func process_networking_message(msg: Dictionary) -> void:
 			print("Could not match packet types from message")
 
 func connect_to_server() -> void:
-	if SteamGlobal.IS_HOST:
+	if NetworkGlobal.IS_HOST:
 		return
 	var packet = create_networking_message(SYNC_TYPE.CONNECT, emptyData)
-	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 1)
+	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
 
 # Runs on both clients when the users establish a connection
 func network_peer_connected():
 	
 	message_label.text = "Connected!"
-	SyncManager.add_peer(SteamGlobal.OPPONENT_ID)
+	SyncManager.add_peer(NetworkGlobal.OPP_STEAM_ID)
 	
-	server_player.set_meta("IS_NETWORK_MASTER", SteamGlobal.IS_HOST)
-	client_player.set_meta("IS_NETWORK_MASTER", not SteamGlobal.IS_HOST)
+	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.IS_HOST)
+	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.IS_HOST)
 	
-	if SteamGlobal.IS_HOST:
+	if NetworkGlobal.IS_HOST:
 		message_label.text = "Starting..."
 		#rpc("setup_match", {mother_seed = johnny.get_seed()})
 		var setup_packet = create_networking_message(SYNC_TYPE.START, {mother_seed = johnny.get_seed()})
-		Steam.sendMessageToUser("OPPONENT_ID", setup_packet, 0, 1)
+		Steam.sendMessageToUser("OPP_STEAM_ID", setup_packet, 0, 1)
 		
 		# Give a little time to get ping data.
-		setup_match({mother_seed = johnny.get_seed()})
+		set_match_rng({mother_seed = johnny.get_seed()})
 		yield(get_tree().create_timer(2.0), "timeout")
 		SyncManager.start()
 		
@@ -109,19 +122,19 @@ func network_peer_disconnected(peer_id: int):
 	message_label.text = "Disconnected"
 	SyncManager.remove_peer(peer_id)
 
-func setup_match(info: Dictionary) -> void:
+func set_match_rng(info: Dictionary) -> void:
 	johnny.set_seed(info['mother_seed'])
 	client_player.rng.set_seed(johnny.randi())
 	server_player.rng.set_seed(johnny.randi())
 
 func _on_server_disconnected() -> void:
-	network_peer_disconnected(SteamGlobal.OPPONENT_ID)
+	network_peer_disconnected(NetworkGlobal.OPP_STEAM_ID)
 	
 # Create a server when pressed, waiting for a client to connect
 func _on_Steam_ServerButton_pressed() -> void:
 	johnny.randomize()
 
-	SteamGlobal.IS_HOST = true
+	NetworkGlobal.IS_HOST = true
 	main_menu.visible = false
 	steam_connection_panel.visible = false
 	message_label.text = "Listening..."
@@ -129,11 +142,11 @@ func _on_Steam_ServerButton_pressed() -> void:
 # Create a client when pressed, attempting to connect to a server
 func _on_Steam_ClientButton_pressed() -> void:
 	var opp_id = id_field.text.to_int()
-	SteamGlobal.OPPONENT_ID = opp_id
-	Steam.setIdentitySteamID64("OPPONENT_ID", opp_id)
+	NetworkGlobal.OPP_STEAM_ID = opp_id
+	Steam.setIdentitySteamID64("OPP_STEAM_ID", opp_id)
 	
 	var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
-	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 1)
+	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
 	
 	main_menu.visible = false
 	steam_connection_panel.visible = false
@@ -144,7 +157,7 @@ func _on_ResetButton_pressed() -> void:
 	SyncManager.clear_peers()
 	SyncManager.reset_network_adaptor()
 	
-	Steam.closeSessionWithUser("OPPONENT_ID")
+	Steam.closeSessionWithUser("OPP_STEAM_ID")
 	get_tree().reload_current_scene()
 
 
@@ -157,20 +170,20 @@ func _on_ResetButton_pressed() -> void:
 # TLDR: HANDSHAKE!
 func _on_network_messages_session_request(sender_id: String):
 	
-	if not SteamGlobal.IS_HOST:
+	if not NetworkGlobal.IS_HOST:
 		return
 	
 	var sender_id_int = sender_id.to_int()
 	
 	# Identity_Reference is equal to the steam id as a string, assigned to the
 	# int value of the steam id
-	SteamGlobal.OPPONENT_ID = sender_id_int
-	Steam.setIdentitySteamID64("OPPONENT_ID", sender_id_int)
+	NetworkGlobal.OPP_STEAM_ID = sender_id_int
+	Steam.setIdentitySteamID64("OPP_STEAM_ID", sender_id_int)
 	Steam.acceptSessionWithUser(sender_id)
 	
 	# We don't know what this user wants yet, but we're going to tell them
 	# we accepted their request.
 	var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
-	Steam.sendMessageToUser("OPPONENT_ID", packet, 0, 1)
+	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
 	
 	print("Steam ID of messager: " + sender_id)

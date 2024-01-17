@@ -621,6 +621,8 @@ text = "CLIENT"
 align = 1
 valign = 1
 
+[node name="GameScene" type="Node2D" parent="."]
+
 [connection signal="pressed" from="HeaderBar/SettingsButton" to="." method="_on_SettingsButton_pressed"]
 [connection signal="toggled" from="MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
 [connection signal="toggled" from="MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]

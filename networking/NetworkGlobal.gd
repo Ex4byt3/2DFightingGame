@@ -1,11 +1,5 @@
 extends Node
 
-enum NETWORK_TYPES {
-	LOCAL,
-	ENET,
-	STEAM,
-}
-
 # -1 = Network type undecided
 var NETWORK_TYPE = -1
 

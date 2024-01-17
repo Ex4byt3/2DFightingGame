@@ -1,9 +1,12 @@
 extends Node2D
 
-const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
-const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
-
 const LOG_FILE_DIRECTORY = 'res://logs'
+
+var DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
+var SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
+
+var SteamConnect = preload("res://networking/SteamConnect.gd")
+var RpcConnect = preload("res://networking/RPCConnect.gd")
 
 onready var message_label = $Messages/MessageLabel
 onready var sync_lost_label = $Messages/SyncLostLabel
@@ -12,36 +15,36 @@ onready var client_player = $ClientPlayer
 onready var server_player = $ServerPlayer
 onready var johnny = $Johnny
 
+enum NETWORK_TYPE {
+	LOCAL,
+	ENET,
+	STEAM,
+}
+
 var logging_enabled := true
 
 
 func _ready() -> void:
-	get_tree().connect("network_peer_connected", self, "_on_network_peer_connected")
-	get_tree().connect("network_peer_disconnected", self, "_on_network_peer_disconnected")
-	get_tree().connect("server_disconnected", self, "_on_server_disconnected")
-	
 	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
 	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
 	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
 	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
 	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
-	start_match()
+	setup_match()
 	
-func start_match():
-	pass
-
-remotesync func setup_match(info: Dictionary) -> void:
-	johnny.set_seed(info['mother_seed'])
-	$ClientPlayer.rng.set_seed(johnny.randi())
-	$ServerPlayer.rng.set_seed(johnny.randi())
-
-func _on_network_peer_disconnected(peer_id: int):
-	message_label.text = "Disconnected"
-	SyncManager.remove_peer(peer_id)
-
-func _on_server_disconnected() -> void:
-	_on_network_peer_disconnected(1)
+func setup_match():
+	match NetworkGlobal.NETWORK_TYPE:
+		NETWORK_TYPE.LOCAL:
+			client_player.input_prefix = "player2_"
+			SyncManager.network_adaptor = DummyNetworkAdaptor.new()
+			SyncManager.start()
+		NETWORK_TYPE.ENET:
+			RpcConnect.setup_match()
+		NETWORK_TYPE.STEAM:
+			SteamConnect.setup_match()
+		_:
+			print("Could not match networking type to scene")
 
 func _on_SyncManager_sync_started() -> void:
 	message_label.text = "Started!"
@@ -78,9 +81,14 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 	message_label.text = "Fatal sync error: " + msg
 	sync_lost_label.visible = false
 	
-	var peer = get_tree().network_peer
-	if peer:
-		peer.close_connection()
-	
-	Steam.closeSessionWithUser("OPPONENT_ID")
+	match NetworkGlobal.NETWORK_TYPE:
+		NETWORK_TYPE.ENET:
+			var peer = get_tree().network_peer
+			if peer:
+				peer.close_connection()
+		NETWORK_TYPE.STEAM:
+			Steam.closeSessionWithUser("OPPONENT_ID")
+		_:
+			print("Sync error, but not in a networked game")
+			
 	SyncManager.clear_peers()
