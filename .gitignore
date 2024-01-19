@@ -14,4 +14,8 @@ export_presets.cfg
 data_*/
 mono_crash.*.json
 
+# Game generated files
 logs/*
+
+# VSCode-specific ignores
+.vscode

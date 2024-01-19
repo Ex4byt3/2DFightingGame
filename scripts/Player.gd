@@ -64,7 +64,8 @@ func _network_process(input: Dictionary) -> void:
 	if velocity.x < -maxSpeed:
 		velocity.x = -maxSpeed
 	
-	if is_on_floor():
+	#if is_on_floor():
+	if fixed_position.y >= ONE * 372:
 		if velocity.x > 0:
 			velocity.x = max(0, velocity.x - friction)
 		if velocity.x < 0:
@@ -80,7 +81,7 @@ func _network_process(input: Dictionary) -> void:
 	debugLabel.text = "POSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
 	
 	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_positionX = fixed_position.x, fixed_positionY = fixed_position.y })
 	
 	if input.get("teleport", false):
 		fixed_position.x = (rng.randi() % 1024) * ONE
@@ -91,20 +92,22 @@ func _network_process(input: Dictionary) -> void:
 
 func _save_state() -> Dictionary:
 	return {
-		fixed_position_x = fixed_position.x,
-		fixed_position_y = fixed_position.y,
-		velocity_x = velocity.x,
-		velocity_y = velocity.y,
+		fixed_positionX = fixed_position.x,
+		fixed_positionY = fixed_position.y,
+		velocityX = velocity.x,
+		velocityY = velocity.y,
 		teleporting = teleporting,
 	}
 
 func _load_state(state: Dictionary) -> void:
-	fixed_position.x = state['fixed_position_x']
-	fixed_position.y = state['fixed_position_y']
-	velocity.x = state['velocity_x']
-	velocity.y = state['velocity_y']
+	fixed_position.x = state['fixed_positionX']
+	fixed_position.y = state['fixed_positionY']
+	#set_global_fixed_position(SGFixed.vector2(state['fixed_positionX'], state['fixed_positionY']))
+	velocity.x = state['velocityX']
+	velocity.y = state['velocityY']
 	teleporting = state['teleporting']
 	sync_to_physics_engine()
+	
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	if old_state.get('teleporting', false) or new_state.get('teleporting', false):
