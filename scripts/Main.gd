@@ -15,7 +15,8 @@ onready var sync_lost_label = $CanvasLayer/SyncLostLabel
 onready var reset_button = $CanvasLayer/ResetButton
 onready var johnny = $Johnny
 
-var logging_enabled := false
+var logging_enabled := true
+
 
 func _ready() -> void:
 	get_tree().connect("network_peer_connected", self, "_on_network_peer_connected")

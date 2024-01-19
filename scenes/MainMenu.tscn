@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/main_menu/online_button_focused.png" type="Texture" id=1]
 [ext_resource path="res://assets/main_menu/online_button.png" type="Texture" id=2]
@@ -20,90 +20,103 @@
 [ext_resource path="res://assets/main_menu/submenu_tile.png" type="Texture" id=18]
 [ext_resource path="res://assets/main_menu/training_button_focused.png" type="Texture" id=19]
 [ext_resource path="res://assets/main_menu/Bar.png" type="Texture" id=20]
-[ext_resource path="res://assets/main_menu/accentgradient_texture.tres" type="Texture" id=21]
+[ext_resource path="res://assets/main_menu/menu_style_resources/textures/primary_menu_normal_gradient.tres" type="Texture" id=21]
 [ext_resource path="res://assets/main_menu/panel_header_gradient.tres" type="Texture" id=22]
 [ext_resource path="res://assets/main_menu/buttongroup_online.tres" type="ButtonGroup" id=23]
+[ext_resource path="res://assets/main_menu/menu_style_resources/secondary_menu_theme.tres" type="Theme" id=24]
+[ext_resource path="res://scenes/SettingsMenu.tscn" type="PackedScene" id=25]
+[ext_resource path="res://assets/main_menu/menu_style_resources/primary_menu_theme.tres" type="Theme" id=26]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 24 )
 script = ExtResource( 13 )
 
-[node name="BackgroundImage" type="TextureRect" parent="."]
+[node name="PrimaryMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="BackgroundImage" type="TextureRect" parent="PrimaryMenu"]
+visible = false
 self_modulate = Color( 0.694118, 0.694118, 0.694118, 1 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource( 24 )
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 1
 
-[node name="HeaderBar" type="Control" parent="."]
+[node name="HeaderBar" type="Control" parent="PrimaryMenu"]
 anchor_right = 1.0
 anchor_bottom = 0.08
+theme = ExtResource( 24 )
 
-[node name="HeaderBackground" type="TextureRect" parent="HeaderBar"]
+[node name="HeaderBackground" type="TextureRect" parent="PrimaryMenu/HeaderBar"]
 modulate = Color( 1, 1, 1, 0.588235 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 24 )
 texture = ExtResource( 12 )
 expand = true
 stretch_mode = 1
 
-[node name="Logo" type="TextureRect" parent="HeaderBar"]
+[node name="Logo" type="TextureRect" parent="PrimaryMenu/HeaderBar"]
 anchor_left = 0.01
 anchor_top = 0.05
 anchor_right = 0.294
 anchor_bottom = 0.95
+theme = ExtResource( 24 )
 texture = ExtResource( 15 )
 expand = true
 stretch_mode = 5
 
-[node name="SettingsButton" type="TextureButton" parent="HeaderBar"]
+[node name="SettingsButton" type="TextureButton" parent="PrimaryMenu/HeaderBar"]
 anchor_left = 0.8
 anchor_top = 0.3
 anchor_right = 0.9
 anchor_bottom = 0.7
+theme = ExtResource( 24 )
 texture_normal = ExtResource( 14 )
 texture_pressed = ExtResource( 16 )
 texture_hover = ExtResource( 16 )
 expand = true
 stretch_mode = 4
 
-[node name="AccentBar" type="TextureRect" parent="."]
+[node name="AccentBar" type="TextureRect" parent="PrimaryMenu"]
 anchor_left = 0.01
 anchor_top = 0.12
 anchor_right = 0.019
 anchor_bottom = 0.802
-margin_left = 0.47
-margin_top = 0.400002
-margin_right = -0.207001
-margin_bottom = 0.039978
+theme = ExtResource( 24 )
 texture = ExtResource( 20 )
 expand = true
 stretch_mode = 5
 
-[node name="AccentGradient" type="TextureRect" parent="."]
+[node name="AccentGradient" type="TextureRect" parent="PrimaryMenu"]
 show_behind_parent = true
 anchor_top = 0.08
 anchor_right = 0.09
 anchor_bottom = 1.0
+theme = ExtResource( 24 )
 texture = ExtResource( 21 )
 expand = true
 stretch_mode = 1
 
-[node name="MenuIcons" type="GridContainer" parent="."]
+[node name="MenuIcons" type="GridContainer" parent="PrimaryMenu"]
 anchor_left = 0.02
 anchor_top = 0.12
 anchor_right = 0.09
 anchor_bottom = 0.82
+theme = ExtResource( 24 )
 custom_constants/vseparation = -1
 custom_constants/hseparation = -1
 
-[node name="OnlineButton" type="TextureButton" parent="MenuIcons"]
+[node name="OnlineButton" type="TextureButton" parent="PrimaryMenu/MenuIcons"]
 margin_right = 59.0
 margin_bottom = 68.0
 size_flags_horizontal = 3
@@ -116,7 +129,7 @@ texture_hover = ExtResource( 1 )
 expand = true
 stretch_mode = 4
 
-[node name="LocalButton" type="TextureButton" parent="MenuIcons"]
+[node name="LocalButton" type="TextureButton" parent="PrimaryMenu/MenuIcons"]
 margin_top = 67.0
 margin_right = 59.0
 margin_bottom = 135.0
@@ -130,7 +143,7 @@ texture_hover = ExtResource( 9 )
 expand = true
 stretch_mode = 4
 
-[node name="TrainingButton" type="TextureButton" parent="MenuIcons"]
+[node name="TrainingButton" type="TextureButton" parent="PrimaryMenu/MenuIcons"]
 margin_top = 134.0
 margin_right = 59.0
 margin_bottom = 202.0
@@ -144,7 +157,7 @@ texture_hover = ExtResource( 19 )
 expand = true
 stretch_mode = 4
 
-[node name="RecordsButton" type="TextureButton" parent="MenuIcons"]
+[node name="RecordsButton" type="TextureButton" parent="PrimaryMenu/MenuIcons"]
 margin_top = 201.0
 margin_right = 59.0
 margin_bottom = 269.0
@@ -158,7 +171,7 @@ texture_hover = ExtResource( 3 )
 expand = true
 stretch_mode = 4
 
-[node name="QuitButton" type="TextureButton" parent="MenuIcons"]
+[node name="QuitButton" type="TextureButton" parent="PrimaryMenu/MenuIcons"]
 margin_top = 268.0
 margin_right = 59.0
 margin_bottom = 336.0
@@ -172,60 +185,43 @@ texture_hover = ExtResource( 8 )
 expand = true
 stretch_mode = 4
 
-[node name="OnlineTab" type="Control" parent="."]
+[node name="OnlineTab" type="VBoxContainer" parent="PrimaryMenu"]
 visible = false
 anchor_left = 0.095
 anchor_top = 0.12
 anchor_right = 0.395
 anchor_bottom = 0.3
+theme = ExtResource( 26 )
+custom_constants/separation = 0
 
-[node name="RPCButton" type="TextureButton" parent="OnlineTab"]
-anchor_right = 1.0
-anchor_bottom = 0.5
+[node name="RPCButton" type="Button" parent="PrimaryMenu/OnlineTab"]
+margin_right = 255.0
+margin_bottom = 43.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 toggle_mode = true
 group = ExtResource( 23 )
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-texture_hover = ExtResource( 17 )
-expand = true
-stretch_mode = 4
-
-[node name="Label" type="Label" parent="OnlineTab/RPCButton"]
-anchor_left = 0.4
-anchor_right = 1.0
-anchor_bottom = 1.0
 text = "ENET"
-valign = 1
 
-[node name="SteamButton" type="TextureButton" parent="OnlineTab"]
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="SteamButton" type="Button" parent="PrimaryMenu/OnlineTab"]
+margin_top = 43.0
+margin_right = 255.0
+margin_bottom = 86.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 toggle_mode = true
 group = ExtResource( 23 )
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-texture_hover = ExtResource( 17 )
-expand = true
-stretch_mode = 4
-
-[node name="Label" type="Label" parent="OnlineTab/SteamButton"]
-anchor_left = 0.4
-anchor_right = 1.0
-anchor_bottom = 1.0
 text = "STEAM"
-valign = 1
 
-[node name="LocalTab" type="Control" parent="."]
+[node name="LocalTab" type="Control" parent="PrimaryMenu"]
 visible = false
 anchor_left = 0.095
 anchor_top = 0.26
 anchor_right = 0.395
 anchor_bottom = 0.44
+theme = ExtResource( 24 )
 
-[node name="VersusButton" type="TextureButton" parent="LocalTab"]
+[node name="VersusButton" type="TextureButton" parent="PrimaryMenu/LocalTab"]
 anchor_right = 1.0
 anchor_bottom = 0.5
 size_flags_horizontal = 3
@@ -235,14 +231,14 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="LocalTab/VersusButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/LocalTab/VersusButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "VERSUS"
 valign = 1
 
-[node name="PlaceholderButton" type="TextureButton" parent="LocalTab"]
+[node name="PlaceholderButton" type="TextureButton" parent="PrimaryMenu/LocalTab"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -253,21 +249,22 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="LocalTab/PlaceholderButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/LocalTab/PlaceholderButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "PLACEHOLDER"
 valign = 1
 
-[node name="TrainingTab" type="Control" parent="."]
+[node name="TrainingTab" type="Control" parent="PrimaryMenu"]
 visible = false
 anchor_left = 0.095
 anchor_top = 0.4
 anchor_right = 0.395
 anchor_bottom = 0.58
+theme = ExtResource( 24 )
 
-[node name="PracticeButton" type="TextureButton" parent="TrainingTab"]
+[node name="PracticeButton" type="TextureButton" parent="PrimaryMenu/TrainingTab"]
 anchor_right = 1.0
 anchor_bottom = 0.5
 size_flags_horizontal = 3
@@ -277,14 +274,14 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="TrainingTab/PracticeButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/TrainingTab/PracticeButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "PRACTICE"
 valign = 1
 
-[node name="TutorialButton" type="TextureButton" parent="TrainingTab"]
+[node name="TutorialButton" type="TextureButton" parent="PrimaryMenu/TrainingTab"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -295,21 +292,22 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="TrainingTab/TutorialButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/TrainingTab/TutorialButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "TUTORIAL"
 valign = 1
 
-[node name="RecordsTab" type="Control" parent="."]
+[node name="RecordsTab" type="Control" parent="PrimaryMenu"]
 visible = false
 anchor_left = 0.095
 anchor_top = 0.54
 anchor_right = 0.395
 anchor_bottom = 0.9
+theme = ExtResource( 24 )
 
-[node name="GameplayButton" type="TextureButton" parent="RecordsTab"]
+[node name="GameplayButton" type="TextureButton" parent="PrimaryMenu/RecordsTab"]
 anchor_right = 1.0
 anchor_bottom = 0.25
 size_flags_horizontal = 3
@@ -319,14 +317,14 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="RecordsTab/GameplayButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/RecordsTab/GameplayButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "GAMEPLAY"
 valign = 1
 
-[node name="CollectionButton" type="TextureButton" parent="RecordsTab"]
+[node name="CollectionButton" type="TextureButton" parent="PrimaryMenu/RecordsTab"]
 anchor_top = 0.25
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -337,14 +335,14 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="RecordsTab/CollectionButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/RecordsTab/CollectionButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "COLLECTION"
 valign = 1
 
-[node name="GalleryButton" type="TextureButton" parent="RecordsTab"]
+[node name="GalleryButton" type="TextureButton" parent="PrimaryMenu/RecordsTab"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.75
@@ -355,14 +353,14 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="RecordsTab/GalleryButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/RecordsTab/GalleryButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "GALLERY"
 valign = 1
 
-[node name="FishingButton" type="TextureButton" parent="RecordsTab"]
+[node name="FishingButton" type="TextureButton" parent="PrimaryMenu/RecordsTab"]
 visible = false
 anchor_top = 0.75
 anchor_right = 1.0
@@ -374,21 +372,22 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="RecordsTab/FishingButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/RecordsTab/FishingButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "FISHING"
 valign = 1
 
-[node name="QuitTab" type="Control" parent="."]
+[node name="QuitTab" type="Control" parent="PrimaryMenu"]
 visible = false
 anchor_left = 0.095
 anchor_top = 0.68
 anchor_right = 0.395
 anchor_bottom = 0.86
+theme = ExtResource( 24 )
 
-[node name="TitleButton" type="TextureButton" parent="QuitTab"]
+[node name="TitleButton" type="TextureButton" parent="PrimaryMenu/QuitTab"]
 anchor_right = 1.0
 anchor_bottom = 0.5
 size_flags_horizontal = 3
@@ -398,14 +397,14 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="QuitTab/TitleButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/QuitTab/TitleButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "RETURN TO TITLE"
 valign = 1
 
-[node name="DesktopButton" type="TextureButton" parent="QuitTab"]
+[node name="DesktopButton" type="TextureButton" parent="PrimaryMenu/QuitTab"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -416,21 +415,125 @@ texture_hover = ExtResource( 17 )
 expand = true
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="QuitTab/DesktopButton"]
+[node name="Label" type="Label" parent="PrimaryMenu/QuitTab/DesktopButton"]
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "QUIT TO DESKTOP"
 valign = 1
 
-[node name="RPCConnectionPanel" type="Control" parent="."]
+[node name="RPCConnectionPanel" type="Control" parent="PrimaryMenu"]
 visible = false
 anchor_left = 0.095
 anchor_top = 0.3
 anchor_right = 0.395
 anchor_bottom = 0.55
+theme = ExtResource( 24 )
 
-[node name="TextureRect" type="TextureRect" parent="RPCConnectionPanel"]
+[node name="TextureRect" type="TextureRect" parent="PrimaryMenu/RPCConnectionPanel"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+theme = ExtResource( 24 )
+texture = ExtResource( 21 )
+expand = true
+stretch_mode = 1
+
+[node name="PanelHeader" type="TextureRect" parent="PrimaryMenu/RPCConnectionPanel"]
+anchor_right = 1.0
+anchor_bottom = 0.2
+size_flags_stretch_ratio = 0.3
+theme = ExtResource( 24 )
+texture = ExtResource( 22 )
+expand = true
+stretch_mode = 1
+
+[node name="Label" type="Label" parent="PrimaryMenu/RPCConnectionPanel/PanelHeader"]
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 24 )
+text = "ENET CONNECTION"
+valign = 2
+
+[node name="EntryContainer" type="GridContainer" parent="PrimaryMenu/RPCConnectionPanel"]
+anchor_top = 0.22
+anchor_right = 1.0
+anchor_bottom = 0.8
+size_flags_vertical = 3
+theme = ExtResource( 24 )
+custom_constants/vseparation = 6
+custom_constants/hseparation = 4
+columns = 2
+
+[node name="HostLabel" type="Label" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
+margin_right = 126.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "host"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="HostField" type="LineEdit" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
+margin_left = 130.0
+margin_right = 255.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+
+[node name="PortLabel" type="Label" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
+margin_top = 37.0
+margin_right = 126.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "port"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="PortField" type="LineEdit" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
+margin_left = 130.0
+margin_top = 37.0
+margin_right = 255.0
+margin_bottom = 68.0
+
+[node name="SelectionContainer" type="HBoxContainer" parent="PrimaryMenu/RPCConnectionPanel"]
+anchor_top = 0.8
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 24 )
+custom_constants/separation = 0
+
+[node name="ServerButton" type="Button" parent="PrimaryMenu/RPCConnectionPanel/SelectionContainer"]
+margin_right = 127.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 24 )
+text = "SERVER"
+
+[node name="ClientButton" type="Button" parent="PrimaryMenu/RPCConnectionPanel/SelectionContainer"]
+margin_left = 127.0
+margin_right = 255.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 24 )
+text = "CLIENT"
+
+[node name="SteamConnectionPanel" type="Control" parent="PrimaryMenu"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.3
+anchor_right = 0.395
+anchor_bottom = 0.55
+theme = ExtResource( 24 )
+
+[node name="TextureRect" type="TextureRect" parent="PrimaryMenu/SteamConnectionPanel"]
 modulate = Color( 0, 0, 0, 1 )
 show_behind_parent = true
 anchor_right = 1.0
@@ -440,7 +543,7 @@ texture = ExtResource( 21 )
 expand = true
 stretch_mode = 1
 
-[node name="PanelHeader" type="TextureRect" parent="RPCConnectionPanel"]
+[node name="PanelHeader" type="TextureRect" parent="PrimaryMenu/SteamConnectionPanel"]
 anchor_right = 1.0
 anchor_bottom = 0.2
 size_flags_vertical = 3
@@ -449,132 +552,25 @@ texture = ExtResource( 22 )
 expand = true
 stretch_mode = 1
 
-[node name="Label" type="Label" parent="RPCConnectionPanel/PanelHeader"]
-anchor_left = 0.05
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "ENET CONNECTION"
-valign = 2
-
-[node name="GridContainer" type="GridContainer" parent="RPCConnectionPanel"]
-anchor_top = 0.23
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 3
-columns = 2
-
-[node name="HostLabel" type="Label" parent="RPCConnectionPanel/GridContainer"]
-margin_right = 126.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-size_flags_vertical = 5
-text = "host"
-align = 2
-valign = 1
-uppercase = true
-
-[node name="HostField" type="LineEdit" parent="RPCConnectionPanel/GridContainer"]
-margin_left = 130.0
-margin_right = 255.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="PortLabel" type="Label" parent="RPCConnectionPanel/GridContainer"]
-margin_top = 28.0
-margin_right = 126.0
-margin_bottom = 52.0
-size_flags_horizontal = 3
-size_flags_vertical = 5
-text = "port"
-align = 2
-valign = 1
-uppercase = true
-
-[node name="PortField" type="LineEdit" parent="RPCConnectionPanel/GridContainer"]
-margin_left = 130.0
-margin_top = 28.0
-margin_right = 255.0
-margin_bottom = 52.0
-
-[node name="ServerButton" type="TextureButton" parent="RPCConnectionPanel/GridContainer"]
-margin_top = 56.0
-margin_right = 126.0
-margin_bottom = 92.0
-size_flags_vertical = 3
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-expand = true
-
-[node name="Label" type="Label" parent="RPCConnectionPanel/GridContainer/ServerButton"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "SERVER"
-align = 1
-valign = 1
-
-[node name="ClientButton" type="TextureButton" parent="RPCConnectionPanel/GridContainer"]
-margin_left = 130.0
-margin_top = 56.0
-margin_right = 255.0
-margin_bottom = 92.0
-size_flags_vertical = 3
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-expand = true
-
-[node name="Label" type="Label" parent="RPCConnectionPanel/GridContainer/ClientButton"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "CLIENT"
-align = 1
-valign = 1
-
-[node name="SteamConnectionPanel" type="Control" parent="."]
-visible = false
-anchor_left = 0.095
-anchor_top = 0.3
-anchor_right = 0.395
-anchor_bottom = 0.5
-
-[node name="TextureRect" type="TextureRect" parent="SteamConnectionPanel"]
-modulate = Color( 0, 0, 0, 1 )
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 3
-texture = ExtResource( 21 )
-expand = true
-stretch_mode = 1
-
-[node name="PanelHeader" type="TextureRect" parent="SteamConnectionPanel"]
-anchor_right = 1.0
-anchor_bottom = 0.25
-margin_right = 0.100006
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.3
-texture = ExtResource( 22 )
-expand = true
-stretch_mode = 1
-
-[node name="Label" type="Label" parent="SteamConnectionPanel/PanelHeader"]
+[node name="Label" type="Label" parent="PrimaryMenu/SteamConnectionPanel/PanelHeader"]
 anchor_left = 0.05
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "STEAM CONNECTION"
 valign = 2
 
-[node name="GridContainer" type="GridContainer" parent="SteamConnectionPanel"]
-anchor_top = 0.292
+[node name="EntryContainer" type="GridContainer" parent="PrimaryMenu/SteamConnectionPanel"]
+anchor_top = 0.22
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -0.0320015
-margin_right = 0.100006
+anchor_bottom = 0.8
 size_flags_vertical = 3
+custom_constants/vseparation = 6
+custom_constants/hseparation = 4
 columns = 2
 
-[node name="IdLabel" type="Label" parent="SteamConnectionPanel/GridContainer"]
+[node name="IdLabel" type="Label" parent="PrimaryMenu/SteamConnectionPanel/EntryContainer"]
 margin_right = 126.0
-margin_bottom = 24.0
+margin_bottom = 31.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 text = "STEAM ID"
@@ -582,53 +578,44 @@ align = 2
 valign = 1
 uppercase = true
 
-[node name="IdField" type="LineEdit" parent="SteamConnectionPanel/GridContainer"]
+[node name="IdField" type="LineEdit" parent="PrimaryMenu/SteamConnectionPanel/EntryContainer"]
 margin_left = 130.0
-margin_right = 256.0
-margin_bottom = 24.0
+margin_right = 255.0
+margin_bottom = 31.0
 size_flags_horizontal = 3
 
-[node name="ServerButton" type="TextureButton" parent="SteamConnectionPanel/GridContainer"]
-margin_top = 28.0
-margin_right = 126.0
-margin_bottom = 68.0
-size_flags_vertical = 3
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-expand = true
-
-[node name="Label" type="Label" parent="SteamConnectionPanel/GridContainer/ServerButton"]
+[node name="SelectionContainer" type="HBoxContainer" parent="PrimaryMenu/SteamConnectionPanel"]
+anchor_top = 0.8
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_constants/separation = 0
+
+[node name="ServerButton" type="Button" parent="PrimaryMenu/SteamConnectionPanel/SelectionContainer"]
+margin_right = 127.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "SERVER"
-align = 1
-valign = 1
 
-[node name="ClientButton" type="TextureButton" parent="SteamConnectionPanel/GridContainer"]
-margin_left = 130.0
-margin_top = 28.0
-margin_right = 256.0
-margin_bottom = 68.0
+[node name="ClientButton" type="Button" parent="PrimaryMenu/SteamConnectionPanel/SelectionContainer"]
+margin_left = 127.0
+margin_right = 255.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
-texture_normal = ExtResource( 18 )
-texture_pressed = ExtResource( 17 )
-expand = true
-
-[node name="Label" type="Label" parent="SteamConnectionPanel/GridContainer/ClientButton"]
-anchor_right = 1.0
-anchor_bottom = 1.0
 text = "CLIENT"
-align = 1
-valign = 1
+
+[node name="SettingsMenu" parent="." instance=ExtResource( 25 )]
+visible = false
 
 [node name="GameScene" type="Node2D" parent="."]
 
-[connection signal="pressed" from="HeaderBar/SettingsButton" to="." method="_on_SettingsButton_pressed"]
-[connection signal="toggled" from="MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
-[connection signal="toggled" from="MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]
-[connection signal="toggled" from="MenuIcons/TrainingButton" to="." method="_on_TrainingButton_toggled"]
-[connection signal="toggled" from="MenuIcons/RecordsButton" to="." method="_on_RecordsButton_toggled"]
-[connection signal="toggled" from="MenuIcons/QuitButton" to="." method="_on_QuitButton_toggled"]
-[connection signal="toggled" from="OnlineTab/RPCButton" to="." method="_on_RPCButton_toggled"]
-[connection signal="toggled" from="OnlineTab/SteamButton" to="." method="_on_SteamButton_toggled"]
-[connection signal="pressed" from="QuitTab/DesktopButton" to="." method="_on_DesktopButton_pressed"]
+[connection signal="pressed" from="PrimaryMenu/HeaderBar/SettingsButton" to="." method="_on_SettingsButton_pressed"]
+[connection signal="toggled" from="PrimaryMenu/MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
+[connection signal="toggled" from="PrimaryMenu/MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]
+[connection signal="toggled" from="PrimaryMenu/MenuIcons/TrainingButton" to="." method="_on_TrainingButton_toggled"]
+[connection signal="toggled" from="PrimaryMenu/MenuIcons/RecordsButton" to="." method="_on_RecordsButton_toggled"]
+[connection signal="toggled" from="PrimaryMenu/MenuIcons/QuitButton" to="." method="_on_QuitButton_toggled"]
+[connection signal="toggled" from="PrimaryMenu/OnlineTab/RPCButton" to="." method="_on_RPCButton_toggled"]
+[connection signal="toggled" from="PrimaryMenu/OnlineTab/SteamButton" to="." method="_on_SteamButton_toggled"]
+[connection signal="pressed" from="PrimaryMenu/QuitTab/DesktopButton" to="." method="_on_DesktopButton_pressed"]
