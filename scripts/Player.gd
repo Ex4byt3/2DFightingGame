@@ -14,6 +14,7 @@ var friction := ONE
 var maxSpeed := 8 * ONE
 var gravity := ONE / 2
 var teleporting := false
+var is_on_floor := false
 
 # like Input.get_vector but for SGFixedVector2
 # note: Input.is_action_just_pressed returns a float
@@ -64,7 +65,7 @@ func _network_process(input: Dictionary) -> void:
 	if velocity.x < -maxSpeed:
 		velocity.x = -maxSpeed
 	
-	if is_on_floor():
+	if is_on_floor:
 		if velocity.x > 0:
 			velocity.x = max(0, velocity.x - friction)
 		if velocity.x < 0:
@@ -88,6 +89,8 @@ func _network_process(input: Dictionary) -> void:
 		teleporting = true
 	else:
 		teleporting = false
+		
+	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
 
 func _save_state() -> Dictionary:
 	return {
@@ -95,6 +98,7 @@ func _save_state() -> Dictionary:
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
+		is_on_floor = is_on_floor,
 		teleporting = teleporting,
 	}
 
@@ -103,6 +107,7 @@ func _load_state(state: Dictionary) -> void:
 	fixed_position.y = state['fixed_position_y']
 	velocity.x = state['velocity_x']
 	velocity.y = state['velocity_y']
+	is_on_floor = state['is_on_floor']
 	teleporting = state['teleporting']
 	sync_to_physics_engine()
 
