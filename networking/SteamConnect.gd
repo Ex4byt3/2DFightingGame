@@ -28,14 +28,15 @@ enum SYNC_TYPE {
 }
 
 func _ready() -> void:
-	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
-	Steam.setIdentitySteamID64("OPP_STEAM_ID", NetworkGlobal.OPP_STEAM_ID)
-	
+	SyncManager.network_adaptor = SteamNetworkAdaptor.new()
 	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
 	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
 	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
 	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
 	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
+	
+	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
+	Steam.setIdentitySteamID64("OPP_STEAM_ID", NetworkGlobal.OPP_STEAM_ID)
 	
 	setup_match()
 	
