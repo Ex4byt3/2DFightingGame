@@ -25,7 +25,7 @@ func add_window_mode_items() -> void:
 
 
 func on_window_mode_selected(index: int) -> void:
-	SettingsSingalBus.emit_on_window_mode_selected(index)
+	SettingsSingalBus.emit_window_mode_selected(index)
 	match index:
 		0: # Fullscreen
 			OS.set_borderless_window(false)

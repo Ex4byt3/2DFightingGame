@@ -16,8 +16,8 @@ func _ready():
 # Connect relevant signals from the SettingsSignalBus
 func handle_connecting_signals() -> void:
 	SettingsSingalBus.connect("load_settings_data", self, "load_settings_data")
-	SettingsSingalBus.connect("on_window_mode_selected", self, "on_window_mode_selected")
-	SettingsSingalBus.connect("on_resolution_selected", self, "on_resolution_selected")
+	SettingsSingalBus.connect("window_mode_selected", self, "on_window_mode_selected")
+	SettingsSingalBus.connect("resolution_selected", self, "on_resolution_selected")
 
 
 # Loads all relevant setting data upon game launch

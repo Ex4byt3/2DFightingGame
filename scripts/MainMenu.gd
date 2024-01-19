@@ -2,24 +2,33 @@ extends Control
 
 
 # Preload the game scene as a packed scene
-var game_scene = preload("res://scenes/Game.tscn") as PackedScene
+var main_scene = preload("res://scenes/Main.tscn")
 
 
-#
+# Onready var for primary buttons
 onready var online_tab = $PrimaryMenu/OnlineTab
 onready var local_tab = $PrimaryMenu/LocalTab
 onready var training_tab = $PrimaryMenu/TrainingTab
 onready var records_tab = $PrimaryMenu/RecordsTab
 onready var quit_tab = $PrimaryMenu/QuitTab
 onready var settings_button = $PrimaryMenu/HeaderBar/SettingsButton
+
+onready var versus_button = $PrimaryMenu/LocalTab/VersusButton
+
+# Onready var for RPC
 onready var rpc_connection_panel = $PrimaryMenu/RPCConnectionPanel
-onready var steam_connection_panel = $PrimaryMenu/SteamConnectionPanel
 onready var rpc_server_start = $PrimaryMenu/RPCConnectionPanel/SelectionContainer/ServerButton
 onready var rpc_client_start = $PrimaryMenu/RPCConnectionPanel/SelectionContainer/ClientButton
+onready var rpc_host_field = $PrimaryMenu/RPCConnectionPanel/EntryContainer/HostField
+onready var rpc_port_field = $PrimaryMenu/RPCConnectionPanel/EntryContainer/PortField
+
+# Onready var for Steam
+onready var steam_connection_panel = $PrimaryMenu/SteamConnectionPanel
 onready var steam_server_start = $PrimaryMenu/SteamConnectionPanel/SelectionContainer/ServerButton
 onready var steam_client_start = $PrimaryMenu/SteamConnectionPanel/SelectionContainer/ClientButton
+onready var steamid_field = $PrimaryMenu/SteamConnectionPanel/EntryContainer/IdField
 
-#
+# Onready var for menu screens
 onready var primary_menu = $PrimaryMenu
 onready var settings_menu = $SettingsMenu
 
@@ -32,8 +41,7 @@ func _ready():
 # Connect to button signals
 func handle_connecting_signals() -> void:
 	
-	# Loops through the menu icons and connects all their button_up signals
-	# to the on_icon_clicked function
+	# Loops through the menu icons and connects all their button_up signals to the on_icon_clicked function
 	for icon in $PrimaryMenu/MenuIcons.get_children():
 		icon.connect("button_up", self, "on_icon_clicked")
 	
@@ -43,9 +51,48 @@ func handle_connecting_signals() -> void:
 	steam_server_start.connect("button_up", self, "on_steam_server_pressed")
 	steam_client_start.connect("button_up", self, "on_steam_client_pressed")
 	
+	# Signal for local play
+	versus_button.connect("button_up", self, "on_versus_button_pressed")
+	
 	# Connect signals used for the settings menu
 	settings_button.connect("button_up", self, "on_settings_pressed")
 	settings_menu.connect("exit_settings_menu", self, "on_exit_settings_menu")
+
+
+# When a menu icon is clicked, the connection panels are hidden
+func on_icon_clicked() -> void:
+	rpc_connection_panel.visible = false
+	steam_connection_panel.visible = false
+
+# 
+func on_rpc_server_pressed() -> void:
+	GameSignalBus.emit_rpc_server_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
+	get_tree().change_scene_to(main_scene)
+
+
+#
+func on_rpc_client_pressed() -> void:
+	GameSignalBus.emit_rpc_client_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
+	get_tree().change_scene_to(main_scene)
+
+
+#
+func on_steam_server_pressed() -> void:
+	GameSignalBus.emit_steam_server_start(int(steamid_field.get_text()))
+	get_tree().change_scene_to(main_scene)
+
+
+#
+func on_steam_client_pressed() -> void:
+	GameSignalBus.emit_steam_server_start(steamid_field)
+	get_tree().change_scene_to(main_scene)
+
+
+#
+func on_versus_button_pressed() -> void:
+	
+	get_tree().change_scene_to(main_scene)
+	GameSignalBus.emit_local_play_start()
 
 
 # Makes the settings menu visible and hides primary menu
@@ -58,17 +105,6 @@ func on_settings_pressed() -> void:
 func on_exit_settings_menu() -> void:
 	settings_menu.visible = false
 	primary_menu.visible = true
-
-
-# Changes the scene to Game.tscn
-func on_rpc_server_pressed() -> void:
-	get_tree().change_scene_to(game_scene)
-
-
-# When a menu icon is clicked, the connection panels are hidden
-func on_icon_clicked() -> void:
-	rpc_connection_panel.visible = false
-	steam_connection_panel.visible = false
 
 
 func _on_OnlineButton_toggled(button_pressed):

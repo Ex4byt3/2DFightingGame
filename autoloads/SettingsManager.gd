@@ -1,8 +1,8 @@
 extends Node
 
 
-const SAVE_DIRECTORY = "user://SaveData"
-const SETTINGS_FILE_NAME = "Config.dat"
+const SAVE_DIRECTORY = "res://save_data"
+const SETTINGS_FILE_NAME = "config.dat"
 #var save_settings_dict = {}
 
 
@@ -20,7 +20,8 @@ func save_settings(data: Dictionary) -> void:
 	
 	if not dir.dir_exists(SAVE_DIRECTORY):
 		dir.make_dir(SAVE_DIRECTORY)
-		
+	
+	#print(data_string)
 	settings_data_save_file.open(SAVE_DIRECTORY + '/' + SETTINGS_FILE_NAME, File.WRITE)
 	settings_data_save_file.store_string(data_string)
 	settings_data_save_file.close()

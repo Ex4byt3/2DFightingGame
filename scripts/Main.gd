@@ -28,6 +28,51 @@ func _ready() -> void:
 	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
 	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
 	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
+	
+	GameSignalBus.connect("rpc_server_start", self, "on_rpc_server_start")
+	GameSignalBus.connect("rpc_client_start", self, "on_rpc_client_start")
+	GameSignalBus.connect("steam_server_start", self, "on_steam_server_start")
+	GameSignalBus.connect("steam_client_start", self, "on_steam_client_start")
+	GameSignalBus.connect("local_play_start", self, "on_local_play_start")
+
+
+func on_rpc_server_start(host: String, port: int) -> void:
+	main_menu.visible = false
+	rpc_connection_panel.visible = false
+	
+	johnny.randomize()
+	var peer = NetworkedMultiplayerENet.new()
+	peer.create_server(port, 1)
+	get_tree().network_peer = peer
+	
+	message_label.text = "Listening..."
+
+
+func on_rpc_client_start(host: String, port: int) -> void:
+	main_menu.visible = false
+	rpc_connection_panel.visible = false
+	
+	var peer = NetworkedMultiplayerENet.new()
+	peer.create_client(host, port)
+	get_tree().network_peer = peer
+	
+	message_label.text = "Connecting..."
+
+
+func on_steam_server_start(steamid: int) -> void:
+	pass
+
+
+func on_steam_client_start(steamid: int) -> void:
+	pass
+
+
+func on_local_play_start() -> void:
+	print("local")
+	$ClientPlayer.input_prefix = "player2_"
+	main_menu.visible = false
+	SyncManager.network_adaptor = DummyNetworkAdaptor.new()
+	SyncManager.start()
 
 
 func _on_ServerButton_pressed() -> void:
@@ -39,6 +84,7 @@ func _on_ServerButton_pressed() -> void:
 	rpc_connection_panel.visible = false
 	message_label.text = "Listening..."
 
+
 func _on_ClientButton_pressed() -> void:
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(host_field.text, int(port_field.text))
@@ -46,6 +92,7 @@ func _on_ClientButton_pressed() -> void:
 	main_menu.visible = false
 	rpc_connection_panel.visible = false
 	message_label.text = "Connecting..."
+
 
 func _on_network_peer_connected(peer_id: int):
 	message_label.text = "Connected!"
@@ -65,17 +112,21 @@ func _on_network_peer_connected(peer_id: int):
 		yield(get_tree().create_timer(2.0), "timeout")
 		SyncManager.start()
 
+
 remotesync func setup_match(info: Dictionary) -> void:
 	johnny.set_seed(info['mother_seed'])
 	$ClientPlayer.rng.set_seed(johnny.randi())
 	$ServerPlayer.rng.set_seed(johnny.randi())
 
+
 func _on_network_peer_disconnected(peer_id: int):
 	message_label.text = "Disconnected"
 	SyncManager.remove_peer(peer_id)
 
+
 func _on_server_disconnected() -> void:
 	_on_network_peer_disconnected(1)
+
 
 func _on_ResetButton_pressed() -> void:
 	SyncManager.stop()
@@ -84,6 +135,7 @@ func _on_ResetButton_pressed() -> void:
 	if peer:
 		peer.close_connection()
 	get_tree().reload_current_scene()
+
 
 func _on_SyncManager_sync_started() -> void:
 	message_label.text = "Started!"
@@ -106,15 +158,19 @@ func _on_SyncManager_sync_started() -> void:
 		
 		SyncManager.start_logging(LOG_FILE_DIRECTORY + '/' + log_file_name)
 
+
 func _on_SyncManager_sync_stopped() -> void:
 	if logging_enabled:
 		SyncManager.stop_logging()
 
+
 func _on_SyncManager_sync_lost() -> void:
 	sync_lost_label.visible = true
 
+
 func _on_SyncManager_sync_regained() -> void:
 	sync_lost_label.visible = false
+
 
 func _on_SyncManager_sync_error(msg: String) -> void:
 	message_label.text = "Fatal sync error: " + msg
@@ -127,10 +183,12 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 	Steam.closeSessionWithUser("OPPONENT_ID")
 	SyncManager.clear_peers()
 
+
 func setup_match_for_replay(my_peer_id: int, peer_ids: Array, match_info: Dictionary) -> void:
 	main_menu.visible = false
 	rpc_connection_panel.visible = false
 	reset_button.visible = false
+
 
 func _on_LocalButton_pressed() -> void:
 	$ClientPlayer.input_prefix = "player2_"
@@ -138,9 +196,11 @@ func _on_LocalButton_pressed() -> void:
 	SyncManager.network_adaptor = DummyNetworkAdaptor.new()
 	SyncManager.start()
 
+
 func _on_RPCButton_pressed():
 	rpc_connection_panel.popup_centered()
 	SyncManager.reset_network_adaptor()
+
 
 func _on_SteamButton_pressed():
 	steam_connection_panel.popup_centered()

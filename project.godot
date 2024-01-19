@@ -59,9 +59,10 @@ SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 SyncReplay="*res://addons/godot-rollback-netcode/SyncReplay.gd"
 SteamInit="*res://networking/SteamInit.gd"
 NetworkGlobal="*res://networking/NetworkGlobal.gd"
+GameSignalBus="*res://autoloads/GameSignalBus.gd"
 SettingsSingalBus="*res://autoloads/SettingsSingalBus.gd"
 SettingsData="*res://autoloads/SettingsData.gd"
-SaveManager="*res://autoloads/SaveManager.gd"
+SettingsManager="*res://autoloads/SettingsManager.gd"
 
 [debug]
 

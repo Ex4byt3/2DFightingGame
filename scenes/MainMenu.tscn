@@ -378,7 +378,7 @@ size_flags_vertical = 3
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
-text = "RETURN TO TITLE"
+text = "TITLE"
 valign = 1
 
 [node name="DesktopButton" type="Button" parent="PrimaryMenu/QuitTab"]
@@ -392,7 +392,7 @@ size_flags_vertical = 3
 anchor_left = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
-text = "QUIT TO DESKTOP"
+text = "DESKTOP"
 valign = 1
 
 [node name="RPCConnectionPanel" type="Control" parent="PrimaryMenu"]

@@ -23,7 +23,7 @@ func add_resolution_items() -> void:
 
 
 func on_resolution_selected(index: int) -> void:
-	SettingsSingalBus.emit_on_resolution_selected(index)
+	SettingsSingalBus.emit_resolution_selected(index)
 	match index:
 		0: # 853 x 480
 			OS.set_window_size(RESOLUTION_DICTIONARY.values()[0])
