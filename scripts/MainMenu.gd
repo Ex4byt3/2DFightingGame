@@ -19,28 +19,42 @@ onready var steam_client_start = $PrimaryMenu/SteamConnectionPanel/SelectionCont
 onready var primary_menu = $PrimaryMenu
 onready var settings_menu = $SettingsMenu
 
+# Called when the node enters the scene tree for the first time.
 func _ready():
 	handle_connecting_signals()
 
-# create connections 
+# Connect to button signals
 func handle_connecting_signals() -> void:
-	settings_button.connect("button_up", self, "open_settings")
 	
-	# Signals to open the game
-	rpc_server_start.connect("button_up", self, "start_rpc_server")
-	rpc_client_start.connect("button_up", self, "start_rpc_client")
-	steam_server_start.connect("button_up", self, "start_steam_server")
-	steam_client_start.connect("button_up", self, "start_steam_client")
-	
+	# Loops through the menu icons and connects all their button_up signals
+	# to the on_icon_clicked function
 	for icon in $PrimaryMenu/MenuIcons.get_children():
 		icon.connect("button_up", self, "on_icon_clicked")
+	
+	# Signals for online play
+	rpc_server_start.connect("button_up", self, "on_rpc_server_pressed")
+	rpc_client_start.connect("button_up", self, "on_rpc_client_pressed")
+	steam_server_start.connect("button_up", self, "on_steam_server_pressed")
+	steam_client_start.connect("button_up", self, "on_steam_client_pressed")
+	
+	# Connect signals used for the settings menu
+	settings_button.connect("button_up", self, "on_settings_pressed")
+	settings_menu.connect("exit_settings_menu", self, "on_exit_settings_menu")
 
-func open_settings() -> void:
-	pass
+# Makes the settings menu visible and hides primary menu
+func on_settings_pressed() -> void:
+	settings_menu.visible = true
+	primary_menu.visible = false
 
-func start_rpc_server() -> void:
+func on_exit_settings_menu() -> void:
+	settings_menu.visible = false
+	primary_menu.visible = true
+
+# Changes the scene to Game.tscn
+func on_rpc_server_pressed() -> void:
 	get_tree().change_scene_to(game_scene)
 
+# When a menu icon is clicked, the connection panels are hidden
 func on_icon_clicked() -> void:
 	rpc_connection_panel.visible = false
 	steam_connection_panel.visible = false
@@ -92,8 +106,3 @@ func _on_SteamButton_toggled(button_pressed):
 		steam_connection_panel.visible = true
 	else:
 		steam_connection_panel.visible = false
-
-func _on_SettingsButton_pressed():
-	settings_menu.visible = true
-	primary_menu.visible = false
-	

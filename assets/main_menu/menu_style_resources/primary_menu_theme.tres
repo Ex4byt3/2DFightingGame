@@ -10,6 +10,8 @@ texture = ExtResource( 3 )
 region_rect = Rect2( 0, 0, 2048, 1 )
 
 [sub_resource type="DynamicFont" id=1]
+use_mipmaps = true
+use_filter = true
 font_data = ExtResource( 1 )
 
 [resource]
@@ -23,7 +25,25 @@ Button/colors/icon_color_hover = Color( 1, 1, 1, 1 )
 Button/colors/icon_color_normal = Color( 1, 1, 1, 1 )
 Button/colors/icon_color_pressed = Color( 1, 1, 1, 1 )
 Button/styles/disabled = null
-Button/styles/focus = null
+Button/styles/focus = ExtResource( 4 )
 Button/styles/hover = ExtResource( 4 )
 Button/styles/normal = SubResource( 2 )
 Button/styles/pressed = ExtResource( 2 )
+ItemList/colors/font_color = Color( 0, 0, 0, 1 )
+ItemList/colors/font_color_selected = Color( 0, 0, 0, 1 )
+ItemList/colors/guide_color = Color( 0, 0, 0, 1 )
+ItemList/constants/hseparation = 0
+ItemList/constants/icon_margin = 0
+ItemList/constants/line_separation = 0
+ItemList/constants/vseparation = 0
+ItemList/styles/bg = null
+ItemList/styles/bg_focus = null
+ItemList/styles/cursor = null
+ItemList/styles/cursor_unfocused = null
+ItemList/styles/selected = null
+ItemList/styles/selected_focus = null
+OptionButton/styles/disabled = null
+OptionButton/styles/focus = null
+OptionButton/styles/hover = null
+OptionButton/styles/normal = ExtResource( 2 )
+OptionButton/styles/pressed = null
