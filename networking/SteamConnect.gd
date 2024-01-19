@@ -37,6 +37,8 @@ func _ready() -> void:
 	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
 	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
+	setup_match()
+	
 func _process(delta):
 	var listOfMessages = Steam.receiveMessagesOnChannel(1, 999) #channel 1 #read up to 999 messages in buffer
 	for message in listOfMessages:
