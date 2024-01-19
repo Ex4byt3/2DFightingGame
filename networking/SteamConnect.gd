@@ -1,21 +1,24 @@
-extends WindowDialog
+extends Node2D
 
 const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
 const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
 
-onready var main_menu = get_node("/root/Main/CanvasLayer/MainMenu")
-onready var message_label = get_node("/root/Main/CanvasLayer/MessageLabel")
-onready var sync_lost_label = get_node("/root/Main/CanvasLayer/SyncLostLabel")
-onready var server_player = get_node("/root/Main/ServerPlayer")
-onready var client_player = get_node("/root/Main/ClientPlayer")
-onready var johnny = get_node("/root/Main/Johnny")
-onready var steam_connection_panel = self
-onready var id_field = $GridContainer/SteamIDField
+onready var message_label = $Messages/MessageLabel
+onready var sync_lost_label = $Messages/SyncLostLabel
+onready var server_player = $ServerPlayer
+onready var client_player = $ClientPlayer
+onready var johnny = $Johnny
 
 const LOG_FILE_DIRECTORY = 'E:/godot-logs'
 
 var logging_enabled := true
 var emptyData: PoolByteArray = [1]
+
+enum NETWORK_TYPE {
+	LOCAL,
+	ENET,
+	STEAM,
+}
 
 enum SYNC_TYPE {
 	HANDSHAKE,
@@ -24,25 +27,30 @@ enum SYNC_TYPE {
 	STOP,
 }
 
-
 func _ready() -> void:
 	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
 	Steam.setIdentitySteamID64("OPP_STEAM_ID", NetworkGlobal.OPP_STEAM_ID)
+	
+	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
+	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
+	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
+	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
+	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
 func _process(delta):
 	var listOfMessages = Steam.receiveMessagesOnChannel(1, 999) #channel 1 #read up to 999 messages in buffer
 	for message in listOfMessages:
 		process_networking_message(message)
 		
-func setup_match(game_scene: Node2D) -> void:
+func setup_match() -> void:
 	
 	if NetworkGlobal.NETWORK_TYPE != 2:
-		print("Networking type is not equal to STEAM, aborting...")
+		print("Networking type is not set to STEAM, aborting...")
 		get_tree().quit()
 	
 	if NetworkGlobal.IS_STEAM_HOST:
-		game_scene.get_node("Messages/MessageLabel").text = "Listening..."
-		pass
+		johnny.randomize()
+		message_label.text = "Listening..."
 	else:
 		var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
 		Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
@@ -66,9 +74,6 @@ func create_networking_message(header: int, data) -> PoolByteArray:
 func process_networking_message(msg: Dictionary) -> void:
 	# TODO: Figure out how we can incorporate message identitys into the adaptor (if needed)
 	# sender_id might already be an int?
-	print(typeof(msg["identity"]))
-	print(msg["identity"])
-	
 	var sender_id = msg["identity"].to_int()
 	var packet = msg["payload"]
 	
@@ -104,8 +109,8 @@ func network_peer_connected():
 	message_label.text = "Connected!"
 	SyncManager.add_peer(NetworkGlobal.OPP_STEAM_ID)
 	
-	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.IS_HOST)
-	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.IS_HOST)
+	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.IS_STEAM_HOST)
+	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.IS_STEAM_HOST)
 	
 	if NetworkGlobal.IS_HOST:
 		message_label.text = "Starting..."
@@ -130,27 +135,53 @@ func set_match_rng(info: Dictionary) -> void:
 func _on_server_disconnected() -> void:
 	network_peer_disconnected(NetworkGlobal.OPP_STEAM_ID)
 	
-# Create a server when pressed, waiting for a client to connect
-func _on_Steam_ServerButton_pressed() -> void:
-	johnny.randomize()
-
-	NetworkGlobal.IS_HOST = true
-	main_menu.visible = false
-	steam_connection_panel.visible = false
-	message_label.text = "Listening..."
-
-# Create a client when pressed, attempting to connect to a server
-func _on_Steam_ClientButton_pressed() -> void:
-	var opp_id = id_field.text.to_int()
-	NetworkGlobal.OPP_STEAM_ID = opp_id
-	Steam.setIdentitySteamID64("OPP_STEAM_ID", opp_id)
+func _on_SyncManager_sync_started() -> void:
+	message_label.text = "Started!"
 	
-	var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
+	if logging_enabled and not SyncReplay.active:
+		var dir = Directory.new()
+		if not dir.dir_exists(LOG_FILE_DIRECTORY):
+			dir.make_dir(LOG_FILE_DIRECTORY)
+		
+		var datetime = OS.get_datetime(true)
+		var log_file_name = "%04d%02d%02d-%02d%02d%02d-peer-%d.log" % [
+			datetime['year'],
+			datetime['month'],
+			datetime['day'],
+			datetime['hour'],
+			datetime['minute'],
+			datetime['second'],
+			SyncManager.network_adaptor.get_network_unique_id(),
+		]
+		
+		SyncManager.start_logging(LOG_FILE_DIRECTORY + '/' + log_file_name)
+
+func _on_SyncManager_sync_stopped() -> void:
+	if logging_enabled:
+		SyncManager.stop_logging()
+
+func _on_SyncManager_sync_lost() -> void:
+	sync_lost_label.visible = true
+
+func _on_SyncManager_sync_regained() -> void:
+	sync_lost_label.visible = false
+
+func _on_SyncManager_sync_error(msg: String) -> void:
+	message_label.text = "Fatal sync error: " + msg
+	sync_lost_label.visible = false
 	
-	main_menu.visible = false
-	steam_connection_panel.visible = false
-	message_label.text = "Connecting..."
+	match NetworkGlobal.NETWORK_TYPE:
+		NETWORK_TYPE.ENET:
+			var peer = get_tree().network_peer
+			if peer:
+				peer.close_connection()
+		NETWORK_TYPE.STEAM:
+			Steam.closeSessionWithUser("OPPONENT_ID")
+		_:
+			print("Sync error, but not in a networked game")
+			
+	SyncManager.clear_peers()
+
 	
 func _on_ResetButton_pressed() -> void:
 	SyncManager.stop()
@@ -158,6 +189,7 @@ func _on_ResetButton_pressed() -> void:
 	SyncManager.reset_network_adaptor()
 	
 	Steam.closeSessionWithUser("OPP_STEAM_ID")
+	print("Resetting to main menu...")
 	get_tree().reload_current_scene()
 
 
@@ -170,7 +202,8 @@ func _on_ResetButton_pressed() -> void:
 # TLDR: HANDSHAKE!
 func _on_network_messages_session_request(sender_id: String):
 	
-	if not NetworkGlobal.IS_HOST:
+	# If we're not a host, and someone is trying to communicate with us, we ignore them.
+	if not NetworkGlobal.IS_STEAM_HOST:
 		return
 	
 	var sender_id_int = sender_id.to_int()

@@ -7,6 +7,7 @@ var SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
 
 var SteamConnect = preload("res://networking/SteamConnect.gd")
 var RpcConnect = preload("res://networking/RPCConnect.gd")
+var LocalConnect = preload("res://networking/LocalConnect.gd")
 
 onready var message_label = $Messages/MessageLabel
 onready var sync_lost_label = $Messages/SyncLostLabel

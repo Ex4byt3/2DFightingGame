@@ -7,6 +7,8 @@ var NETWORK_TYPE = -1
 
 
 # RPC Rollback Logic
+var HOST_IP: String = ""
+var HOST_PORT: String = ""
 
 # Steam Rollback Logic
 var IS_STEAM_HOST: bool = false
