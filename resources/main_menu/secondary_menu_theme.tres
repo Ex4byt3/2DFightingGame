@@ -1,8 +1,8 @@
 [gd_resource type="Theme" load_steps=6 format=2]
 
 [ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://assets/main_menu/menu_style_resources/styleboxflat_pressed.tres" type="StyleBox" id=2]
-[ext_resource path="res://assets/main_menu/menu_style_resources/styleboxflat_hover.tres" type="StyleBox" id=4]
+[ext_resource path="res://resources/main_menu/styleboxflat_pressed.tres" type="StyleBox" id=2]
+[ext_resource path="res://resources/main_menu/styleboxflat_hover.tres" type="StyleBox" id=4]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 0.392157 )

@@ -18,12 +18,12 @@
 [ext_resource path="res://assets/main_menu/settings_button_focused.png" type="Texture" id=16]
 [ext_resource path="res://assets/main_menu/training_button_focused.png" type="Texture" id=19]
 [ext_resource path="res://assets/main_menu/Bar.png" type="Texture" id=20]
-[ext_resource path="res://assets/main_menu/menu_style_resources/textures/primary_menu_normal_gradient.tres" type="Texture" id=21]
+[ext_resource path="res://resources/main_menu/textures/primary_menu_normal_gradient.tres" type="Texture" id=21]
 [ext_resource path="res://assets/main_menu/panel_header_gradient.tres" type="Texture" id=22]
 [ext_resource path="res://assets/main_menu/buttongroup_online.tres" type="ButtonGroup" id=23]
-[ext_resource path="res://assets/main_menu/menu_style_resources/secondary_menu_theme.tres" type="Theme" id=24]
+[ext_resource path="res://resources/main_menu/secondary_menu_theme.tres" type="Theme" id=24]
 [ext_resource path="res://scenes/SettingsMenu.tscn" type="PackedScene" id=25]
-[ext_resource path="res://assets/main_menu/menu_style_resources/primary_menu_theme.tres" type="Theme" id=26]
+[ext_resource path="res://resources/main_menu/primary_menu_theme.tres" type="Theme" id=26]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -581,7 +581,7 @@ text = "CLIENT"
 [node name="SettingsMenu" parent="." instance=ExtResource( 25 )]
 visible = false
 
-[node name="GameSceneTemp" type="Node2D" parent="."]
+[node name="GameScene" type="Node2D" parent="."]
 
 [connection signal="toggled" from="PrimaryMenu/MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
 [connection signal="toggled" from="PrimaryMenu/MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]

@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/godot-rollback-netcode/NetworkTimer.gd"
 }, {
+"base": "Resource",
+"class": "PlayerKeybinds",
+"language": "GDScript",
+"path": "res://resources/settings/PlayerKeybinds.gd"
+}, {
 "base": "",
 "class": "Steam",
 "language": "NativeScript",
@@ -33,6 +38,7 @@ _global_script_class_icons={
 "NetworkAnimationPlayer": "",
 "NetworkRandomNumberGenerator": "",
 "NetworkTimer": "",
+"PlayerKeybinds": "",
 "Steam": ""
 }
 
@@ -53,6 +59,9 @@ SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 SyncReplay="*res://addons/godot-rollback-netcode/SyncReplay.gd"
 SteamInit="*res://networking/SteamInit.gd"
 NetworkGlobal="*res://networking/NetworkGlobal.gd"
+SettingsSingalBus="*res://autoloads/SettingsSingalBus.gd"
+SettingsData="*res://autoloads/SettingsData.gd"
+SaveManager="*res://autoloads/SaveManager.gd"
 
 [debug]
 
@@ -71,6 +80,10 @@ window/size/resizable=false
 [editor_plugins]
 
 enabled=PoolStringArray( "res://addons/godot-rollback-netcode/plugin.cfg", "res://addons/godotsteam/plugin.cfg", "res://addons/multirun/plugin.cfg" )
+
+[global]
+
+keybind=false
 
 [input]
 

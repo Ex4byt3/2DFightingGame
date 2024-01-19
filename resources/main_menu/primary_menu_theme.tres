@@ -1,9 +1,9 @@
 [gd_resource type="Theme" load_steps=7 format=2]
 
 [ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://assets/main_menu/menu_style_resources/styleboxflat_pressed.tres" type="StyleBox" id=2]
-[ext_resource path="res://assets/main_menu/menu_style_resources/textures/primary_menu_normal_gradient.tres" type="Texture" id=3]
-[ext_resource path="res://assets/main_menu/menu_style_resources/styleboxflat_hover.tres" type="StyleBox" id=4]
+[ext_resource path="res://resources/main_menu/styleboxflat_pressed.tres" type="StyleBox" id=2]
+[ext_resource path="res://resources/main_menu/textures/primary_menu_normal_gradient.tres" type="Texture" id=3]
+[ext_resource path="res://resources/main_menu/styleboxflat_hover.tres" type="StyleBox" id=4]
 
 [sub_resource type="StyleBoxTexture" id=2]
 texture = ExtResource( 3 )
