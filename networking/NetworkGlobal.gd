@@ -1,7 +1,7 @@
 extends Node
 
 # -1 = Network type undecided
-var NETWORK_TYPE = -1
+var NETWORK_TYPE = 2
 
 # Local Rollback Logic (Probably don't need this)
 

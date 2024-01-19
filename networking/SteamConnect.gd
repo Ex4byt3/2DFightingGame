@@ -46,6 +46,8 @@ func _process(delta):
 		
 func setup_match() -> void:
 	
+	print("Network Globals: ", NetworkGlobal.NETWORK_TYPE, NetworkGlobal.IS_STEAM_HOST, NetworkGlobal.OPP_STEAM_ID)
+	
 	if NetworkGlobal.NETWORK_TYPE != 2:
 		print("Networking type is not set to STEAM, aborting...")
 		get_tree().quit()
@@ -100,7 +102,7 @@ func process_networking_message(msg: Dictionary) -> void:
 			print("Could not match packet types from message")
 
 func connect_to_server() -> void:
-	if NetworkGlobal.IS_HOST:
+	if NetworkGlobal.IS_STEAM_HOST:
 		return
 	var packet = create_networking_message(SYNC_TYPE.CONNECT, emptyData)
 	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
@@ -114,7 +116,7 @@ func network_peer_connected():
 	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.IS_STEAM_HOST)
 	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.IS_STEAM_HOST)
 	
-	if NetworkGlobal.IS_HOST:
+	if NetworkGlobal.IS_STEAM_HOST:
 		message_label.text = "Starting..."
 		#rpc("setup_match", {mother_seed = johnny.get_seed()})
 		var setup_packet = create_networking_message(SYNC_TYPE.START, {mother_seed = johnny.get_seed()})
