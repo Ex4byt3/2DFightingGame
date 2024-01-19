@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
 const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")

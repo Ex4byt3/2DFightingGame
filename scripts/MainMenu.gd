@@ -2,7 +2,8 @@ extends Control
 
 
 # Preload the game scene as a packed scene
-var main_scene = preload("res://scenes/Main.tscn")
+var steam_scene = preload("res://scenes/SteamGame.tscn")
+#var steam_scene = preload("res://scenes/SteamGame.tscn")
 
 
 # Onready var for primary buttons
@@ -66,33 +67,39 @@ func on_icon_clicked() -> void:
 
 # 
 func on_rpc_server_pressed() -> void:
-	GameSignalBus.emit_rpc_server_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
-	get_tree().change_scene_to(main_scene)
+	pass
+	#GameSignalBus.emit_rpc_server_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
+	#get_tree().change_scene_to(main_scene)
 
 
 #
 func on_rpc_client_pressed() -> void:
-	GameSignalBus.emit_rpc_client_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
-	get_tree().change_scene_to(main_scene)
+	pass
+	#GameSignalBus.emit_rpc_client_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
+	#get_tree().change_scene_to(main_scene)
 
 
 #
 func on_steam_server_pressed() -> void:
-	GameSignalBus.emit_steam_server_start(int(steamid_field.get_text()))
-	get_tree().change_scene_to(main_scene)
+	#GameSignalBus.emit_steam_server_start(int(steamid_field.get_text()))
+	NetworkGlobal.IS_STEAM_HOST = true
+	#NetworkGlobal.OPP_STEAM_ID = int(steamid_field.text)
+	get_tree().change_scene_to(steam_scene)
 
 
 #
 func on_steam_client_pressed() -> void:
-	GameSignalBus.emit_steam_server_start(steamid_field)
-	get_tree().change_scene_to(main_scene)
+	#GameSignalBus.emit_steam_server_start(steamid_field)
+	NetworkGlobal.IS_STEAM_HOST = false
+	NetworkGlobal.OPP_STEAM_ID = int(steamid_field.text)
+	get_tree().change_scene_to(steam_scene)
 
 
 #
 func on_versus_button_pressed() -> void:
-	
-	get_tree().change_scene_to(main_scene)
-	GameSignalBus.emit_local_play_start()
+	pass
+	#get_tree().change_scene_to(main_scene)
+	#GameSignalBus.emit_local_play_start()
 
 
 # Makes the settings menu visible and hides primary menu
