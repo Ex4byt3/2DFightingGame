@@ -132,7 +132,7 @@ func _rit(peer_id: int, msg: PoolByteArray) -> void:
 
 # Changed to Global variable
 func is_network_host() -> bool:
-	return NetworkGlobal.IS_HOST
+	return NetworkGlobal.IS_STEAM_HOST
 
 # Changed to Global variable
 func get_network_unique_id() -> int:
