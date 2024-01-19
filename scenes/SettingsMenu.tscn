@@ -75,6 +75,7 @@ margin_left = 194.0
 margin_right = 273.0
 margin_bottom = 24.0
 toggle_mode = true
+pressed = true
 group = ExtResource( 9 )
 text = "Graphics"
 
@@ -111,8 +112,7 @@ group = ExtResource( 9 )
 text = "Accessibility"
 
 [node name="GraphicsTab" type="Control" parent="."]
-visible = false
-anchor_top = 0.13
+anchor_top = 0.15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -154,3 +154,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [connection signal="toggled" from="Menubar/HBoxContainer/GraphicsButton" to="." method="_on_GraphicsButton_toggled"]
+[connection signal="toggled" from="Menubar/HBoxContainer/SoundButton" to="." method="_on_SoundButton_toggled"]
