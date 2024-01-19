@@ -9,6 +9,7 @@ enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
 	DROP_BOMB        = 1 << 1, # Bit 1
 	TELEPORT         = 1 << 2, # Bit 2
+	IS_ON_FLOOR      = 1 << 3, # Bit 3
 }
 
 var input_path_mapping_reverse := {}
@@ -37,6 +38,8 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 			header |= HeaderFlags.DROP_BOMB
 		if input.get('teleport', false):
 			header |= HeaderFlags.TELEPORT
+		if input.get('is_on_floor', false):
+			header |= HeaderFlags.IS_ON_FLOOR
 		
 		buffer.put_u8(header)
 		
@@ -71,6 +74,8 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 		input["drop_bomb"] = true
 	if header & HeaderFlags.TELEPORT:
 		input["teleport"] = true
+	if header & HeaderFlags.IS_ON_FLOOR:
+		input["is_on_floor"] = true
 	
 	all_input[path] = input
 	return all_input
