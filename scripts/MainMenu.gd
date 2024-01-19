@@ -124,9 +124,6 @@ func _on_OnlineButton_toggled(button_pressed):
 func _on_LocalButton_toggled(button_pressed):
 	if button_pressed == true:
 		local_tab.visible = true
-		
-		# Example of adding a game scene to the menu scene, might need to hide the menu when shown
-		# var new_game_scene = game_scene.instance()
 	else:
 		local_tab.visible = false
 

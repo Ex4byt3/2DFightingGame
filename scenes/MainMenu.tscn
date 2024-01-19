@@ -16,19 +16,19 @@
 [ext_resource path="res://assets/main_menu/settings_button.png" type="Texture" id=14]
 [ext_resource path="res://assets/main_menu/delta_logo.png" type="Texture" id=15]
 [ext_resource path="res://assets/main_menu/settings_button_focused.png" type="Texture" id=16]
+[ext_resource path="res://resources/main_menu/settings_menubar_theme.tres" type="Theme" id=17]
 [ext_resource path="res://assets/main_menu/training_button_focused.png" type="Texture" id=19]
 [ext_resource path="res://assets/main_menu/Bar.png" type="Texture" id=20]
 [ext_resource path="res://resources/main_menu/textures/primary_menu_normal_gradient.tres" type="Texture" id=21]
 [ext_resource path="res://assets/main_menu/panel_header_gradient.tres" type="Texture" id=22]
 [ext_resource path="res://assets/main_menu/buttongroup_online.tres" type="ButtonGroup" id=23]
-[ext_resource path="res://resources/main_menu/secondary_menu_theme.tres" type="Theme" id=24]
 [ext_resource path="res://scenes/SettingsMenu.tscn" type="PackedScene" id=25]
 [ext_resource path="res://resources/main_menu/primary_menu_theme.tres" type="Theme" id=26]
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 script = ExtResource( 13 )
 
 [node name="PrimaryMenu" type="Control" parent="."]
@@ -43,7 +43,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 1
@@ -51,14 +51,14 @@ stretch_mode = 1
 [node name="HeaderBar" type="Control" parent="PrimaryMenu"]
 anchor_right = 1.0
 anchor_bottom = 0.08
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 
 [node name="HeaderBackground" type="TextureRect" parent="PrimaryMenu/HeaderBar"]
 modulate = Color( 1, 1, 1, 0.588235 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture = ExtResource( 12 )
 expand = true
 stretch_mode = 1
@@ -68,7 +68,7 @@ anchor_left = 0.01
 anchor_top = 0.05
 anchor_right = 0.294
 anchor_bottom = 0.95
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture = ExtResource( 15 )
 expand = true
 stretch_mode = 5
@@ -78,7 +78,7 @@ anchor_left = 0.8
 anchor_top = 0.3
 anchor_right = 0.9
 anchor_bottom = 0.7
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture_normal = ExtResource( 14 )
 texture_pressed = ExtResource( 16 )
 texture_hover = ExtResource( 16 )
@@ -90,7 +90,7 @@ anchor_left = 0.01
 anchor_top = 0.12
 anchor_right = 0.019
 anchor_bottom = 0.802
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture = ExtResource( 20 )
 expand = true
 stretch_mode = 5
@@ -100,7 +100,7 @@ show_behind_parent = true
 anchor_top = 0.08
 anchor_right = 0.09
 anchor_bottom = 1.0
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture = ExtResource( 21 )
 expand = true
 stretch_mode = 1
@@ -110,7 +110,7 @@ anchor_left = 0.02
 anchor_top = 0.12
 anchor_right = 0.09
 anchor_bottom = 0.82
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 custom_constants/vseparation = -1
 custom_constants/hseparation = -1
 
@@ -401,7 +401,7 @@ anchor_left = 0.095
 anchor_top = 0.3
 anchor_right = 0.395
 anchor_bottom = 0.55
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 
 [node name="TextureRect" type="TextureRect" parent="PrimaryMenu/RPCConnectionPanel"]
 modulate = Color( 0, 0, 0, 1 )
@@ -409,7 +409,7 @@ show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_vertical = 3
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture = ExtResource( 21 )
 expand = true
 stretch_mode = 1
@@ -418,7 +418,7 @@ stretch_mode = 1
 anchor_right = 1.0
 anchor_bottom = 0.2
 size_flags_stretch_ratio = 0.3
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 texture = ExtResource( 22 )
 expand = true
 stretch_mode = 1
@@ -427,7 +427,7 @@ stretch_mode = 1
 anchor_left = 0.05
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 text = "ENET CONNECTION"
 valign = 2
 
@@ -436,7 +436,7 @@ anchor_top = 0.22
 anchor_right = 1.0
 anchor_bottom = 0.8
 size_flags_vertical = 3
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 custom_constants/vseparation = 6
 custom_constants/hseparation = 4
 columns = 2
@@ -478,7 +478,7 @@ margin_bottom = 68.0
 anchor_top = 0.8
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 custom_constants/separation = 0
 
 [node name="ServerButton" type="Button" parent="PrimaryMenu/RPCConnectionPanel/SelectionContainer"]
@@ -486,7 +486,7 @@ margin_right = 127.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 text = "SERVER"
 
 [node name="ClientButton" type="Button" parent="PrimaryMenu/RPCConnectionPanel/SelectionContainer"]
@@ -495,7 +495,7 @@ margin_right = 255.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 text = "CLIENT"
 
 [node name="SteamConnectionPanel" type="Control" parent="PrimaryMenu"]
@@ -504,7 +504,7 @@ anchor_left = 0.095
 anchor_top = 0.3
 anchor_right = 0.395
 anchor_bottom = 0.55
-theme = ExtResource( 24 )
+theme = ExtResource( 17 )
 
 [node name="TextureRect" type="TextureRect" parent="PrimaryMenu/SteamConnectionPanel"]
 modulate = Color( 0, 0, 0, 1 )
