@@ -155,3 +155,6 @@ anchor_bottom = 1.0
 
 [connection signal="toggled" from="Menubar/HBoxContainer/GraphicsButton" to="." method="_on_GraphicsButton_toggled"]
 [connection signal="toggled" from="Menubar/HBoxContainer/SoundButton" to="." method="_on_SoundButton_toggled"]
+[connection signal="toggled" from="Menubar/HBoxContainer/NetworkButton" to="." method="_on_NetworkButton_toggled"]
+[connection signal="toggled" from="Menubar/HBoxContainer/KeybindsButton" to="." method="_on_KeybindsButton_toggled"]
+[connection signal="toggled" from="Menubar/HBoxContainer/AccessibilityButton" to="." method="_on_AccessibilityButton_toggled"]

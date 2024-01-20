@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/main_menu/online_button_focused.png" type="Texture" id=1]
 [ext_resource path="res://assets/main_menu/online_button.png" type="Texture" id=2]
@@ -17,11 +17,13 @@
 [ext_resource path="res://assets/main_menu/delta_logo.png" type="Texture" id=15]
 [ext_resource path="res://assets/main_menu/settings_button_focused.png" type="Texture" id=16]
 [ext_resource path="res://resources/main_menu/settings_menubar_theme.tres" type="Theme" id=17]
+[ext_resource path="res://scripts/IconHighlights.gd" type="Script" id=18]
 [ext_resource path="res://assets/main_menu/training_button_focused.png" type="Texture" id=19]
 [ext_resource path="res://assets/main_menu/Bar.png" type="Texture" id=20]
 [ext_resource path="res://resources/main_menu/textures/primary_menu_normal_gradient.tres" type="Texture" id=21]
 [ext_resource path="res://assets/main_menu/panel_header_gradient.tres" type="Texture" id=22]
 [ext_resource path="res://assets/main_menu/buttongroup_online.tres" type="ButtonGroup" id=23]
+[ext_resource path="res://resources/main_menu/IconHighlights/iconhighlight_gradient.tres" type="Texture" id=24]
 [ext_resource path="res://scenes/SettingsMenu.tscn" type="PackedScene" id=25]
 [ext_resource path="res://resources/main_menu/primary_menu_theme.tres" type="Theme" id=26]
 
@@ -31,12 +33,7 @@ anchor_bottom = 1.0
 theme = ExtResource( 17 )
 script = ExtResource( 13 )
 
-[node name="PrimaryMenu" type="Control" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="BackgroundImage" type="TextureRect" parent="PrimaryMenu"]
-visible = false
+[node name="BackgroundImage" type="TextureRect" parent="."]
 self_modulate = Color( 0.694118, 0.694118, 0.694118, 1 )
 show_behind_parent = true
 anchor_right = 1.0
@@ -47,6 +44,63 @@ theme = ExtResource( 17 )
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 1
+
+[node name="PrimaryMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="IconHighlights" type="GridContainer" parent="PrimaryMenu"]
+anchor_top = 0.12
+anchor_right = 0.09
+anchor_bottom = 0.82
+theme = ExtResource( 26 )
+custom_constants/vseparation = -1
+custom_constants/hseparation = -1
+script = ExtResource( 18 )
+
+[node name="OnlineHighlight" type="TextureProgress" parent="PrimaryMenu/IconHighlights"]
+margin_right = 76.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 24 )
+nine_patch_stretch = true
+
+[node name="LocalHighlight" type="TextureProgress" parent="PrimaryMenu/IconHighlights"]
+margin_top = 67.0
+margin_right = 76.0
+margin_bottom = 135.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 24 )
+nine_patch_stretch = true
+
+[node name="TrainingHighlight" type="TextureProgress" parent="PrimaryMenu/IconHighlights"]
+margin_top = 134.0
+margin_right = 76.0
+margin_bottom = 202.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 24 )
+nine_patch_stretch = true
+
+[node name="RecordsHighlight" type="TextureProgress" parent="PrimaryMenu/IconHighlights"]
+margin_top = 201.0
+margin_right = 76.0
+margin_bottom = 269.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 24 )
+nine_patch_stretch = true
+
+[node name="QuitHighlight" type="TextureProgress" parent="PrimaryMenu/IconHighlights"]
+margin_top = 268.0
+margin_right = 76.0
+margin_bottom = 336.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 24 )
+nine_patch_stretch = true
 
 [node name="HeaderBar" type="Control" parent="PrimaryMenu"]
 anchor_right = 1.0
@@ -583,10 +637,15 @@ visible = false
 
 [node name="GameScene" type="Node2D" parent="."]
 
+[connection signal="mouse_entered" from="PrimaryMenu/MenuIcons/OnlineButton" to="PrimaryMenu/IconHighlights" method="_on_OnlineButton_mouse_entered"]
 [connection signal="toggled" from="PrimaryMenu/MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
+[connection signal="mouse_entered" from="PrimaryMenu/MenuIcons/LocalButton" to="PrimaryMenu/IconHighlights" method="_on_LocalButton_mouse_entered"]
 [connection signal="toggled" from="PrimaryMenu/MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]
+[connection signal="mouse_entered" from="PrimaryMenu/MenuIcons/TrainingButton" to="PrimaryMenu/IconHighlights" method="_on_TrainingButton_mouse_entered"]
 [connection signal="toggled" from="PrimaryMenu/MenuIcons/TrainingButton" to="." method="_on_TrainingButton_toggled"]
+[connection signal="mouse_entered" from="PrimaryMenu/MenuIcons/RecordsButton" to="PrimaryMenu/IconHighlights" method="_on_RecordsButton_mouse_entered"]
 [connection signal="toggled" from="PrimaryMenu/MenuIcons/RecordsButton" to="." method="_on_RecordsButton_toggled"]
+[connection signal="mouse_entered" from="PrimaryMenu/MenuIcons/QuitButton" to="PrimaryMenu/IconHighlights" method="_on_QuitButton_mouse_entered"]
 [connection signal="toggled" from="PrimaryMenu/MenuIcons/QuitButton" to="." method="_on_QuitButton_toggled"]
 [connection signal="toggled" from="PrimaryMenu/OnlineTab/RPCButton" to="." method="_on_RPCButton_toggled"]
 [connection signal="toggled" from="PrimaryMenu/OnlineTab/SteamButton" to="." method="_on_SteamButton_toggled"]
