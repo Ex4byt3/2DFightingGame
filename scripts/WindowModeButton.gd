@@ -1,15 +1,15 @@
 extends Control
 
 
-onready var window_mode_options = $ModeButton
+onready var window_mode_options = $HBoxContainer/ModeButton
 
 
 # Define an array of strings for window options
 const WINDOW_MODE_ARRAY = [
-	"Fullscreen",
-	"Bordered Window",
-	"Borderless Window",
-	"Borderless Fullscreen"
+	"   Fullscreen",
+	"   Bordered Window",
+	"   Borderless Window",
+	"   Borderless Fullscreen"
 ]
 
 

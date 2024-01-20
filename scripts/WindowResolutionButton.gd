@@ -1,13 +1,13 @@
 extends Control
 
 
-onready var resolution_button = $ResolutionButton
+onready var resolution_button = $HBoxContainer/ResolutionButton
 
 
 const RESOLUTION_DICTIONARY = {
-	"853 x 480" : Vector2(853, 480),
-	"1280 x 720" : Vector2(1280, 720),
-	"1920 x 1080" : Vector2(1920, 1080),
+	"   853 x 480" : Vector2(853, 480),
+	"   1280 x 720" : Vector2(1280, 720),
+	"   1920 x 1080" : Vector2(1920, 1080),
 }
 
 

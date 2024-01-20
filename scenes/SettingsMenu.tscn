@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://resources/main_menu/settings_menubar_theme.tres" type="Theme" id=1]
 [ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scenes/WindowModeButton.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/WindowResolutionButton.tscn" type="PackedScene" id=8]
 [ext_resource path="res://resources/main_menu/buttongroup_menubar.tres" type="ButtonGroup" id=9]
+[ext_resource path="res://resources/main_menu/menu_option_theme.tres" type="Theme" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 10
@@ -71,45 +72,45 @@ custom_constants/separation = 10
 alignment = 1
 
 [node name="GraphicsButton" type="Button" parent="Menubar/HBoxContainer"]
-margin_left = 194.0
-margin_right = 273.0
-margin_bottom = 24.0
+margin_left = 172.0
+margin_right = 258.0
+margin_bottom = 29.0
 toggle_mode = true
 pressed = true
 group = ExtResource( 9 )
-text = "Graphics"
+text = "GRAPHICS"
 
 [node name="SoundButton" type="Button" parent="Menubar/HBoxContainer"]
-margin_left = 283.0
-margin_right = 340.0
-margin_bottom = 24.0
+margin_left = 268.0
+margin_right = 328.0
+margin_bottom = 29.0
 toggle_mode = true
 group = ExtResource( 9 )
-text = "Sound"
+text = "SOUND"
 
 [node name="NetworkButton" type="Button" parent="Menubar/HBoxContainer"]
-margin_left = 350.0
-margin_right = 420.0
-margin_bottom = 24.0
+margin_left = 338.0
+margin_right = 424.0
+margin_bottom = 29.0
 toggle_mode = true
 group = ExtResource( 9 )
-text = "Nework"
+text = "NETWORK"
 
 [node name="KeybindsButton" type="Button" parent="Menubar/HBoxContainer"]
-margin_left = 430.0
-margin_right = 537.0
-margin_bottom = 24.0
+margin_left = 434.0
+margin_right = 545.0
+margin_bottom = 29.0
 toggle_mode = true
 group = ExtResource( 9 )
-text = "Keybindings"
+text = "KEYBINDINGS"
 
 [node name="AccessibilityButton" type="Button" parent="Menubar/HBoxContainer"]
-margin_left = 547.0
-margin_right = 658.0
-margin_bottom = 24.0
+margin_left = 555.0
+margin_right = 680.0
+margin_bottom = 29.0
 toggle_mode = true
 group = ExtResource( 9 )
-text = "Accessibility"
+text = "ACCESSIBILITY"
 
 [node name="GraphicsTab" type="Control" parent="."]
 anchor_top = 0.15
@@ -119,15 +120,24 @@ anchor_bottom = 1.0
 [node name="VBoxContainer" type="VBoxContainer" parent="GraphicsTab"]
 anchor_left = 0.1
 anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 10 )
+custom_constants/separation = 10
 
 [node name="WindowModeButton" parent="GraphicsTab/VBoxContainer" instance=ExtResource( 7 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 767.0
-margin_bottom = 22.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
 
 [node name="WindowResolutionButton" parent="GraphicsTab/VBoxContainer" instance=ExtResource( 8 )]
-margin_top = 26.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 37.0
 margin_right = 767.0
-margin_bottom = 48.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
 
 [node name="SoundTab" type="Control" parent="."]
 visible = false
