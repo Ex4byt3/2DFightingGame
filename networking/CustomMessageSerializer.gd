@@ -1,15 +1,14 @@
 extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 
 const input_path_mapping := {
-	'/root/Main/ServerPlayer': 1,
-	'/root/Main/ClientPlayer': 2,
+	'/root/RpcGame/ServerPlayer': 1,
+	'/root/RpcGame/ClientPlayer': 2,
 }
 
 enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
 	DROP_BOMB        = 1 << 1, # Bit 1
 	TELEPORT         = 1 << 2, # Bit 2
-	IS_ON_FLOOR      = 1 << 3, # Bit 3
 }
 
 var input_path_mapping_reverse := {}
@@ -20,10 +19,10 @@ func _init() -> void:
 
 func serialize_input(all_input: Dictionary) -> PoolByteArray:
 	var buffer := StreamPeerBuffer.new()
-	buffer.resize(16)
+	buffer.resize(16) # size to be bigger than actual size
 	
 	buffer.put_u32(all_input['$'])
-	buffer.put_u8(all_input.size() - 1)
+	buffer.put_u8(all_input.size() - 1) # -1 because of the $ key
 	for path in all_input:
 		if path == '$':
 			continue
@@ -38,8 +37,6 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 			header |= HeaderFlags.DROP_BOMB
 		if input.get('teleport', false):
 			header |= HeaderFlags.TELEPORT
-		if input.get('is_on_floor', false):
-			header |= HeaderFlags.IS_ON_FLOOR
 		
 		buffer.put_u8(header)
 		
@@ -47,7 +44,7 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 			buffer.put_64(input['input_vector_x'])
 			buffer.put_64(input['input_vector_y'])
 	
-	buffer.resize(buffer.get_position())
+	buffer.resize(buffer.get_position()) # resize to actual size
 	return buffer.data_array
 
 func unserialize_input(serialized: PoolByteArray) -> Dictionary:
@@ -74,8 +71,8 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 		input["drop_bomb"] = true
 	if header & HeaderFlags.TELEPORT:
 		input["teleport"] = true
-	if header & HeaderFlags.IS_ON_FLOOR:
-		input["is_on_floor"] = true
+#	if header & HeaderFlags.IS_ON_FLOOR:
+#		input["is_on_floor"] = true
 	
 	all_input[path] = input
 	return all_input
