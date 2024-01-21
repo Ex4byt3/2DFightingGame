@@ -450,7 +450,6 @@ text = "DESKTOP"
 valign = 1
 
 [node name="RPCConnectionPanel" type="Control" parent="PrimaryMenu"]
-visible = false
 anchor_left = 0.095
 anchor_top = 0.3
 anchor_right = 0.395
@@ -497,7 +496,7 @@ columns = 2
 
 [node name="HostLabel" type="Label" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
 margin_right = 126.0
-margin_bottom = 31.0
+margin_bottom = 39.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 text = "host"
@@ -508,13 +507,14 @@ uppercase = true
 [node name="HostField" type="LineEdit" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
 margin_left = 130.0
 margin_right = 255.0
-margin_bottom = 31.0
+margin_bottom = 39.0
 size_flags_horizontal = 3
+text = "127.0.0.1"
 
 [node name="PortLabel" type="Label" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
-margin_top = 37.0
+margin_top = 45.0
 margin_right = 126.0
-margin_bottom = 68.0
+margin_bottom = 84.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 text = "port"
@@ -524,9 +524,10 @@ uppercase = true
 
 [node name="PortField" type="LineEdit" parent="PrimaryMenu/RPCConnectionPanel/EntryContainer"]
 margin_left = 130.0
-margin_top = 37.0
+margin_top = 45.0
 margin_right = 255.0
-margin_bottom = 68.0
+margin_bottom = 84.0
+text = "6000"
 
 [node name="SelectionContainer" type="HBoxContainer" parent="PrimaryMenu/RPCConnectionPanel"]
 anchor_top = 0.8
@@ -537,7 +538,7 @@ custom_constants/separation = 0
 
 [node name="ServerButton" type="Button" parent="PrimaryMenu/RPCConnectionPanel/SelectionContainer"]
 margin_right = 127.0
-margin_bottom = 24.0
+margin_bottom = 29.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 17 )
@@ -546,7 +547,7 @@ text = "SERVER"
 [node name="ClientButton" type="Button" parent="PrimaryMenu/RPCConnectionPanel/SelectionContainer"]
 margin_left = 127.0
 margin_right = 255.0
-margin_bottom = 24.0
+margin_bottom = 29.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 17 )
