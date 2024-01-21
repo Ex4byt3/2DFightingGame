@@ -81,26 +81,26 @@ func process_packet(msg: Dictionary) -> void:
 func send_ping(peer_id: int, msg: Dictionary) -> void:
 	#print("SENDING PING!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_PING, msg)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 0)
+	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 0)
 
 func _remote_ping(msg: Dictionary) -> void:
 	#DEBUG
 	print("_remote_ping msg: " + str(msg))
 	
-	emit_signal("received_ping", NetworkGlobal.OPP_STEAM_ID, msg)
+	emit_signal("received_ping", NetworkGlobal.STEAM_OPP_ID, msg)
 
 func send_ping_back(peer_id: int, msg: Dictionary) -> void:
 	#print("SENDING PING BACK!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_PING_BACK, msg)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 0)
+	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 0)
 
 func _remote_ping_back(msg: Dictionary) -> void:
-	emit_signal("received_ping_back", NetworkGlobal.OPP_STEAM_ID, msg)
+	emit_signal("received_ping_back", NetworkGlobal.STEAM_OPP_ID, msg)
 
 func send_remote_start(peer_id: int) -> void:
 	#print("SENDING REMOTE START!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_START, emptyData)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 8, 0)
+	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 8, 0)
 
 func _remote_start() -> void:
 	emit_signal("received_remote_start")
@@ -108,7 +108,7 @@ func _remote_start() -> void:
 func send_remote_stop(peer_id: int) -> void:
 	#print("SENDING REMOTE STOP!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_START, emptyData)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 8, 0)
+	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 8, 0)
 
 func _remote_stop() -> void:
 	emit_signal("received_remote_stop")
@@ -116,11 +116,11 @@ func _remote_stop() -> void:
 func send_input_tick(peer_id: int, msg: PoolByteArray) -> void:
 	#print("SENDING INPUT TICK!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_INPUT_TICK, msg)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 0)
+	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 0)
 	
 # _rit is short for _receive_input_tick.
 func _rit(peer_id: int, msg: PoolByteArray) -> void:
-	emit_signal("received_input_tick", NetworkGlobal.OPP_STEAM_ID, msg)
+	emit_signal("received_input_tick", NetworkGlobal.STEAM_OPP_ID, msg)
 	
 	# DEBUG
 	# debug_counter += 1
@@ -132,7 +132,7 @@ func _rit(peer_id: int, msg: PoolByteArray) -> void:
 
 # Changed to Global variable
 func is_network_host() -> bool:
-	return NetworkGlobal.IS_STEAM_HOST
+	return NetworkGlobal.STEAM_IS_HOST
 
 # Changed to Global variable
 func get_network_unique_id() -> int:

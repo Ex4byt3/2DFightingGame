@@ -1,9 +1,10 @@
 extends Control
 
 
-# Preload the game scene as a packed scene
+# Preload the game scenes as packed scenes
 var steam_scene = preload("res://scenes/SteamGame.tscn")
-#var steam_scene = preload("res://scenes/SteamGame.tscn")
+var rpc_scene = preload("res://scenes/RpcGame.tscn")
+var local_scene = preload("res://scenes/LocalGame.tscn")
 
 
 # Onready var for primary buttons
@@ -12,8 +13,8 @@ onready var local_tab = $PrimaryMenu/LocalTab
 onready var training_tab = $PrimaryMenu/TrainingTab
 onready var records_tab = $PrimaryMenu/RecordsTab
 onready var quit_tab = $PrimaryMenu/QuitTab
-onready var settings_button = $PrimaryMenu/HeaderBar/SettingsButton
 
+onready var settings_button = $PrimaryMenu/HeaderBar/SettingsButton
 onready var versus_button = $PrimaryMenu/LocalTab/VersusButton
 
 # Onready var for RPC
@@ -67,39 +68,45 @@ func on_icon_clicked() -> void:
 
 # 
 func on_rpc_server_pressed() -> void:
-	pass
+	NetworkGlobal.NETWORK_TYPE = 1
+	NetworkGlobal.RPC_IS_HOST = true
+	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
+	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
+	get_tree().change_scene_to(rpc_scene)
 	#GameSignalBus.emit_rpc_server_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
 	#get_tree().change_scene_to(main_scene)
 
 
 #
 func on_rpc_client_pressed() -> void:
-	pass
+	NetworkGlobal.NETWORK_TYPE = 1
+	NetworkGlobal.RPC_IS_HOST = false
+	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
+	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
+	get_tree().change_scene_to(rpc_scene)
 	#GameSignalBus.emit_rpc_client_start(rpc_host_field.get_text(), int(rpc_port_field.get_text()))
 	#get_tree().change_scene_to(main_scene)
 
 
 #
 func on_steam_server_pressed() -> void:
-	#GameSignalBus.emit_steam_server_start(int(steamid_field.get_text()))
-	NetworkGlobal.IS_STEAM_HOST = true
-	#NetworkGlobal.OPP_STEAM_ID = int(steamid_field.text)
+	NetworkGlobal.NETWORK_TYPE = 2
+	NetworkGlobal.STEAM_IS_HOST = true
 	get_tree().change_scene_to(steam_scene)
 
 
 #
 func on_steam_client_pressed() -> void:
-	#GameSignalBus.emit_steam_server_start(steamid_field)
-	NetworkGlobal.IS_STEAM_HOST = false
-	NetworkGlobal.OPP_STEAM_ID = int(steamid_field.text)
+	NetworkGlobal.NETWORK_TYPE = 2
+	NetworkGlobal.STEAM_IS_HOST = false
+	NetworkGlobal.STEAM_OPP_ID = int(steamid_field.text)
 	get_tree().change_scene_to(steam_scene)
 
 
 #
 func on_versus_button_pressed() -> void:
-	pass
-	#get_tree().change_scene_to(main_scene)
-	#GameSignalBus.emit_local_play_start()
+	NetworkGlobal.NETWORK_TYPE = 0
+	get_tree().change_scene_to(local_scene)
 
 
 # Makes the settings menu visible and hides primary menu

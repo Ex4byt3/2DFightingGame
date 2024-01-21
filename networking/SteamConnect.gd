@@ -1,6 +1,5 @@
 extends Node
 
-const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
 const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
 
 onready var message_label = $Messages/MessageLabel
@@ -36,7 +35,7 @@ func _ready() -> void:
 	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
 	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
-	Steam.setIdentitySteamID64("OPP_STEAM_ID", NetworkGlobal.OPP_STEAM_ID)
+	Steam.setIdentitySteamID64("STEAM_OPP_ID", NetworkGlobal.STEAM_OPP_ID)
 	
 	setup_match()
 	
@@ -47,18 +46,18 @@ func _process(delta):
 		
 func setup_match() -> void:
 	
-	print("Network Globals: ", NetworkGlobal.NETWORK_TYPE, NetworkGlobal.IS_STEAM_HOST, NetworkGlobal.OPP_STEAM_ID)
+	print("Network Globals: ", NetworkGlobal.NETWORK_TYPE, NetworkGlobal.STEAM_IS_HOST, NetworkGlobal.STEAM_OPP_ID)
 	
 	if NetworkGlobal.NETWORK_TYPE != 2:
 		print("Networking type is not set to STEAM, aborting...")
 		get_tree().quit()
 	
-	if NetworkGlobal.IS_STEAM_HOST:
+	if NetworkGlobal.STEAM_IS_HOST:
 		johnny.randomize()
 		message_label.text = "Listening..."
 	else:
 		var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
-		Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
+		Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 1)
 
 
 # Responsible for creating packets to be sent over the steam network.
@@ -103,25 +102,25 @@ func process_networking_message(msg: Dictionary) -> void:
 			print("Could not match packet types from message")
 
 func connect_to_server() -> void:
-	if NetworkGlobal.IS_STEAM_HOST:
+	if NetworkGlobal.STEAM_IS_HOST:
 		return
 	var packet = create_networking_message(SYNC_TYPE.CONNECT, emptyData)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
+	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 1)
 
 # Runs on both clients when the users establish a connection
 func network_peer_connected():
 	
 	message_label.text = "Connected!"
-	SyncManager.add_peer(NetworkGlobal.OPP_STEAM_ID)
+	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_ID)
 	
-	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.IS_STEAM_HOST)
-	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.IS_STEAM_HOST)
+	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.STEAM_IS_HOST)
+	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.STEAM_IS_HOST)
 	
-	if NetworkGlobal.IS_STEAM_HOST:
+	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."
 		#rpc("setup_match", {mother_seed = johnny.get_seed()})
 		var setup_packet = create_networking_message(SYNC_TYPE.START, {mother_seed = johnny.get_seed()})
-		Steam.sendMessageToUser("OPP_STEAM_ID", setup_packet, 0, 1)
+		Steam.sendMessageToUser("STEAM_OPP_ID", setup_packet, 0, 1)
 		
 		# Give a little time to get ping data.
 		set_match_rng({mother_seed = johnny.get_seed()})
@@ -138,7 +137,7 @@ func set_match_rng(info: Dictionary) -> void:
 	server_player.rng.set_seed(johnny.randi())
 
 func _on_server_disconnected() -> void:
-	network_peer_disconnected(NetworkGlobal.OPP_STEAM_ID)
+	network_peer_disconnected(NetworkGlobal.STEAM_OPP_ID)
 	
 func _on_SyncManager_sync_started() -> void:
 	message_label.text = "Started!"
@@ -193,7 +192,7 @@ func _on_ResetButton_pressed() -> void:
 	SyncManager.clear_peers()
 	SyncManager.reset_network_adaptor()
 	
-	Steam.closeSessionWithUser("OPP_STEAM_ID")
+	Steam.closeSessionWithUser("STEAM_OPP_ID")
 	print("Resetting to main menu...")
 	get_tree().reload_current_scene()
 
@@ -208,20 +207,20 @@ func _on_ResetButton_pressed() -> void:
 func _on_network_messages_session_request(sender_id: String):
 	
 	# If we're not a host, and someone is trying to communicate with us, we ignore them.
-	if not NetworkGlobal.IS_STEAM_HOST:
+	if not NetworkGlobal.STEAM_IS_HOST:
 		return
 	
 	var sender_id_int = sender_id.to_int()
 	
 	# Identity_Reference is equal to the steam id as a string, assigned to the
 	# int value of the steam id
-	NetworkGlobal.OPP_STEAM_ID = sender_id_int
-	Steam.setIdentitySteamID64("OPP_STEAM_ID", sender_id_int)
+	NetworkGlobal.STEAM_OPP_ID = sender_id_int
+	Steam.setIdentitySteamID64("STEAM_OPP_ID", sender_id_int)
 	Steam.acceptSessionWithUser(sender_id)
 	
 	# We don't know what this user wants yet, but we're going to tell them
 	# we accepted their request.
 	var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
-	Steam.sendMessageToUser("OPP_STEAM_ID", packet, 0, 1)
+	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 1)
 	
 	print("Steam ID of messager: " + sender_id)
