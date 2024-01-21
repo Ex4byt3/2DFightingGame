@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=2]
 [ext_resource path="res://scripts/Main.gd" type="Script" id=3]
-[ext_resource path="res://networking/SteamConnect.gd" type="Script" id=4]
+[ext_resource path="res://scripts/networking/SteamConnect.gd" type="Script" id=4]
 [ext_resource path="res://assets/floor.png" type="Texture" id=5]
 
 [sub_resource type="SGRectangleShape2D" id=1]

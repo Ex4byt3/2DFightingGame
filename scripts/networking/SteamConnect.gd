@@ -1,6 +1,6 @@
 extends Node
 
-const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
+const SteamNetworkAdaptor = preload("res://scripts/networking/SteamNetworkAdaptor.gd")
 
 onready var message_label = $Messages/MessageLabel
 onready var sync_lost_label = $Messages/SyncLostLabel

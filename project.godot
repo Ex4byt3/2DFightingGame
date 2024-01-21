@@ -57,12 +57,12 @@ default_bus_layout="res://sound/default_bus_layout.tres"
 SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
 SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 SyncReplay="*res://addons/godot-rollback-netcode/SyncReplay.gd"
-SteamInit="*res://networking/SteamInit.gd"
-NetworkGlobal="*res://networking/NetworkGlobal.gd"
-GameSignalBus="*res://autoloads/GameSignalBus.gd"
-SettingsSingalBus="*res://autoloads/SettingsSingalBus.gd"
-SettingsData="*res://autoloads/SettingsData.gd"
-SettingsManager="*res://autoloads/SettingsManager.gd"
+SteamInit="*res://scripts/networking/SteamInit.gd"
+NetworkGlobal="*res://scripts/networking/NetworkGlobal.gd"
+GameSignalBus="*res://scripts/autoloads/GameSignalBus.gd"
+SettingsSingalBus="*res://scripts/autoloads/SettingsSingalBus.gd"
+SettingsData="*res://scripts/autoloads/SettingsData.gd"
+SettingsManager="*res://scripts/autoloads/SettingsManager.gd"
 
 [debug]
 
@@ -160,7 +160,7 @@ limits/debugger_stdout/max_chars_per_second=21105
 rollback/max_buffer_size=10
 rollback/sound_manager/default_sound_bus="Sound"
 rollback/classes/network_adaptor="res://addons/godot-rollback-netcode/RPCNetworkAdaptor.gd"
-rollback/classes/message_serializer="res://networking/CustomMessageSerializer.gd"
+rollback/classes/message_serializer="res://scripts/networking/CustomMessageSerializer.gd"
 rollback/debug/rollback_ticks=4
 rollback/debug/random_rollback_ticks=10
 rollback/log_inspector/replay_match_scene_path="res://scenes/Main.tscn"
