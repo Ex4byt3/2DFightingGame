@@ -87,7 +87,7 @@ func _remote_ping(msg: Dictionary) -> void:
 	#DEBUG
 	print("_remote_ping msg: " + str(msg))
 	
-	emit_signal("received_ping", NetworkGlobal.STEAM_OPP_ID, msg)
+	emit_signal("received_ping", NetworkGlobal.STEAM_SHORT_ID, msg)
 
 func send_ping_back(peer_id: int, msg: Dictionary) -> void:
 	#print("SENDING PING BACK!")
@@ -95,7 +95,7 @@ func send_ping_back(peer_id: int, msg: Dictionary) -> void:
 	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 0)
 
 func _remote_ping_back(msg: Dictionary) -> void:
-	emit_signal("received_ping_back", NetworkGlobal.STEAM_OPP_ID, msg)
+	emit_signal("received_ping_back", NetworkGlobal.STEAM_SHORT_ID, msg)
 
 func send_remote_start(peer_id: int) -> void:
 	#print("SENDING REMOTE START!")
@@ -120,7 +120,7 @@ func send_input_tick(peer_id: int, msg: PoolByteArray) -> void:
 	
 # _rit is short for _receive_input_tick.
 func _rit(peer_id: int, msg: PoolByteArray) -> void:
-	emit_signal("received_input_tick", NetworkGlobal.STEAM_OPP_ID, msg)
+	emit_signal("received_input_tick", NetworkGlobal.STEAM_SHORT_ID, msg)
 	
 	# DEBUG
 	# debug_counter += 1

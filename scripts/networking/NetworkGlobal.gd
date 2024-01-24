@@ -18,3 +18,4 @@ var RPC_PORT: int = 0
 # Steam Rollback Logic
 var STEAM_IS_HOST: bool = false
 var STEAM_OPP_ID: int = 1
+var STEAM_SHORT_ID: int = 1

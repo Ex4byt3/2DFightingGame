@@ -111,7 +111,8 @@ func connect_to_server() -> void:
 func network_peer_connected():
 	
 	message_label.text = "Connected!"
-	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_ID)
+	NetworkGlobal.STEAM_SHORT_ID = NetworkGlobal.STEAM_OPP_ID << 32;
+	SyncManager.add_peer(NetworkGlobal.STEAM_SHORT_ID)
 	
 	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.STEAM_IS_HOST)
 	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.STEAM_IS_HOST)
