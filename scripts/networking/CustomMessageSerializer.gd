@@ -1,9 +1,6 @@
 extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 
-var input_path_mapping := {
-	'/root/RpcGame/ServerPlayer': 1,
-	'/root/RpcGame/ClientPlayer': 2
-}
+var input_path_mapping := {}
 
 enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
@@ -18,6 +15,11 @@ func _init() -> void:
 		input_path_mapping = {
 			'/root/SteamGame/ServerPlayer': 1,
 			'/root/SteamGame/ClientPlayer': 2
+		}
+	elif NetworkGlobal.NETWORK_TYPE == 1:
+		input_path_mapping = {
+			'/root/RpcGame/ServerPlayer': 1,
+			'/root/RpcGame/ClientPlayer': 2
 		}
 	
 	for key in input_path_mapping:
