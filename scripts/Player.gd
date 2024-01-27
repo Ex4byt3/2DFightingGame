@@ -55,6 +55,8 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 func _network_process(input: Dictionary) -> void:
 	# get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+	
+	var air_control := ONE * 4
 
 	# velocity vector
 	velocity.x += input_vector.x * acceleration
@@ -72,6 +74,10 @@ func _network_process(input: Dictionary) -> void:
 			velocity.x = min(0, velocity.x + friction)
 		if input_vector.y == ONE:
 			velocity.y = -16 * ONE
+	else:
+		if velocity.x > 0:
+			velocity.x = max(0, velocity.x - (friction * air_control) / (ONE * 4))
+		
 
 	# update position based velocity vector // position += velocity
 	fixed_position = fixed_position.add(velocity)
