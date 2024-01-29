@@ -6,8 +6,21 @@ var last_input_time = 0
 
 onready var rng = $NetworkRandomNumberGenerator
 
+var direction_mapping = {
+	[1, 1]: "UP RIGHT",
+	[1, 0]: "RIGHT",
+	[0, 1]: "UP",
+	[0, -1]: "DOWN",
+	[1, -1]: "DOWN RIGHT",
+	[-1, -1]: "DOWN LEFT",
+	[-1, 0]: "LEFT",
+	[-1, 1]: "UP LEFT"
+}
+
+var tickCount := 0
 var velocity := SGFixed.vector2(0, 0)
 var input_prefix := "player1_"
+var controlBuffer := [[0, 0, 0]]
 var groundAcceleration := 4
 var airAcceleration := 2
 var friction := ONE
@@ -54,11 +67,9 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 func _network_process(input: Dictionary) -> void:
 	# get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
-
+	
 	# velocity vector
 	velocity.y += gravity
-	
-	
 	
 	if is_on_floor:
 		velocity.x += input_vector.x * groundAcceleration
@@ -93,7 +104,25 @@ func _network_process(input: Dictionary) -> void:
 		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
 	
 	# INPUT BUFFER
-	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(input_prefix + "InputBuffer")
+	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(self.name + "InputBuffer")
+	tickCount += 1
+	if controlBuffer.size() > 20:
+		controlBuffer.pop_back()
+	if controlBuffer.front()[0] == input_vector.x/ONE and controlBuffer.front()[1] == input_vector.y/ONE:
+		var ticks = controlBuffer.front()[2]
+		controlBuffer.pop_front()
+		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, ticks+1])
+	else:
+		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, 1])
+	
+	if self.name == "ServerPlayer":
+		inputBuffer.text = "PLAYER ONE INPUT BUFFER:\n"
+	else:
+		inputBuffer.text = "PLAYER TWO INPUT BUFFER:\n"
+	
+	for item in controlBuffer:
+		var direction = direction_mapping.get([item[0], item[1]], "NEUTRAL")
+		inputBuffer.text += str(direction) + " " + str(item[2]) + " TICKS\n"
 	
 	if input.get("drop_bomb", false):
 		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
@@ -101,7 +130,12 @@ func _network_process(input: Dictionary) -> void:
 	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
 
 func _save_state() -> Dictionary:
+	var control_buffer = []
+	for item in controlBuffer:
+		control_buffer.append(item)
 	return {
+		control_buffer = control_buffer,
+		tick_count = tickCount,
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
@@ -110,6 +144,10 @@ func _save_state() -> Dictionary:
 	}
 
 func _load_state(state: Dictionary) -> void:
+	controlBuffer = []
+	for item in state['control_buffer']:
+		controlBuffer.append(item)
+	tickCount = state['tick_count']
 	fixed_position.x = state['fixed_position_x']
 	fixed_position.y = state['fixed_position_y']
 	velocity.x = state['velocity_x']
