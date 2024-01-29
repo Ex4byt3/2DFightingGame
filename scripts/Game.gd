@@ -3,11 +3,11 @@ extends Node2D
 const LOG_FILE_DIRECTORY = 'res://logs'
 
 var DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
-var SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
+var SteamNetworkAdaptor = preload("res://scripts/networking/SteamNetworkAdaptor.gd")
 
-var SteamConnect = preload("res://networking/SteamConnect.gd")
-var RpcConnect = preload("res://networking/RPCConnect.gd")
-var LocalConnect = preload("res://networking/LocalConnect.gd")
+var SteamConnect = preload("res://scripts/networking/SteamConnect.gd")
+var RpcConnect = preload("res://scripts/networking/RPCConnect.gd")
+var LocalConnect = preload("res://scripts/networking/LocalConnect.gd")
 
 onready var message_label = $Messages/MessageLabel
 onready var sync_lost_label = $Messages/SyncLostLabel
