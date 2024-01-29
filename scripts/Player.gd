@@ -56,7 +56,6 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 func _network_process(input: Dictionary) -> void:
 	# get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
-	
 	var air_control := ONE * 4
 
 	# velocity vector
@@ -79,7 +78,7 @@ func _network_process(input: Dictionary) -> void:
 			jumps_remaining -= 1
 	else:
 		if jumps_remaining > 0 and input_vector.y == ONE:
-			velocity.y = -8 *ONE
+			velocity.y = -8 * ONE
 			jumps_remaining -= 1
 	#else:
 	#	if velocity.x > 0:
