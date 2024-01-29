@@ -15,6 +15,7 @@ var maxSpeed := 8 * ONE
 var gravity := ONE / 2
 var teleporting := false
 var is_on_floor := false
+var jumps_remaining := 2
 
 # like Input.get_vector but for SGFixedVector2
 # note: Input.is_action_just_pressed returns a float
@@ -68,15 +69,22 @@ func _network_process(input: Dictionary) -> void:
 		velocity.x = -maxSpeed
 	
 	if is_on_floor:
+		jumps_remaining = 2
 		if velocity.x > 0:
 			velocity.x = max(0, velocity.x - friction)
 		if velocity.x < 0:
 			velocity.x = min(0, velocity.x + friction)
-		if input_vector.y == ONE:
+		if input_vector.y == ONE and jumps_remaining > 0:
 			velocity.y = -16 * ONE
+			jumps_remaining -= 1
 	else:
-		if velocity.x > 0:
-			velocity.x = max(0, velocity.x - (friction * air_control) / (ONE * 4))
+		if jumps_remaining > 0 and input_vector.y == ONE:
+			velocity.y = -8 *ONE
+			jumps_remaining -= 1
+	#else:
+	#	if velocity.x > 0:
+	#		velocity.x = max(0, velocity.x - (friction * air_control) / (ONE * 4))
+			
 		
 
 	# update position based velocity vector // position += velocity
