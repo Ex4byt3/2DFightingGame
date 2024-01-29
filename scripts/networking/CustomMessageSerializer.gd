@@ -1,14 +1,13 @@
 extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 
 var input_path_mapping := {
-	'/root/SteamGame/ServerPlayer': 1,
-	'/root/SteamGame/ClientPlayer': 2
+	'/root/RpcGame/ServerPlayer': 1,
+	'/root/RpcGame/ClientPlayer': 2
 }
 
 enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
 	DROP_BOMB        = 1 << 1, # Bit 1
-	TELEPORT         = 1 << 2, # Bit 2
 }
 
 var input_path_mapping_reverse := {}
@@ -46,8 +45,6 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 			header |= HeaderFlags.HAS_INPUT_VECTOR
 		if input.get('drop_bomb', false):
 			header |= HeaderFlags.DROP_BOMB
-		if input.get('teleport', false):
-			header |= HeaderFlags.TELEPORT
 		
 		buffer.put_u8(header)
 		
@@ -80,8 +77,6 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 		input["input_vector_y"] = buffer.get_64()
 	if header & HeaderFlags.DROP_BOMB:
 		input["drop_bomb"] = true
-	if header & HeaderFlags.TELEPORT:
-		input["teleport"] = true
 #	if header & HeaderFlags.IS_ON_FLOOR:
 #		input["is_on_floor"] = true
 	

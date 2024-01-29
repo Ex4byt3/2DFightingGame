@@ -5,15 +5,15 @@ const ONE := SGFixed.ONE # 1
 var last_input_time = 0
 
 onready var rng = $NetworkRandomNumberGenerator
-onready var debugLabel = $DebugLabel
 
 var velocity := SGFixed.vector2(0, 0)
 var input_prefix := "player1_"
-var acceleration := 4
+var groundAcceleration := 4
+var airAcceleration := 2
 var friction := ONE
-var maxSpeed := 8 * ONE
+var maxGroundSpeed := 8 * ONE
+var maxAirSpeed := 6 * ONE
 var gravity := ONE / 2
-var teleporting := false
 var is_on_floor := false
 var jumps_remaining := 2
 
@@ -41,8 +41,6 @@ func _get_local_input() -> Dictionary:
 		input["input_vector_y"] = input_vector.y
 	if Input.is_action_just_pressed(input_prefix + "bomb"):
 		input["drop_bomb"] = true
-	if Input.is_action_just_pressed(input_prefix + "teleport"):
-		input["teleport"] = true
 	
 	return input
 
@@ -56,18 +54,14 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 func _network_process(input: Dictionary) -> void:
 	# get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
-	var air_control := ONE * 4
 
 	# velocity vector
-	velocity.x += input_vector.x * acceleration
 	velocity.y += gravity
 	
-	if velocity.x > maxSpeed:
-		velocity.x = maxSpeed
-	if velocity.x < -maxSpeed:
-		velocity.x = -maxSpeed
+	
 	
 	if is_on_floor:
+		velocity.x += input_vector.x * groundAcceleration
 		jumps_remaining = 2
 		if velocity.x > 0:
 			velocity.x = max(0, velocity.x - friction)
@@ -76,32 +70,33 @@ func _network_process(input: Dictionary) -> void:
 		if input_vector.y == ONE and jumps_remaining > 0:
 			velocity.y = -16 * ONE
 			jumps_remaining -= 1
+		if velocity.x > maxGroundSpeed:
+			velocity.x = maxGroundSpeed
+		if velocity.x < -maxGroundSpeed:
+			velocity.x = -maxGroundSpeed
 	else:
-		if jumps_remaining > 0 and input_vector.y == ONE:
-			velocity.y = -8 * ONE
-			jumps_remaining -= 1
-	#else:
-	#	if velocity.x > 0:
-	#		velocity.x = max(0, velocity.x - (friction * air_control) / (ONE * 4))
-			
-		
+		velocity.x += input_vector.x * airAcceleration
+		if velocity.x > maxAirSpeed:
+			velocity.x = maxAirSpeed
+		if velocity.x < -maxAirSpeed:
+			velocity.x = -maxAirSpeed
 
 	# update position based velocity vector // position += velocity
 	fixed_position = fixed_position.add(velocity)
 	velocity = move_and_slide(velocity, SGFixed.vector2(0, -ONE))
 	
 	# DEBUG
-	debugLabel.text = "POSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+	var debugLabel = get_parent().get_node("DebugOverlay").get_node(self.name + "DebugLabel")
+	if self.name == "ServerPlayer":
+		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+	else:
+		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+	
+	# INPUT BUFFER
+	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(input_prefix + "InputBuffer")
 	
 	if input.get("drop_bomb", false):
 		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	
-	if input.get("teleport", false):
-		fixed_position.x = (rng.randi() % 1024) * ONE
-		fixed_position.y = (rng.randi() % 600) * ONE
-		teleporting = true
-	else:
-		teleporting = false
 		
 	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
 
@@ -112,7 +107,6 @@ func _save_state() -> Dictionary:
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
 		is_on_floor = is_on_floor,
-		teleporting = teleporting,
 	}
 
 func _load_state(state: Dictionary) -> void:
@@ -121,10 +115,7 @@ func _load_state(state: Dictionary) -> void:
 	velocity.x = state['velocity_x']
 	velocity.y = state['velocity_y']
 	is_on_floor = state['is_on_floor']
-	teleporting = state['teleporting']
 	sync_to_physics_engine()
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
-	if old_state.get('teleporting', false) or new_state.get('teleporting', false):
-		return
 	fixed_position = old_state['fixed_position'].linear_interpolate(new_state['fixed_position'], weight)

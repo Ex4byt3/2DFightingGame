@@ -19,10 +19,3 @@ script = ExtResource( 3 )
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="."]
 shape = SubResource( 1 )
-
-[node name="DebugLabel" type="Label" parent="."]
-margin_left = -41.0
-margin_top = -117.0
-margin_right = 5.0
-margin_bottom = -103.0
-text = "DEBUG"
