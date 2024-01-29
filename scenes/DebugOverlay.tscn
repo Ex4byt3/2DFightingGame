@@ -2,28 +2,28 @@
 
 [node name="DebugOverlay" type="Node2D"]
 
-[node name="player1_DebugLabel" type="Label" parent="."]
+[node name="ServerPlayerDebugLabel" type="Label" parent="."]
 margin_left = 241.0
 margin_top = 1.0
 margin_right = 373.0
 margin_bottom = 15.0
 text = "PLAYER ONE DEBUG:"
 
-[node name="player2_DebugLabel" type="Label" parent="."]
+[node name="ClientPlayerDebugLabel" type="Label" parent="."]
 margin_left = 475.0
 margin_top = 2.0
 margin_right = 610.0
 margin_bottom = 16.0
 text = "PLAYER TWO DEBUG:"
 
-[node name="player1_InputBuffer" type="Label" parent="."]
+[node name="ServerPlayerInputBuffer" type="Label" parent="."]
 margin_left = 1.0
 margin_top = 2.0
 margin_right = 179.0
 margin_bottom = 33.0
 text = "PLAYER ONE INPUT BUFFER:"
 
-[node name="player2_InputBuffer" type="Label" parent="."]
+[node name="ClientPlayerInputBuffer" type="Label" parent="."]
 margin_left = 672.0
 margin_top = 1.0
 margin_right = 853.0

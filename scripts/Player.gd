@@ -58,6 +58,8 @@ func _network_process(input: Dictionary) -> void:
 	# velocity vector
 	velocity.y += gravity
 	
+	
+	
 	if is_on_floor:
 		velocity.x += input_vector.x * groundAcceleration
 		jumps_remaining = 2
@@ -84,12 +86,11 @@ func _network_process(input: Dictionary) -> void:
 	velocity = move_and_slide(velocity, SGFixed.vector2(0, -ONE))
 	
 	# DEBUG
-	var debugLabel = get_parent().get_node("DebugOverlay").get_node(input_prefix + "DebugLabel")
-	if input_prefix == "player1_":
-		debugLabel.text = "PLAYER ONE DEBUG:"
+	var debugLabel = get_parent().get_node("DebugOverlay").get_node(self.name + "DebugLabel")
+	if self.name == "ServerPlayer":
+		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
 	else:
-		debugLabel.text = "PLAYER TWO DEBUG:"
-	debugLabel.text += "\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
 	
 	# INPUT BUFFER
 	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(input_prefix + "InputBuffer")
