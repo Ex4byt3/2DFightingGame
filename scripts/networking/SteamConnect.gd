@@ -113,9 +113,9 @@ func network_peer_connected():
 	message_label.text = "Connected!"
 	if (NetworkGlobal.STEAM_IS_HOST):
 		NetworkGlobal.STEAM_SHORT_ID = 1
-		NetworkGlobal.STEAM_SHORT_OPP_ID = NetworkGlobal.STEAM_OPP_ID >> 32
+		NetworkGlobal.STEAM_SHORT_OPP_ID = 2
 	else:
-		NetworkGlobal.STEAM_SHORT_ID = SteamInit.STEAM_ID << 32
+		NetworkGlobal.STEAM_SHORT_ID = 2
 		NetworkGlobal.STEAM_SHORT_OPP_ID = 1
 		
 	SyncManager.add_peer(NetworkGlobal.STEAM_SHORT_OPP_ID)
@@ -125,7 +125,6 @@ func network_peer_connected():
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."
-		#rpc("setup_match", {mother_seed = johnny.get_seed()})
 		var setup_packet = create_networking_message(SYNC_TYPE.START, {mother_seed = johnny.get_seed()})
 		Steam.sendMessageToUser("STEAM_OPP_ID", setup_packet, 0, 1)
 		

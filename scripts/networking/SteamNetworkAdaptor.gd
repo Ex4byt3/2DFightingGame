@@ -84,9 +84,7 @@ func send_ping(peer_id: int, msg: Dictionary) -> void:
 	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 0)
 
 func _remote_ping(msg: Dictionary) -> void:
-	#DEBUG
-	print("_remote_ping msg: " + str(msg))
-	
+	#print("_remote_ping msg: " + str(msg))
 	emit_signal("received_ping", NetworkGlobal.STEAM_SHORT_OPP_ID, msg)
 
 func send_ping_back(peer_id: int, msg: Dictionary) -> void:
@@ -107,7 +105,7 @@ func _remote_start() -> void:
 
 func send_remote_stop(peer_id: int) -> void:
 	#print("SENDING REMOTE STOP!")
-	var packet = create_packet(PACKET_TYPE.REMOTE_START, emptyData)
+	var packet = create_packet(PACKET_TYPE.REMOTE_STOP, emptyData)
 	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 8, 0)
 
 func _remote_stop() -> void:
