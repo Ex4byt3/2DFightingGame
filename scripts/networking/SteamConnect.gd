@@ -8,7 +8,7 @@ onready var server_player = $ServerPlayer
 onready var client_player = $ClientPlayer
 onready var johnny = $Johnny
 
-const LOG_FILE_DIRECTORY = 'E:/godot-logs'
+const LOG_FILE_DIRECTORY = 'res://logs'
 
 var logging_enabled := true
 var emptyData: PoolByteArray = [1]
