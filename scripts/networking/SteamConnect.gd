@@ -111,11 +111,12 @@ func connect_to_server() -> void:
 func network_peer_connected():
 	
 	message_label.text = "Connected!"
+	
 	if (NetworkGlobal.STEAM_IS_HOST):
 		NetworkGlobal.STEAM_SHORT_ID = 1
-		NetworkGlobal.STEAM_SHORT_OPP_ID = 2
+		NetworkGlobal.STEAM_SHORT_OPP_ID = NetworkGlobal.STEAM_OPP_ID >> 32
 	else:
-		NetworkGlobal.STEAM_SHORT_ID = 2
+		NetworkGlobal.STEAM_SHORT_ID = SteamInit.STEAM_ID >> 32
 		NetworkGlobal.STEAM_SHORT_OPP_ID = 1
 		
 	SyncManager.add_peer(NetworkGlobal.STEAM_SHORT_OPP_ID)
@@ -125,11 +126,12 @@ func network_peer_connected():
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."
-		var setup_packet = create_networking_message(SYNC_TYPE.START, {mother_seed = johnny.get_seed()})
+		var seed_info = {mother_seed = johnny.get_seed()}
+		var setup_packet = create_networking_message(SYNC_TYPE.START, seed_info)
 		Steam.sendMessageToUser("STEAM_OPP_ID", setup_packet, 0, 1)
 		
 		# Give a little time to get ping data.
-		set_match_rng({mother_seed = johnny.get_seed()})
+		set_match_rng(seed_info)
 		yield(get_tree().create_timer(2.0), "timeout")
 		SyncManager.start()
 		
@@ -186,7 +188,7 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 			if peer:
 				peer.close_connection()
 		NETWORK_TYPE.STEAM:
-			Steam.closeSessionWithUser("OPPONENT_ID")
+			Steam.closeSessionWithUser("STEAM_OPP_ID")
 		_:
 			print("Sync error, but not in a networked game")
 			
