@@ -1,10 +1,23 @@
-## Delta 2D Fighting Game
+Godot Rollback Tutorial
+=======================
 
----
-#### Quick description
-Delta is a 2D Fighting Game created in Godot made to be entirely deterministic to allow rollback between two different clients.
+This Git repo is a companion to this video tutorial series:
 
-#### Development
-Delta is currently being hosted through GitHub and being collaborated on through **Jira**. The link for our board can be found [here](https://g27.atlassian.net/jira/software/c/projects/DFGB/boards/2)
+https://www.youtube.com/playlist?list=PLCBLMvLIundBXwTa6gwlOUNc29_9btoir
 
-Documentation is currently a work in progress...
+... which is teaching how to use the Godot Rollback Netcode addon:
+
+https://gitlab.com/snopek-games/godot-rollback-netcode/
+
+There is a branch for each part in the series, in an attempt to make it easier
+to follow along.
+
+Credits
+-------
+
+ * Art from "Kinds and Pigs" by Pixel Frog:
+   https://pixelfrog-assets.itch.io/kings-and-pigs
+
+ * Sound effects from "SFX: The Ultimate 2017 16 bit Mini pack" by phoenix1291:
+   https://opengameart.org/content/sfx-the-ultimate-2017-16-bit-mini-pack
+
