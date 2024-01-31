@@ -109,14 +109,20 @@ func network_peer_connected():
 	
 	message_label.text = "Connected!"
 	
-	if (NetworkGlobal.STEAM_IS_HOST):
+	if NetworkGlobal.STEAM_IS_HOST:
 		NetworkGlobal.STEAM_SHORT_ID = 1
-		NetworkGlobal.STEAM_SHORT_OPP_ID = NetworkGlobal.STEAM_OPP_ID >> 32
+		NetworkGlobal.STEAM_SHORT_OPP_ID = 2
 	else:
-		NetworkGlobal.STEAM_SHORT_ID = SteamInit.STEAM_ID >> 32
+		NetworkGlobal.STEAM_SHORT_ID = 2
 		NetworkGlobal.STEAM_SHORT_OPP_ID = 1
 		
 	SyncManager.add_peer(NetworkGlobal.STEAM_SHORT_OPP_ID)
+	
+	$ServerPlayer.set_network_master(1)
+	if NetworkGlobal.STEAM_IS_HOST:
+		$ClientPlayer.set_network_master(NetworkGlobal.STEAM_SHORT_OPP_ID)
+	else:
+		$ClientPlayer.set_network_master(NetworkGlobal.STEAM_SHORT_ID)
 	
 	server_player.set_meta("IS_NETWORK_MASTER", NetworkGlobal.STEAM_IS_HOST)
 	client_player.set_meta("IS_NETWORK_MASTER", not NetworkGlobal.STEAM_IS_HOST)

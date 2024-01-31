@@ -1,8 +1,8 @@
 extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 
 var input_path_mapping := {
-	'/root/RpcGame/ServerPlayer': 1,
-	'/root/RpcGame/ClientPlayer': 2
+	'/root/SteamGame/ServerPlayer': 1,
+	'/root/SteamGame/ClientPlayer': 2
 }
 
 enum HeaderFlags {
