@@ -69,6 +69,7 @@ func on_icon_clicked() -> void:
 # 
 func on_rpc_server_pressed() -> void:
 	NetworkGlobal.NETWORK_TYPE = 1
+	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.RPC_IS_HOST = true
 	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
 	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
@@ -80,6 +81,7 @@ func on_rpc_server_pressed() -> void:
 #
 func on_rpc_client_pressed() -> void:
 	NetworkGlobal.NETWORK_TYPE = 1
+	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.RPC_IS_HOST = false
 	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
 	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
@@ -91,6 +93,7 @@ func on_rpc_client_pressed() -> void:
 #
 func on_steam_server_pressed() -> void:
 	NetworkGlobal.NETWORK_TYPE = 2
+	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.STEAM_IS_HOST = true
 	get_tree().change_scene_to(steam_scene)
 
@@ -98,6 +101,7 @@ func on_steam_server_pressed() -> void:
 #
 func on_steam_client_pressed() -> void:
 	NetworkGlobal.NETWORK_TYPE = 2
+	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.STEAM_IS_HOST = false
 	NetworkGlobal.STEAM_OPP_ID = int(steamid_field.text)
 	get_tree().change_scene_to(steam_scene)
@@ -106,6 +110,7 @@ func on_steam_client_pressed() -> void:
 #
 func on_versus_button_pressed() -> void:
 	NetworkGlobal.NETWORK_TYPE = 0
+	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	get_tree().change_scene_to(local_scene)
 
 

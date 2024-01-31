@@ -110,19 +110,19 @@ func network_peer_connected():
 	message_label.text = "Connected!"
 	
 	if NetworkGlobal.STEAM_IS_HOST:
-		NetworkGlobal.STEAM_SHORT_ID = 1
-		NetworkGlobal.STEAM_SHORT_OPP_ID = 2
+		NetworkGlobal.STEAM_PEER_ID = 1
+		NetworkGlobal.STEAM_OPP_PEER_ID = 2
 	else:
-		NetworkGlobal.STEAM_SHORT_ID = 2
-		NetworkGlobal.STEAM_SHORT_OPP_ID = 1
+		NetworkGlobal.STEAM_PEER_ID = 2
+		NetworkGlobal.STEAM_OPP_PEER_ID = 1
 		
-	SyncManager.add_peer(NetworkGlobal.STEAM_SHORT_OPP_ID)
+	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_PEER_ID)
 	
 	server_player.set_network_master(1)
 	if NetworkGlobal.STEAM_IS_HOST:
-		client_player.set_network_master(NetworkGlobal.STEAM_SHORT_OPP_ID)
+		client_player.set_network_master(NetworkGlobal.STEAM_OPP_PEER_ID)
 	else:
-		client_player.set_network_master(NetworkGlobal.STEAM_SHORT_ID)
+		client_player.set_network_master(NetworkGlobal.STEAM_PEER_ID)
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."
