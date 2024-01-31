@@ -1,0 +1,702 @@
+[gd_scene load_steps=30 format=2]
+
+[ext_resource path="res://resources/menu/settings/settings_menubar_theme.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/menu/MainMenuButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/menu/IconHighlights.gd" type="Script" id=3]
+[ext_resource path="res://scripts/menu/MainMenu.gd" type="Script" id=4]
+[ext_resource path="res://assets/menu/buttongroup_mainmenu.tres" type="ButtonGroup" id=5]
+[ext_resource path="res://assets/menu/buttongroup_online.tres" type="ButtonGroup" id=6]
+[ext_resource path="res://assets/menu/online_button.png" type="Texture" id=7]
+[ext_resource path="res://assets/menu/panel_header_gradient.tres" type="Texture" id=8]
+[ext_resource path="res://assets/menu/training_button.png" type="Texture" id=9]
+[ext_resource path="res://assets/menu/local_button.png" type="Texture" id=10]
+[ext_resource path="res://assets/menu/local_button_focused.png" type="Texture" id=11]
+[ext_resource path="res://resources/menu/IconHighlights/iconhighlight_gradient.tres" type="Texture" id=12]
+[ext_resource path="res://assets/menu/delta_logo.png" type="Texture" id=13]
+[ext_resource path="res://assets/menu/training_button_focused.png" type="Texture" id=14]
+[ext_resource path="res://resources/menu/textures/primary_menu_normal_gradient.tres" type="Texture" id=15]
+[ext_resource path="res://assets/menu/quit_button_focused.png" type="Texture" id=16]
+[ext_resource path="res://assets/menu/settings_button.png" type="Texture" id=17]
+[ext_resource path="res://assets/menu/Bar.png" type="Texture" id=18]
+[ext_resource path="res://assets/menu/records_button_focused.png" type="Texture" id=19]
+[ext_resource path="res://assets/menu/records_button.png" type="Texture" id=20]
+[ext_resource path="res://assets/menu/online_button_focused.png" type="Texture" id=21]
+[ext_resource path="res://assets/menu/header_background.tres" type="Texture" id=22]
+[ext_resource path="res://assets/menu/quit_button.png" type="Texture" id=23]
+[ext_resource path="res://assets/menu/background.jpeg" type="Texture" id=24]
+[ext_resource path="res://assets/menu/settings_button_focused.png" type="Texture" id=25]
+[ext_resource path="res://scenes/menu/OnlineMenu.tscn" type="PackedScene" id=26]
+[ext_resource path="res://scenes/menu/MenuHeader.tscn" type="PackedScene" id=27]
+[ext_resource path="res://scenes/menu/SettingsMenu.tscn" type="PackedScene" id=28]
+[ext_resource path="res://resources/menu/main/mainmenu_theme.tres" type="Theme" id=29]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 4 )
+
+[node name="Main" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 29 )
+
+[node name="MainBackground" type="TextureRect" parent="Main"]
+self_modulate = Color( 0.694118, 0.694118, 0.694118, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+texture = ExtResource( 24 )
+expand = true
+stretch_mode = 1
+
+[node name="HeaderBar" type="Control" parent="Main"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 0.08
+theme = ExtResource( 1 )
+
+[node name="HeaderBackground" type="TextureRect" parent="Main/HeaderBar"]
+modulate = Color( 1, 1, 1, 0.588235 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+texture = ExtResource( 22 )
+expand = true
+stretch_mode = 1
+
+[node name="Logo" type="TextureRect" parent="Main/HeaderBar"]
+anchor_left = 0.01
+anchor_top = 0.05
+anchor_right = 0.294
+anchor_bottom = 0.95
+theme = ExtResource( 1 )
+texture = ExtResource( 13 )
+expand = true
+stretch_mode = 5
+
+[node name="SettingsButton" type="TextureButton" parent="Main/HeaderBar"]
+anchor_left = 0.8
+anchor_top = 0.3
+anchor_right = 0.9
+anchor_bottom = 0.7
+theme = ExtResource( 1 )
+texture_normal = ExtResource( 17 )
+texture_pressed = ExtResource( 25 )
+texture_hover = ExtResource( 25 )
+expand = true
+stretch_mode = 4
+
+[node name="MainPane" type="Control" parent="Main"]
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="AccentBar" type="TextureRect" parent="Main/MainPane"]
+anchor_left = 0.01
+anchor_top = 0.12
+anchor_right = 0.019
+anchor_bottom = 0.802
+theme = ExtResource( 1 )
+texture = ExtResource( 18 )
+expand = true
+stretch_mode = 5
+
+[node name="AccentGradient" type="TextureRect" parent="Main/MainPane"]
+show_behind_parent = true
+anchor_right = 0.09
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 1
+
+[node name="IconHighlights" type="GridContainer" parent="Main/MainPane"]
+anchor_top = 0.12
+anchor_right = 0.09
+anchor_bottom = 0.82
+theme = ExtResource( 29 )
+custom_constants/vseparation = -1
+custom_constants/hseparation = -1
+script = ExtResource( 3 )
+
+[node name="OnlineHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
+margin_right = 115.0
+margin_bottom = 92.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 12 )
+nine_patch_stretch = true
+
+[node name="LocalHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
+margin_top = 91.0
+margin_right = 115.0
+margin_bottom = 183.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 12 )
+nine_patch_stretch = true
+
+[node name="TrainingHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
+margin_top = 182.0
+margin_right = 115.0
+margin_bottom = 273.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 12 )
+nine_patch_stretch = true
+
+[node name="RecordsHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
+margin_top = 272.0
+margin_right = 115.0
+margin_bottom = 363.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 12 )
+nine_patch_stretch = true
+
+[node name="QuitHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
+margin_top = 362.0
+margin_right = 115.0
+margin_bottom = 453.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_progress = ExtResource( 12 )
+nine_patch_stretch = true
+
+[node name="MenuIcons" type="GridContainer" parent="Main/MainPane"]
+anchor_left = 0.02
+anchor_top = 0.12
+anchor_right = 0.09
+anchor_bottom = 0.82
+theme = ExtResource( 1 )
+custom_constants/vseparation = -1
+custom_constants/hseparation = -1
+
+[node name="OnlineButton" type="TextureButton" parent="Main/MainPane/MenuIcons"]
+margin_right = 89.0
+margin_bottom = 114.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 7 )
+texture_pressed = ExtResource( 21 )
+texture_hover = ExtResource( 21 )
+expand = true
+stretch_mode = 4
+
+[node name="LocalButton" type="TextureButton" parent="Main/MainPane/MenuIcons"]
+margin_top = 113.0
+margin_right = 89.0
+margin_bottom = 227.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 10 )
+texture_pressed = ExtResource( 11 )
+texture_hover = ExtResource( 11 )
+expand = true
+stretch_mode = 4
+
+[node name="TrainingButton" type="TextureButton" parent="Main/MainPane/MenuIcons"]
+margin_top = 226.0
+margin_right = 89.0
+margin_bottom = 340.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 14 )
+texture_hover = ExtResource( 14 )
+expand = true
+stretch_mode = 4
+
+[node name="RecordsButton" type="TextureButton" parent="Main/MainPane/MenuIcons"]
+margin_top = 339.0
+margin_right = 89.0
+margin_bottom = 453.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 20 )
+texture_pressed = ExtResource( 19 )
+texture_hover = ExtResource( 19 )
+expand = true
+stretch_mode = 4
+
+[node name="QuitButton" type="TextureButton" parent="Main/MainPane/MenuIcons"]
+visible = false
+margin_top = 362.0
+margin_right = 89.0
+margin_bottom = 453.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 5 )
+texture_normal = ExtResource( 23 )
+texture_pressed = ExtResource( 16 )
+texture_hover = ExtResource( 16 )
+expand = true
+stretch_mode = 4
+
+[node name="MenuButtons" type="VBoxContainer" parent="Main/MainPane"]
+visible = false
+anchor_top = 0.1
+anchor_right = 0.25
+anchor_bottom = 0.7
+
+[node name="MainMenuButton" parent="Main/MainPane/MenuButtons" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 320.0
+margin_bottom = 80.0
+
+[node name="MainMenuButton2" parent="Main/MainPane/MenuButtons" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 84.0
+margin_right = 320.0
+margin_bottom = 164.0
+
+[node name="MainMenuButton3" parent="Main/MainPane/MenuButtons" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 168.0
+margin_right = 320.0
+margin_bottom = 248.0
+
+[node name="MainMenuButton4" parent="Main/MainPane/MenuButtons" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 252.0
+margin_right = 320.0
+margin_bottom = 332.0
+
+[node name="OnlineTab" type="VBoxContainer" parent="Main/MainPane"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.12
+anchor_right = 0.395
+anchor_bottom = 0.3
+theme = ExtResource( 29 )
+custom_constants/separation = 0
+
+[node name="RPCButton" type="Button" parent="Main/MainPane/OnlineTab"]
+margin_right = 384.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="Main/MainPane/OnlineTab/RPCButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "ENET"
+valign = 1
+
+[node name="SteamButton" type="Button" parent="Main/MainPane/OnlineTab"]
+margin_top = 58.0
+margin_right = 384.0
+margin_bottom = 116.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+toggle_mode = true
+group = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="Main/MainPane/OnlineTab/SteamButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "STEAM"
+valign = 1
+
+[node name="LocalTab" type="VBoxContainer" parent="Main/MainPane"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.26
+anchor_right = 0.395
+anchor_bottom = 0.44
+theme = ExtResource( 29 )
+custom_constants/separation = 0
+
+[node name="VersusButton" type="Button" parent="Main/MainPane/LocalTab"]
+margin_right = 384.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/LocalTab/VersusButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "VERSUS"
+valign = 1
+
+[node name="PlaceholderButton" type="Button" parent="Main/MainPane/LocalTab"]
+margin_top = 58.0
+margin_right = 384.0
+margin_bottom = 116.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/LocalTab/PlaceholderButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "PLACEHOLDER"
+valign = 1
+
+[node name="TrainingTab" type="VBoxContainer" parent="Main/MainPane"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.4
+anchor_right = 0.395
+anchor_bottom = 0.58
+theme = ExtResource( 29 )
+custom_constants/separation = 0
+
+[node name="PracticeButton" type="Button" parent="Main/MainPane/TrainingTab"]
+margin_right = 255.0
+margin_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/TrainingTab/PracticeButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "PRACTICE"
+valign = 1
+
+[node name="TutorialButton" type="Button" parent="Main/MainPane/TrainingTab"]
+margin_top = 43.0
+margin_right = 255.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/TrainingTab/TutorialButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "TUTORIAL"
+valign = 1
+
+[node name="RecordsTab" type="VBoxContainer" parent="Main/MainPane"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.54
+anchor_right = 0.395
+anchor_bottom = 0.9
+theme = ExtResource( 29 )
+custom_constants/separation = 0
+
+[node name="GameplayButton" type="Button" parent="Main/MainPane/RecordsTab"]
+margin_right = 255.0
+margin_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/RecordsTab/GameplayButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "GAMEPLAY"
+valign = 1
+
+[node name="CollectionButton" type="Button" parent="Main/MainPane/RecordsTab"]
+margin_top = 43.0
+margin_right = 255.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/RecordsTab/CollectionButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "COLLECTION"
+valign = 1
+
+[node name="GalleryButton" type="Button" parent="Main/MainPane/RecordsTab"]
+margin_top = 86.0
+margin_right = 255.0
+margin_bottom = 129.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/RecordsTab/GalleryButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "GALLERY"
+valign = 1
+
+[node name="FishingButton" type="Button" parent="Main/MainPane/RecordsTab"]
+margin_top = 129.0
+margin_right = 255.0
+margin_bottom = 172.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/RecordsTab/FishingButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "FISHING"
+valign = 1
+
+[node name="QuitTab" type="VBoxContainer" parent="Main/MainPane"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.68
+anchor_right = 0.395
+anchor_bottom = 0.86
+theme = ExtResource( 29 )
+custom_constants/separation = 0
+
+[node name="TitleButton" type="Button" parent="Main/MainPane/QuitTab"]
+margin_right = 255.0
+margin_bottom = 43.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/QuitTab/TitleButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "TITLE"
+valign = 1
+
+[node name="DesktopButton" type="Button" parent="Main/MainPane/QuitTab"]
+margin_top = 43.0
+margin_right = 255.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Main/MainPane/QuitTab/DesktopButton"]
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "DESKTOP"
+valign = 1
+
+[node name="RPCConnectionPanel" type="Control" parent="Main/MainPane"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.3
+anchor_right = 0.395
+anchor_bottom = 0.55
+theme = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="Main/MainPane/RPCConnectionPanel"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 1
+
+[node name="PanelHeader" type="TextureRect" parent="Main/MainPane/RPCConnectionPanel"]
+anchor_right = 1.0
+anchor_bottom = 0.2
+size_flags_stretch_ratio = 0.3
+theme = ExtResource( 1 )
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 1
+
+[node name="Label" type="Label" parent="Main/MainPane/RPCConnectionPanel/PanelHeader"]
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+text = "ENET CONNECTION"
+valign = 2
+
+[node name="EntryContainer" type="GridContainer" parent="Main/MainPane/RPCConnectionPanel"]
+anchor_top = 0.22
+anchor_right = 1.0
+anchor_bottom = 0.8
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+custom_constants/vseparation = 6
+custom_constants/hseparation = 4
+columns = 2
+
+[node name="HostLabel" type="Label" parent="Main/MainPane/RPCConnectionPanel/EntryContainer"]
+margin_right = 190.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "host"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="HostField" type="LineEdit" parent="Main/MainPane/RPCConnectionPanel/EntryContainer"]
+margin_left = 194.0
+margin_right = 384.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+text = "127.0.0.1"
+
+[node name="PortLabel" type="Label" parent="Main/MainPane/RPCConnectionPanel/EntryContainer"]
+margin_top = 45.0
+margin_right = 190.0
+margin_bottom = 84.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "port"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="PortField" type="LineEdit" parent="Main/MainPane/RPCConnectionPanel/EntryContainer"]
+margin_left = 194.0
+margin_top = 45.0
+margin_right = 384.0
+margin_bottom = 84.0
+text = "6000"
+
+[node name="SelectionContainer" type="HBoxContainer" parent="Main/MainPane/RPCConnectionPanel"]
+anchor_top = 0.8
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+custom_constants/separation = 0
+
+[node name="ServerButton" type="Button" parent="Main/MainPane/RPCConnectionPanel/SelectionContainer"]
+margin_right = 192.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+text = "SERVER"
+
+[node name="ClientButton" type="Button" parent="Main/MainPane/RPCConnectionPanel/SelectionContainer"]
+margin_left = 192.0
+margin_right = 384.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+text = "CLIENT"
+
+[node name="SteamConnectionPanel" type="Control" parent="Main/MainPane"]
+visible = false
+anchor_left = 0.095
+anchor_top = 0.3
+anchor_right = 0.395
+anchor_bottom = 0.55
+theme = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="Main/MainPane/SteamConnectionPanel"]
+modulate = Color( 0, 0, 0, 1 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+texture = ExtResource( 15 )
+expand = true
+stretch_mode = 1
+
+[node name="PanelHeader" type="TextureRect" parent="Main/MainPane/SteamConnectionPanel"]
+anchor_right = 1.0
+anchor_bottom = 0.2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 1
+
+[node name="Label" type="Label" parent="Main/MainPane/SteamConnectionPanel/PanelHeader"]
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "STEAM CONNECTION"
+valign = 2
+
+[node name="EntryContainer" type="GridContainer" parent="Main/MainPane/SteamConnectionPanel"]
+anchor_top = 0.22
+anchor_right = 1.0
+anchor_bottom = 0.8
+size_flags_vertical = 3
+custom_constants/vseparation = 6
+custom_constants/hseparation = 4
+columns = 2
+
+[node name="IdLabel" type="Label" parent="Main/MainPane/SteamConnectionPanel/EntryContainer"]
+margin_right = 190.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "STEAM ID"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="IdField" type="LineEdit" parent="Main/MainPane/SteamConnectionPanel/EntryContainer"]
+margin_left = 194.0
+margin_right = 384.0
+margin_bottom = 39.0
+size_flags_horizontal = 3
+
+[node name="SelectionContainer" type="HBoxContainer" parent="Main/MainPane/SteamConnectionPanel"]
+anchor_top = 0.8
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 0
+
+[node name="ServerButton" type="Button" parent="Main/MainPane/SteamConnectionPanel/SelectionContainer"]
+margin_right = 192.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "SERVER"
+
+[node name="ClientButton" type="Button" parent="Main/MainPane/SteamConnectionPanel/SelectionContainer"]
+margin_left = 192.0
+margin_right = 384.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "CLIENT"
+
+[node name="SettingsMenu" parent="." instance=ExtResource( 28 )]
+visible = false
+
+[node name="OnlineMenu" parent="." instance=ExtResource( 26 )]
+visible = false
+
+[node name="MenuHeader" parent="." instance=ExtResource( 27 )]
+
+[node name="GameScene" type="Node2D" parent="."]
+
+[connection signal="mouse_entered" from="Main/MainPane/MenuIcons/OnlineButton" to="Main/MainPane/IconHighlights" method="_on_OnlineButton_mouse_entered"]
+[connection signal="toggled" from="Main/MainPane/MenuIcons/OnlineButton" to="." method="_on_OnlineButton_toggled"]
+[connection signal="mouse_entered" from="Main/MainPane/MenuIcons/LocalButton" to="Main/MainPane/IconHighlights" method="_on_LocalButton_mouse_entered"]
+[connection signal="toggled" from="Main/MainPane/MenuIcons/LocalButton" to="." method="_on_LocalButton_toggled"]
+[connection signal="mouse_entered" from="Main/MainPane/MenuIcons/TrainingButton" to="Main/MainPane/IconHighlights" method="_on_TrainingButton_mouse_entered"]
+[connection signal="toggled" from="Main/MainPane/MenuIcons/TrainingButton" to="." method="_on_TrainingButton_toggled"]
+[connection signal="mouse_entered" from="Main/MainPane/MenuIcons/RecordsButton" to="Main/MainPane/IconHighlights" method="_on_RecordsButton_mouse_entered"]
+[connection signal="toggled" from="Main/MainPane/MenuIcons/RecordsButton" to="." method="_on_RecordsButton_toggled"]
+[connection signal="mouse_entered" from="Main/MainPane/MenuIcons/QuitButton" to="Main/MainPane/IconHighlights" method="_on_QuitButton_mouse_entered"]
+[connection signal="toggled" from="Main/MainPane/MenuIcons/QuitButton" to="." method="_on_QuitButton_toggled"]
+[connection signal="toggled" from="Main/MainPane/OnlineTab/RPCButton" to="." method="_on_RPCButton_toggled"]
+[connection signal="toggled" from="Main/MainPane/OnlineTab/SteamButton" to="." method="_on_SteamButton_toggled"]
+[connection signal="pressed" from="Main/MainPane/QuitTab/DesktopButton" to="." method="_on_DesktopButton_pressed"]

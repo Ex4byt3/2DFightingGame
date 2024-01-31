@@ -24,10 +24,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/godot-rollback-netcode/NetworkTimer.gd"
 }, {
-"base": "Resource",
+"base": "Reference",
 "class": "PlayerKeybinds",
 "language": "GDScript",
-"path": "res://resources/settings/PlayerKeybinds.gd"
+"path": "res://resources/menu/settings/PlayerKeybinds.gd"
 }, {
 "base": "",
 "class": "Steam",
@@ -45,7 +45,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Demo"
-run/main_scene="res://scenes/MainMenu.tscn"
+run/main_scene="res://scenes/menu/MainMenu.tscn"
 config/icon="res://assets/icon.png"
 
 [audio]
@@ -74,9 +74,11 @@ multirun/other_window_args="join"
 
 [display]
 
-window/size/width=853
-window/size/height=480
+window/size/width=1280
+window/size/height=720
 window/size/resizable=false
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 
