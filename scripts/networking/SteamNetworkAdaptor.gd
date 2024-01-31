@@ -137,4 +137,4 @@ func get_network_unique_id() -> int:
 	return NetworkGlobal.STEAM_SHORT_ID
 
 func is_network_master_for_node(node: Node) -> bool:
-	return node.get_meta("IS_NETWORK_MASTER", false)
+	return node.get_network_master() == NetworkGlobal.STEAM_SHORT_ID
