@@ -123,6 +123,7 @@ func _on_StartLobbyButton_button_up():
 	}
 	
 	SettingsSingalBus.emit_set_lobby_settings(lobby_settings)
+	GameSignalBus.emit_create_lobby(lobby_settings)
 	
 	lobby_creation_popup.visible = false
 	
