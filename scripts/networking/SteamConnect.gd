@@ -6,7 +6,6 @@ onready var message_label = $Messages/MessageLabel
 onready var sync_lost_label = $Messages/SyncLostLabel
 onready var server_player = $ServerPlayer
 onready var client_player = $ClientPlayer
-onready var johnny = $Johnny
 
 const LOG_FILE_DIRECTORY = 'res://logs'
 
@@ -53,7 +52,6 @@ func setup_match() -> void:
 		get_tree().quit()
 	
 	if NetworkGlobal.STEAM_IS_HOST:
-		johnny.randomize()
 		message_label.text = "Listening..."
 	else:
 		var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
@@ -93,7 +91,6 @@ func process_networking_message(msg: Dictionary) -> void:
 			network_peer_connected()
 		SYNC_TYPE.START:
 			print("SYNC,START")
-			set_match_rng(bytes2var(data))
 			network_peer_connected()
 		SYNC_TYPE.STOP:
 			print("SYNC,STOP")
@@ -126,23 +123,16 @@ func network_peer_connected():
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."
-		var seed_info = {mother_seed = johnny.get_seed()}
-		var setup_packet = create_networking_message(SYNC_TYPE.START, seed_info)
+		var setup_packet = create_networking_message(SYNC_TYPE.START, emptyData)
 		Steam.sendMessageToUser("STEAM_OPP_ID", setup_packet, 0, 1)
 		
 		# Give a little time to get ping data.
-		set_match_rng(seed_info)
 		yield(get_tree().create_timer(2.0), "timeout")
 		SyncManager.start()
 		
 func network_peer_disconnected(peer_id: int):
 	message_label.text = "Disconnected"
 	SyncManager.remove_peer(peer_id)
-
-func set_match_rng(info: Dictionary) -> void:
-	johnny.set_seed(info['mother_seed'])
-	client_player.rng.set_seed(johnny.randi())
-	server_player.rng.set_seed(johnny.randi())
 
 func _on_server_disconnected() -> void:
 	network_peer_disconnected(NetworkGlobal.STEAM_OPP_ID)
