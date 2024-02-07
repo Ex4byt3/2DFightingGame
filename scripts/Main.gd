@@ -1,7 +1,7 @@
 extends Node2D
 
 const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
-const SteamNetworkAdaptor = preload("res://networking/SteamNetworkAdaptor.gd")
+const SteamNetworkAdaptor = preload("res://scripts/networking/SteamNetworkAdaptor.gd")
 
 const LOG_FILE_DIRECTORY = 'res://logs'
 

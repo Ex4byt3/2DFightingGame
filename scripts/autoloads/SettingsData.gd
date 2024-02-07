@@ -1,9 +1,9 @@
 extends Node
 
-onready var player_keybind_resource = preload("res://resources/settings/playerkeybinds_default.tres")
+onready var player_keybind_resource = preload("res://resources/game_settings/playerkeybinds_default.tres")
 
-var window_mode_index = 0
-var resolution_index = 0
+var window_mode_index: int = 0
+var resolution_index: int = 0
 var loaded_settings = {}
 
 
@@ -15,16 +15,16 @@ func _ready():
 
 # Connect relevant signals from the SettingsSignalBus
 func handle_connecting_signals() -> void:
-	SettingsSingalBus.connect("load_settings_data", self, "load_settings_data")
-	SettingsSingalBus.connect("window_mode_selected", self, "on_window_mode_selected")
-	SettingsSingalBus.connect("resolution_selected", self, "on_resolution_selected")
+	SettingsSignalBus.connect("load_settings_data", self, "load_settings_data")
+	SettingsSignalBus.connect("window_mode_selected", self, "on_window_mode_selected")
+	SettingsSignalBus.connect("resolution_selected", self, "on_resolution_selected")
 
 
 # Loads all relevant setting data upon game launch
 func load_settings_data(data: Dictionary) -> void:
 	loaded_settings = data
-	
 	on_window_mode_selected(loaded_settings.window_mode_index)
+	on_resolution_selected(loaded_settings.resolution_index)
 	on_keybindings_loaded(loaded_settings.keybindings_dictionary)
 
 

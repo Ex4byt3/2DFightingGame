@@ -1,0 +1,272 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://resources/menu/header/header_theme.tres" type="Theme" id=1]
+[ext_resource path="res://resources/menu/button_groups/lobbytype_buttongroup.tres" type="ButtonGroup" id=2]
+[ext_resource path="res://resources/menu/main/accentgradient_texture.tres" type="Texture" id=3]
+[ext_resource path="res://scripts/menu/OnlineMenu.gd" type="Script" id=7]
+
+[node name="OnlineMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 7 )
+
+[node name="MenuBackground" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="BackgroundImage" type="TextureRect" parent="MenuBackground"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+
+[node name="BackgroundStyle" type="TextureRect" parent="MenuBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+
+[node name="MainPane" type="Control" parent="."]
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="LobbyScrollContainer" type="ScrollContainer" parent="MainPane"]
+anchor_left = 0.05
+anchor_top = 0.12
+anchor_right = 0.9
+anchor_bottom = 0.9
+margin_left = -0.520004
+margin_top = 0.0960007
+margin_right = 0.399902
+margin_bottom = -0.052002
+
+[node name="LobbyContainer" type="VBoxContainer" parent="MainPane/LobbyScrollContainer"]
+margin_right = 1088.92
+margin_bottom = 505.292
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="OnlineMenuBar" type="Control" parent="MainPane"]
+anchor_top = 0.02
+anchor_right = 1.0
+anchor_bottom = 0.13
+
+[node name="CreateLobbyButton" type="Button" parent="MainPane/OnlineMenuBar"]
+anchor_left = 0.05
+anchor_right = 0.2
+anchor_bottom = 0.4
+margin_bottom = -0.0317688
+theme = ExtResource( 1 )
+text = "Create Lobby"
+expand_icon = true
+
+[node name="SearchPane" type="VBoxContainer" parent="MainPane/OnlineMenuBar"]
+anchor_left = 0.6
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.8
+
+[node name="LineEdit" type="LineEdit" parent="MainPane/OnlineMenuBar/SearchPane"]
+margin_right = 384.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+placeholder_text = "type to search"
+
+[node name="Filters" type="HBoxContainer" parent="MainPane/OnlineMenuBar/SearchPane"]
+margin_top = 33.0
+margin_right = 384.0
+margin_bottom = 53.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
+margin_right = 125.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="LobbyType" type="OptionButton" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
+margin_left = 129.0
+margin_right = 254.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="LobbyState" type="OptionButton" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
+margin_left = 258.0
+margin_right = 384.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="LobbyCreationPopup" type="PopupPanel" parent="MainPane"]
+anchor_left = 0.075
+anchor_top = 0.177
+anchor_right = 0.6
+anchor_bottom = 0.6
+margin_top = 0.304001
+margin_bottom = -0.119995
+
+[node name="Control" type="Control" parent="MainPane/LobbyCreationPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="LobbyType" type="HBoxContainer" parent="MainPane/LobbyCreationPopup/Control"]
+anchor_left = 0.03
+anchor_top = 0.075
+anchor_right = 0.59
+anchor_bottom = 0.2
+margin_left = -0.16
+margin_top = 0.0213566
+margin_right = -0.200012
+margin_bottom = -0.0201683
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="SteamButton" type="Button" parent="MainPane/LobbyCreationPopup/Control/LobbyType"]
+margin_right = 80.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 80, 0 )
+toggle_mode = true
+pressed = true
+group = ExtResource( 2 )
+text = "STEAM"
+
+[node name="RPCButton" type="Button" parent="MainPane/LobbyCreationPopup/Control/LobbyType"]
+visible = false
+margin_left = 80.0
+margin_right = 160.0
+margin_bottom = 33.0
+rect_min_size = Vector2( 80, 0 )
+toggle_mode = true
+group = ExtResource( 2 )
+text = "ENET"
+
+[node name="BasicSettings" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control"]
+anchor_left = 0.03
+anchor_top = 0.3
+anchor_right = 0.59
+anchor_bottom = 0.725
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="NameEntry" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control/BasicSettings"]
+margin_right = 371.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/NameEntry"]
+margin_right = 371.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+text = "Lobby Name"
+
+[node name="LineEdit" type="LineEdit" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/NameEntry"]
+margin_top = 23.0
+margin_right = 371.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "enter lobby name"
+caret_blink = true
+
+[node name="HSeparator2" type="HSeparator" parent="MainPane/LobbyCreationPopup/Control/BasicSettings"]
+margin_top = 56.0
+margin_right = 371.0
+margin_bottom = 60.0
+custom_constants/separation = 4
+
+[node name="PassEntry" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control/BasicSettings"]
+margin_top = 64.0
+margin_right = 371.0
+margin_bottom = 116.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/PassEntry"]
+margin_right = 371.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+text = "Password (optional)"
+
+[node name="LineEdit" type="LineEdit" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/PassEntry"]
+margin_top = 23.0
+margin_right = 371.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "enter lobby password"
+caret_blink = true
+
+[node name="ENETEntry" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control"]
+visible = false
+anchor_left = 0.61
+anchor_top = 0.3
+anchor_right = 0.97
+anchor_bottom = 0.725
+
+[node name="IPEntry" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control/ENETEntry"]
+margin_right = 239.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MainPane/LobbyCreationPopup/Control/ENETEntry/IPEntry"]
+margin_right = 239.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+text = "IP"
+
+[node name="LineEdit" type="LineEdit" parent="MainPane/LobbyCreationPopup/Control/ENETEntry/IPEntry"]
+margin_top = 23.0
+margin_right = 239.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "enter host ip"
+caret_blink = true
+
+[node name="HSeparator2" type="HSeparator" parent="MainPane/LobbyCreationPopup/Control/ENETEntry"]
+margin_top = 56.0
+margin_right = 239.0
+margin_bottom = 60.0
+custom_constants/separation = 4
+
+[node name="PortEntry" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control/ENETEntry"]
+margin_top = 64.0
+margin_right = 239.0
+margin_bottom = 116.0
+
+[node name="Label" type="Label" parent="MainPane/LobbyCreationPopup/Control/ENETEntry/PortEntry"]
+margin_right = 239.0
+margin_bottom = 19.0
+size_flags_vertical = 1
+text = "Port"
+
+[node name="LineEdit" type="LineEdit" parent="MainPane/LobbyCreationPopup/Control/ENETEntry/PortEntry"]
+margin_top = 23.0
+margin_right = 239.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "enter host port"
+caret_blink = true
+
+[node name="ColorRect" type="ColorRect" parent="MainPane/LobbyCreationPopup/Control"]
+anchor_top = 0.8
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0.286275, 0.588235, 1 )
+
+[node name="StartLobbyButton" type="Button" parent="MainPane/LobbyCreationPopup/Control"]
+anchor_left = 0.4
+anchor_top = 0.85
+anchor_right = 0.6
+anchor_bottom = 0.95
+text = "Create"
+
+[connection signal="button_up" from="MainPane/OnlineMenuBar/CreateLobbyButton" to="." method="_on_CreateLobbyButton_button_up"]
+[connection signal="toggled" from="MainPane/LobbyCreationPopup/Control/LobbyType/RPCButton" to="." method="_on_RPCButton_toggled"]
+[connection signal="button_up" from="MainPane/LobbyCreationPopup/Control/StartLobbyButton" to="." method="_on_StartLobbyButton_button_up"]

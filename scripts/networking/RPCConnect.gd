@@ -33,7 +33,7 @@ func setup_match() -> void:
 	else:
 		on_rpc_client_start(NetworkGlobal.RPC_IP, NetworkGlobal.RPC_PORT)
 
-func on_rpc_server_start(host: String, port: int) -> void:
+func on_rpc_server_start(_host: String, port: int) -> void:
 	johnny.randomize()
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(port, 1)
