@@ -17,24 +17,26 @@ var direction_mapping = {
 	[-1, 1]: "UP LEFT" # 7
 }
 
-# attributes
+# attributes // to be tuned
 var velocity := SGFixed.vector2(0, 0)
-var friction := 1
-var groundAcceleration := 4 # TODO: ground movement similar to other anime fighters instead of this
-var walkingSpeed := 4
-var sprintingSpeed := 8
-var airAcceleration := 2
-var maxGroundSpeed := 8
+export var walkingSpeed := 4
+export var sprintingSpeed := 8
+var airAcceleration := 0.2
 var maxAirSpeed := 6
 var gravity := 2 # this is a divisor, so 1/2
 export var knockback_multiplier := 1
 export var weight := 100
+export var maxJumps := 2
 var jumpsRemaining := 2
-var jumpHeight := 16
+export var shortHopHeight := 8
+export var jumpHeight := 16
 var jumpSquatFrames := 4
+var jumpSquatTimer := 0
+var fullHop := true
+var jumpSquatting := false
 
 var facingRight := true # for flipping the sprite
-enum State { # player states
+enum State { # all possible player states
 	IDLE,
 	CROUCHING,
 	WALKING,
@@ -46,10 +48,7 @@ enum State { # player states
 	ATTACKING,
 	BLOCKING,
 	HITSTUN,
-	DEAD
-}
-
-enum Attack { # name every attack here, I've done the normals
+	DEAD,
 	NEUTRAL_L,
 	NEUTRAL_M,
 	NEUTRAL_H,
@@ -60,9 +59,7 @@ enum Attack { # name every attack here, I've done the normals
 	DOWN_M,
 	DOWN_H
 }
-
 var playerState := 0
-var attackState := 0
 
 # 
 var tickCount := 0 # is this used?
@@ -74,12 +71,11 @@ var controlBuffer := [[0, 0, 0]]
 
 
 func _ready():
-	# set fixed values
-	friction = friction * ONE
-	maxGroundSpeed = maxGroundSpeed * ONE
+	# set fixed point numbers
 	maxAirSpeed = maxAirSpeed * ONE
 	gravity = ONE / gravity
 	jumpHeight = -jumpHeight * ONE
+	shortHopHeight = -shortHopHeight * ONE
 
 	if self.name == "ClientPlayer":
 		facingRight = false
@@ -123,40 +119,77 @@ func _network_process(input: Dictionary) -> void:
 	# get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 
-	# TODO: parse input buffer
+	# DEBUG
+	update_dubug_label(input_vector)
 
-	# update states
-	update_states()
-	
-	# update animation
-	update_animation()
+	# Input Buffer
+	update_input_buffer(input_vector)
+	# TODO: parse input buffer
 
 	# calculate velocity
 	velocity.y += gravity
 	if is_on_floor:
-		if input_vector.x != 0:
+		jumpsRemaining = 2
+		if input_vector.x != 0 and not jumpSquatting: # might be able to replace jumpSquatting flag with just a platerState check
 			if input_vector.x > 0:
 				facingRight = true
 			else:
 				facingRight = false
-			if playerState == State.SPRINTING: # TODO: sprinting needs to be handeled by the input buffer and the sprint macro
+			if false: # TODO: sprinting needs to be handeled by the input buffer and the sprint macro, for now this is just false
 				velocity.x = sprintingSpeed * input_vector.x
+				playerState = State.SPRINTING
 			else:
 				velocity.x = walkingSpeed * input_vector.x
-		else:
+				playerState = State.WALKING
+		elif input_vector.x == 0: # if the player is not holding left or right
 			velocity.x = 0
-		if input_vector.y == ONE:
-			velocity.y = jumpHeight
-			jumpsRemaining -= 1
+			playerState = State.IDLE
+			
+		if input_vector.y == ONE: # jump
+			playerState = State.JUMPSQUAT
+			jumpSquatting = true
+		if jumpSquatting:
+			jumpSquatTimer += 1
+			if input_vector.y != ONE:
+				fullHop = false
+			if jumpSquatTimer >= jumpSquatFrames: # after jumpSquatFrames, the player jumps
+				if fullHop: # if the player is holding up during all jumpSquatFrames, the player jumps higher
+					velocity.y = jumpHeight
+					playerState = State.JUMPING
+				else:
+					velocity.y = shortHopHeight
+					playerState = State.JUMPING
+				jumpSquatTimer = 0
+				jumpSquatting = false
+				fullHop = true
+	else:
+		if input_vector.x != 0:
+			velocity.x += airAcceleration * input_vector.x
+			if velocity.x > maxAirSpeed:
+				velocity.x = maxAirSpeed
+			elif velocity.x < -maxAirSpeed:
+				velocity.x = -maxAirSpeed
+
+		# if input_vector.y == ONE and jumpsRemaining > 0:
+		# 	velocity.y = shortHopHeight
+		# 	jumpsRemaining -= 1
+		# 	playerState = State.JUMPING
+			
+			
 
 	# update position based velocity vector // position += velocity
 	fixed_position = fixed_position.add(velocity)
 	velocity = move_and_slide(velocity, SGFixed.vector2(0, -ONE))
 	
-	# DEBUG
-	update_dubug_label(input_vector)
+	if input.get("drop_bomb", false):
+		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
 
-	# INPUT BUFFER
+	# update animation
+	update_animation()
+		
+	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
+
+func update_input_buffer(input_vector):
 	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(self.name + "InputBuffer")
 	tickCount += 1
 	if controlBuffer.size() > 20:
@@ -167,40 +200,15 @@ func _network_process(input: Dictionary) -> void:
 		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, ticks+1])
 	else:
 		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, 1])
-	
+
 	if self.name == "ServerPlayer":
 		inputBuffer.text = "PLAYER ONE INPUT BUFFER:\n"
 	else:
 		inputBuffer.text = "PLAYER TWO INPUT BUFFER:\n"
-	
+
 	for item in controlBuffer:
 		var direction = direction_mapping.get([item[0], item[1]], "NEUTRAL")
 		inputBuffer.text += str(direction) + " " + str(item[2]) + " TICKS\n"
-	
-	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-		
-	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
-
-func update_states(): # TODO: states are missing
-	if is_on_floor:
-		if velocity.x == 0:
-			playerState = State.IDLE
-		else:
-			playerState = State.WALKING # TODO: add sprinting
-	else:
-		if velocity.y > 0:
-			playerState = State.FALLING
-		else:
-			playerState = State.JUMPING
-
-	# note that there will be many attacks, so this will be a bit more complex
-
-	if velocity.x != 0:
-		if velocity.x > 0:
-			facingRight = true
-		else:
-			facingRight = false
 
 func update_animation():
 	if facingRight:

@@ -126,40 +126,41 @@ script = ExtResource( 3 )
 
 [node name="OnlineHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
 margin_right = 115.0
-margin_bottom = 92.0
+margin_bottom = 114.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_progress = ExtResource( 12 )
 nine_patch_stretch = true
 
 [node name="LocalHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
-margin_top = 91.0
+margin_top = 113.0
 margin_right = 115.0
-margin_bottom = 183.0
+margin_bottom = 227.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_progress = ExtResource( 12 )
 nine_patch_stretch = true
 
 [node name="TrainingHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
-margin_top = 182.0
+margin_top = 226.0
 margin_right = 115.0
-margin_bottom = 273.0
+margin_bottom = 340.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_progress = ExtResource( 12 )
 nine_patch_stretch = true
 
 [node name="RecordsHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
-margin_top = 272.0
+margin_top = 339.0
 margin_right = 115.0
-margin_bottom = 363.0
+margin_bottom = 453.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture_progress = ExtResource( 12 )
 nine_patch_stretch = true
 
 [node name="QuitHighlight" type="TextureProgress" parent="Main/MainPane/IconHighlights"]
+visible = false
 margin_top = 362.0
 margin_right = 115.0
 margin_bottom = 453.0
