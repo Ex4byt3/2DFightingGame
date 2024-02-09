@@ -5,7 +5,6 @@
 [ext_resource path="res://scripts/gameplay/Explosion.gd" type="Script" id=3]
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd" type="Script" id=4]
 
-
 [sub_resource type="Animation" id=1]
 resource_name = "Explode"
 length = 0.45
