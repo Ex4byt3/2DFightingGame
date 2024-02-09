@@ -1,34 +1,41 @@
 extends SGKinematicBody2D
 
-const Bomb = preload("res://scenes//Bomb.tscn")
+const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const ONE := SGFixed.ONE # 1
 var last_input_time = 0
 
 onready var rng = $NetworkRandomNumberGenerator
 
 var direction_mapping = {
-	[1, 1]: "UP RIGHT",
-	[1, 0]: "RIGHT",
-	[0, 1]: "UP",
-	[0, -1]: "DOWN",
-	[1, -1]: "DOWN RIGHT",
-	[-1, -1]: "DOWN LEFT",
-	[-1, 0]: "LEFT",
-	[-1, 1]: "UP LEFT"
+	[1, 1]: "UP RIGHT", # 9
+	[1, 0]: "RIGHT", # 6
+	[0, 1]: "UP", # 8
+	[0, -1]: "DOWN", # 2
+	[1, -1]: "DOWN RIGHT", # 3
+	[-1, -1]: "DOWN LEFT", # 1
+	[-1, 0]: "LEFT", # 4
+	[-1, 1]: "UP LEFT" # 7
 }
 
-var tickCount := 0
+# attributes
 var velocity := SGFixed.vector2(0, 0)
-var input_prefix := "player1_"
-var controlBuffer := [[0, 0, 0]]
-var groundAcceleration := 4
-var airAcceleration := 2
 var friction := ONE
+var groundAcceleration := 4 # TODO: ground movement similar to other anime fighters instead of this
+var airAcceleration := 2
 var maxGroundSpeed := 8 * ONE
 var maxAirSpeed := 6 * ONE
 var gravity := ONE / 2
-var is_on_floor := false
+export var knockback_multiplier := 1
+export var weight := 100
 var jumps_remaining := 2
+
+# 
+var tickCount := 0 # is this used?
+var input_prefix := "player1_"
+var is_on_floor := false
+
+# 
+var controlBuffer := [[0, 0, 0]]
 
 # like Input.get_vector but for SGFixedVector2
 # note: Input.is_action_just_pressed returns a float
@@ -128,6 +135,8 @@ func _network_process(input: Dictionary) -> void:
 		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
 		
 	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
+
+
 
 func _save_state() -> Dictionary:
 	var control_buffer = []
