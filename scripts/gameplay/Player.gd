@@ -1,7 +1,7 @@
 extends SGKinematicBody2D
 
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
-const ONE := SGFixed.ONE # 1
+const ONE := SGFixed.ONE # fixed point 1
 var last_input_time = 0
 
 onready var rng = $NetworkRandomNumberGenerator
@@ -19,15 +19,50 @@ var direction_mapping = {
 
 # attributes
 var velocity := SGFixed.vector2(0, 0)
-var friction := ONE
+var friction := 1
 var groundAcceleration := 4 # TODO: ground movement similar to other anime fighters instead of this
+var walkingSpeed := 4
+var sprintingSpeed := 8
 var airAcceleration := 2
-var maxGroundSpeed := 8 * ONE
-var maxAirSpeed := 6 * ONE
-var gravity := ONE / 2
+var maxGroundSpeed := 8
+var maxAirSpeed := 6
+var gravity := 2 # this is a divisor, so 1/2
 export var knockback_multiplier := 1
 export var weight := 100
-var jumps_remaining := 2
+var jumpsRemaining := 2
+var jumpHeight := 16
+var jumpSquatFrames := 4
+
+var facingRight := true # for flipping the sprite
+enum State { # player states
+	IDLE,
+	CROUCHING,
+	WALKING,
+	SPRINTING,
+	DASHING,
+	JUMPSQUAT,
+	JUMPING,
+	FALLING,
+	ATTACKING,
+	BLOCKING,
+	HITSTUN,
+	DEAD
+}
+
+enum Attack { # name every attack here, I've done the normals
+	NEUTRAL_L,
+	NEUTRAL_M,
+	NEUTRAL_H,
+	FORWARD_L,
+	FORWARD_M,
+	FORWARD_H,
+	DOWN_L,
+	DOWN_M,
+	DOWN_H
+}
+
+var playerState := 0
+var attackState := 0
 
 # 
 var tickCount := 0 # is this used?
@@ -36,6 +71,19 @@ var is_on_floor := false
 
 # 
 var controlBuffer := [[0, 0, 0]]
+
+
+func _ready():
+	# set fixed values
+	friction = friction * ONE
+	maxGroundSpeed = maxGroundSpeed * ONE
+	maxAirSpeed = maxAirSpeed * ONE
+	gravity = ONE / gravity
+	jumpHeight = -jumpHeight * ONE
+
+	if self.name == "ClientPlayer":
+		facingRight = false
+		
 
 # like Input.get_vector but for SGFixedVector2
 # note: Input.is_action_just_pressed returns a float
@@ -74,42 +122,40 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 func _network_process(input: Dictionary) -> void:
 	# get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+
+	# TODO: parse input buffer
+
+	# update states
+	update_states()
 	
-	# velocity vector
+	# update animation
+	update_animation()
+
+	# calculate velocity
 	velocity.y += gravity
-	
 	if is_on_floor:
-		velocity.x += input_vector.x * groundAcceleration
-		jumps_remaining = 2
-		if velocity.x > 0:
-			velocity.x = max(0, velocity.x - friction)
-		if velocity.x < 0:
-			velocity.x = min(0, velocity.x + friction)
-		if input_vector.y == ONE and jumps_remaining > 0:
-			velocity.y = -16 * ONE
-			jumps_remaining -= 1
-		if velocity.x > maxGroundSpeed:
-			velocity.x = maxGroundSpeed
-		if velocity.x < -maxGroundSpeed:
-			velocity.x = -maxGroundSpeed
-	else:
-		velocity.x += input_vector.x * airAcceleration
-		if velocity.x > maxAirSpeed:
-			velocity.x = maxAirSpeed
-		if velocity.x < -maxAirSpeed:
-			velocity.x = -maxAirSpeed
+		if input_vector.x != 0:
+			if input_vector.x > 0:
+				facingRight = true
+			else:
+				facingRight = false
+			if playerState == State.SPRINTING: # TODO: sprinting needs to be handeled by the input buffer and the sprint macro
+				velocity.x = sprintingSpeed * input_vector.x
+			else:
+				velocity.x = walkingSpeed * input_vector.x
+		else:
+			velocity.x = 0
+		if input_vector.y == ONE:
+			velocity.y = jumpHeight
+			jumpsRemaining -= 1
 
 	# update position based velocity vector // position += velocity
 	fixed_position = fixed_position.add(velocity)
 	velocity = move_and_slide(velocity, SGFixed.vector2(0, -ONE))
 	
 	# DEBUG
-	var debugLabel = get_parent().get_node("DebugOverlay").get_node(self.name + "DebugLabel")
-	if self.name == "ServerPlayer":
-		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
-	else:
-		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
-	
+	update_dubug_label(input_vector)
+
 	# INPUT BUFFER
 	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(self.name + "InputBuffer")
 	tickCount += 1
@@ -136,7 +182,55 @@ func _network_process(input: Dictionary) -> void:
 		
 	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
 
+func update_states(): # TODO: states are missing
+	if is_on_floor:
+		if velocity.x == 0:
+			playerState = State.IDLE
+		else:
+			playerState = State.WALKING # TODO: add sprinting
+	else:
+		if velocity.y > 0:
+			playerState = State.FALLING
+		else:
+			playerState = State.JUMPING
 
+	# note that there will be many attacks, so this will be a bit more complex
+
+	if velocity.x != 0:
+		if velocity.x > 0:
+			facingRight = true
+		else:
+			facingRight = false
+
+func update_animation():
+	if facingRight:
+		$Sprite.flip_h = false
+	else:
+		$Sprite.flip_h = true
+	match playerState:
+		State.IDLE:
+			$NetworkAnimationPlayer.play("Idle")
+		State.WALKING:
+			$NetworkAnimationPlayer.play("Walk")
+		State.SPRINTING:
+			$NetworkAnimationPlayer.play("Sprint")  # TODO: add sprint animation
+		State.JUMPSQUAT:
+			$NetworkAnimationPlayer.play("Jump") # plays the first frame of the jump animation
+		State.JUMPING:
+			$NetworkAnimationPlayer.play("Jump")
+			$Sprite.frame = 1 # the second frame is jumping
+		State.FALLING:
+			$NetworkAnimationPlayer.play("Fall")
+		State.ATTACKING:
+			$NetworkAnimationPlayer.play("Attack")
+		State.BLOCKING:
+			$NetworkAnimationPlayer.play("Block") # TODO: add block animation
+		State.HITSTUN:
+			$NetworkAnimationPlayer.play("Hitstun") # TODO: add hitstun animation
+		State.DEAD:
+			$NetworkAnimationPlayer.play("Dead")
+		_:
+			$NetworkAnimationPlayer.play("Idle")
 
 func _save_state() -> Dictionary:
 	var control_buffer = []
@@ -164,5 +258,12 @@ func _load_state(state: Dictionary) -> void:
 	is_on_floor = state['is_on_floor']
 	sync_to_physics_engine()
 
+func update_dubug_label(input_vector):
+	var debugLabel = get_parent().get_node("DebugOverlay").get_node(self.name + "DebugLabel")
+	if self.name == "ServerPlayer":
+		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+	else:
+		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+	
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	fixed_position = old_state['fixed_position'].linear_interpolate(new_state['fixed_position'], weight)
