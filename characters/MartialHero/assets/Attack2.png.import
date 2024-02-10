@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Idle.png-5bdcd2fb57f96cb8b93dffe3c5d184b8.stex"
+path="res://.import/Attack2.png-553eb33a6e8e33bca3e185fd9f705783.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/MartialHero/Idle.png"
-dest_files=[ "res://.import/Idle.png-5bdcd2fb57f96cb8b93dffe3c5d184b8.stex" ]
+source_file="res://characters/MartialHero/assets/Attack2.png"
+dest_files=[ "res://.import/Attack2.png-553eb33a6e8e33bca3e185fd9f705783.stex" ]
 
 [params]
 

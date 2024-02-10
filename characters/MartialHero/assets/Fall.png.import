@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Fall.png-a21dd2bcfe7139f3411a2a0828878c27.stex"
+path="res://.import/Fall.png-6c53efc4b18b3573cfd56adfd5da2cfc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/MartialHero/Fall.png"
-dest_files=[ "res://.import/Fall.png-a21dd2bcfe7139f3411a2a0828878c27.stex" ]
+source_file="res://characters/MartialHero/assets/Fall.png"
+dest_files=[ "res://.import/Fall.png-6c53efc4b18b3573cfd56adfd5da2cfc.stex" ]
 
 [params]
 

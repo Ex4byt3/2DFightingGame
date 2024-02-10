@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Take Hit - white silhouette.png-3356ab60039e04e1223277d8078341e4.stex"
+path="res://.import/Take Hit - white silhouette.png-f32b98f1f3e9a61876fecb80e6acc441.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/MartialHero/Take Hit - white silhouette.png"
-dest_files=[ "res://.import/Take Hit - white silhouette.png-3356ab60039e04e1223277d8078341e4.stex" ]
+source_file="res://characters/MartialHero/assets/Take Hit - white silhouette.png"
+dest_files=[ "res://.import/Take Hit - white silhouette.png-f32b98f1f3e9a61876fecb80e6acc441.stex" ]
 
 [params]
 

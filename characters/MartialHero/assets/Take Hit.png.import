@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Death.png-db2a4f77e23be92e5db5b9f08b596693.stex"
+path="res://.import/Take Hit.png-35ed0ea1795205207b3a0d38a8b0c97b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/MartialHero/Death.png"
-dest_files=[ "res://.import/Death.png-db2a4f77e23be92e5db5b9f08b596693.stex" ]
+source_file="res://characters/MartialHero/assets/Take Hit.png"
+dest_files=[ "res://.import/Take Hit.png-35ed0ea1795205207b3a0d38a8b0c97b.stex" ]
 
 [params]
 

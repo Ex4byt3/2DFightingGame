@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Run.png-c9ed458cabf40e58d1c631c8f4dc0215.stex"
+path="res://.import/Run.png-b0131a70733911734e2d8dd1b8662e0d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/MartialHero/Run.png"
-dest_files=[ "res://.import/Run.png-c9ed458cabf40e58d1c631c8f4dc0215.stex" ]
+source_file="res://characters/MartialHero/assets/Run.png"
+dest_files=[ "res://.import/Run.png-b0131a70733911734e2d8dd1b8662e0d.stex" ]
 
 [params]
 

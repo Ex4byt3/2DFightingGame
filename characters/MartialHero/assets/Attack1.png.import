@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Take Hit.png-f56835a545808ed8cbbf0837bff3e630.stex"
+path="res://.import/Attack1.png-c86960689bf96d00b30270aee6e58278.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/MartialHero/Take Hit.png"
-dest_files=[ "res://.import/Take Hit.png-f56835a545808ed8cbbf0837bff3e630.stex" ]
+source_file="res://characters/MartialHero/assets/Attack1.png"
+dest_files=[ "res://.import/Attack1.png-c86960689bf96d00b30270aee6e58278.stex" ]
 
 [params]
 
