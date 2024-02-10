@@ -21,6 +21,7 @@ var direction_mapping = {
 var velocity := SGFixed.vector2(0, 0)
 export var walkingSpeed := 4
 export var sprintingSpeed := 8
+var sprintInputLeinency := 6
 var airAcceleration := 0.2
 var maxAirSpeed := 6
 var gravity := 2 # this is a divisor, so 1/2
@@ -105,6 +106,8 @@ func _get_local_input() -> Dictionary:
 		input["input_vector_y"] = input_vector.y
 	if Input.is_action_just_pressed(input_prefix + "bomb"):
 		input["drop_bomb"] = true
+	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
+		input["sprint_macro"] = true
 	
 	return input
 
@@ -129,13 +132,14 @@ func _network_process(input: Dictionary) -> void:
 	# calculate velocity
 	velocity.y += gravity
 	if is_on_floor:
-		jumpsRemaining = 2
+		jumpsRemaining = maxJumps
 		if input_vector.x != 0 and not jumpSquatting: # might be able to replace jumpSquatting flag with just a platerState check
-			if input_vector.x > 0:
+			if input_vector.x > 0: # update facing direction
 				facingRight = true
 			else:
 				facingRight = false
-			if false: # TODO: sprinting needs to be handeled by the input buffer and the sprint macro, for now this is just false
+
+			if input.has("sprint_macro") or sprint_check():
 				velocity.x = sprintingSpeed * input_vector.x
 				playerState = State.SPRINTING
 			else:
@@ -144,7 +148,7 @@ func _network_process(input: Dictionary) -> void:
 		elif input_vector.x == 0: # if the player is not holding left or right
 			velocity.x = 0
 			playerState = State.IDLE
-			
+
 		if input_vector.y == ONE: # jump
 			playerState = State.JUMPSQUAT
 			jumpSquatting = true
@@ -189,6 +193,19 @@ func _network_process(input: Dictionary) -> void:
 		
 	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
 
+func sprint_check() -> bool:
+	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
+	if playerState == State.SPRINTING:
+		return true
+	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
+	if controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
+		if controlBuffer[0][2] < sprintInputLeinency and controlBuffer[1][2] < sprintInputLeinency and controlBuffer[2][2] < sprintInputLeinency:
+			if controlBuffer[0][0] == controlBuffer[2][0] and controlBuffer[0][1] == controlBuffer[2][1] and controlBuffer[1][0] == 0 and controlBuffer[1][1] == 0:
+				return true
+	return false
+	
+
+
 func update_input_buffer(input_vector):
 	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(self.name + "InputBuffer")
 	tickCount += 1
@@ -221,7 +238,7 @@ func update_animation():
 		State.WALKING:
 			$NetworkAnimationPlayer.play("Walk")
 		State.SPRINTING:
-			$NetworkAnimationPlayer.play("Sprint")  # TODO: add sprint animation
+			$NetworkAnimationPlayer.play("Walk")  # TODO: add sprint animation, for now it's the same as walking
 		State.JUMPSQUAT:
 			$NetworkAnimationPlayer.play("Jump") # plays the first frame of the jump animation
 		State.JUMPING:
@@ -269,9 +286,9 @@ func _load_state(state: Dictionary) -> void:
 func update_dubug_label(input_vector):
 	var debugLabel = get_parent().get_node("DebugOverlay").get_node(self.name + "DebugLabel")
 	if self.name == "ServerPlayer":
-		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE) + "\nSTATE: " + str(playerState)
 	else:
-		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE)
+		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE) + "\nSTATE: " + str(playerState)
 	
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	fixed_position = old_state['fixed_position'].linear_interpolate(new_state['fixed_position'], weight)
