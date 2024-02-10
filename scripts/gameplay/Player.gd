@@ -156,7 +156,7 @@ func _network_process(input: Dictionary) -> void:
 			jumpSquatTimer += 1
 			if input_vector.y != ONE:
 				fullHop = false
-			if jumpSquatTimer >= jumpSquatFrames: # after jumpSquatFrames, the player jumps
+			if jumpSquatTimer > jumpSquatFrames: # after jumpSquatFrames, the player jumps
 				if fullHop: # if the player is holding up during all jumpSquatFrames, the player jumps higher
 					velocity.y = jumpHeight
 					playerState = State.JUMPING
