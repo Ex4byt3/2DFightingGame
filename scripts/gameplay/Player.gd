@@ -25,6 +25,8 @@ var sprintInputLeinency := 6
 var airAcceleration := 0.2
 var maxAirSpeed := 6
 var gravity := 2 # this is a divisor, so 1/2
+export var airJumpMax := 1
+var airJump = 0
 export var knockback_multiplier := 1
 export var weight := 100
 export var maxJumps := 2
@@ -39,6 +41,7 @@ var jumpSquatting := false
 var facingRight := true # for flipping the sprite
 enum State { # all possible player states
 	IDLE,
+	AIR,
 	CROUCHING,
 	WALKING,
 	SPRINTING,
@@ -132,6 +135,7 @@ func _network_process(input: Dictionary) -> void:
 	# calculate velocity
 	velocity.y += gravity
 	if is_on_floor:
+		airJump = airJumpMax
 		jumpsRemaining = maxJumps
 		if input_vector.x != 0 and not jumpSquatting: # might be able to replace jumpSquatting flag with just a platerState check
 			if input_vector.x > 0: # update facing direction
@@ -167,17 +171,16 @@ func _network_process(input: Dictionary) -> void:
 				jumpSquatting = false
 				fullHop = true
 	else:
+		if input_vector.y == ONE and airJump > 0:
+				velocity.y = jumpHeight
+				playerState = State.JUMPING
+				airJump -= 1
 		if input_vector.x != 0:
 			velocity.x += airAcceleration * input_vector.x
 			if velocity.x > maxAirSpeed:
 				velocity.x = maxAirSpeed
 			elif velocity.x < -maxAirSpeed:
 				velocity.x = -maxAirSpeed
-
-		# if input_vector.y == ONE and jumpsRemaining > 0:
-		# 	velocity.y = shortHopHeight
-		# 	jumpsRemaining -= 1
-		# 	playerState = State.JUMPING
 			
 			
 
@@ -203,7 +206,12 @@ func sprint_check() -> bool:
 			if controlBuffer[0][0] == controlBuffer[2][0] and controlBuffer[0][1] == controlBuffer[2][1] and controlBuffer[1][0] == 0 and controlBuffer[1][1] == 0:
 				return true
 	return false
+
 	
+	
+
+func reset_Jumps():
+	airJump = airJumpMax
 
 
 func update_input_buffer(input_vector):
