@@ -1,6 +1,7 @@
 extends SGKinematicBody2D
 
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
+const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
 const ONE := SGFixed.ONE # fixed point 1
 var last_input_time = 0
 
@@ -66,7 +67,6 @@ enum State { # all possible player states
 var playerState := 0
 
 # 
-var tickCount := 0 # is this used?
 var input_prefix := "player1_"
 var is_on_floor := false
 
@@ -111,6 +111,8 @@ func _get_local_input() -> Dictionary:
 		input["drop_bomb"] = true
 	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
 		input["sprint_macro"] = true
+	if Input.is_action_just_pressed(input_prefix + "light"):
+		input["attack_light"] = true
 	
 	return input
 
@@ -122,16 +124,37 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func _network_process(input: Dictionary) -> void:
-	# get input vector
+	# Get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
-
-	# DEBUG
+	
+	# Updating debug label
 	update_dubug_label(input_vector)
-
-	# Input Buffer
+	
+	# Updating input buffer
 	update_input_buffer(input_vector)
-	# TODO: parse input buffer
+	
+	# Handle movement
+	handle_movement(input_vector, input)
+	
+	# Handle attacks
+	handle_attacks(input_vector, input)
+	
+	# Updating animation
+	update_animation()
+	
+	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
+	is_on_floor = is_on_floor() 
+	
 
+# TODO: parse input buffer
+func handle_attacks(input_vector, input):
+	# Because if it is not true it is null, need to add the false argument to default it to false instead of null
+	if input.get("drop_bomb", false):
+		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+	if input.get("attack_light", false):
+		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+
+func handle_movement(input_vector, input):
 	# calculate velocity
 	velocity.y += gravity
 	if is_on_floor:
@@ -142,7 +165,7 @@ func _network_process(input: Dictionary) -> void:
 				facingRight = true
 			else:
 				facingRight = false
-
+				
 			if input.has("sprint_macro") or sprint_check():
 				velocity.x = sprintingSpeed * input_vector.x
 				playerState = State.SPRINTING
@@ -152,7 +175,7 @@ func _network_process(input: Dictionary) -> void:
 		elif input_vector.x == 0: # if the player is not holding left or right
 			velocity.x = 0
 			playerState = State.IDLE
-
+		
 		if input_vector.y == ONE: # jump
 			playerState = State.JUMPSQUAT
 			jumpSquatting = true
@@ -181,20 +204,10 @@ func _network_process(input: Dictionary) -> void:
 				velocity.x = maxAirSpeed
 			elif velocity.x < -maxAirSpeed:
 				velocity.x = -maxAirSpeed
-			
-			
-
+	
 	# update position based velocity vector // position += velocity
 	fixed_position = fixed_position.add(velocity)
 	velocity = move_and_slide(velocity, SGFixed.vector2(0, -ONE))
-	
-	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-
-	# update animation
-	update_animation()
-		
-	is_on_floor = is_on_floor() # update is_on_floor, does not work if called first in network_process, works if called last though
 
 func sprint_check() -> bool:
 	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
@@ -207,16 +220,11 @@ func sprint_check() -> bool:
 				return true
 	return false
 
-	
-	
-
 func reset_Jumps():
 	airJump = airJumpMax
 
-
 func update_input_buffer(input_vector):
 	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(self.name + "InputBuffer")
-	tickCount += 1
 	if controlBuffer.size() > 20:
 		controlBuffer.pop_back()
 	if controlBuffer.front()[0] == input_vector.x/ONE and controlBuffer.front()[1] == input_vector.y/ONE:
@@ -271,7 +279,6 @@ func _save_state() -> Dictionary:
 		control_buffer.append(item)
 	return {
 		control_buffer = control_buffer,
-		tick_count = tickCount,
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
@@ -283,7 +290,6 @@ func _load_state(state: Dictionary) -> void:
 	controlBuffer = []
 	for item in state['control_buffer']:
 		controlBuffer.append(item)
-	tickCount = state['tick_count']
 	fixed_position.x = state['fixed_position_x']
 	fixed_position.y = state['fixed_position_y']
 	velocity.x = state['velocity_x']
