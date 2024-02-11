@@ -3,7 +3,6 @@ extends Control
 
 # Preload the game scenes as packed scenes
 var steam_scene = preload("res://scenes/SteamGame.tscn")
-var rpc_scene = preload("res://scenes/RpcGame.tscn")
 var local_scene = preload("res://scenes/LocalGame.tscn")
 #var local_texture = preload("res://assets/menu/main/icons/active_local_icon.png")
 
@@ -13,13 +12,6 @@ onready var local_tab = $MainPane/LocalTab
 onready var training_tab = $MainPane/TrainingTab
 onready var records_tab = $MainPane/RecordsTab
 onready var quit_tab = $MainPane/QuitTab
-
-# Onready var for RPC
-onready var rpc_connection_panel = $MainPane/RPCConnectionPanel
-onready var rpc_server_start = $MainPane/RPCConnectionPanel/SelectionContainer/ServerButton
-onready var rpc_client_start = $MainPane/RPCConnectionPanel/SelectionContainer/ClientButton
-onready var rpc_host_field = $MainPane/RPCConnectionPanel/EntryContainer/HostField
-onready var rpc_port_field = $MainPane/RPCConnectionPanel/EntryContainer/PortField
 
 # Onready var for Steam
 onready var steam_connection_panel = $MainPane/SteamConnectionPanel
@@ -51,36 +43,13 @@ func handle_connecting_signals() -> void:
 	$MainPane/OnlineTab/SteamButton.connect("toggled", self, "on_steam_button_toggled")
 	
 	# Connect signals for online play
-	rpc_server_start.connect("button_up", self, "on_rpc_server_pressed")
-	rpc_client_start.connect("button_up", self, "on_rpc_client_pressed")
 	steam_server_start.connect("button_up", self, "on_steam_server_pressed")
 	steam_client_start.connect("button_up", self, "on_steam_client_pressed")
 
 
 # When a menu icon is clicked, the connection panels are hidden
 func on_icon_clicked() -> void:
-	rpc_connection_panel.visible = false
 	steam_connection_panel.visible = false
-
-
-# 
-func on_rpc_server_pressed() -> void:
-	NetworkGlobal.NETWORK_TYPE = 1
-	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
-	NetworkGlobal.RPC_IS_HOST = true
-	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
-	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
-	get_tree().change_scene_to(rpc_scene)
-
-
-#
-func on_rpc_client_pressed() -> void:
-	NetworkGlobal.NETWORK_TYPE = 1
-	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
-	NetworkGlobal.RPC_IS_HOST = false
-	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
-	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
-	get_tree().change_scene_to(rpc_scene)
 
 
 #
@@ -104,9 +73,6 @@ func on_steam_client_pressed() -> void:
 func on_online_button_toggled(button_pressed):
 	if button_pressed == true:
 		SettingsSignalBus.emit_show_online_menu()
-		#online_tab.visible = true
-	else:
-		online_tab.visible = false
 
 
 #
@@ -131,14 +97,6 @@ func on_records_button_toggled(button_pressed):
 		records_tab.visible = true
 	else:
 		records_tab.visible = false
-
-
-#
-func on_rpc_button_toggled(button_pressed):
-	if button_pressed == true:
-		rpc_connection_panel.visible = true
-	else:
-		rpc_connection_panel.visible = false
 
 
 #

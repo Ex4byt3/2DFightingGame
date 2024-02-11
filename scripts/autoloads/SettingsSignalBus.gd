@@ -7,6 +7,7 @@ signal show_online_menu
 
 # Signals for lobbies
 signal set_lobby_settings(lobby_settings_dict)
+signal update_lobby_pane(lobby_settings)
 
 # Signals for the settings menu
 signal save_settings
@@ -41,6 +42,9 @@ func emit_show_online_menu() -> void:
 
 func emit_set_lobby_settings(lobby_settings_dict: Dictionary) -> void:
 	emit_signal("set_lobby_settings", lobby_settings_dict)
+
+func emit_update_lobby_pane(lobby_settings: Dictionary) -> void:
+	emit_signal("update_lobby_pane", lobby_settings)
 
 
 ###############################
