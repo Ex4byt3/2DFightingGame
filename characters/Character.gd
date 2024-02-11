@@ -1,3 +1,8 @@
+# This script current hold all the player logic,
+# later Character.gd will need to handel only the bare framework of a character
+# and then character logic will get moved to a seperate script for each character
+# that will then extend this
+
 extends SGKinematicBody2D
 
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
@@ -100,6 +105,8 @@ func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: 
 	if Input.is_action_pressed(positive_y):
 		input_vector.y += ONE
 	return input_vector
+	# perhaps have the input vector just be 1 instead of ONE and scale where nessary
+	# because update input buffer has to do a lot of dividing, minor optimazation
 
 func _get_local_input() -> Dictionary:
 	var input_vector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
