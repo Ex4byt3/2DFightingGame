@@ -39,14 +39,14 @@ func on_window_mode_selected(index: int) -> void:
 			OS.set_borderless_window(false)
 			OS.set_window_fullscreen(false)
 		1: # borderless window
-			OS.set_borderless_window(false)
+			OS.set_borderless_window(true)
 			OS.set_window_fullscreen(false)
 		2: # fullscreen
 			OS.set_borderless_window(false)
-			OS.set_window_fullscreen(false)
+			OS.set_window_fullscreen(true)
 		3: # borderless fullscreen
-			OS.set_borderless_window(false)
-			OS.set_window_fullscreen(false)
+			OS.set_borderless_window(true)
+			OS.set_window_fullscreen(true)
 
 
 # Load and apply the saved resolution settings

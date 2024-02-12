@@ -1,27 +1,32 @@
-[gd_resource type="Theme" load_steps=8 format=2]
+[gd_resource type="Theme" load_steps=11 format=2]
 
 [ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=1]
-<<<<<<<< HEAD:resources/menu/settings/settingsmenu_theme.tres
-========
-[ext_resource path="res://resources/menu/main/styleboxflat_hover.tres" type="StyleBox" id=2]
-[ext_resource path="res://resources/menu/main/styleboxflat_pressed.tres" type="StyleBox" id=3]
->>>>>>>> demo:resources/menu/settings/settings_menubar_theme.tres
-
-[sub_resource type="StyleBoxEmpty" id=10]
-
-[sub_resource type="StyleBoxFlat" id=2]
-draw_center = false
-border_width_bottom = 1
 
 [sub_resource type="StyleBoxEmpty" id=7]
 
-[sub_resource type="StyleBoxFlat" id=9]
-bg_color = Color( 0.0745098, 0.121569, 0.376471, 1 )
-expand_margin_left = 10.0
-expand_margin_right = 10.0
-
 [sub_resource type="StyleBoxFlat" id=8]
-bg_color = Color( 0.0352941, 0.0352941, 0.0352941, 0.278431 )
+bg_color = Color( 0.0745098, 0.121569, 0.376471, 1 )
+draw_center = false
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.0745098, 0.121569, 0.376471, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.0745098, 0.121569, 0.376471, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.0745098, 0.121569, 0.376471, 1 )
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.027451, 0.0588235, 0.262745, 1 )
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.0941176, 0.0941176, 0.0941176, 0.392157 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 12
@@ -42,9 +47,15 @@ Button/colors/icon_color_hover = Color( 1, 1, 1, 1 )
 Button/colors/icon_color_normal = Color( 1, 1, 1, 1 )
 Button/colors/icon_color_pressed = Color( 1, 1, 1, 1 )
 Button/styles/disabled = null
-Button/styles/focus = SubResource( 10 )
-Button/styles/hover = SubResource( 2 )
-Button/styles/normal = SubResource( 7 )
-Button/styles/pressed = SubResource( 9 )
-Panel/styles/panel = SubResource( 8 )
-Panel/styles/panel_hover = null
+Button/styles/focus = SubResource( 7 )
+Button/styles/hover = SubResource( 8 )
+Button/styles/normal = SubResource( 9 )
+Button/styles/pressed = SubResource( 10 )
+OptionButton/constants/arrow_margin = 5
+OptionButton/constants/hseparation = 10
+OptionButton/styles/focus = SubResource( 5 )
+OptionButton/styles/hover = SubResource( 4 )
+OptionButton/styles/normal = SubResource( 5 )
+OptionButton/styles/pressed = SubResource( 6 )
+Panel/styles/panel = SubResource( 11 )
+Panel/styles/panel_hover = SubResource( 11 )

@@ -24,10 +24,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/godot-rollback-netcode/NetworkTimer.gd"
 }, {
-"base": "Reference",
+"base": "Resource",
 "class": "PlayerKeybinds",
 "language": "GDScript",
-"path": "res://resources/menu/settings/PlayerKeybinds.gd"
+"path": "res://resources/game_settings/PlayerKeybinds.gd"
 }, {
 "base": "",
 "class": "Steam",

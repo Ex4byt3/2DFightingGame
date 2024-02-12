@@ -1,10 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=2]
 
-<<<<<<<< HEAD:resources/game_settings/playerkeybinds_default.tres
 [ext_resource path="res://resources/game_settings/PlayerKeybinds.gd" type="Script" id=1]
-========
-[ext_resource path="res://resources/menu/settings/PlayerKeybinds.gd" type="Script" id=1]
->>>>>>>> demo:resources/menu/settings/playerkeybinds_default.tres
 
 [resource]
 script = ExtResource( 1 )
