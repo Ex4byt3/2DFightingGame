@@ -2,15 +2,24 @@
 
 importer="texture"
 type="StreamTexture"
+<<<<<<<< HEAD:assets/menu/icons/settings_icon.png.import
 path="res://.import/settings_icon.png-a8a1841f5f27981453f01b4f9af6cb64.stex"
+========
+path="res://.import/background.jpeg-66710c27d425e731b9256f42ab1cc286.stex"
+>>>>>>>> demo:assets/menu/background.jpeg.import
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
+<<<<<<<< HEAD:assets/menu/icons/settings_icon.png.import
 source_file="res://assets/menu/icons/settings_icon.png"
 dest_files=[ "res://.import/settings_icon.png-a8a1841f5f27981453f01b4f9af6cb64.stex" ]
+========
+source_file="res://assets/menu/background.jpeg"
+dest_files=[ "res://.import/background.jpeg-66710c27d425e731b9256f42ab1cc286.stex" ]
+>>>>>>>> demo:assets/menu/background.jpeg.import
 
 [params]
 

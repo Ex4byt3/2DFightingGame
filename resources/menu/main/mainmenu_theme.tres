@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 [gd_resource type="Theme" load_steps=7 format=2]
 
 [ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=1]
+<<<<<<<< HEAD:resources/menu/main/mainmenu_theme.tres
+========
+[ext_resource path="res://resources/menu/main/styleboxflat_pressed.tres" type="StyleBox" id=2]
+[ext_resource path="res://resources/menu/textures/primary_menu_normal_gradient.tres" type="Texture" id=3]
+[ext_resource path="res://resources/menu/main/styleboxflat_hover.tres" type="StyleBox" id=4]
+>>>>>>>> demo:resources/menu/main/primary_menu_theme.tres
 
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.0431373, 0.117647, 0.345098, 1 )
@@ -12,6 +19,23 @@ bg_color = Color( 0.121569, 0.309804, 0.627451, 1 )
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
+=======
+[gd_resource type="Theme" load_steps=9 format=2]
+
+[ext_resource path="res://resources/menu/main/styleboxflat_pressed.tres" type="StyleBox" id=1]
+[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0, 0.156863, 0.345098, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=6]
+>>>>>>> demo
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.313726, 0, 0, 1 )
@@ -21,6 +45,11 @@ corner_radius_bottom_right = 5
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
+<<<<<<< HEAD
+=======
+[sub_resource type="StyleBoxEmpty" id=7]
+
+>>>>>>> demo
 [resource]
 default_font = SubResource( 1 )
 Button/colors/font_color = Color( 1, 1, 1, 1 )
@@ -31,11 +60,22 @@ Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/colors/icon_color_hover = Color( 1, 1, 1, 1 )
 Button/colors/icon_color_normal = Color( 1, 1, 1, 1 )
 Button/colors/icon_color_pressed = Color( 1, 1, 1, 1 )
+<<<<<<< HEAD
 Button/styles/disabled = null
 Button/styles/focus = null
 Button/styles/hover = SubResource( 5 )
 Button/styles/normal = SubResource( 6 )
 Button/styles/pressed = null
+=======
+Button/fonts/font = SubResource( 1 )
+Button/styles/disabled = null
+Button/styles/focus = null
+Button/styles/hover = null
+Button/styles/normal = SubResource( 5 )
+Button/styles/pressed = null
+HSeparator/constants/separation = 0
+HSeparator/styles/separator = SubResource( 6 )
+>>>>>>> demo
 ItemList/colors/font_color = Color( 0, 0, 0, 1 )
 ItemList/colors/font_color_selected = Color( 0, 0, 0, 1 )
 ItemList/colors/guide_color = Color( 0, 0, 0, 1 )
@@ -52,10 +92,19 @@ ItemList/styles/selected_focus = null
 OptionButton/styles/disabled = null
 OptionButton/styles/focus = null
 OptionButton/styles/hover = null
+<<<<<<< HEAD
 OptionButton/styles/normal = null
+=======
+OptionButton/styles/normal = ExtResource( 1 )
+>>>>>>> demo
 OptionButton/styles/pressed = null
 ProgressBar/colors/font_color = Color( 0, 0, 0, 1 )
 ProgressBar/colors/font_color_shadow = Color( 0, 0, 0, 1 )
 ProgressBar/fonts/font = SubResource( 1 )
 ProgressBar/styles/bg = SubResource( 3 )
 ProgressBar/styles/fg = SubResource( 4 )
+<<<<<<< HEAD
+=======
+VSeparator/constants/separation = 0
+VSeparator/styles/separator = SubResource( 7 )
+>>>>>>> demo

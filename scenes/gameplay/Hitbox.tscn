@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/gameplay/Hitbox.gd" type="Script" id=1]
+[ext_resource path="res://assets/floor.png" type="Texture" id=2]
+[ext_resource path="res://addons/godot-rollback-netcode/NetworkTimer.gd" type="Script" id=3]
+
+[sub_resource type="SGRectangleShape2D" id=1]
+
+[node name="Hitbox" type="SGArea2D"]
+script = ExtResource( 1 )
+
+[node name="Hitbox_Shape" type="SGCollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="Hitbox_Shape"]
+position = Vector2( 7.7486e-07, 4.17233e-07 )
+scale = Vector2( 0.0150943, 0.0172117 )
+texture = ExtResource( 2 )
+
+[node name="DespawnTimer" type="Node" parent="Hitbox_Shape"]
+script = ExtResource( 3 )
+wait_ticks = 30
+
+[connection signal="timeout" from="Hitbox_Shape/DespawnTimer" to="." method="_on_DespawnTimer_timeout"]
