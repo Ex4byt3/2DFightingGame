@@ -44,8 +44,14 @@ __meta__ = {
 script = ExtResource( 4 )
 
 [node name="ServerPlayer" parent="." instance=ExtResource( 3 )]
+position = Vector2( 147, 319 )
+fixed_position_x = 9633792
+fixed_position_y = 20905984
 
 [node name="ClientPlayer" parent="." instance=ExtResource( 3 )]
+position = Vector2( 769, 319 )
+fixed_position_x = 50397184
+fixed_position_y = 20905984
 
 [node name="FloorStaticBody" type="SGStaticBody2D" parent="."]
 
