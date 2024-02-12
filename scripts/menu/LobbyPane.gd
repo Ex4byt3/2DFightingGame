@@ -4,15 +4,14 @@ extends Panel
 onready var lobby_name_label = $TitleBox/LobbyNameLabel
 onready var state_label = $LobbyStatus/StateLabel
 onready var type_label = $LobbyStatus/TypeLabel
-onready var p1_name_label = $LobbyMembers/P1Box/P1NameLabel
-onready var p2_name_label = $LobbyMembers/P2Box/P2NameLabel
+#onready var p1_name_label = $LobbyMembers/P1Box/P1NameLabel
+#onready var p2_name_label = $LobbyMembers/P2Box/P2NameLabel
 onready var chatbox = $Chat/Chatbox
 onready var chat_entry_line = $Chat/ChatEntryLine
 onready var password_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/PasswordButton
 onready var exit_lobby_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/ExitLobbyButton
 onready var ready_button = $SettingsPane/ButtonPane/VBoxContainer/ReadyButton
-
-const MAX_PLAYERS: int = 2
+onready var members = $LobbyMembersPane/Members
 
 var lobby_name: String
 var num_players: int
@@ -46,7 +45,7 @@ func exit_lobby() -> void:
 	pass
 
 
-func on_ready_button_toggled() -> void:
+func on_ready_button_toggled(button_pressed) -> void:
 	pass
 
 

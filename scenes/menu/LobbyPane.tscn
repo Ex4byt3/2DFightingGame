@@ -113,52 +113,25 @@ text = "Steam"
 align = 1
 valign = 1
 
-[node name="LobbyMembers" type="VBoxContainer" parent="."]
+[node name="LobbyMembersPane" type="VBoxContainer" parent="."]
 anchor_left = 0.03
 anchor_top = 0.2
 anchor_right = 0.4
 anchor_bottom = 0.38
 size_flags_horizontal = 3
 
-[node name="PlayersLabel" type="Label" parent="LobbyMembers"]
+[node name="PlayersLabel" type="Label" parent="LobbyMembersPane"]
 margin_right = 473.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 text = "Player List"
 
-[node name="P1Box" type="HBoxContainer" parent="LobbyMembers"]
+[node name="Members" type="VBoxContainer" parent="LobbyMembersPane"]
 margin_top = 18.0
 margin_right = 473.0
-margin_bottom = 32.0
-
-[node name="P1NameLabel" type="Label" parent="LobbyMembers/P1Box"]
-margin_right = 473.0
-margin_bottom = 14.0
+margin_bottom = 129.0
 size_flags_horizontal = 3
-
-[node name="P1ReadyLabel" type="Label" parent="LobbyMembers/P1Box"]
-visible = false
-margin_left = 307.0
-margin_right = 365.0
-margin_bottom = 19.0
-text = "READY"
-
-[node name="P2Box" type="HBoxContainer" parent="LobbyMembers"]
-margin_top = 36.0
-margin_right = 473.0
-margin_bottom = 50.0
-
-[node name="P2NameLabel" type="Label" parent="LobbyMembers/P2Box"]
-margin_right = 473.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="P2ReadyLabel" type="Label" parent="LobbyMembers/P2Box"]
-visible = false
-margin_left = 307.0
-margin_right = 365.0
-margin_bottom = 19.0
-text = "READY"
+size_flags_vertical = 3
 
 [node name="Chat" type="VBoxContainer" parent="."]
 anchor_left = 0.03
