@@ -72,6 +72,14 @@ theme = ExtResource( 5 )
 text = "ENet"
 expand_icon = true
 
+[node name="RefreshButton" type="Button" parent="MainPane/OnlineMenuBar"]
+anchor_left = 0.325
+anchor_right = 0.4
+anchor_bottom = 0.4
+theme = ExtResource( 5 )
+text = "Refresh"
+expand_icon = true
+
 [node name="SearchPane" type="VBoxContainer" parent="MainPane/OnlineMenuBar"]
 anchor_left = 0.6
 anchor_top = 0.05

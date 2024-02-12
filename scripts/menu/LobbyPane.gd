@@ -4,14 +4,14 @@ extends Panel
 onready var lobby_name_label = $TitleBox/LobbyNameLabel
 onready var state_label = $LobbyStatus/StateLabel
 onready var type_label = $LobbyStatus/TypeLabel
-#onready var p1_name_label = $LobbyMembers/P1Box/P1NameLabel
-#onready var p2_name_label = $LobbyMembers/P2Box/P2NameLabel
 onready var chatbox = $Chat/Chatbox
-onready var chat_entry_line = $Chat/ChatEntryLine
+onready var chat_line = $Chat/ChatEntry/ChatLine
+onready var send_message_button = $Chat/ChatEntry/SendMessageButton
 onready var password_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/PasswordButton
 onready var exit_lobby_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/ExitLobbyButton
 onready var ready_button = $SettingsPane/ButtonPane/VBoxContainer/ReadyButton
 onready var members = $LobbyMembersPane/Members
+onready var start_match_button = $StartMatchButton
 
 var lobby_name: String
 var num_players: int

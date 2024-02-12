@@ -7,6 +7,7 @@ onready var lobby_tile = preload("res://scenes/menu/LobbyTile.tscn")
 onready var lobby_member = preload("res://scenes/menu/LobbyMember.tscn")
 
 # Onready variables for lobby searches
+onready var refresh_button = $MainPane/OnlineMenuBar/RefreshButton
 onready var lobby_search_bar = $MainPane/OnlineMenuBar/SearchPane/LineEdit
 onready var lobby_type_filter = $MainPane/OnlineMenuBar/SearchPane/Filters/LobbyType
 onready var lobby_state_filter = $MainPane/OnlineMenuBar/SearchPane/Filters/LobbyState
@@ -50,7 +51,6 @@ const LOBBY_STATE_ARRAY: Array = [
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("readying")
 	_add_Lobby_Type_Items()
 	_add_Lobby_State_Items()
 	_handle_Connecting_Signals()
@@ -70,18 +70,25 @@ func _handle_Connectings_Steam_Signals() -> void:
 	_connect_Steam_Signals("lobby_joined", "_on_Lobby_Joined")
 	_connect_Steam_Signals("lobby_chat_update", "_on_Lobby_Chat_Update")
 	_connect_Steam_Signals("lobby_message", "_on_Lobby_Message")
+	_connect_Steam_Signals("lobby_match_list", "_on_Lobby_Match_List")
 
 
 func _handle_Connecting_Signals() -> void:
-	open_lobby_popup.connect("button_up", self, "on_Open_Lobby_Popup_pressed")
-	open_enet_popup.connect("button_up", self, "on_Open_ENet_Popup_pressed")
+	refresh_button.connect("button_up", self, "_on_Refresh_Button_pressed")
+	open_lobby_popup.connect("button_up", self, "_on_Open_Lobby_Popup_pressed")
+	open_enet_popup.connect("button_up", self, "_on_Open_ENet_Popup_pressed")
 	create_lobby_button.connect("button_up", self, "_on_Create_Lobby_pressed")
-	lobby_type_filter.connect("item_selected", self, "filter_lobbies")
-	lobby_state_filter.connect("item_selected", self, "filter_lobbies")
-	lobby_search_bar.connect("text_changed", self, "filter_lobbies")
+	
+	lobby_type_filter.connect("item_selected", self, "_filter_Lobbies")
+	lobby_state_filter.connect("item_selected", self, "_filter_Lobbies")
+	lobby_search_bar.connect("text_changed", self, "_filter_Lobbies")
+	
 	rpc_server_button.connect("button_up", self, "on_rpc_server_button_pressed")
 	rpc_client_button.connect("button_up", self, "on_rpc_client_button_pressed")
-	lobby_pane.exit_lobby_button.connect("button_up", self, "_on_Exit_Lobby_pressed")
+	
+	lobby_pane.exit_lobby_button.connect("button_up", self, "_on_Exit_Lobby")
+	lobby_pane.start_match_button.connect("button_up", self, "_on_Match_Start")
+	lobby_pane.send_message_button.connect("button_up", self, "_on_Send_Message")
 
 
 func _input(event) -> void:
@@ -176,6 +183,7 @@ func _join_Steam_Lobby(lobby_id: int) -> void:
 	lobby_pane.chatbox.append_bbcode("[Steam]:Attempting to join lobby " + str(lobby_id) + "...\n")
 	LOBBY_MEMBERS.clear()
 	Steam.joinLobby(lobby_id)
+	lobby_pane.visible = true
 
 
 func _leave_Steam_Lobby() -> void:
@@ -193,29 +201,49 @@ func _leave_Steam_Lobby() -> void:
 			member.hide()
 			member.queue_free()
 		
-		_set_buttons_disabled(true)
+		_set_buttons_disabled(false)
 
 
-##
-#func on_steam_server_pressed() -> void:
-#	NetworkGlobal.NETWORK_TYPE = 2
-#	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
-#	NetworkGlobal.STEAM_IS_HOST = true
-#	get_tree().change_scene_to(steam_scene)
-#
-#
-##
-#func on_steam_client_pressed() -> void:
-#	NetworkGlobal.NETWORK_TYPE = 2
-#	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
-#	NetworkGlobal.STEAM_IS_HOST = false
-#	NetworkGlobal.STEAM_OPP_ID = int(steamid_field.text)
-#	get_tree().change_scene_to(steam_scene)
+func _on_Lobby_Match_List(lobbies: Array) -> void:
+	for lobby in lobbies:
+		var new_lobby_tile = lobby_tile.instance()
+		
+		var lobby_name = Steam.getLobbyData(lobby, "name")
+		var lobby_mode = Steam.getLobbyData(lobby, "mode")
+		var num_players: int = Steam.getNumLobbyMembers(lobby)
+		
+		if lobby_name:
+			new_lobby_tile.lobby_name = lobby_name
+		if lobby_mode:
+			new_lobby_tile.network_type = lobby_mode
+		
+		new_lobby_tile.num_lobby_members = num_players
+		new_lobby_tile.lobby_host_name = Steam.getFriendPersonaName(lobby)
+		
+		lobby_container.add_child(new_lobby_tile)
+		
+		var join_lobby_signal: int = new_lobby_tile.join_button.connect("button_up", self, "_join_Steam_Lobby", [lobby])
+		print("[STEAM] Connecting pressed to function _join_Steam_Lobby for "+str(lobby)+" successfully: "+str(join_lobby_signal))
+
+
+func _on_Match_Start() -> void:
+	var host_steam_id = Steam.getLobbyOwner(LOBBY_ID)
+	NetworkGlobal.NETWORK_TYPE = 2
+	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
+	if Steam.getSteamID() == host_steam_id:
+		NetworkGlobal.STEAM_IS_HOST = true
+		print("[Steam] Started match as server")
+	else:
+		NetworkGlobal.STEAM_IS_HOST = false
+		NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
+		print("[Steam] Started match as client")
+	get_tree().change_scene_to(steam_scene)
+
 
 ##################################################
 # Lobby button functions
 ##################################################
-func on_Open_Lobby_Popup_pressed():
+func _on_Open_Lobby_Popup_pressed():
 	rpc_popup.visible = false
 	lobby_creation_popup.visible = true
 
@@ -227,40 +255,21 @@ func _on_Create_Lobby_pressed() -> void:
 	_create_Steam_Lobby()
 	lobby_pane.visible = true
 	lobby_pane.chatbox.append_bbcode("[Steam] Attempting to create new lobby...\n")
-	_set_buttons_disabled(true)
-
-	var lobby_type = "Public"
-	if lobby_password.text:
-		lobby_type = "Private"
-	
-	var lobby_settings: Dictionary = {
-		"lobby_name": LOBBY_NAME,
-		"lobby_password": lobby_password.text,
-		"lobby_type": lobby_type,
-		"lobby_state": "Open",
-		"network_type": "Steam",
-		"lobby_host_name": Steam.getPersonaName(),
-		"lobby_host_steamid": Steam.getSteamID()
-	}
-	
-	create_new_lobbytile(lobby_settings)
-
-
-func _on_Exit_Lobby_pressed() -> void:
-	
-	_leave_Steam_Lobby()
-	lobby_pane.visible = false
-	lobby_pane.chatbox.clear()
-
-
-func create_new_lobbytile(lobby_settings: Dictionary) -> void:
-	var new_lobby = lobby_tile.instance()
-	new_lobby.lobby_settings = lobby_settings
-	lobby_container.add_child(new_lobby)
 	
 	# Clear popup entry lines
 	lobby_name.set_text("")
 	lobby_password.set_text("")
+
+
+func _on_Send_Message() -> void:
+	lobby_pane.chatbox.append_bbcode(lobby_pane.chat_line.text)
+	lobby_pane.chat_line.clear()
+
+
+func _on_Exit_Lobby() -> void:
+	_leave_Steam_Lobby()
+	lobby_pane.visible = false
+	lobby_pane.chatbox.clear()
 
 
 func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
@@ -271,24 +280,24 @@ func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response:
 		_set_buttons_disabled(true)
 	else:
 		var CONNECTION_ERROR: String
-		match response:
-			2:	CONNECTION_ERROR = "This lobby no longer exists."
-			3:	CONNECTION_ERROR = "You don't have permission to join this lobby."
-			4:	CONNECTION_ERROR = "The lobby is now full."
-			5:	CONNECTION_ERROR = "Uh... something unexpected happened!"
-			6:	CONNECTION_ERROR = "You are banned from this lobby."
-			7:	CONNECTION_ERROR = "You cannot join due to having a limited account."
-			8:	CONNECTION_ERROR = "This lobby is locked or disabled."
-			9:	CONNECTION_ERROR = "This lobby is community locked."
-			10:	CONNECTION_ERROR = "A user in the lobby has blocked you from joining."
-			11:	CONNECTION_ERROR = "A user you have blocked is in the lobby."
+#		match response:
+#			2:	CONNECTION_ERROR = "This lobby no longer exists."
+#			3:	CONNECTION_ERROR = "You don't have permission to join this lobby."
+#			4:	CONNECTION_ERROR = "The lobby is now full."
+#			5:	CONNECTION_ERROR = "Uh... something unexpected happened!"
+#			6:	CONNECTION_ERROR = "You are banned from this lobby."
+#			7:	CONNECTION_ERROR = "You cannot join due to having a limited account."
+#			8:	CONNECTION_ERROR = "This lobby is locked or disabled."
+#			9:	CONNECTION_ERROR = "This lobby is community locked."
+#			10:	CONNECTION_ERROR = "A user in the lobby has blocked you from joining."
+#			11:	CONNECTION_ERROR = "A user you have blocked is in the lobby."
 
 
 
 ##################################################
 # ENet functions
 ##################################################
-func on_Open_ENet_Popup_pressed():
+func _on_Open_ENet_Popup_pressed():
 	lobby_creation_popup.visible = false
 	rpc_popup.visible = true
 
@@ -344,4 +353,11 @@ func _get_lobby_members() -> void:
 		var steam_id: int = Steam.getLobbyMemberByIndex(LOBBY_ID, member)
 		var steam_name: String = Steam.getFriendPersonaName(steam_id)
 		_add_to_playerlist(steam_id, steam_name)
+
+
+func _on_Refresh_Button_pressed() -> void:
+	for lobby_tile in lobby_container.get_children():
+		lobby_tile.free()
 	
+	Steam.addRequestLobbyListDistanceFilter(3)
+	Steam.requestLobbyList()

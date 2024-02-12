@@ -214,7 +214,7 @@ texture = ExtResource( 3 )
 expand = true
 stretch_mode = 5
 
-[node name="NumPlayersLabel" type="Label" parent="InfoPane/ParticipantsInfo/Panel/HBoxContainer"]
+[node name="NumMembersLabel" type="Label" parent="InfoPane/ParticipantsInfo/Panel/HBoxContainer"]
 margin_left = 26.0
 margin_right = 37.0
 margin_bottom = 18.0

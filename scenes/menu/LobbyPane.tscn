@@ -151,12 +151,12 @@ margin_bottom = 368.0
 size_flags_vertical = 3
 scroll_following = true
 
-[node name="ChatEntryLine" type="HBoxContainer" parent="Chat"]
+[node name="ChatEntry" type="HBoxContainer" parent="Chat"]
 margin_top = 372.0
 margin_right = 601.0
 margin_bottom = 396.0
 
-[node name="LineEdit" type="LineEdit" parent="Chat/ChatEntryLine"]
+[node name="ChatLine" type="LineEdit" parent="Chat/ChatEntry"]
 margin_right = 522.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
@@ -164,7 +164,7 @@ placeholder_text = "enter message here"
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="Button" type="Button" parent="Chat/ChatEntryLine"]
+[node name="SendMessageButton" type="Button" parent="Chat/ChatEntry"]
 margin_left = 526.0
 margin_right = 601.0
 margin_bottom = 24.0
