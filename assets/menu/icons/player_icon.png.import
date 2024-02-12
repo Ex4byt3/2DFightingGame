@@ -2,24 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-<<<<<<<< HEAD:assets/menu/icons/player_icon.png.import
 path="res://.import/player_icon.png-ea78f5b5ddfb28a3f196eb2927193da7.stex"
-========
-path="res://.import/delta_logo.png-7ece56af075812579d4141f668cc6a67.stex"
->>>>>>>> demo:assets/menu/delta_logo.png.import
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-<<<<<<<< HEAD:assets/menu/icons/player_icon.png.import
 source_file="res://assets/menu/icons/player_icon.png"
 dest_files=[ "res://.import/player_icon.png-ea78f5b5ddfb28a3f196eb2927193da7.stex" ]
-========
-source_file="res://assets/menu/delta_logo.png"
-dest_files=[ "res://.import/delta_logo.png-7ece56af075812579d4141f668cc6a67.stex" ]
->>>>>>>> demo:assets/menu/delta_logo.png.import
 
 [params]
 
@@ -29,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

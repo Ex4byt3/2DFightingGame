@@ -1,6 +1,6 @@
 extends Node
 
-onready var player_keybind_resource = preload("res://resources/game_settings/playerkeybinds_default.tres")
+#onready var player_keybind_resource = preload("res://resources/game_settings/playerkeybinds_default.tres")
 
 var window_mode_index: int = 0
 var resolution_index: int = 0
@@ -10,7 +10,7 @@ var loaded_settings = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	handle_connecting_signals()
-	create_storage_dictionary()
+#	create_storage_dictionary()
 
 
 # Connect relevant signals from the SettingsSignalBus
@@ -55,14 +55,14 @@ func on_keybindings_loaded(data: Dictionary) -> void:
 	loaded_move_right_key_p2.set_physical_scancode(int(data.player2_right))
 	
 	# Set the keybindresource values to the loaded ones
-	player_keybind_resource.jump_key = loaded_jump_key
-	player_keybind_resource.crouch_key = loaded_crouch_key
-	player_keybind_resource.move_left_key = loaded_move_left_key
-	player_keybind_resource.move_right_key = loaded_move_right_key
-	player_keybind_resource.jump_key = loaded_jump_key
-	player_keybind_resource.crouch_key = loaded_crouch_key
-	player_keybind_resource.move_left_key = loaded_move_left_key
-	player_keybind_resource.move_right_key = loaded_move_right_key
+#	player_keybind_resource.jump_key = loaded_jump_key
+#	player_keybind_resource.crouch_key = loaded_crouch_key
+#	player_keybind_resource.move_left_key = loaded_move_left_key
+#	player_keybind_resource.move_right_key = loaded_move_right_key
+#	player_keybind_resource.jump_key = loaded_jump_key
+#	player_keybind_resource.crouch_key = loaded_crouch_key
+#	player_keybind_resource.move_left_key = loaded_move_left_key
+#	player_keybind_resource.move_right_key = loaded_move_right_key
 
 
 # Updates window mode setting to be saved when modified in the settings menu
@@ -76,29 +76,29 @@ func on_resolution_selected(index: int) -> void:
 
 
 # Create a dictionary of all of the settings information to be saved
-func create_storage_dictionary() -> Dictionary:
-	var settings_container_dict = {
-		"window_mode_index": window_mode_index,
-		"resolution_index": resolution_index,
-		"keybindings_dictionary" : create_keybindings_dictionary(),
-	}
-	
-	return settings_container_dict
+#func create_storage_dictionary() -> Dictionary:
+#	var settings_container_dict = {
+#		"window_mode_index": window_mode_index,
+#		"resolution_index": resolution_index,
+#		"keybindings_dictionary" : create_keybindings_dictionary(),
+#	}
+#
+#	return settings_container_dict
 
 
 # Create a dictionary of all the keybindings to be saved
-func create_keybindings_dictionary() -> Dictionary:
-	var keybind_container_dict = {
-		# Player 1
-		player_keybind_resource.JUMP: player_keybind_resource.jump_key,
-		player_keybind_resource.CROUCH: player_keybind_resource.crouch_key,
-		player_keybind_resource.MOVE_LEFT: player_keybind_resource.move_left_key,
-		player_keybind_resource.MOVE_RIGHT: player_keybind_resource.move_right_key,
-		# Player 2
-		player_keybind_resource.JUMP_P2: player_keybind_resource.jump_key_p2,
-		player_keybind_resource.CROUCH_P2: player_keybind_resource.crouch_key_p2,
-		player_keybind_resource.MOVE_LEFT_P2: player_keybind_resource.move_left_key_p2,
-		player_keybind_resource.MOVE_RIGHT_P2: player_keybind_resource.move_right_key_p2,
-	}
-	
-	return keybind_container_dict
+#func create_keybindings_dictionary() -> Dictionary:
+#	var keybind_container_dict = {
+#		# Player 1
+#		player_keybind_resource.JUMP: player_keybind_resource.jump_key,
+#		player_keybind_resource.CROUCH: player_keybind_resource.crouch_key,
+#		player_keybind_resource.MOVE_LEFT: player_keybind_resource.move_left_key,
+#		player_keybind_resource.MOVE_RIGHT: player_keybind_resource.move_right_key,
+#		# Player 2
+#		player_keybind_resource.JUMP_P2: player_keybind_resource.jump_key_p2,
+#		player_keybind_resource.CROUCH_P2: player_keybind_resource.crouch_key_p2,
+#		player_keybind_resource.MOVE_LEFT_P2: player_keybind_resource.move_left_key_p2,
+#		player_keybind_resource.MOVE_RIGHT_P2: player_keybind_resource.move_right_key_p2,
+#	}
+#
+#	return keybind_container_dict

@@ -1,6 +1,5 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://resources/menu/settings/settingsmenu_theme.tres" type="Theme" id=1]
 [ext_resource path="res://resources/menu/settings/option_theme.tres" type="Theme" id=2]
 [ext_resource path="res://scripts/menu/SettingsMenu.gd" type="Script" id=6]
 [ext_resource path="res://scenes/menu/WindowModeButton.tscn" type="PackedScene" id=7]
@@ -10,7 +9,6 @@
 [node name="SettingsMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 1 )
 script = ExtResource( 6 )
 
 [node name="MainPane" type="Control" parent="."]
@@ -29,8 +27,8 @@ custom_constants/separation = 40
 alignment = 1
 
 [node name="GraphicsButton" type="Button" parent="MainPane/Menubar/HBoxContainer"]
-margin_left = 362.0
-margin_right = 434.0
+margin_left = 352.0
+margin_right = 429.0
 margin_bottom = 27.0
 toggle_mode = true
 pressed = true
@@ -38,32 +36,32 @@ group = ExtResource( 9 )
 text = "GRAPHICS"
 
 [node name="SoundButton" type="Button" parent="MainPane/Menubar/HBoxContainer"]
-margin_left = 474.0
-margin_right = 524.0
+margin_left = 469.0
+margin_right = 529.0
 margin_bottom = 27.0
 toggle_mode = true
 group = ExtResource( 9 )
 text = "SOUND"
 
 [node name="NetworkButton" type="Button" parent="MainPane/Menubar/HBoxContainer"]
-margin_left = 564.0
-margin_right = 636.0
+margin_left = 569.0
+margin_right = 645.0
 margin_bottom = 27.0
 toggle_mode = true
 group = ExtResource( 9 )
 text = "NETWORK"
 
 [node name="KeybindsButton" type="Button" parent="MainPane/Menubar/HBoxContainer"]
-margin_left = 676.0
-margin_right = 771.0
+margin_left = 685.0
+margin_right = 785.0
 margin_bottom = 27.0
 toggle_mode = true
 group = ExtResource( 9 )
 text = "KEYBINDINGS"
 
 [node name="AccessibilityButton" type="Button" parent="MainPane/Menubar/HBoxContainer"]
-margin_left = 811.0
-margin_right = 917.0
+margin_left = 825.0
+margin_right = 928.0
 margin_bottom = 27.0
 toggle_mode = true
 group = ExtResource( 9 )

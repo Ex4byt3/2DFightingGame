@@ -342,6 +342,7 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -1.42109e-14, -1.42109e-14 )
 scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 4 )
 hframes = 8
 
 [node name="NetworkRandomNumberGenerator" type="Node" parent="."]
