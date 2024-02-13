@@ -5,7 +5,7 @@ extends Control
 onready var window_mode_options = $HBoxContainer/WindowModeOptions
 
 # Define an array for the window options
-const WINDOW_MODE_ARRAY = [
+const WINDOW_MODE_ARRAY: Array = [
 	"     Bordered Window",
 	"     Borderless Window",
 	"     Fullscreen",

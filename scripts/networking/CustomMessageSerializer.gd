@@ -10,7 +10,8 @@ enum HeaderFlags {
 }
 
 func _init():
-	GameSignalBus.connect("network_button_pressed", self, "_on_network_button_pressed")
+	SettingsSignalBus._connect_Signals(GameSignalBus, self, "network_button_pressed", "_on_network_button_pressed")
+#	GameSignalBus.connect("network_button_pressed", self, "_on_network_button_pressed")
 
 func serialize_input(all_input: Dictionary) -> PoolByteArray:
 	var buffer := StreamPeerBuffer.new()

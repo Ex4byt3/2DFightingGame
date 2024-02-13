@@ -35,14 +35,23 @@ func set_button_appearance() -> void:
 
 
 func handle_connecting_signals() -> void:
-	base_button.connect("mouse_entered", self, "on_mouse_entered")
-	base_button.connect("focus_entered", self, "on_mouse_entered")
-	base_button.connect("mouse_exited", self, "on_mouse_exited")
-	base_button.connect("focus_exited", self, "on_mouse_exited")
-	base_button.connect("toggled", self, "on_button_toggled")
-	SettingsSignalBus.connect("set_buttons_inactive", self, "set_inactive")
-	SettingsSignalBus.connect("set_buttons_active", self, "set_active")
-	SettingsSignalBus.connect("reset_buttons", self, "on_reset_buttons")
+	SettingsSignalBus._connect_Signals(base_button, self, "mouse_entered", "on_mouse_entered")
+	SettingsSignalBus._connect_Signals(base_button, self, "focus_entered", "on_mouse_entered")
+	SettingsSignalBus._connect_Signals(base_button, self, "mouse_exited", "on_mouse_exited")
+	SettingsSignalBus._connect_Signals(base_button, self, "focus_exited", "on_mouse_exited")
+	SettingsSignalBus._connect_Signals(base_button, self, "toggled", "on_button_toggled")
+	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "set_buttons_inactive", "set_inactive")
+	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "set_buttons_inactive", "set_active")
+	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "reset_buttons", "on_reset_buttons")
+	
+#	base_button.connect("mouse_entered", self, "on_mouse_entered")
+#	base_button.connect("focus_entered", self, "on_mouse_entered")
+#	base_button.connect("mouse_exited", self, "on_mouse_exited")
+#	base_button.connect("focus_exited", self, "on_mouse_exited")
+#	base_button.connect("toggled", self, "on_button_toggled")
+#	SettingsSignalBus.connect("set_buttons_inactive", self, "set_inactive")
+#	SettingsSignalBus.connect("set_buttons_active", self, "set_active")
+#	SettingsSignalBus.connect("reset_buttons", self, "on_reset_buttons")
 
 
 func on_mouse_entered() -> void:

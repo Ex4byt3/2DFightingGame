@@ -4,20 +4,24 @@ onready var player_keybind_resource = preload("res://assets/resources/game_setti
 
 var window_mode_index: int = 0
 var resolution_index: int = 0
-var loaded_settings = {}
+var storage_dictionary: Dictionary = {}
+var loaded_settings: Dictionary = {}
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	handle_connecting_signals()
-#	create_storage_dictionary()
+	create_storage_dictionary()
 
 
 # Connect relevant signals from the SettingsSignalBus
 func handle_connecting_signals() -> void:
-	SettingsSignalBus.connect("load_settings_data", self, "load_settings_data")
-	SettingsSignalBus.connect("window_mode_selected", self, "on_window_mode_selected")
-	SettingsSignalBus.connect("resolution_selected", self, "on_resolution_selected")
+	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "load_settings_data", "load_settings_data")
+	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "window_mode_selected", "on_window_mode_selected")
+	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "resolution_selected", "on_resolution_selected")
+#	SettingsSignalBus.connect("load_settings_data", self, "load_settings_data")
+#	SettingsSignalBus.connect("window_mode_selected", self, "on_window_mode_selected")
+#	SettingsSignalBus.connect("resolution_selected", self, "on_resolution_selected")
 
 
 # Loads all relevant setting data upon game launch

@@ -5,7 +5,7 @@ extends Control
 onready var resolution_options = $HBoxContainer/ResolutionOptions
 
 # Define a dictionary for screen resolution options
-const RESOLUTION_DICTIONARY = {
+const RESOLUTION_DICTIONARY: Dictionary = {
 	"     640 x 360" : Vector2(640, 360),
 	"     853 x 480" : Vector2(853, 480),
 	"     1280 x 720" : Vector2(1280, 720),

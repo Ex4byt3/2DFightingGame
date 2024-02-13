@@ -10,15 +10,23 @@ onready var johnny = $Johnny
 var logging_enabled := true
 
 func _ready() -> void:
-	get_tree().connect("network_peer_connected", self, "_on_network_peer_connected")
-	get_tree().connect("network_peer_disconnected", self, "_on_network_peer_disconnected")
-	get_tree().connect("server_disconnected", self, "_on_server_disconnected")
+	SettingsSignalBus._connect_Signals(get_tree(), self, "network_peer_connected", "_on_network_peer_connected")
+	SettingsSignalBus._connect_Signals(get_tree(), self, "network_peer_disconnected", "_on_network_peer_disconnected")
+	SettingsSignalBus._connect_Signals(get_tree(), self, "server_disconnected", "_on_server_disconnected")
+#	get_tree().connect("network_peer_connected", self, "_on_network_peer_connected")
+#	get_tree().connect("network_peer_disconnected", self, "_on_network_peer_disconnected")
+#	get_tree().connect("server_disconnected", self, "_on_server_disconnected")
 	
-	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
-	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
-	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
-	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
-	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_started", "_on_SyncManager_sync_started")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_stopped", "_on_SyncManager_sync_stopped")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_lost", "_on_SyncManager_sync_lost")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_regained", "_on_SyncManager_sync_regained")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_error", "_on_SyncManager_sync_error")
+#	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
+#	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
+#	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
+#	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
+#	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
 	setup_match()
 	

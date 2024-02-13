@@ -15,11 +15,15 @@ func _ready():
 
 # Connect to button signals
 func handle_connecting_signals() -> void:
-
+	var menu_connection: bool = false
+	
 	# Connect signals used to change the currently shown menu
-	SettingsSignalBus.connect("show_main_menu", self, "change_shown_menu", [1])
-	SettingsSignalBus.connect("show_settings_menu", self, "change_shown_menu", [2])
-	SettingsSignalBus.connect("show_online_menu", self, "change_shown_menu", [3])
+	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_main_menu", "change_shown_menu", 1)
+	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_settings_menu", "change_shown_menu", 2)
+	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_online_menu", "change_shown_menu", 3)
+	#SettingsSignalBus.connect("show_main_menu", self, "change_shown_menu", [1])
+	#SettingsSignalBus.connect("show_settings_menu", self, "change_shown_menu", [2])
+	#SettingsSignalBus.connect("show_online_menu", self, "change_shown_menu", [3])
 
 
 # When a signal to change the currently displayed menu is recieved

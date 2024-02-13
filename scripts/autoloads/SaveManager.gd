@@ -9,7 +9,8 @@ const SETTINGS_FILE_NAME = "config.dat"
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	load_settings_data()
-	SettingsSignalBus.connect("set_settings_dict", self, "save_settings")
+	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "set_settings_dict", "save_settings")
+#	SettingsSignalBus.connect("set_settings_dict", self, "save_settings")
 
 
 # Save the current settings to a .dat file

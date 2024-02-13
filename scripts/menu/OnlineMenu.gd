@@ -54,41 +54,42 @@ func _ready():
 	_add_Lobby_Type_Items()
 	_add_Lobby_State_Items()
 	_handle_Connecting_Signals()
-	_handle_Connectings_Steam_Signals()
-
-
-# Connect a Steam signal and show the success code
-func _connect_Steam_Signals(this_signal: String, this_function: String) -> void:
-	var SIGNAL_CONNECT: int = Steam.connect(this_signal, self, this_function)
-	if SIGNAL_CONNECT > OK:
-		print("[STEAM] Connecting "+str(this_signal)+" to "+str(this_function)+" failed: "+str(SIGNAL_CONNECT))
-
-
-# Connect the required steam signals used in the online menu
-func _handle_Connectings_Steam_Signals() -> void:
-	_connect_Steam_Signals("lobby_created", "_on_Lobby_Created")
-	_connect_Steam_Signals("lobby_joined", "_on_Lobby_Joined")
-	_connect_Steam_Signals("lobby_chat_update", "_on_Lobby_Chat_Update")
-	_connect_Steam_Signals("lobby_message", "_on_Lobby_Message")
-	_connect_Steam_Signals("lobby_match_list", "_on_Lobby_Match_List")
 
 
 func _handle_Connecting_Signals() -> void:
-	refresh_button.connect("button_up", self, "_on_Refresh_Button_pressed")
-	open_lobby_popup.connect("button_up", self, "_on_Open_Lobby_Popup_pressed")
-	open_enet_popup.connect("button_up", self, "_on_Open_ENet_Popup_pressed")
-	create_lobby_button.connect("button_up", self, "_on_Create_Lobby_pressed")
+	SettingsSignalBus._connect_Signals(Steam, self, "lobby_created", "_on_Lobby_Created")
+	SettingsSignalBus._connect_Signals(Steam, self, "lobby_joined", "_on_Lobby_Joined")
+	SettingsSignalBus._connect_Signals(Steam, self, "lobby_chat_update", "_on_Lobby_Chat_Update")
+	SettingsSignalBus._connect_Signals(Steam, self, "lobby_message", "_on_Lobby_Message")
+	SettingsSignalBus._connect_Signals(Steam, self, "lobby_match_list", "_on_Lobby_Match_List")
 	
-	lobby_type_filter.connect("item_selected", self, "_filter_Lobbies")
-	lobby_state_filter.connect("item_selected", self, "_filter_Lobbies")
-	lobby_search_bar.connect("text_changed", self, "_filter_Lobbies")
+	SettingsSignalBus._connect_Signals(refresh_button, self, "button_up", "_on_Refresh_Button_pressed")
+	SettingsSignalBus._connect_Signals(open_lobby_popup, self, "button_up", "_on_Open_Lobby_Popup_pressed")
+	SettingsSignalBus._connect_Signals(open_enet_popup, self, "button_up", "_on_Open_ENet_Popup_pressed")
+	SettingsSignalBus._connect_Signals(create_lobby_button, self, "button_up", "_on_Create_Lobby_pressed")
+#	refresh_button.connect("button_up", self, "_on_Refresh_Button_pressed")
+#	open_lobby_popup.connect("button_up", self, "_on_Open_Lobby_Popup_pressed")
+#	open_enet_popup.connect("button_up", self, "_on_Open_ENet_Popup_pressed")
+#	create_lobby_button.connect("button_up", self, "_on_Create_Lobby_pressed")
 	
-	rpc_server_button.connect("button_up", self, "on_rpc_server_button_pressed")
-	rpc_client_button.connect("button_up", self, "on_rpc_client_button_pressed")
+	SettingsSignalBus._connect_Signals(lobby_type_filter, self, "item_selected", "_filter_Lobbies")
+	SettingsSignalBus._connect_Signals(lobby_state_filter, self, "item_selected", "_filter_Lobbies")
+	SettingsSignalBus._connect_Signals(lobby_search_bar, self, "text_changed", "_filter_Lobbies")
+#	lobby_type_filter.connect("item_selected", self, "_filter_Lobbies")
+#	lobby_state_filter.connect("item_selected", self, "_filter_Lobbies")
+#	lobby_search_bar.connect("text_changed", self, "_filter_Lobbies")
 	
-	lobby_pane.exit_lobby_button.connect("button_up", self, "_on_Exit_Lobby")
-	lobby_pane.start_match_button.connect("button_up", self, "_on_Match_Start")
-	lobby_pane.send_message_button.connect("button_up", self, "_on_Send_Message")
+	SettingsSignalBus._connect_Signals(rpc_server_button, self, "button_up", "_on_rpc_server_button_pressed")
+	SettingsSignalBus._connect_Signals(rpc_client_button, self, "button_up", "_on_rpc_client_button_pressed")
+#	rpc_server_button.connect("button_up", self, "on_rpc_server_button_pressed")
+#	rpc_client_button.connect("button_up", self, "on_rpc_client_button_pressed")
+	
+	SettingsSignalBus._connect_Signals(lobby_pane.exit_lobby_button, self, "button_up", "_on_Exit_Lobby")
+	SettingsSignalBus._connect_Signals(lobby_pane.start_match_button, self, "button_up", "_on_Match_Start")
+	SettingsSignalBus._connect_Signals(lobby_pane.send_message_button, self, "button_up", "_on_Send_Message")
+#	lobby_pane.exit_lobby_button.connect("button_up", self, "_on_Exit_Lobby")
+#	lobby_pane.start_match_button.connect("button_up", self, "_on_Match_Start")
+#	lobby_pane.send_message_button.connect("button_up", self, "_on_Send_Message")
 
 
 func _input(event) -> void:
@@ -110,7 +111,7 @@ func _add_Lobby_State_Items() -> void:
 		lobby_state_filter.add_item(lobby_state)
 
 
-func _filter_Lobbies(filter) -> void:
+func _filter_Lobbies(_filter) -> void:
 	var type_filter = lobby_type_filter.get_item_text(lobby_type_filter.selected)
 	var state_filter = lobby_state_filter.get_item_text(lobby_state_filter.selected)
 	var search_text = lobby_search_bar.text
@@ -223,7 +224,8 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 		lobby_container.add_child(new_lobby_tile)
 		
 		var join_lobby_signal: int = new_lobby_tile.join_button.connect("button_up", self, "_join_Steam_Lobby", [lobby])
-		print("[STEAM] Connecting pressed to function _join_Steam_Lobby for "+str(lobby)+" successfully: "+str(join_lobby_signal))
+		if join_lobby_signal > OK:
+			print("[STEAM] Connecting pressed to function _join_Steam_Lobby for "+str(lobby)+" successfully: "+str(join_lobby_signal))
 
 
 func _on_Match_Start() -> void:
@@ -237,13 +239,13 @@ func _on_Match_Start() -> void:
 		NetworkGlobal.STEAM_IS_HOST = false
 		NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
 		print("[Steam] Started match as client")
-	get_tree().change_scene_to(steam_scene)
+	SettingsSignalBus._change_Scene(self, steam_scene)
 
 
 ##################################################
 # Lobby button functions
 ##################################################
-func _on_Open_Lobby_Popup_pressed():
+func _on_Open_Lobby_Popup_pressed() -> void:
 	rpc_popup.visible = false
 	lobby_creation_popup.visible = true
 
@@ -297,31 +299,31 @@ func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response:
 ##################################################
 # ENet functions
 ##################################################
-func _on_Open_ENet_Popup_pressed():
+func _on_Open_ENet_Popup_pressed() -> void:
 	lobby_creation_popup.visible = false
 	rpc_popup.visible = true
 
 
 # 
-func on_rpc_server_button_pressed() -> void:
+func _on_rpc_server_button_pressed() -> void:
 	rpc_popup.visible = false
 	NetworkGlobal.NETWORK_TYPE = 1
 	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.RPC_IS_HOST = true
 	NetworkGlobal.RPC_IP = rpc_host_field.text
 	NetworkGlobal.RPC_PORT = int(rpc_port_field.text)
-	get_tree().change_scene_to(rpc_scene)
+	SettingsSignalBus._change_Scene(self, rpc_scene)
 
 
 #
-func on_rpc_client_button_pressed() -> void:
+func _on_rpc_client_button_pressed() -> void:
 	rpc_popup.visible = false
 	NetworkGlobal.NETWORK_TYPE = 1
 	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.RPC_IS_HOST = false
 	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
 	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
-	get_tree().change_scene_to(rpc_scene)
+	SettingsSignalBus._change_Scene(self, rpc_scene)
 
 
 ##################################################

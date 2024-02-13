@@ -12,9 +12,12 @@ func _ready():
 
 
 func handle_connecting_signals() -> void:
-	SettingsSignalBus.connect("show_main_menu", self, "on_menu_changed", ["MAIN"])
-	SettingsSignalBus.connect("show_settings_menu", self, "on_menu_changed", ["SETTINGS"])
-	SettingsSignalBus.connect("show_online_menu", self, "on_menu_changed", ["ONLINE"])
+	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_main_menu", "on_menu_changed", "MAIN")
+	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_settings_menu", "on_menu_changed", "SETTINGS")
+	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_online_menu", "on_menu_changed", "ONLINE")
+#	SettingsSignalBus.connect("show_main_menu", self, "on_menu_changed", ["MAIN"])
+#	SettingsSignalBus.connect("show_settings_menu", self, "on_menu_changed", ["SETTINGS"])
+#	SettingsSignalBus.connect("show_online_menu", self, "on_menu_changed", ["ONLINE"])
 
 
 func on_menu_changed(menu: String) -> void:

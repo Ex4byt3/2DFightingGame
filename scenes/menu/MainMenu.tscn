@@ -1,14 +1,12 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/menu/icons/active_local_icon.png" type="Texture" id=2]
 [ext_resource path="res://scripts/menu/MainMenu.gd" type="Script" id=4]
-[ext_resource path="res://assets/resources/menu/button_groups/buttongroup_online.tres" type="ButtonGroup" id=6]
 [ext_resource path="res://scenes/menu/SlinkyButton.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/menu/icons/active_online_icon.png" type="Texture" id=16]
 [ext_resource path="res://assets/menu/icons/active_training_icon.png" type="Texture" id=17]
 [ext_resource path="res://assets/menu/icons/active_records_icon.png" type="Texture" id=22]
 [ext_resource path="res://assets/menu/images/background.jpeg" type="Texture" id=24]
-
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0, 0, 0.392157, 0, 0, 0, 0 )
@@ -102,45 +100,6 @@ expanded_width = 420
 slide_offset = 20
 icon_texture = ExtResource( 22 )
 button_text = "RECORDS"
-
-[node name="OnlineTab" type="VBoxContainer" parent="MainPane"]
-visible = false
-anchor_left = 0.095
-anchor_top = 0.12
-anchor_right = 0.395
-anchor_bottom = 0.3
-custom_constants/separation = 0
-
-[node name="RPCButton" type="Button" parent="MainPane/OnlineTab"]
-margin_right = 384.0
-margin_bottom = 58.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-toggle_mode = true
-group = ExtResource( 6 )
-
-[node name="Label" type="Label" parent="MainPane/OnlineTab/RPCButton"]
-anchor_left = 0.4
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "ENET"
-valign = 1
-
-[node name="SteamButton" type="Button" parent="MainPane/OnlineTab"]
-margin_top = 58.0
-margin_right = 384.0
-margin_bottom = 116.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-toggle_mode = true
-group = ExtResource( 6 )
-
-[node name="Label" type="Label" parent="MainPane/OnlineTab/SteamButton"]
-anchor_left = 0.4
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "STEAM"
-valign = 1
 
 [node name="LocalTab" type="VBoxContainer" parent="MainPane"]
 visible = false
@@ -274,116 +233,3 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 text = "FISHING"
 valign = 1
-
-[node name="QuitTab" type="VBoxContainer" parent="MainPane"]
-visible = false
-anchor_left = 0.095
-anchor_top = 0.68
-anchor_right = 0.395
-anchor_bottom = 0.86
-custom_constants/separation = 0
-
-[node name="TitleButton" type="Button" parent="MainPane/QuitTab"]
-margin_right = 255.0
-margin_bottom = 43.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="MainPane/QuitTab/TitleButton"]
-anchor_left = 0.4
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "TITLE"
-valign = 1
-
-[node name="DesktopButton" type="Button" parent="MainPane/QuitTab"]
-margin_top = 43.0
-margin_right = 255.0
-margin_bottom = 86.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="MainPane/QuitTab/DesktopButton"]
-anchor_left = 0.4
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "DESKTOP"
-valign = 1
-
-[node name="SteamConnectionPanel" type="Control" parent="MainPane"]
-visible = false
-anchor_left = 0.095
-anchor_top = 0.3
-anchor_right = 0.395
-anchor_bottom = 0.55
-
-[node name="TextureRect" type="TextureRect" parent="MainPane/SteamConnectionPanel"]
-modulate = Color( 0, 0, 0, 1 )
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 3
-texture = SubResource( 2 )
-expand = true
-stretch_mode = 1
-
-[node name="PanelHeader" type="TextureRect" parent="MainPane/SteamConnectionPanel"]
-anchor_right = 1.0
-anchor_bottom = 0.2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.3
-expand = true
-stretch_mode = 1
-
-[node name="Label" type="Label" parent="MainPane/SteamConnectionPanel/PanelHeader"]
-anchor_left = 0.05
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "STEAM CONNECTION"
-valign = 2
-
-[node name="EntryContainer" type="GridContainer" parent="MainPane/SteamConnectionPanel"]
-anchor_top = 0.22
-anchor_right = 1.0
-anchor_bottom = 0.8
-size_flags_vertical = 3
-custom_constants/vseparation = 6
-custom_constants/hseparation = 4
-columns = 2
-
-[node name="IdLabel" type="Label" parent="MainPane/SteamConnectionPanel/EntryContainer"]
-margin_right = 190.0
-margin_bottom = 39.0
-size_flags_horizontal = 3
-size_flags_vertical = 5
-text = "STEAM ID"
-align = 2
-valign = 1
-uppercase = true
-
-[node name="IdField" type="LineEdit" parent="MainPane/SteamConnectionPanel/EntryContainer"]
-margin_left = 194.0
-margin_right = 384.0
-margin_bottom = 39.0
-size_flags_horizontal = 3
-
-[node name="SelectionContainer" type="HBoxContainer" parent="MainPane/SteamConnectionPanel"]
-anchor_top = 0.8
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_constants/separation = 0
-
-[node name="ServerButton" type="Button" parent="MainPane/SteamConnectionPanel/SelectionContainer"]
-margin_right = 192.0
-margin_bottom = 32.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "SERVER"
-
-[node name="ClientButton" type="Button" parent="MainPane/SteamConnectionPanel/SelectionContainer"]
-margin_left = 192.0
-margin_right = 384.0
-margin_bottom = 32.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "CLIENT"

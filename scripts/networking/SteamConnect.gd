@@ -27,13 +27,19 @@ enum SYNC_TYPE {
 
 func _ready() -> void:
 	SyncManager.network_adaptor = SteamNetworkAdaptor.new()
-	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
-	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
-	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
-	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
-	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_started", "_on_SyncManager_sync_started")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_stopped", "_on_SyncManager_sync_stopped")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_lost", "_on_SyncManager_sync_lost")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_regained", "_on_SyncManager_sync_regained")
+	SettingsSignalBus._connect_Signals(SyncManager, self, "sync_error", "_on_SyncManager_sync_error")
+#	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
+#	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
+#	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
+#	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
+#	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
-	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
+	SettingsSignalBus._connect_Signals(Steam, self, "network_messages_session_request", "_on_network_messages_session_request")
+#	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
 	Steam.setIdentitySteamID64("STEAM_OPP_ID", NetworkGlobal.STEAM_OPP_ID)
 	
 	setup_match()
