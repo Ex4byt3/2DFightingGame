@@ -1,31 +1,16 @@
 extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 
-var input_path_mapping := {
-	'/root/RpcGame/ServerPlayer': 1,
-	'/root/RpcGame/ClientPlayer': 2
-}
+var input_path_mapping = {}
+var input_path_mapping_reverse = {}
 
 enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
 	DROP_BOMB        = 1 << 1, # Bit 1
+	ATTACK_LIGHT     = 1 << 2, # Bit 2
 }
 
-var input_path_mapping_reverse := {}
-
-func _init() -> void:
-#	if NetworkGlobal.NETWORK_TYPE == 2:
-#		input_path_mapping = {
-#			'/root/SteamGame/ServerPlayer': 1,
-#			'/root/SteamGame/ClientPlayer': 2
-#		}
-#	elif NetworkGlobal.NETWORK_TYPE == 1:
-#		input_path_mapping = {
-#			'/root/RpcGame/ServerPlayer': 1,
-#			'/root/RpcGame/ClientPlayer': 2
-#		}
-	
-	for key in input_path_mapping:
-		input_path_mapping_reverse[input_path_mapping[key]] = key
+func _init():
+	GameSignalBus.connect("network_button_pressed", self, "_on_network_button_pressed")
 
 func serialize_input(all_input: Dictionary) -> PoolByteArray:
 	var buffer := StreamPeerBuffer.new()
@@ -45,6 +30,8 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 			header |= HeaderFlags.HAS_INPUT_VECTOR
 		if input.get('drop_bomb', false):
 			header |= HeaderFlags.DROP_BOMB
+		if input.get('attack_light', false):
+			header |= HeaderFlags.ATTACK_LIGHT
 		
 		buffer.put_u8(header)
 		
@@ -77,8 +64,26 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 		input["input_vector_y"] = buffer.get_64()
 	if header & HeaderFlags.DROP_BOMB:
 		input["drop_bomb"] = true
+	if header & HeaderFlags.ATTACK_LIGHT:
+		input["attack_light"] = true
 #	if header & HeaderFlags.IS_ON_FLOOR:
 #		input["is_on_floor"] = true
 	
 	all_input[path] = input
 	return all_input
+
+func _on_network_button_pressed(network_type: int) -> void:
+	input_path_mapping.clear()
+	input_path_mapping_reverse.clear()
+	
+	if network_type == 1:
+		input_path_mapping['/root/RpcGame/ServerPlayer'] = 1
+		input_path_mapping['/root/RpcGame/ClientPlayer'] = 2
+	elif network_type == 2:
+		input_path_mapping['/root/SteamGame/ServerPlayer'] = 1
+		input_path_mapping['/root/SteamGame/ClientPlayer'] = 2
+	else:
+		input_path_mapping.clear()
+		
+	for key in input_path_mapping:
+		input_path_mapping_reverse[input_path_mapping[key]] = key

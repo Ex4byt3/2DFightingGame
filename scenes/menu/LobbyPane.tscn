@@ -1,0 +1,253 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/resources/menu/online/lobbytile_theme.tres" type="Theme" id=2]
+[ext_resource path="res://scripts/menu/LobbyPane.gd" type="Script" id=3]
+
+
+[sub_resource type="DynamicFont" id=1]
+size = 25
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.0862745, 0.0862745, 0.0862745, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0, 0, 0, 0.196078 )
+
+[node name="LobbyPane" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="TitleBox" type="HBoxContainer" parent="."]
+anchor_left = 0.03
+anchor_top = 0.05
+anchor_right = 0.5
+anchor_bottom = 0.116
+margin_left = 0.403999
+margin_top = 0.0187216
+margin_right = 0.400024
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TitleBox"]
+margin_top = 7.0
+margin_right = 99.0
+margin_bottom = 40.0
+custom_fonts/font = SubResource( 1 )
+text = "Lobby: "
+
+[node name="LobbyNameLabel" type="Label" parent="TitleBox"]
+margin_left = 103.0
+margin_top = 7.0
+margin_right = 601.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "Default"
+
+[node name="LobbyStatus" type="HBoxContainer" parent="."]
+anchor_left = 0.03
+anchor_top = 0.125
+anchor_right = 0.25
+anchor_bottom = 0.161
+margin_bottom = 0.0224762
+
+[node name="StateLabel" type="Label" parent="LobbyStatus"]
+margin_top = 3.0
+margin_right = 85.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 70, 0 )
+size_flags_horizontal = 3
+theme = ExtResource( 2 )
+text = "Open"
+align = 1
+valign = 1
+
+[node name="VSeparator" type="VSeparator" parent="LobbyStatus"]
+margin_left = 89.0
+margin_right = 93.0
+margin_bottom = 25.0
+custom_styles/separator = SubResource( 3 )
+
+[node name="TypeLabel" type="Label" parent="LobbyStatus"]
+margin_left = 97.0
+margin_top = 3.0
+margin_right = 183.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 70, 0 )
+size_flags_horizontal = 3
+theme = ExtResource( 2 )
+text = "Public"
+align = 1
+valign = 1
+
+[node name="VSeparator3" type="VSeparator" parent="LobbyStatus"]
+margin_left = 187.0
+margin_right = 191.0
+margin_bottom = 25.0
+custom_styles/separator = SubResource( 3 )
+
+[node name="ConnectionLabel" type="Label" parent="LobbyStatus"]
+margin_left = 195.0
+margin_top = 3.0
+margin_right = 281.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 70, 0 )
+size_flags_horizontal = 3
+theme = ExtResource( 2 )
+text = "Steam"
+align = 1
+valign = 1
+
+[node name="LobbyMembersPane" type="VBoxContainer" parent="."]
+anchor_left = 0.03
+anchor_top = 0.2
+anchor_right = 0.4
+anchor_bottom = 0.38
+size_flags_horizontal = 3
+
+[node name="PlayersLabel" type="Label" parent="LobbyMembersPane"]
+margin_right = 473.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Player List"
+
+[node name="Members" type="VBoxContainer" parent="LobbyMembersPane"]
+margin_top = 18.0
+margin_right = 473.0
+margin_bottom = 129.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Chat" type="VBoxContainer" parent="."]
+anchor_left = 0.03
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.95
+
+[node name="Label" type="Label" parent="Chat"]
+margin_right = 601.0
+margin_bottom = 14.0
+text = "Chat"
+
+[node name="Chatbox" type="RichTextLabel" parent="Chat"]
+margin_top = 18.0
+margin_right = 601.0
+margin_bottom = 368.0
+size_flags_vertical = 3
+scroll_following = true
+
+[node name="ChatEntry" type="HBoxContainer" parent="Chat"]
+margin_top = 372.0
+margin_right = 601.0
+margin_bottom = 396.0
+
+[node name="ChatLine" type="LineEdit" parent="Chat/ChatEntry"]
+margin_right = 522.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+placeholder_text = "enter message here"
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="SendMessageButton" type="Button" parent="Chat/ChatEntry"]
+margin_left = 526.0
+margin_right = 601.0
+margin_bottom = 24.0
+grow_horizontal = 0
+rect_min_size = Vector2( 75, 0 )
+text = "SEND"
+
+[node name="SettingsPane" type="VBoxContainer" parent="."]
+anchor_left = 0.525
+anchor_top = 0.05
+anchor_right = 0.97
+anchor_bottom = 0.8
+custom_constants/separation = 20
+
+[node name="ButtonPane" type="Panel" parent="SettingsPane"]
+margin_right = 569.0
+margin_bottom = 94.0
+grow_horizontal = 0
+rect_min_size = Vector2( 0, 94 )
+custom_styles/panel = SubResource( 4 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsPane/ButtonPane"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+size_flags_horizontal = 3
+custom_constants/separation = 15
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SettingsPane/ButtonPane/VBoxContainer"]
+margin_right = 549.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+custom_constants/separation = 20
+
+[node name="PasswordButton" type="Button" parent="SettingsPane/ButtonPane/VBoxContainer/HBoxContainer"]
+margin_right = 264.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 160, 29 )
+size_flags_horizontal = 3
+text = "Change Password"
+
+[node name="ExitLobbyButton" type="Button" parent="SettingsPane/ButtonPane/VBoxContainer/HBoxContainer"]
+margin_left = 284.0
+margin_right = 549.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 110, 29 )
+size_flags_horizontal = 3
+text = "Exit Lobby"
+
+[node name="ReadyButton" type="Button" parent="SettingsPane/ButtonPane/VBoxContainer"]
+margin_top = 44.0
+margin_right = 549.0
+margin_bottom = 73.0
+rect_min_size = Vector2( 0, 29 )
+toggle_mode = true
+text = "Ready"
+
+[node name="MatchSettingsPane" type="Panel" parent="SettingsPane"]
+margin_top = 114.0
+margin_right = 569.0
+margin_bottom = 540.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 5 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SettingsPane/MatchSettingsPane"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Options" type="VBoxContainer" parent="SettingsPane/MatchSettingsPane/ScrollContainer"]
+
+[node name="StartMatchButton" type="Button" parent="."]
+anchor_left = 0.525
+anchor_top = 0.892
+anchor_right = 0.97
+anchor_bottom = 0.95
+margin_left = -0.555176
+margin_top = 0.0820923
+margin_right = 0.0200195
+margin_bottom = -0.378601
+rect_min_size = Vector2( 0, 29 )
+text = "Start Match"

@@ -1,30 +1,30 @@
 extends Node
 
-onready var player_keybind_resource = preload("res://resources/settings/playerkeybinds_default.tres")
+onready var player_keybind_resource = preload("res://assets/resources/game_settings/playerkeybinds_default.tres")
 
-var window_mode_index = 0
-var resolution_index = 0
+var window_mode_index: int = 0
+var resolution_index: int = 0
 var loaded_settings = {}
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	handle_connecting_signals()
-	create_storage_dictionary()
+#	create_storage_dictionary()
 
 
 # Connect relevant signals from the SettingsSignalBus
 func handle_connecting_signals() -> void:
-	SettingsSingalBus.connect("load_settings_data", self, "load_settings_data")
-	SettingsSingalBus.connect("window_mode_selected", self, "on_window_mode_selected")
-	SettingsSingalBus.connect("resolution_selected", self, "on_resolution_selected")
+	SettingsSignalBus.connect("load_settings_data", self, "load_settings_data")
+	SettingsSignalBus.connect("window_mode_selected", self, "on_window_mode_selected")
+	SettingsSignalBus.connect("resolution_selected", self, "on_resolution_selected")
 
 
 # Loads all relevant setting data upon game launch
 func load_settings_data(data: Dictionary) -> void:
 	loaded_settings = data
-	
 	on_window_mode_selected(loaded_settings.window_mode_index)
+	on_resolution_selected(loaded_settings.resolution_index)
 	on_keybindings_loaded(loaded_settings.keybindings_dictionary)
 
 
@@ -82,7 +82,7 @@ func create_storage_dictionary() -> Dictionary:
 		"resolution_index": resolution_index,
 		"keybindings_dictionary" : create_keybindings_dictionary(),
 	}
-	
+
 	return settings_container_dict
 
 
@@ -100,5 +100,5 @@ func create_keybindings_dictionary() -> Dictionary:
 		player_keybind_resource.MOVE_LEFT_P2: player_keybind_resource.move_left_key_p2,
 		player_keybind_resource.MOVE_RIGHT_P2: player_keybind_resource.move_right_key_p2,
 	}
-	
+
 	return keybind_container_dict

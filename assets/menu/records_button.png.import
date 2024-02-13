@@ -1,0 +1,44 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+<<<<<<<< HEAD:assets/menu/icons/back_arrow_icon.png.import
+path="res://.import/back_arrow_icon.png-8dbd82adeb948a46384fe8df02b74c4d.stex"
+========
+path="res://.import/records_button.png-3c6e5d54a6faff8f5af7466fe3cc16dd.stex"
+>>>>>>>> demo:assets/menu/records_button.png.import
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+<<<<<<<< HEAD:assets/menu/icons/back_arrow_icon.png.import
+source_file="res://assets/menu/icons/back_arrow_icon.png"
+dest_files=[ "res://.import/back_arrow_icon.png-8dbd82adeb948a46384fe8df02b74c4d.stex" ]
+========
+source_file="res://assets/menu/records_button.png"
+dest_files=[ "res://.import/records_button.png-3c6e5d54a6faff8f5af7466fe3cc16dd.stex" ]
+>>>>>>>> demo:assets/menu/records_button.png.import
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=true
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+process/normal_map_invert_y=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0
