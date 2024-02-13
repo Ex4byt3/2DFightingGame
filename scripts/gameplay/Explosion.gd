@@ -3,7 +3,7 @@ extends SGFixedNode2D
 onready var despawn_timer = $DespawnTimer
 onready var animation_player = $NetworkAnimationPlayer
 
-const sound = preload("res://assets/explosion.wav")
+const sound = preload("res://assets/sound/explosion.wav")
 
 func _network_spawn(data: Dictionary) -> void:
 	fixed_position.x = data['fixed_position_x']

@@ -2,12 +2,13 @@
 
 [ext_resource path="res://assets/menu/icons/active_local_icon.png" type="Texture" id=2]
 [ext_resource path="res://scripts/menu/MainMenu.gd" type="Script" id=4]
-[ext_resource path="res://resources/menu/button_groups/buttongroup_online.tres" type="ButtonGroup" id=6]
+[ext_resource path="res://assets/resources/menu/button_groups/buttongroup_online.tres" type="ButtonGroup" id=6]
 [ext_resource path="res://scenes/menu/SlinkyButton.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/menu/icons/active_online_icon.png" type="Texture" id=16]
 [ext_resource path="res://assets/menu/icons/active_training_icon.png" type="Texture" id=17]
 [ext_resource path="res://assets/menu/icons/active_records_icon.png" type="Texture" id=22]
-[ext_resource path="res://assets/menu/background.jpeg" type="Texture" id=24]
+[ext_resource path="res://assets/menu/images/background.jpeg" type="Texture" id=24]
+
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0, 0, 0.392157, 0, 0, 0, 0 )

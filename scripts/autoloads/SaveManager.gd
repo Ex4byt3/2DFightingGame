@@ -1,7 +1,7 @@
 extends Node
 
 
-const SAVE_DIRECTORY = "res://save_data"
+const SAVE_DIRECTORY = "res://assets/resources/save_data"
 const SETTINGS_FILE_NAME = "config.dat"
 #var save_settings_dict = {}
 

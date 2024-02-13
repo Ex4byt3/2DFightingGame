@@ -1,6 +1,6 @@
 extends Node
 
-const LOG_FILE_DIRECTORY = 'res://logs'
+const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
 
 onready var message_label = $Messages/MessageLabel
 onready var sync_lost_label = $Messages/SyncLostLabel

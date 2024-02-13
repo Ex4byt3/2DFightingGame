@@ -1,6 +1,6 @@
 extends Node
 
-onready var player_keybind_resource = preload("res://resources/game_settings/playerkeybinds_default.tres")
+onready var player_keybind_resource = preload("res://assets/resources/game_settings/playerkeybinds_default.tres")
 
 var window_mode_index: int = 0
 var resolution_index: int = 0

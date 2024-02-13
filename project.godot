@@ -27,9 +27,9 @@ _global_script_classes=[ {
 "base": "Resource",
 "class": "PlayerKeybinds",
 "language": "GDScript",
-"path": "res://resources/game_settings/PlayerKeybinds.gd"
+"path": "res://assets/resources/game_settings/PlayerKeybinds.gd"
 }, {
-"base": "",
+"base": "Object",
 "class": "Steam",
 "language": "NativeScript",
 "path": "res://addons/godotsteam/godotsteam.gdns"
@@ -46,11 +46,11 @@ _global_script_class_icons={
 
 config/name="Demo"
 run/main_scene="res://scenes/menu/Menu.tscn"
-config/icon="res://assets/icon.png"
+config/icon="res://assets/gameplay/icon.png"
 
 [audio]
 
-default_bus_layout="res://sound/default_bus_layout.tres"
+default_bus_layout="res://assets/sound/default_bus_layout.tres"
 
 [autoload]
 
@@ -63,6 +63,7 @@ GameSignalBus="*res://scripts/autoloads/GameSignalBus.gd"
 SettingsSignalBus="*res://scripts/autoloads/SettingsSignalBus.gd"
 SettingsData="*res://scripts/autoloads/SettingsData.gd"
 SettingsManager="*res://scripts/autoloads/SaveManager.gd"
+Steam="*res://addons/godotsteam/steam.gd"
 
 [debug]
 
@@ -227,4 +228,4 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-environment/default_environment="res://sound/default_env.tres"
+environment/default_environment="res://assets/sound/default_env.tres"

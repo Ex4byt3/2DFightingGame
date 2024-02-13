@@ -1,7 +1,7 @@
 extends Control
 
-var rpc_scene = preload("res://scenes/RpcGame.tscn")
-var steam_scene = preload("res://scenes/SteamGame.tscn")
+var rpc_scene = preload("res://scenes/maps/RpcGame.tscn")
+var steam_scene = preload("res://scenes/maps/SteamGame.tscn")
 
 onready var lobby_tile = preload("res://scenes/menu/LobbyTile.tscn")
 onready var lobby_member = preload("res://scenes/menu/LobbyMember.tscn")

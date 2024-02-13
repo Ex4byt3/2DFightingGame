@@ -1,10 +1,11 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/menu/LobbyPane.tscn" type="PackedScene" id=1]
-[ext_resource path="res://resources/menu/button_groups/lobbytype_buttongroup.tres" type="ButtonGroup" id=2]
-[ext_resource path="res://assets/menu/online_background_accent.png" type="Texture" id=3]
-[ext_resource path="res://resources/menu/online/onlinemenu_theme.tres" type="Theme" id=5]
+[ext_resource path="res://assets/resources/menu/button_groups/lobbytype_buttongroup.tres" type="ButtonGroup" id=2]
+[ext_resource path="res://assets/menu/images/online_background_accent.png" type="Texture" id=3]
+[ext_resource path="res://assets/resources/menu/online/onlinemenu_theme.tres" type="Theme" id=5]
 [ext_resource path="res://scripts/menu/OnlineMenu.gd" type="Script" id=7]
+
 
 [node name="OnlineMenu" type="Control"]
 anchor_right = 1.0

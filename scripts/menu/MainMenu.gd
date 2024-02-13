@@ -2,8 +2,8 @@ extends Control
 
 
 # Preload the game scenes as packed scenes
-var steam_scene = preload("res://scenes/SteamGame.tscn")
-var local_scene = preload("res://scenes/LocalGame.tscn")
+var steam_scene = preload("res://scenes/maps/SteamGame.tscn")
+var local_scene = preload("res://scenes/maps/LocalGame.tscn")
 #var local_texture = preload("res://assets/menu/main/icons/active_local_icon.png")
 
 # Onready var for primary buttons
