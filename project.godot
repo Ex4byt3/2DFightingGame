@@ -29,7 +29,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/resources/game_settings/PlayerKeybinds.gd"
 }, {
-"base": "Object",
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://scripts/characters/StateMachine.gd"
+}, {
+"base": "",
 "class": "Steam",
 "language": "NativeScript",
 "path": "res://addons/godotsteam/godotsteam.gdns"
@@ -39,6 +44,7 @@ _global_script_class_icons={
 "NetworkRandomNumberGenerator": "",
 "NetworkTimer": "",
 "PlayerKeybinds": "",
+"StateMachine": "",
 "Steam": ""
 }
 
