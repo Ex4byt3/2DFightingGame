@@ -33,19 +33,13 @@ _global_script_classes=[ {
 "class": "StateMachine",
 "language": "GDScript",
 "path": "res://scripts/characters/StateMachine.gd"
-}, {
-"base": "",
-"class": "Steam",
-"language": "NativeScript",
-"path": "res://addons/godotsteam/godotsteam.gdns"
 } ]
 _global_script_class_icons={
 "NetworkAnimationPlayer": "",
 "NetworkRandomNumberGenerator": "",
 "NetworkTimer": "",
 "PlayerKeybinds": "",
-"StateMachine": "",
-"Steam": ""
+"StateMachine": ""
 }
 
 [application]
@@ -69,7 +63,6 @@ GameSignalBus="*res://scripts/autoloads/GameSignalBus.gd"
 SettingsSignalBus="*res://scripts/autoloads/SettingsSignalBus.gd"
 SettingsData="*res://scripts/autoloads/SettingsData.gd"
 SettingsManager="*res://scripts/autoloads/SaveManager.gd"
-Steam="*res://addons/godotsteam/steam.gd"
 
 [debug]
 
@@ -89,7 +82,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/godot-rollback-netcode/plugin.cfg", "res://addons/godotsteam/plugin.cfg", "res://addons/multirun/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/godot-rollback-netcode/plugin.cfg", "res://addons/multirun/plugin.cfg" )
 
 [global]
 
