@@ -10,6 +10,7 @@ const ONE := SGFixed.ONE # fixed point 1
 var last_input_time = 0
 
 onready var state = $State
+onready var stateMachine = $StateMachine
 onready var rng = $NetworkRandomNumberGenerator
 
 var direction_mapping = {
@@ -88,6 +89,8 @@ func _ready():
 
 	if self.name == "ClientPlayer":
 		facingRight = false
+	
+	stateMachine.character_node = self
 
 # like Input.get_vector but for SGFixedVector2
 # note: Input.is_action_just_pressed returns a float
@@ -143,8 +146,7 @@ func _network_process(input: Dictionary) -> void:
 	# Get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	
-	# Updating debug label
-	update_debug_label(input_vector)
+	stateMachine.transition_state(input)
 	
 	# Updating input buffer
 	update_input_buffer(input, input_vector)
@@ -324,12 +326,5 @@ func _load_state(state: Dictionary) -> void:
 	is_on_floor = state['is_on_floor']
 	sync_to_physics_engine()
 
-func update_debug_label(input_vector):
-	var debugLabel = get_parent().get_node("DebugOverlay").get_node(self.name + "DebugLabel")
-	if self.name == "ServerPlayer":
-		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE) + "\nSTATE: " + state.text
-	else:
-		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(fixed_position.x / ONE) + ", " + str(fixed_position.y / ONE) + "\nVELOCITY: " + str(velocity.x / ONE) + ", " + str(velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE) + "\nSTATE: " + state.text
-	
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	fixed_position = old_state['fixed_position'].linear_interpolate(new_state['fixed_position'], weight)

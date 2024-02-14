@@ -1,5 +1,8 @@
 extends StateMachine
 var parent = get_parent()
+var character_node := get_parent()
+
+var ONE = SGFixed.ONE
 
 func _ready():
 	add_state('IDLE')
@@ -26,7 +29,13 @@ func _ready():
 	add_state('DOWN_H')
 	set_state('IDLE')
 
-func transition_state():
+func transition_state(input: Dictionary):
+	# Get input vector
+	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+	
+	# Updating debug label
+	update_debug_label(input_vector)
+	
 	match state:
 		states.IDLE:
 			pass
@@ -119,3 +128,11 @@ func enter_state(new_state, old_state):
 			parent.states.text = str('DOWN_M')
 		states.DOWN_H:
 			parent.states.text = str('DOWN_H')
+
+func update_debug_label(input_vector):
+	var debugLabel = character_node.get_parent().get_node("DebugOverlay").get_node(character_node.name + "DebugLabel")
+	if self.name == "ServerPlayer":
+		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(character_node.fixed_position.x / ONE) + ", " + str(character_node.fixed_position.y / ONE) + "\nVELOCITY: " + str(character_node.velocity.x / ONE) + ", " + str(character_node.velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE) + "\nSTATE: " + str(state)
+	else:
+		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(character_node.fixed_position.x / ONE) + ", " + str(character_node.fixed_position.y / ONE) + "\nVELOCITY: " + str(character_node.velocity.x / ONE) + ", " + str(character_node.velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE) + "\nSTATE: " + str(state)
+	
