@@ -119,6 +119,16 @@ func _get_local_input() -> Dictionary:
 		input["sprint_macro"] = true
 	if Input.is_action_just_pressed(input_prefix + "light"):
 		input["attack_light"] = true
+	if Input.is_action_just_pressed(input_prefix + "medium"):
+		input["attack_medium"] = true
+	if Input.is_action_just_pressed(input_prefix + "heavy"):
+		input["attack_heavy"] = true
+	if Input.is_action_just_pressed(input_prefix + "impact"):
+		input["impact"] = true
+	if Input.is_action_just_pressed(input_prefix + "dash"):
+		input["dash"] = true
+	if Input.is_action_just_pressed(input_prefix + "block"):
+		input["block"] = true
 	
 	return input
 
@@ -137,7 +147,7 @@ func _network_process(input: Dictionary) -> void:
 	update_debug_label(input_vector)
 	
 	# Updating input buffer
-	update_input_buffer(input_vector)
+	update_input_buffer(input, input_vector)
 	
 	# Handle movement
 	handle_movement(input_vector, input)
@@ -158,6 +168,17 @@ func handle_attacks(input_vector, input):
 		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
 	if input.get("attack_light", false):
 		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+	if input.get("attack_medium", false):
+		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+	if input.get("attack_heavy", false):
+		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+	if input.get("impact", false):
+		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+	if input.get("dash", false):
+		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+	if input.get("block", false):
+		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
+	
 
 func handle_movement(input_vector, input):
 	# calculate velocity
@@ -228,22 +249,23 @@ func sprint_check() -> bool:
 func reset_Jumps():
 	airJump = airJumpMax
 
-func update_input_buffer(input_vector):
+func update_input_buffer(input, input_vector):
 	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(self.name + "InputBuffer")
 	if controlBuffer.size() > 20:
 		controlBuffer.pop_back()
+	
 	if controlBuffer.front()[0] == input_vector.x/ONE and controlBuffer.front()[1] == input_vector.y/ONE:
 		var ticks = controlBuffer.front()[2]
 		controlBuffer.pop_front()
 		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, ticks+1])
 	else:
 		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, 1])
-
+	
 	if self.name == "ServerPlayer":
 		inputBuffer.text = "PLAYER ONE INPUT BUFFER:\n"
 	else:
 		inputBuffer.text = "PLAYER TWO INPUT BUFFER:\n"
-
+	
 	for item in controlBuffer:
 		var direction = direction_mapping.get([item[0], item[1]], "NEUTRAL")
 		inputBuffer.text += str(direction) + " " + str(item[2]) + " TICKS\n"

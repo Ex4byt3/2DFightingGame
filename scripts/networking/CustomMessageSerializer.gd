@@ -7,6 +7,11 @@ enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
 	DROP_BOMB        = 1 << 1, # Bit 1
 	ATTACK_LIGHT     = 1 << 2, # Bit 2
+	ATTACK_MEDIUM    = 1 << 3, # Bit 3
+	ATTACK_HEAVY     = 1 << 4, # Bit 4
+	IMPACT           = 1 << 5, # Bit 5
+	DASH             = 1 << 6, # Bit 6
+	BLOCK            = 1 << 7, # Bit 7
 }
 
 func _init():
@@ -33,6 +38,16 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 			header |= HeaderFlags.DROP_BOMB
 		if input.get('attack_light', false):
 			header |= HeaderFlags.ATTACK_LIGHT
+		if input.get('attack_medium', false):
+			header |= HeaderFlags.ATTACK_MEDIUM
+		if input.get('attack_heavy', false):
+			header |= HeaderFlags.ATTACK_HEAVY
+		if input.get('impact', false):
+			header |= HeaderFlags.IMPACT
+		if input.get('dash', false):
+			header |= HeaderFlags.DASH
+		if input.get('block', false):
+			header |= HeaderFlags.BLOCK
 		
 		buffer.put_u8(header)
 		
@@ -67,8 +82,16 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 		input["drop_bomb"] = true
 	if header & HeaderFlags.ATTACK_LIGHT:
 		input["attack_light"] = true
-#	if header & HeaderFlags.IS_ON_FLOOR:
-#		input["is_on_floor"] = true
+	if header & HeaderFlags.ATTACK_MEDIUM:
+		input["attack_medium"] = true
+	if header & HeaderFlags.ATTACK_HEAVY:
+		input["attack_heavy"] = true
+	if header & HeaderFlags.IMPACT:
+		input["impact"] = true
+	if header & HeaderFlags.DASH:
+		input["dash"] = true
+	if header & HeaderFlags.BLOCK:
+		input["block"] = true
 	
 	all_input[path] = input
 	return all_input
