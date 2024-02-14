@@ -14,14 +14,11 @@ func _ready():
 	create_storage_dictionary()
 
 
-# Connect relevant signals from the SettingsSignalBus
+# Connect relevant signals from the MenuSignalBus
 func handle_connecting_signals() -> void:
-	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "load_settings_data", "load_settings_data")
-	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "window_mode_selected", "on_window_mode_selected")
-	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "resolution_selected", "on_resolution_selected")
-#	SettingsSignalBus.connect("load_settings_data", self, "load_settings_data")
-#	SettingsSignalBus.connect("window_mode_selected", self, "on_window_mode_selected")
-#	SettingsSignalBus.connect("resolution_selected", self, "on_resolution_selected")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "load_settings_data", "load_settings_data")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "window_mode_selected", "on_window_mode_selected")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "resolution_selected", "on_resolution_selected")
 
 
 # Loads all relevant setting data upon game launch

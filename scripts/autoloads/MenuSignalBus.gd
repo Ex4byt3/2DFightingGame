@@ -1,16 +1,9 @@
 extends Node
 
 # Signals for changing the currently visible menu
-signal show_main_menu
-signal show_settings_menu
-signal show_online_menu
-
-# Signals for lobbies
-signal set_lobby_settings(lobby_settings_dict)
-signal update_lobby_pane(lobby_settings)
+signal change_menu(menu)
 
 # Signals for the settings menu
-#signal save_settings
 signal window_mode_selected(index)
 signal resolution_selected(index)
 signal set_settings_dict(settings_dict)
@@ -26,25 +19,8 @@ signal reset_buttons
 # Emit functions for changing the currently visible menu #
 ##########################################################
 
-func emit_show_main_menu() -> void:
-	emit_signal("show_main_menu")
-
-func emit_show_settings_menu() -> void:
-	emit_signal("show_settings_menu")
-
-func emit_show_online_menu() -> void:
-	emit_signal("show_online_menu")
-
-
-##############################
-# Emit functions for lobbies #
-##############################
-
-func emit_set_lobby_settings(lobby_settings_dict: Dictionary) -> void:
-	emit_signal("set_lobby_settings", lobby_settings_dict)
-
-func emit_update_lobby_pane(lobby_settings: Dictionary) -> void:
-	emit_signal("update_lobby_pane", lobby_settings)
+func emit_change_menu(menu: String) -> void:
+	emit_signal("change_menu", menu)
 
 
 ###############################
@@ -88,11 +64,6 @@ func _connect_Signals(origin, target, connecting_signal: String, connecting_func
 	if signal_error > OK:
 		print("[" + str(target) + "] Connecting "+str(connecting_signal)+" to "+str(connecting_function)+" failed: "+str(signal_error))
 
-
-func _connect_Signals_Output(origin, target, connecting_signal: String, connecting_function: String, output) -> void:
-	var signal_error: int = origin.connect(connecting_signal, target, connecting_function, [output])
-	if signal_error > OK:
-		print("[" + str(target) + "] Connecting "+str(connecting_signal)+" to "+str(connecting_function)+" failed: "+str(signal_error))
 
 func _change_Scene(current_scene, target_scene) -> void:
 	var scene_change_error: int = current_scene.get_tree().change_scene_to(target_scene)

@@ -33,7 +33,7 @@ func add_resolution_items() -> void:
 
 # When a resolution is selected, change the window size to match
 func on_resolution_selected(index: int) -> void:
-	SettingsSignalBus.emit_resolution_selected(index)
+	MenuSignalBus.emit_resolution_selected(index)
 	match index:
 		0: # 640 x 360
 			OS.set_window_size(RESOLUTION_DICTIONARY.values()[0])

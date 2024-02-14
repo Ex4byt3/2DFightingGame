@@ -35,25 +35,20 @@ func set_button_appearance() -> void:
 
 
 func handle_connecting_signals() -> void:
-	SettingsSignalBus._connect_Signals(base_button, self, "mouse_entered", "on_mouse_entered")
-	SettingsSignalBus._connect_Signals(base_button, self, "focus_entered", "on_mouse_entered")
-	SettingsSignalBus._connect_Signals(base_button, self, "mouse_exited", "on_mouse_exited")
-	SettingsSignalBus._connect_Signals(base_button, self, "focus_exited", "on_mouse_exited")
-	SettingsSignalBus._connect_Signals(base_button, self, "toggled", "on_button_toggled")
-	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "set_buttons_inactive", "set_inactive")
-	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "set_buttons_inactive", "set_active")
-	SettingsSignalBus._connect_Signals(SettingsSignalBus, self, "reset_buttons", "on_reset_buttons")
-	
-#	base_button.connect("mouse_entered", self, "on_mouse_entered")
-#	base_button.connect("focus_entered", self, "on_mouse_entered")
-#	base_button.connect("mouse_exited", self, "on_mouse_exited")
-#	base_button.connect("focus_exited", self, "on_mouse_exited")
-#	base_button.connect("toggled", self, "on_button_toggled")
-#	SettingsSignalBus.connect("set_buttons_inactive", self, "set_inactive")
-#	SettingsSignalBus.connect("set_buttons_active", self, "set_active")
-#	SettingsSignalBus.connect("reset_buttons", self, "on_reset_buttons")
+	MenuSignalBus._connect_Signals(base_button, self, "mouse_entered", "on_mouse_entered")
+	MenuSignalBus._connect_Signals(base_button, self, "focus_entered", "on_mouse_entered")
+	MenuSignalBus._connect_Signals(base_button, self, "mouse_exited", "on_mouse_exited")
+	MenuSignalBus._connect_Signals(base_button, self, "focus_exited", "on_mouse_exited")
+	MenuSignalBus._connect_Signals(base_button, self, "toggled", "on_button_toggled")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_buttons_inactive", "set_inactive")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_buttons_inactive", "set_active")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "reset_buttons", "on_reset_buttons")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "change_menu", "_on_change_menu")
 
 
+##################################################
+# Button state functions
+##################################################
 func on_mouse_entered() -> void:
 	if is_active and not is_selected:
 		button_expand_width()
@@ -69,24 +64,65 @@ func on_mouse_exited() -> void:
 
 
 func on_button_toggled(button_pressed) -> void:
-	if button_pressed:
+	if button_pressed and not is_selected:
 		is_selected = true
-		button_expand_width()
-		SettingsSignalBus.emit_set_buttons_inactive()
-	else:
+		#button_expand_width()
+		MenuSignalBus.emit_set_buttons_inactive()
+	elif not button_pressed and is_selected:
 		is_selected = false
 		button_revert_width()
 		button_slide_left()
 		button_highlight.visible = false
-		SettingsSignalBus.emit_set_buttons_active()
+		MenuSignalBus.emit_set_buttons_active()
 
 
 func _input(event) -> void:
 	if InputMap.event_is_action(event, "menu_back", true):
-		if not is_active:
-			set_active()
-		elif is_selected:
-			base_button.pressed = false
+		_on_reset_buttons()
+
+
+func _on_change_menu(menu: String) -> void:
+	_on_reset_buttons()
+
+
+##################################################
+# Tweening functions
+##################################################
+func button_collapse_width() -> void:
+	var tween = create_tween()
+	tween.tween_property(info_pane, "rect_size", Vector2(collapse_width, 80), 0.05)
+
+
+func button_expand_width() -> void:
+	var tween = create_tween()
+	tween.tween_property(info_pane, "rect_size", Vector2(expanded_width, 80), 0.05)
+
+
+func button_revert_width() -> void:
+	var tween = create_tween()
+	tween.tween_property(info_pane, "rect_size", Vector2(base_width, 80), 0.05)
+
+
+# Moves the button to the right by a number of pixels equal to the slide_offset value
+func button_slide_right() -> void:
+	var tween = create_tween()
+	tween.tween_property(info_pane, "rect_position", Vector2(info_pane.rect_position.x + slide_offset, info_pane.rect_position.y), 0.05)
+
+
+# Returns the button to its resting position
+func button_slide_left() -> void:
+	var tween = create_tween()
+	tween.tween_property(info_pane, "rect_position", Vector2(resting_position, info_pane.rect_position.y), 0.05)
+
+
+##################################################
+# Helper functions
+##################################################
+func _on_reset_buttons() -> void:
+	if not is_active:
+		set_active()
+	elif is_selected:
+		base_button.pressed = false
 
 
 func set_inactive() -> void:
@@ -103,30 +139,3 @@ func set_active() -> void:
 		button_revert_width()
 		base_button.disabled = false
 		selection_highlight.visible = true
-
-
-func button_collapse_width() -> void:
-	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_size", Vector2(collapse_width, 80), 0.05)
-
-
-func button_revert_width() -> void:
-	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_size", Vector2(base_width, 80), 0.05)
-
-
-func button_expand_width() -> void:
-	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_size", Vector2(expanded_width, 80), 0.05)
-
-
-# Moves the button to the right by a number of pixels equal to the slide_offset value
-func button_slide_right() -> void:
-	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_position", Vector2(info_pane.rect_position.x + slide_offset, info_pane.rect_position.y), 0.05)
-
-
-# Returns the button to its resting position
-func button_slide_left() -> void:
-	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_position", Vector2(resting_position, info_pane.rect_position.y), 0.05)

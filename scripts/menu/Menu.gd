@@ -15,24 +15,17 @@ func _ready():
 
 # Connect to button signals
 func handle_connecting_signals() -> void:
-	var menu_connection: bool = false
-	
 	# Connect signals used to change the currently shown menu
-	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_main_menu", "change_shown_menu", 1)
-	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_settings_menu", "change_shown_menu", 2)
-	SettingsSignalBus._connect_Signals_Output(SettingsSignalBus, self, "show_online_menu", "change_shown_menu", 3)
-	#SettingsSignalBus.connect("show_main_menu", self, "change_shown_menu", [1])
-	#SettingsSignalBus.connect("show_settings_menu", self, "change_shown_menu", [2])
-	#SettingsSignalBus.connect("show_online_menu", self, "change_shown_menu", [3])
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "change_menu", "_on_change_menu")
 
 
 # When a signal to change the currently displayed menu is recieved
 # this function checks the menu to be shown and displays it
 func change_shown_menu(menu: int) -> void:
-	#SettingsSignalBus.emit_reset_buttons()
+	#MenuSignalBus.emit_reset_buttons()
 	
 	if not menu == 2 and settings_menu.visible == true:
-		SettingsSignalBus.emit_set_settings_dict(SettingsData.create_storage_dictionary())
+		MenuSignalBus.emit_set_settings_dict(SettingsData.create_storage_dictionary())
 	
 	match menu:
 		1: # Main menu
@@ -46,6 +39,31 @@ func change_shown_menu(menu: int) -> void:
 			online_menu.visible = false
 			
 		3: # Online menu
+			main_menu.visible = false
+			settings_menu.visible = false
+			online_menu.visible = true
+
+
+# When a signal to change the currently displayed menu is recieved
+# this function checks the menu to be shown and displays it
+func _on_change_menu(menu: String) -> void:
+	#MenuSignalBus.emit_reset_buttons()
+	
+	if not menu == "SETTINGS" and settings_menu.visible == true:
+		MenuSignalBus.emit_set_settings_dict(SettingsData.create_storage_dictionary())
+	
+	match menu:
+		"MAIN": # Main menu
+			main_menu.visible = true
+			settings_menu.visible = false
+			online_menu.visible = false
+			
+		"SETTINGS": # Settings menu
+			main_menu.visible = false
+			settings_menu.visible = true
+			online_menu.visible = false
+			
+		"ONLINE": # Online menu
 			main_menu.visible = false
 			settings_menu.visible = false
 			online_menu.visible = true

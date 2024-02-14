@@ -32,9 +32,9 @@ func _ready():
 
 
 func handle_connecting_signals() -> void:
-	SettingsSignalBus._connect_Signals(password_button, self, "button_up", "set_new_password")
-	SettingsSignalBus._connect_Signals(exit_lobby_button, self, "button_up", "exit_lobby")
-	SettingsSignalBus._connect_Signals(ready_button, self, "toggled", "on_ready_button_toggled")
+	MenuSignalBus._connect_Signals(password_button, self, "button_up", "set_new_password")
+	MenuSignalBus._connect_Signals(exit_lobby_button, self, "button_up", "exit_lobby")
+	MenuSignalBus._connect_Signals(ready_button, self, "toggled", "on_ready_button_toggled")
 #	password_button.connect("button_up", self, "set_new_password")
 #	exit_lobby_button.connect("button_up", self, "exit_lobby")
 #	ready_button.connect("toggled", self, "on_ready_button_toggled")
