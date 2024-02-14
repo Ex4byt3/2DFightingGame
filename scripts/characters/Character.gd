@@ -13,17 +13,6 @@ onready var state = $State
 onready var stateMachine = $StateMachine
 onready var rng = $NetworkRandomNumberGenerator
 
-var direction_mapping = {
-	[1, 1]: "UP RIGHT", # 9
-	[1, 0]: "RIGHT", # 6
-	[0, 1]: "UP", # 8
-	[0, -1]: "DOWN", # 2
-	[1, -1]: "DOWN RIGHT", # 3
-	[-1, -1]: "DOWN LEFT", # 1
-	[-1, 0]: "LEFT", # 4
-	[-1, 1]: "UP LEFT" # 7
-}
-
 # attributes // to be tuned
 var velocity := SGFixed.vector2(0, 0)
 export var walkingSpeed := 4
@@ -148,16 +137,13 @@ func _network_process(input: Dictionary) -> void:
 	
 	stateMachine.transition_state(input)
 	
-	# Updating input buffer
-	update_input_buffer(input, input_vector)
-	
-	# Handle movement
+	# Handle movement TODO: MOVE TO STATE MACHINE
 	handle_movement(input_vector, input)
 	
-	# Handle attacks
+	# Handle attacks TODO: MOVE TO STATE MACHINE
 	handle_attacks(input_vector, input)
 	
-	# Updating animation
+	# Updating animation TODO: MOVE TO STATE MACHINE
 	update_animation()
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
@@ -250,27 +236,6 @@ func sprint_check() -> bool:
 
 func reset_Jumps():
 	airJump = airJumpMax
-
-func update_input_buffer(input, input_vector):
-	var inputBuffer = get_parent().get_node("DebugOverlay").get_node(self.name + "InputBuffer")
-	if controlBuffer.size() > 20:
-		controlBuffer.pop_back()
-	
-	if controlBuffer.front()[0] == input_vector.x/ONE and controlBuffer.front()[1] == input_vector.y/ONE:
-		var ticks = controlBuffer.front()[2]
-		controlBuffer.pop_front()
-		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, ticks+1])
-	else:
-		controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, 1])
-	
-	if self.name == "ServerPlayer":
-		inputBuffer.text = "PLAYER ONE INPUT BUFFER:\n"
-	else:
-		inputBuffer.text = "PLAYER TWO INPUT BUFFER:\n"
-	
-	for item in controlBuffer:
-		var direction = direction_mapping.get([item[0], item[1]], "NEUTRAL")
-		inputBuffer.text += str(direction) + " " + str(item[2]) + " TICKS\n"
 
 func update_animation():
 	if facingRight:

@@ -4,6 +4,17 @@ var character_node := get_parent()
 
 var ONE = SGFixed.ONE
 
+var direction_mapping = {
+	[1, 1]: "UP RIGHT", # 9
+	[1, 0]: "RIGHT", # 6
+	[0, 1]: "UP", # 8
+	[0, -1]: "DOWN", # 2
+	[1, -1]: "DOWN RIGHT", # 3
+	[-1, -1]: "DOWN LEFT", # 1
+	[-1, 0]: "LEFT", # 4
+	[-1, 1]: "UP LEFT" # 7
+}
+
 func _ready():
 	add_state('IDLE')
 	add_state('AIR')
@@ -35,6 +46,9 @@ func transition_state(input: Dictionary):
 	
 	# Updating debug label
 	update_debug_label(input_vector)
+	
+	# Updating input buffer
+	update_input_buffer(input_vector)
 	
 	match state:
 		states.IDLE:
@@ -136,3 +150,23 @@ func update_debug_label(input_vector):
 	else:
 		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(character_node.fixed_position.x / ONE) + ", " + str(character_node.fixed_position.y / ONE) + "\nVELOCITY: " + str(character_node.velocity.x / ONE) + ", " + str(character_node.velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x / ONE) + ", " + str(input_vector.y / ONE) + "\nSTATE: " + str(state)
 	
+func update_input_buffer(input_vector):
+	var inputBuffer = character_node.get_parent().get_node("DebugOverlay").get_node(character_node.name + "InputBuffer")
+	if character_node.controlBuffer.size() > 20:
+		character_node.controlBuffer.pop_back()
+	
+	if character_node.controlBuffer.front()[0] == input_vector.x/ONE and character_node.controlBuffer.front()[1] == input_vector.y/ONE:
+		var ticks = character_node.controlBuffer.front()[2]
+		character_node.controlBuffer.pop_front()
+		character_node.controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, ticks+1])
+	else:
+		character_node.controlBuffer.push_front([input_vector.x/ONE, input_vector.y/ONE, 1])
+	
+	if self.name == "ServerPlayer":
+		inputBuffer.text = "PLAYER ONE INPUT BUFFER:\n"
+	else:
+		inputBuffer.text = "PLAYER TWO INPUT BUFFER:\n"
+	
+	for item in character_node.controlBuffer:
+		var direction = direction_mapping.get([item[0], item[1]], "NEUTRAL")
+		inputBuffer.text += str(direction) + " " + str(item[2]) + " TICKS\n"
