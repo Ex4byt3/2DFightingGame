@@ -7,6 +7,7 @@ onready var type_label = $LobbyStatus/TypeLabel
 onready var chatbox = $Chat/Chatbox
 onready var chat_line = $Chat/ChatEntry/ChatLine
 onready var send_message_button = $Chat/ChatEntry/SendMessageButton
+onready var spectate_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/SpectateButton
 onready var password_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/PasswordButton
 onready var exit_lobby_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/ExitLobbyButton
 onready var ready_button = $SettingsPane/ButtonPane/VBoxContainer/ReadyButton
@@ -32,25 +33,8 @@ func _ready():
 
 
 func handle_connecting_signals() -> void:
-	MenuSignalBus._connect_Signals(password_button, self, "button_up", "set_new_password")
-	MenuSignalBus._connect_Signals(exit_lobby_button, self, "button_up", "exit_lobby")
-	MenuSignalBus._connect_Signals(ready_button, self, "toggled", "on_ready_button_toggled")
-#	password_button.connect("button_up", self, "set_new_password")
-#	exit_lobby_button.connect("button_up", self, "exit_lobby")
-#	ready_button.connect("toggled", self, "on_ready_button_toggled")
-
-
-func set_new_password() -> void:
+#	MenuSignalBus._connect_Signals(password_button, self, "button_up", "set_new_password")
+#	MenuSignalBus._connect_Signals(exit_lobby_button, self, "button_up", "exit_lobby")
+#	MenuSignalBus._connect_Signals(ready_button, self, "toggled", "on_ready_button_toggled")
 	pass
 
-
-func exit_lobby() -> void:
-	pass
-
-
-func on_ready_button_toggled(button_pressed) -> void:
-	pass
-
-
-func change_host() -> void:
-	pass

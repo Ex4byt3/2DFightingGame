@@ -75,6 +75,7 @@ func _handle_Connecting_Signals() -> void:
 	MenuSignalBus._connect_Signals(rpc_server_button, self, "button_up", "_on_rpc_server_button_pressed")
 	MenuSignalBus._connect_Signals(rpc_client_button, self, "button_up", "_on_rpc_client_button_pressed")
 	
+	MenuSignalBus._connect_Signals(lobby_pane.spectate_button, self, "button_up", "_on_Spectate_Match")
 	MenuSignalBus._connect_Signals(lobby_pane.exit_lobby_button, self, "button_up", "_on_Exit_Lobby")
 	MenuSignalBus._connect_Signals(lobby_pane.start_match_button, self, "button_up", "_on_Match_Start")
 	MenuSignalBus._connect_Signals(lobby_pane.send_message_button, self, "button_up", "_on_Send_Message")
@@ -282,6 +283,9 @@ func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response:
 #			10:	CONNECTION_ERROR = "A user in the lobby has blocked you from joining."
 #			11:	CONNECTION_ERROR = "A user you have blocked is in the lobby."
 
+
+func _on_Spectate_Match() -> void:
+	pass
 
 
 ##################################################
