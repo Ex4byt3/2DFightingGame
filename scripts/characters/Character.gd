@@ -17,6 +17,7 @@ onready var rng = $NetworkRandomNumberGenerator
 var velocity := SGFixed.vector2(0, 0)
 export var walkingSpeed := 4
 export var sprintingSpeed := 8
+var frame = 0
 var sprintInputLeinency := 6
 var airAcceleration := 0.2
 var maxAirSpeed := 6
@@ -27,8 +28,8 @@ export var knockback_multiplier := 1
 export var weight := 100
 export var maxJumps := 2
 var jumpsRemaining := 2
-export var shortHopHeight := 8
-export var jumpHeight := 16
+export var shortHopForce := 8
+export var FullHopForce := 16
 var jumpSquatFrames := 4
 var jumpSquatTimer := 0
 var fullHop := true
@@ -73,8 +74,8 @@ func _ready():
 	# set fixed point numbers
 	maxAirSpeed = maxAirSpeed * ONE
 	gravity = ONE / gravity
-	jumpHeight = -jumpHeight * ONE
-	shortHopHeight = -shortHopHeight * ONE
+	FullHopForce = -FullHopForce * ONE
+	shortHopForce = -shortHopForce * ONE
 
 	if self.name == "ClientPlayer":
 		facingRight = false
@@ -236,6 +237,10 @@ func sprint_check() -> bool:
 
 func reset_Jumps():
 	airJump = airJumpMax
+
+func _frame():
+	frame = 0
+	
 
 func update_animation():
 	if facingRight:

@@ -23,7 +23,8 @@ func _ready():
 	add_state('SPRINTING')
 	add_state('DASHING')
 	add_state('JUMPSQUAT')
-	add_state('JUMPING')
+	add_state('SHORTHOP')
+	add_state('FULLHOP')
 	add_state('FALLING')
 	add_state('ATTACKING')
 	add_state('BLOCKING')
@@ -52,6 +53,9 @@ func transition_state(input: Dictionary):
 	
 	match state:
 		states.IDLE:
+			parent.reset_jumps()
+			if input_vector.y == SGFixed.ONE:
+				return states.JUMPSQUAT
 			pass
 		states.AIR:
 			pass
@@ -64,8 +68,22 @@ func transition_state(input: Dictionary):
 		states.DASHING:
 			pass
 		states.JUMPSQUAT:
+			if parent.frame == parent.jump_squat:
+				if not input_vector.y == SGFixed.ONE:
+#					parent.velocity.x = lerpf(parent.velocity.x,0,0.08)
+					parent._frame()
+					return state.SHORTHOP
+				else:
+#					parent.velocity.x = lerpf(parent.velocity.x,0,0.08)
+					parent._frame()
+					return state.FULLHOP
 			pass
-		states.JUMPING:
+		states.SHORTHOP:
+			parent.velocity.y = -parent.ShortHopForce
+			parent._frame()
+			return states.AIR
+		states.FULLHOP:
+			parent.velocity.y = -parent.FullHopForce
 			pass
 		states.FALLING:
 			pass
