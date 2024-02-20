@@ -285,6 +285,8 @@ func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response:
 
 
 func _on_Spectate_Match() -> void:
+	#SyncManager.spectating = true
+	#_on_Match_Start()
 	pass
 
 
