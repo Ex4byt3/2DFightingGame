@@ -1,8 +1,11 @@
 extends StateMachine
-var parent = get_parent()
+var parent = get_parent() # NOT THE ACTUAL PARENT, IDK WHY, TO BE DISCOVERED, USE CHARACTER_NODE INSTEAD
 var character_node := get_parent()
 
 var ONE = SGFixed.ONE
+
+const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
+const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
 
 var direction_mapping = {
 	[1, 1]: "UP RIGHT", # 9
@@ -42,20 +45,53 @@ func _ready():
 	set_state('IDLE')
 
 func transition_state(input: Dictionary):
+	
+	# CLAY USE THESE FOR NOW, WILL BE FIXED LATER
+	# ALSO TRANSITION STATE WILL USE set_state('NEXT_STATE') INSTEAD OF RETURNING
+	# TO MAINTAIN ROLLBACK WE MUST RETURN VELOCITY AND CALL THE FIXED_POSITION AND MOVE_AND_SLIDE 
+	# LINES THAT ARE AT THE END OF THE STANDARD HANDLE_MOVEMENT FUNCTION BASED OFF OF THAT VELOCITY
+	# I WILL COME BACK TO WORK ON IT - QUINN
+	var walkingSpeed = character_node.walkingSpeed
+	var sprintingSpeed = character_node.sprintingSpeed
+	var frame = character_node.frame
+	var sprintInputLeinency = character_node.sprintInputLeinency
+	var airAcceleration = character_node.airAcceleration
+	var maxAirSpeed = character_node.maxAirSpeed
+	var gravity = character_node.gravity
+	var airJumpMax = character_node.airJumpMax
+	var airJump = character_node.airJump
+	var knockback_multiplier = character_node.knockback_multiplier
+	var weight = character_node.weight
+	var maxJumps = character_node.maxJumps
+	var jumpsRemaining = character_node.jumpsRemaining
+	var shortHopForce = character_node.shortHopForce
+	var fullHopForce = character_node.fullHopForce
+	var jumpSquatFrames = character_node.jumpSquatFrames
+	var jumpSquatTimer = character_node.jumpSquatTimer
+	var fullHop = character_node.fullHop
+	var jumpSquatting = character_node.jumpSquatting
+	
 	# Get input vector
 	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+	var velocity = character_node.velocity
+	var is_on_floor = character_node.is_on_floor
 	
 	# Updating debug label
 	update_debug_label(input_vector)
 	
 	# Updating input buffer
 	update_input_buffer(input_vector)
+
+	# Handle attacks
+	handle_attacks(input_vector, input)
 	
+
 	match state:
 		states.IDLE:
-			parent.reset_jumps()
+			character_node.reset_jumps()
 			if input_vector.y == SGFixed.ONE:
-				return states.JUMPSQUAT
+				set_state('JUMPSQUAT')
+				return
 			pass
 		states.AIR:
 			pass
@@ -68,24 +104,25 @@ func transition_state(input: Dictionary):
 		states.DASHING:
 			pass
 		states.JUMPSQUAT:
-			if parent.frame == parent.jump_squat:
+			if character_node.frame == character_node.jump_squat:
 				if not input_vector.y == SGFixed.ONE:
-#					parent.velocity.x = lerpf(parent.velocity.x,0,0.08)
-					parent._frame()
-					return state.SHORTHOP
+#					character_node.velocity.x = lerpf(character_node.velocity.x,0,0.08)
+					character_node._frame()
+					set_state('SHORTHOP')
 				else:
-#					parent.velocity.x = lerpf(parent.velocity.x,0,0.08)
-					parent._frame()
-					return state.FULLHOP
+#					character_node.velocity.x = lerpf(character_node.velocity.x,0,0.08)
+					character_node._frame()
+					set_state('FULLHOP')
 			pass
 		states.SHORTHOP:
-			parent.velocity.y = -parent.ShortHopForce
-			parent._frame()
-			return states.AIR
+			character_node.velocity.y = -character_node.ShortHopForce
+			character_node._frame()
+			set_state('AIR')
 		states.FULLHOP:
-			parent.velocity.y = -parent.FullHopForce
+			character_node.velocity.y = -character_node.FullHopForce
 			pass
 		states.FALLING:
+#			velocity.y += gravity
 			pass
 		states.ATTACKING:
 			pass
@@ -130,8 +167,6 @@ func enter_state(new_state, old_state):
 			parent.states.text = str('DASHING')
 		states.JUMPSQUAT:
 			parent.states.text = str('JUMPSQUAT')
-		states.JUMPING:
-			parent.states.text = str('JUMPING')
 		states.FALLING:
 			parent.states.text = str('FALLING')
 		states.ATTACKING:
@@ -160,6 +195,25 @@ func enter_state(new_state, old_state):
 			parent.states.text = str('DOWN_M')
 		states.DOWN_H:
 			parent.states.text = str('DOWN_H')
+
+# TODO: parse input buffer
+func handle_attacks(input_vector, input):
+	# Because if it is not true it is null, need to add the false argument to default it to false instead of null
+	if input.get("drop_bomb", false):
+		SyncManager.spawn("Bomb", get_parent().get_parent(), Bomb, { fixed_position_x = character_node.fixed_position.x, fixed_position_y = character_node.fixed_position.y })
+	if input.get("attack_light", false):
+		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = character_node.fixed_position.x, fixed_position_y = character_node.fixed_position.y })
+	if input.get("attack_medium", false):
+		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = character_node.fixed_position.x, fixed_position_y = character_node.fixed_position.y })
+	if input.get("attack_heavy", false):
+		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = character_node.fixed_position.x, fixed_position_y = character_node.fixed_position.y })
+	if input.get("impact", false):
+		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = character_node.fixed_position.x, fixed_position_y = character_node.fixed_position.y })
+	if input.get("dash", false):
+		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = character_node.fixed_position.x, fixed_position_y = character_node.fixed_position.y })
+	if input.get("block", false):
+		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = character_node.fixed_position.x, fixed_position_y = character_node.fixed_position.y })
+
 
 func update_debug_label(input_vector):
 	var debugLabel = character_node.get_parent().get_node("DebugOverlay").get_node(character_node.name + "DebugLabel")

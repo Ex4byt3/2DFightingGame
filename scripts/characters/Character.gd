@@ -6,6 +6,7 @@ extends SGKinematicBody2D
 
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
+
 const ONE := SGFixed.ONE # fixed point 1
 var last_input_time = 0
 
@@ -29,11 +30,12 @@ export var weight := 100
 export var maxJumps := 2
 var jumpsRemaining := 2
 export var shortHopForce := 8
-export var FullHopForce := 16
+export var fullHopForce := 16
 var jumpSquatFrames := 4
 var jumpSquatTimer := 0
 var fullHop := true
 var jumpSquatting := false
+
 
 var facingRight := true # for flipping the sprite
 enum State { # all possible player states
@@ -72,10 +74,10 @@ var controlBuffer := [[0, 0, 0]]
 
 func _ready():
 	# set fixed point numbers
-	maxAirSpeed = maxAirSpeed * ONE
 	gravity = ONE / gravity
-	FullHopForce = -FullHopForce * ONE
-	shortHopForce = -shortHopForce * ONE
+	maxAirSpeed *= ONE
+	fullHopForce *= -ONE
+	shortHopForce *= -ONE
 
 	if self.name == "ClientPlayer":
 		facingRight = false
@@ -141,33 +143,11 @@ func _network_process(input: Dictionary) -> void:
 	# Handle movement TODO: MOVE TO STATE MACHINE
 	handle_movement(input_vector, input)
 	
-	# Handle attacks TODO: MOVE TO STATE MACHINE
-	handle_attacks(input_vector, input)
-	
 	# Updating animation TODO: MOVE TO STATE MACHINE
 	update_animation()
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
 	is_on_floor = is_on_floor() 
-
-# TODO: parse input buffer
-func handle_attacks(input_vector, input):
-	# Because if it is not true it is null, need to add the false argument to default it to false instead of null
-	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", get_parent(), Bomb, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	if input.get("attack_light", false):
-		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	if input.get("attack_medium", false):
-		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	if input.get("attack_heavy", false):
-		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	if input.get("impact", false):
-		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	if input.get("dash", false):
-		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	if input.get("block", false):
-		SyncManager.spawn("Attack_Light", get_parent(), Attack_Light, { fixed_position_x = fixed_position.x, fixed_position_y = fixed_position.y })
-	
 
 func handle_movement(input_vector, input):
 	# calculate velocity
@@ -200,17 +180,17 @@ func handle_movement(input_vector, input):
 				fullHop = false
 			if jumpSquatTimer > jumpSquatFrames: # after jumpSquatFrames, the player jumps
 				if fullHop: # if the player is holding up during all jumpSquatFrames, the player jumps higher
-					velocity.y = jumpHeight
+					velocity.y = fullHopForce
 					playerState = State.JUMPING
 				else:
-					velocity.y = shortHopHeight
+					velocity.y = shortHopForce
 					playerState = State.JUMPING
 				jumpSquatTimer = 0
 				jumpSquatting = false
 				fullHop = true
 	else:
 		if input_vector.y == ONE and airJump > 0:
-				velocity.y = jumpHeight
+				velocity.y = fullHopForce
 				playerState = State.JUMPING
 				airJump -= 1
 		if input_vector.x != 0:
