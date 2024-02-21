@@ -20,7 +20,7 @@ onready var challenges_tab = $Lobby/RightPane/ChallengesTab
 onready var challenges = $Lobby/RightPane/ChallengesTab/ScrollContainer/Challenges
 
 onready var matches_tab = $Lobby/RightPane/MatchesTab
-onready var matches = $Lobby/RightPane/MatchesTab/ScrollContainer/Matches
+onready var ongoing_matches = $Lobby/RightPane/MatchesTab/ScrollContainer/OngoingMatches
 
 onready var history_tab = $Lobby/RightPane/HistoryTab
 

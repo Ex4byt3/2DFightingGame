@@ -157,11 +157,11 @@ func _on_Create_Steam_Lobby() -> void:
 
 func _on_Lobby_Created(connect: int, lobby_id: int) -> void:
 	if connect == 1:
-		print("[Steam] Created lobby with ID: " + str(lobby_id))
+		print("[STEAM] Created lobby with ID: " + str(lobby_id))
 		lobby_overlay.chatbox.clear()
 		
 		var set_joinable: bool = Steam.setLobbyJoinable(LOBBY_ID, true)
-		print("[Steam] lobby set to joinable:" + str(set_joinable))
+		print("[STEAM] lobby set to joinable:" + str(set_joinable))
 		
 		var lobby_data: bool = false
 		lobby_data = Steam.setLobbyData(lobby_id, "name", LOBBY_NAME)
@@ -178,8 +178,8 @@ func _on_Lobby_Created(connect: int, lobby_id: int) -> void:
 func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	if response == 1:
 		LOBBY_ID = lobby_id
-		print("[Steam] Joined lobby with ID: " + str(LOBBY_ID))
-		lobby_overlay.chatbox.append_bbcode("[Steam] Joined " + str(Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby_id))) + "'s lobby\n")
+		print("[STEAM] Joined lobby with ID: " + str(LOBBY_ID))
+		lobby_overlay.chatbox.append_bbcode("[STEAM] Joined " + str(Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby_id))) + "'s lobby\n")
 		
 		_get_lobby_members()
 		_set_buttons_disabled(true)
@@ -206,11 +206,11 @@ func _on_Lobby_Data_Update(lobby_id: int, member_id: int, key: int) -> void:
 
 func _leave_Steam_Lobby() -> void:
 	if LOBBY_ID != 0:
-		lobby_overlay.chatbox.append_bbcode("[Steam] Leaving lobby...\n")
+		lobby_overlay.chatbox.append_bbcode("[STEAM] Leaving lobby...\n")
 		Steam.leaveLobby(LOBBY_ID)
 		LOBBY_ID = 0
 
-		print("[Steam] Left lobby session\n")
+		print("[STEAM] Left lobby session\n")
 		
 		LOBBY_MEMBERS.clear()
 		
@@ -247,7 +247,6 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 func _create_challenge(sender_id: int, recipient_id: int) -> void:
 	CHALLENGES.append({"sender_id":sender_id , "recipient_id":recipient_id})
 	_update_challenges()
-	
 
 
 func _update_challenges() -> void:
@@ -276,12 +275,35 @@ func _update_challenges() -> void:
 		if challenge_rejected_signal > OK:
 			print("[STEAM] Connecting to accept button failed: "+str(challenge_rejected_signal))
 
+
+func _create_ongoing_match(p1_id: int, p2_id: int) -> void:
+	ONGOING_MATCHES.append({"p1_id": p1_id, "p2_id": p2_id})
+	_update_ongoing_matches()
+
+
+func _update_ongoing_matches() -> void:
+	for ongoing_match in lobby_overlay.ongoing_matches.get_children():
+		ongoing_match.hide()
+		ongoing_match.queue_free()
+	
+	for ongoing_match in ONGOING_MATCHES:
+		var new_match_tile = match_tile.instance()
+		new_match_tile.challenger_id = ongoing_match.sender_id
+		new_match_tile.recipient_id = ongoing_match.recipient_id
+		lobby_overlay.ongoing_matches.add_child(new_match_tile)
+		
+		var command_spectate: String = "/spectate " + ongoing_match.p1_id + " " + ongoing_match.p2_id
+		var spectate_signal: int = new_match_tile.spectate_button.connect("button_up", self, "_send_command", [command_spectate])
+		if spectate_signal > OK:
+				print("[STEAM] Connecting to accept button failed: "+str(spectate_signal))
+
+
 func _host_start() -> void:
 	NetworkGlobal.NETWORK_TYPE = 2
 	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	
 	NetworkGlobal.STEAM_IS_HOST = true
-	print("[Steam] Started match as server")
+	print("[STEAM] Started match as server")
 	
 	MenuSignalBus._change_Scene(self, steam_scene)
 
@@ -292,7 +314,7 @@ func _client_start(sender_id: int) -> void:
 	
 	NetworkGlobal.STEAM_IS_HOST = false
 	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
-	print("[Steam] Started match as client")
+	print("[STEAM] Started match as client")
 	
 	MenuSignalBus._change_Scene(self, steam_scene)
 
@@ -311,7 +333,7 @@ func _create_steam_lobby() -> void:
 	
 	_on_Create_Steam_Lobby()
 	lobby_overlay.visible = true
-	lobby_overlay.chatbox.append_bbcode("[Steam] Attempting to create new lobby...\n")
+	lobby_overlay.chatbox.append_bbcode("[STEAM] Attempting to create new lobby...\n")
 	
 	# Clear popup entry lines
 	lobby_name.set_text("")
@@ -319,7 +341,7 @@ func _create_steam_lobby() -> void:
 
 
 func _join_steam_lobby(lobby_id: int) -> void:
-	lobby_overlay.chatbox.append_bbcode("[Steam] Attempting to join lobby " + str(lobby_id) + "...\n")
+	lobby_overlay.chatbox.append_bbcode("[STEAM] Attempting to join lobby " + str(lobby_id) + "...\n")
 	LOBBY_MEMBERS.clear()
 	Steam.joinLobby(lobby_id)
 	lobby_overlay.visible = true
@@ -331,9 +353,7 @@ func _on_exit_lobby() -> void:
 	lobby_overlay.chatbox.clear()
 
 
-func _spectate_match() -> void:
-	#SyncManager.spectating = true
-	#_on_Match_Start()
+func _spectate_match(host_id: int) -> void:
 	pass
 
 
@@ -521,6 +541,8 @@ func _recieve_command(command: String) -> void:
 		
 		if is_valid:
 			_create_challenge(sender_id, recipient_id)
+		else:
+			lobby_overlay.chatbox.append_bbcode("[STEAM] Requested challenge already exists")
 		
 	elif command.begins_with("/accept_challenge"):
 		var participants: PoolStringArray = command.split(" ", true)
@@ -531,16 +553,31 @@ func _recieve_command(command: String) -> void:
 		elif Steam.getSteamID() == recipient_id:
 			_client_start(sender_id)
 		
+		var new_ongoing_match: String = "/create_ongoing_match " + str(sender_id) + " " + str(recipient_id)
+		_send_command(new_ongoing_match)
+		
 	elif command.begins_with("/reject_challenge"):
 		pass
+	
+	elif command.begins_with("/create_ongoing_match"):
+		var participants: PoolStringArray = command.split(" ", true)
 		
+		# TODO: Add a way to allow the use of steam personas rather than ids
+		var p1_id: int = int(participants[1])
+		var p2_id: int = int(participants[2])
+		
+		_create_ongoing_match(p1_id, p2_id)
+	
+	elif command.begins_with("/spectate"):
+		var participants: PoolStringArray = command.split(" ", true)
+		var p1_id: int = int(participants[1])
+		
+		_spectate_match(p1_id)
+	
 	elif command.begins_with("/kick"):
-		# Get the user ID for kicking
-#		var COMMANDS: PoolStringArray = message.split(":", true)
-		# If this is your ID, leave the lobby
-#		if Global.STEAM_ID == int(COMMANDS[1]):
-#			_leave_Lobby()
-		pass
+		var participants: PoolStringArray = command.split(":", true)
+		if Steam.getSteamID() == int(participants[1]):
+			_on_exit_lobby()
 	
 	elif command.begins_with("/roll"):
 		var dice: PoolStringArray = command.split(" ", true)
