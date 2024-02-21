@@ -84,6 +84,9 @@ func _input(event) -> void:
 	if InputMap.event_is_action(event, "menu_back", true):
 		lobby_creation_popup.visible = false
 		rpc_popup.visible = false
+	if InputMap.event_is_action(event, "chat_enter", true):
+		if lobby_overlay.chat_line.has_focus():
+			_on_send_message()
 
 
 ##################################################
@@ -358,7 +361,7 @@ func _on_Lobby_Message(_result: int, user: int, message: String, type: int) -> v
 	# If this is a message or lobby host command
 	if type == 1:
 		if user == Steam.getLobbyOwner(LOBBY_ID) and message.begins_with("/"):
-			print("Lobby owner attempted to enter a command")
+			print("Lobby owner entered a command")
 			_recieve_command(message)
 			
 		# Else this is a normal chat message
