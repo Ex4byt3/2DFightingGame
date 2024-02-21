@@ -370,11 +370,18 @@ func _on_Lobby_Message(_result: int, user: int, message: String, type: int) -> v
 	
 	# If this is a message or lobby host command
 	if type == 1:
+		# If the message was a lobby host command
 		if user == Steam.getLobbyOwner(LOBBY_ID) and message.begins_with("/"):
 			var parsed_string: PoolStringArray = message.split(" ", true)
 			print("Lobby owner entered a command: " + parsed_string[0])
 			_recieve_command(message)
-			
+		
+		# Elif the message was a lobby member command
+		elif message.begins_with("/"):
+			var parsed_string: PoolStringArray = message.split(" ", true)
+			print("Lobby member entered a command: " + parsed_string[0])
+			_recieve_command(message)
+		
 		# Else this is a normal chat message
 		else:
 			# Append the message to chat
@@ -506,7 +513,14 @@ func _recieve_command(command: String) -> void:
 		# TODO: Add a way to allow the use of steam personas rather than ids
 		var sender_id: int = int(participants[1])
 		var recipient_id: int = int(participants[2])
-		_create_challenge(sender_id, recipient_id)
+		
+		var is_valid: bool = true
+		for challenge in CHALLENGES:
+			if challenge.sender_id == sender_id and challenge.recipient_id == recipient_id:
+				is_valid = false
+		
+		if is_valid:
+			_create_challenge(sender_id, recipient_id)
 		
 	elif command.begins_with("/accept_challenge"):
 		var participants: PoolStringArray = command.split(" ", true)
