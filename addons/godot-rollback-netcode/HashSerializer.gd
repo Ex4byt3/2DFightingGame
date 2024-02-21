@@ -1,5 +1,9 @@
 extends Reference
 
+static func is_type(obj: Object):
+	return obj.has_method("serialize") \
+		and obj.has_method("unserialize")
+
 func serialize(value):
 	if value is Dictionary:
 		return serialize_dictionary(value)
@@ -9,7 +13,7 @@ func serialize(value):
 		return serialize_resource(value)
 	elif value is Object:
 		return serialize_object(value)
-	
+
 	return serialize_other(value)
 
 func serialize_dictionary(value: Dictionary) -> Dictionary:
@@ -47,7 +51,8 @@ func serialize_other(value):
 		return {
 			_ = 'Vector3',
 			x = value.x,
-			y = value.y
+			y = value.y,
+			z = value.z,
 		}
 	elif value is Transform2D:
 		return {
@@ -59,24 +64,24 @@ func serialize_other(value):
 	elif value is Transform:
 		return {
 			_ = 'Transform',
-			x = {x = value.x.x, y = value.x.y, z = value.x.z},
-			y = {x = value.y.x, y = value.y.y, z = value.y.z},
-			z = {x = value.z.x, y = value.z.y, z = value.z.z},
+			x = {x = value.basis.x.x, y = value.basis.x.y, z = value.basis.x.z},
+			y = {x = value.basis.y.x, y = value.basis.y.y, z = value.basis.y.z},
+			z = {x = value.basis.z.x, y = value.basis.z.y, z = value.basis.z.z},
 			origin = {x = value.origin.x, y = value.origin.y, z = value.origin.z},
 		}
-	
+
 	return value
 
 func unserialize(value):
 	if value is Dictionary:
 		if not value.has('_'):
 			return unserialize_dictionary(value)
-		
+
 		if value['_'] == 'resource':
 			return unserialize_resource(value)
 		elif value['_'] in ['Vector2', 'Vector3', 'Transform2D', 'Transform']:
 			return unserialize_other(value)
-		
+
 		return unserialize_object(value)
 	elif value is Array:
 		return unserialize_array(value)
@@ -121,5 +126,5 @@ func unserialize_other(value: Dictionary):
 				Vector3(value.z.x, value.z.y, value.z.z),
 				Vector3(value.origin.x, value.origin.y, value.origin.z)
 			)
-	
+
 	return null

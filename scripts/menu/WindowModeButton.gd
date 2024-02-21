@@ -5,7 +5,7 @@ extends Control
 onready var window_mode_options = $HBoxContainer/WindowModeOptions
 
 # Define an array for the window options
-const WINDOW_MODE_ARRAY = [
+const WINDOW_MODE_ARRAY: Array = [
 	"     Bordered Window",
 	"     Borderless Window",
 	"     Fullscreen",
@@ -33,7 +33,7 @@ func add_window_mode_items() -> void:
 
 # When a resolution is selected, change the window size to match
 func on_window_mode_selected(index: int) -> void:
-	SettingsSignalBus.emit_window_mode_selected(index)
+	MenuSignalBus.emit_window_mode_selected(index)
 	match index:
 		0: # bordered window
 			OS.set_borderless_window(false)

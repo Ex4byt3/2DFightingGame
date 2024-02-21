@@ -5,7 +5,7 @@ extends Control
 onready var resolution_options = $HBoxContainer/ResolutionOptions
 
 # Define a dictionary for screen resolution options
-const RESOLUTION_DICTIONARY = {
+const RESOLUTION_DICTIONARY: Dictionary = {
 	"     640 x 360" : Vector2(640, 360),
 	"     853 x 480" : Vector2(853, 480),
 	"     1280 x 720" : Vector2(1280, 720),
@@ -33,7 +33,7 @@ func add_resolution_items() -> void:
 
 # When a resolution is selected, change the window size to match
 func on_resolution_selected(index: int) -> void:
-	SettingsSignalBus.emit_resolution_selected(index)
+	MenuSignalBus.emit_resolution_selected(index)
 	match index:
 		0: # 640 x 360
 			OS.set_window_size(RESOLUTION_DICTIONARY.values()[0])

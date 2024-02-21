@@ -15,8 +15,8 @@ data_*/
 mono_crash.*.json
 
 # Game generated files
-logs/*
-save_data/*
+assets/resources/logs/*
+assets/resources/save_data/*
 
 # VSCode-specific ignores
 .vscode

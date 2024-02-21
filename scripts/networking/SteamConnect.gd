@@ -7,7 +7,7 @@ onready var sync_lost_label = $Messages/SyncLostLabel
 onready var server_player = $ServerPlayer
 onready var client_player = $ClientPlayer
 
-const LOG_FILE_DIRECTORY = 'res://logs'
+const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
 
 var logging_enabled := true
 var emptyData: PoolByteArray = [1]
@@ -27,13 +27,19 @@ enum SYNC_TYPE {
 
 func _ready() -> void:
 	SyncManager.network_adaptor = SteamNetworkAdaptor.new()
-	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
-	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
-	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
-	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
-	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
+	MenuSignalBus._connect_Signals(SyncManager, self, "sync_started", "_on_SyncManager_sync_started")
+	MenuSignalBus._connect_Signals(SyncManager, self, "sync_stopped", "_on_SyncManager_sync_stopped")
+	MenuSignalBus._connect_Signals(SyncManager, self, "sync_lost", "_on_SyncManager_sync_lost")
+	MenuSignalBus._connect_Signals(SyncManager, self, "sync_regained", "_on_SyncManager_sync_regained")
+	MenuSignalBus._connect_Signals(SyncManager, self, "sync_error", "_on_SyncManager_sync_error")
+#	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
+#	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
+#	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
+#	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
+#	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
-	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
+	MenuSignalBus._connect_Signals(Steam, self, "network_messages_session_request", "_on_network_messages_session_request")
+#	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
 	Steam.setIdentitySteamID64("STEAM_OPP_ID", NetworkGlobal.STEAM_OPP_ID)
 	
 	setup_match()
@@ -119,10 +125,7 @@ func network_peer_connected():
 	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_PEER_ID)
 	
 	server_player.set_network_master(1)
-	if NetworkGlobal.STEAM_IS_HOST:
-		client_player.set_network_master(NetworkGlobal.STEAM_OPP_PEER_ID)
-	else:
-		client_player.set_network_master(NetworkGlobal.STEAM_PEER_ID)
+	client_player.set_network_master(2)
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."

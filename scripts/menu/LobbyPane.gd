@@ -1,17 +1,31 @@
-extends Panel
+extends Control
 
 
-onready var lobby_name_label = $TitleBox/LobbyNameLabel
-onready var state_label = $LobbyStatus/StateLabel
-onready var type_label = $LobbyStatus/TypeLabel
-onready var chatbox = $Chat/Chatbox
-onready var chat_line = $Chat/ChatEntry/ChatLine
-onready var send_message_button = $Chat/ChatEntry/SendMessageButton
-onready var password_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/PasswordButton
-onready var exit_lobby_button = $SettingsPane/ButtonPane/VBoxContainer/HBoxContainer/ExitLobbyButton
-onready var ready_button = $SettingsPane/ButtonPane/VBoxContainer/ReadyButton
-onready var members = $LobbyMembersPane/Members
-onready var start_match_button = $StartMatchButton
+onready var lobby_name_label = $Lobby/TitleBox/LobbyNameLabel
+onready var state_label = $Lobby/LobbyStatus/StateLabel
+onready var type_label = $Lobby/LobbyStatus/TypeLabel
+onready var members = $Lobby/LeftPane/LobbyMembersPane/Panel/ScrollContainer/Members
+
+onready var chat_button = $Lobby/RightPane/TabMenu/ChatButton
+onready var challenges_button =$Lobby/RightPane/TabMenu/ChallengesButton
+onready var matches_button = $Lobby/RightPane/TabMenu/MatchesButton
+onready var history_button = $Lobby/RightPane/TabMenu/HistoryButton
+
+onready var chat_tab = $Lobby/RightPane/ChatTab
+onready var chatbox = $Lobby/RightPane/ChatTab/Chatbox
+onready var chat_line = $Lobby/RightPane/ChatTab/ChatEntry/ChatLine
+onready var send_message_button = $Lobby/RightPane/ChatTab/ChatEntry/SendMessageButton
+
+onready var challenges_tab = $Lobby/RightPane/ChallengesTab
+onready var challenges = $Lobby/RightPane/ChallengesTab/ScrollContainer/Challenges
+
+onready var matches_tab = $Lobby/RightPane/MatchesTab
+onready var ongoing_matches = $Lobby/RightPane/MatchesTab/ScrollContainer/OngoingMatches
+
+onready var history_tab = $Lobby/RightPane/HistoryTab
+
+onready var password_button = $Lobby/LeftPane/LobbyControls/PasswordButton
+onready var exit_lobby_button = $Lobby/LeftPane/LobbyControls/ExitLobbyButton
 
 var lobby_name: String
 var num_players: int
@@ -23,31 +37,43 @@ var p1_steamid: int
 var p2_steamid: int
 var current_player: int
 
-var match_settings: Dictionary = {}
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	handle_connecting_signals()
+	_handle_connecting_signals()
 
 
-func handle_connecting_signals() -> void:
-	password_button.connect("button_up", self, "set_new_password")
-	exit_lobby_button.connect("button_up", self, "exit_lobby")
-	ready_button.connect("toggled", self, "on_ready_button_toggled")
+func _handle_connecting_signals() -> void:
+	MenuSignalBus._connect_Signals(chat_button, self, "toggled", "_show_chat")
+	MenuSignalBus._connect_Signals(challenges_button, self, "toggled", "_show_pending_challenges")
+	MenuSignalBus._connect_Signals(matches_button, self, "toggled", "_show_ongoing_matches")
+	MenuSignalBus._connect_Signals(history_button, self, "toggled", "_show_match_history")
 
 
-func set_new_password() -> void:
-	pass
+func _show_chat(button_pressed) -> void:
+	if button_pressed:
+		chat_tab.visible = true
+	else:
+		chat_tab.visible = false
 
 
-func exit_lobby() -> void:
-	pass
+func _show_pending_challenges(button_pressed) -> void:
+	if button_pressed:
+		challenges_tab.visible = true
+	else:
+		challenges_tab.visible = false
 
 
-func on_ready_button_toggled(button_pressed) -> void:
-	pass
+func _show_ongoing_matches(button_pressed) -> void:
+	if button_pressed:
+		matches_tab.visible = true
+	else:
+		matches_tab.visible = false
 
 
-func change_host() -> void:
-	pass
+func _show_match_history(button_pressed) -> void:
+	if button_pressed:
+		history_tab.visible = true
+	else:
+		history_tab.visible = false
+
