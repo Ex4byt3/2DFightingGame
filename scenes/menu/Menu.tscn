@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/menu/Menu.gd" type="Script" id=19]
-[ext_resource path="res://scenes/menu/SettingsMenu.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/menu/OnlineMenu.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/menu/settings/SettingsMenu.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/menu/online/OnlineMenu.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/menu/MenuHeader.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/menu/MainMenu.tscn" type="PackedScene" id=26]
 

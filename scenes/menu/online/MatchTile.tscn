@@ -1,0 +1,176 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/resources/menu/online/matchtile_theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/menu/MatchTile.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.392157 )
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0.219608, 0.764706, 0, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0.219608, 0.764706, 0, 1 )
+
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
+
+[node name="MatchTile" type="Control"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -20.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 0, 40 )
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="PlayersNames" type="VBoxContainer" parent="."]
+anchor_right = 0.3
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_bottom = -5.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Player1Info" type="HBoxContainer" parent="PlayersNames"]
+margin_right = 379.0
+margin_bottom = 14.0
+rect_clip_content = true
+
+[node name="NameLabel" type="Label" parent="PlayersNames/Player1Info"]
+margin_right = 44.0
+margin_bottom = 14.0
+text = "Player 1"
+
+[node name="Player2Info" type="HBoxContainer" parent="PlayersNames"]
+margin_top = 18.0
+margin_right = 379.0
+margin_bottom = 32.0
+
+[node name="NameLabel" type="Label" parent="PlayersNames/Player2Info"]
+margin_right = 48.0
+margin_bottom = 14.0
+rect_clip_content = true
+text = "Player 2"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.3
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+custom_constants/separation = 10
+
+[node name="MatchInfo" type="HBoxContainer" parent="HBoxContainer"]
+margin_right = 766.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 200, 0 )
+size_flags_horizontal = 3
+custom_constants/separation = 10
+
+[node name="Health Bars" type="VBoxContainer" parent="HBoxContainer/MatchInfo"]
+margin_right = 472.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+custom_constants/separation = 8
+alignment = 1
+
+[node name="P1Health" type="TextureProgress" parent="HBoxContainer/MatchInfo/Health Bars"]
+margin_top = 2.0
+margin_right = 472.0
+margin_bottom = 12.0
+rect_min_size = Vector2( 0, 10 )
+value = 100.0
+texture_progress = SubResource( 3 )
+nine_patch_stretch = true
+
+[node name="P2Health" type="TextureProgress" parent="HBoxContainer/MatchInfo/Health Bars"]
+margin_top = 20.0
+margin_right = 472.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 10 )
+value = 100.0
+texture_progress = SubResource( 5 )
+nine_patch_stretch = true
+
+[node name="KOs" type="VBoxContainer" parent="HBoxContainer/MatchInfo"]
+margin_left = 482.0
+margin_right = 519.0
+margin_bottom = 32.0
+alignment = 1
+
+[node name="Player1KOs" type="HBoxContainer" parent="HBoxContainer/MatchInfo/KOs"]
+margin_right = 37.0
+margin_bottom = 14.0
+
+[node name="KOLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player1KOs"]
+margin_right = 25.0
+margin_bottom = 14.0
+text = "KOs:"
+
+[node name="NumKOLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player1KOs"]
+margin_left = 29.0
+margin_right = 37.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Player2KOs" type="HBoxContainer" parent="HBoxContainer/MatchInfo/KOs"]
+margin_top = 18.0
+margin_right = 37.0
+margin_bottom = 32.0
+
+[node name="KOLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player2KOs"]
+margin_right = 25.0
+margin_bottom = 14.0
+text = "KOs:"
+
+[node name="NumKOLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player2KOs"]
+margin_left = 29.0
+margin_right = 37.0
+margin_bottom = 14.0
+text = "0"
+
+[node name="Timer" type="HBoxContainer" parent="HBoxContainer/MatchInfo"]
+margin_left = 529.0
+margin_right = 766.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="NinePatchRect" type="NinePatchRect" parent="HBoxContainer/MatchInfo/Timer"]
+margin_bottom = 32.0
+
+[node name="CurrentTime" type="Label" parent="HBoxContainer/MatchInfo/Timer"]
+margin_left = 4.0
+margin_top = 9.0
+margin_right = 38.0
+margin_bottom = 23.0
+text = "00:00"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+margin_left = 776.0
+margin_right = 776.0
+margin_bottom = 32.0
+
+[node name="SpectateButton" type="Button" parent="HBoxContainer"]
+margin_left = 786.0
+margin_top = 1.0
+margin_right = 886.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 100, 30 )
+size_flags_vertical = 4
+text = "Spectate"

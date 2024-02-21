@@ -125,10 +125,7 @@ func network_peer_connected():
 	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_PEER_ID)
 	
 	server_player.set_network_master(1)
-	if NetworkGlobal.STEAM_IS_HOST:
-		client_player.set_network_master(NetworkGlobal.STEAM_OPP_PEER_ID)
-	else:
-		client_player.set_network_master(NetworkGlobal.STEAM_PEER_ID)
+	client_player.set_network_master(2)
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."
