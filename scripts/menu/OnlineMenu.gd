@@ -575,7 +575,7 @@ func _recieve_command(command: String) -> void:
 		_spectate_match(p1_id)
 	
 	elif command.begins_with("/kick"):
-		var participants: PoolStringArray = command.split(":", true)
+		var participants: PoolStringArray = command.split(" ", true)
 		if Steam.getSteamID() == int(participants[1]):
 			_on_exit_lobby()
 	
