@@ -371,7 +371,8 @@ func _on_Lobby_Message(_result: int, user: int, message: String, type: int) -> v
 	# If this is a message or lobby host command
 	if type == 1:
 		if user == Steam.getLobbyOwner(LOBBY_ID) and message.begins_with("/"):
-			print("Lobby owner entered a command")
+			var parsed_string: PoolStringArray = message.split(" ", true)
+			print("Lobby owner entered a command: " + parsed_string[0])
 			_recieve_command(message)
 			
 		# Else this is a normal chat message
