@@ -21,31 +21,6 @@ func handle_connecting_signals() -> void:
 
 # When a signal to change the currently displayed menu is recieved
 # this function checks the menu to be shown and displays it
-func change_shown_menu(menu: int) -> void:
-	#MenuSignalBus.emit_reset_buttons()
-	
-	if not menu == 2 and settings_menu.visible == true:
-		MenuSignalBus.emit_set_settings_dict(SettingsData.create_storage_dictionary())
-	
-	match menu:
-		1: # Main menu
-			main_menu.visible = true
-			settings_menu.visible = false
-			online_menu.visible = false
-			
-		2: # Settings menu
-			main_menu.visible = false
-			settings_menu.visible = true
-			online_menu.visible = false
-			
-		3: # Online menu
-			main_menu.visible = false
-			settings_menu.visible = false
-			online_menu.visible = true
-
-
-# When a signal to change the currently displayed menu is recieved
-# this function checks the menu to be shown and displays it
 func _on_change_menu(menu: String) -> void:
 	#MenuSignalBus.emit_reset_buttons()
 	
