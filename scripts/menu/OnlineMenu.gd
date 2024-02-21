@@ -37,6 +37,8 @@ var LOBBY_ID: int = 0
 var LOBBY_NAME: String = "Default"
 var LOBBY_MAX_MEMBERS: int = 10
 var LOBBY_MEMBERS: Array = []
+var CHALLENGES: Array = []
+var ONGOING_MATCHES: Array = []
 
 enum LOBBY_AVAILABILITY {PUBLIC, PRIVATE, FRIENDS, INVISIBLE}
 enum LOBBY_TYPE {ALL_LOBBIES, PUBLIC, PRIVATE}
@@ -239,21 +241,34 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 			print("[STEAM] Connecting tile to lobby: "+str(lobby)+" failed: "+str(join_lobby_signal))
 
 
-func _issue_challenge(target: int) -> void:
-	var new_challenge_tile = challenge_tile.instance()
-	new_challenge_tile.challenger_id = Steam.getSteamID()
-	new_challenge_tile.recipient_id = target
-	new_challenge_tile.is_challenger = true
-	lobby_overlay.challenges.add_child(new_challenge_tile)
+func _create_challenge(sender_id: int, recipient_id: int) -> void:
+	CHALLENGES.append({"sender_id":sender_id , "recipient_id":recipient_id})
+	_update_challenges()
 	
-	var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", self, "_on_challenge_accepted")
-	if challenge_accepted_signal > OK:
-		print("[STEAM] Connecting to accept button failed: "+str(challenge_accepted_signal))
-		
-	var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", self, "_on_challenge_rejected")
-	if challenge_rejected_signal > OK:
-		print("[STEAM] Connecting to accept button failed: "+str(challenge_rejected_signal))
 
+
+func _update_challenges() -> void:
+	for challenge in lobby_overlay.challenges.get_children():
+		challenge.hide()
+		challenge.queue_free()
+	
+	for challenge in CHALLENGES:
+		var new_challenge_tile = challenge_tile.instance()
+		new_challenge_tile.challenger_id = challenge.sender_id
+		new_challenge_tile.recipient_id = challenge.recipient_id
+		
+		if Steam.getSteamID() == challenge.sender_id:
+			new_challenge_tile.is_challenger = true
+			
+		lobby_overlay.challenges.add_child(new_challenge_tile)
+	
+		var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", self, "_on_challenge_accepted")
+		if challenge_accepted_signal > OK:
+			print("[STEAM] Connecting to accept button failed: "+str(challenge_accepted_signal))
+			
+		var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", self, "_on_challenge_rejected")
+		if challenge_rejected_signal > OK:
+			print("[STEAM] Connecting to accept button failed: "+str(challenge_rejected_signal))
 
 func _on_Match_Start() -> void:
 	var host_steam_id = Steam.getLobbyOwner(LOBBY_ID)
@@ -344,17 +359,13 @@ func _on_Lobby_Message(_result: int, user: int, message: String, type: int) -> v
 	if type == 1:
 		if user == Steam.getLobbyOwner(LOBBY_ID) and message.begins_with("/"):
 			print("Lobby owner attempted to enter a command")
-#			# Get any commands
-#			if message.begins_with("/kick"):
-#				# Get the user ID for kicking
-#				var COMMANDS: PoolStringArray = message.split(":", true)
-#				# If this is your ID, leave the lobby
-#				if Global.STEAM_ID == int(COMMANDS[1]):
-#					_leave_Lobby()
+			_recieve_command(message)
+			
 		# Else this is a normal chat message
 		else:
 			# Append the message to chat
 			lobby_overlay.chatbox.append_bbcode("<" + str(message_source) + "> " + str(message) + "\n")
+		
 	# This message is not a normal message or a lobby host command
 	else:
 		match type:
@@ -426,12 +437,18 @@ func _add_to_playerlist(steam_id: int, steam_name: String) -> void:
 	print("Adding new player: " + steam_name)
 	LOBBY_MEMBERS.append({"steam_id":steam_id, "steam_name":steam_name})
 	
+	var user_steam_id = Steam.getSteamID()
 	var new_member = lobby_member.instance()
 	new_member.member_steam_id = steam_id
 	new_member.member_steam_name = steam_name
 	lobby_overlay.members.add_child(new_member)
 	
-	var issue_challenge_signal: int = new_member.challenge_button.connect("button_up", self, "_issue_challenge", [steam_id])
+	if user_steam_id == steam_id:
+		new_member.challenge_button.visible = false
+	
+	var new_challenge: String = "/create_challenge " + str(user_steam_id) + " " + str(steam_id)
+	
+	var issue_challenge_signal: int = new_member.challenge_button.connect("button_up", self, "_send_command", [new_challenge])
 	if issue_challenge_signal > OK:
 		print("[STEAM] Connecting member's challenge button failed: " + str(issue_challenge_signal))
 
@@ -459,6 +476,42 @@ func _refresh_lobbies() -> void:
 
 
 func _on_Persona_Changed(steam_id: int, change_flag: int) -> void:
-	print("[STEAM] Lobby member "+Steam.getFriendPersonaName(steam_id)+"'s information changed: " + str(change_flag))
+	print("[STEAM] Lobby member " + Steam.getFriendPersonaName(steam_id) + "'s information changed: " + str(change_flag))
 	_get_lobby_members()
 
+
+func _send_command(command: String) -> void:
+	var is_sent: bool = Steam.sendLobbyChatMsg(LOBBY_ID, command)
+	if not is_sent:
+			lobby_overlay.chatbox.append_bbcode("[ERROR] Chat message failed to send.\n")
+
+func _recieve_command(command: String) -> void:
+	if command.begins_with("/create_challenge"):
+		var participants: PoolStringArray = command.split(" ", true)
+		
+		# TODO: Add a way to allow the use of steam personas rather than ids
+		var sender_id: int = int(participants[1])
+		var recipient_id: int = int(participants[2])
+		_create_challenge(sender_id, recipient_id)
+		
+	elif command.begins_with("/accept_challenge"):
+		var participants: PoolStringArray = command.split(" ", true)
+		var sender_id: int  = int(participants[1])
+		
+	elif command.begins_with("/reject_challenge"):
+		pass
+		
+	elif command.begins_with("/kick"):
+		# Get the user ID for kicking
+#		var COMMANDS: PoolStringArray = message.split(":", true)
+		# If this is your ID, leave the lobby
+#		if Global.STEAM_ID == int(COMMANDS[1]):
+#			_leave_Lobby()
+		pass
+	
+	elif command.begins_with("/roll"):
+		var dice: PoolStringArray = command.split(" ", true)
+		var die_sides = int(dice[1])
+		var result = randi() % die_sides + 1
+		lobby_overlay.chatbox.append_bbcode("[SYSTEM] " + Steam.getPersonaName() + " rolled a d" + str(die_sides) + "\n")
+		lobby_overlay.chatbox.append_bbcode("[SYSTEM] " + Steam.getPersonaName() + " rolled " + str(result) + "\n")
