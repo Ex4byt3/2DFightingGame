@@ -264,26 +264,36 @@ func _update_challenges() -> void:
 			new_challenge_tile.is_challenger = true
 			
 		lobby_overlay.challenges.add_child(new_challenge_tile)
+		
+		var command_accept: String = "/accept_challenge " + str(challenge.sender_id) + " " + str(challenge.recipient_id)
+		var command_reject: String = "/reject_challenge " + str(challenge.sender_id) + " " + str(challenge.recipient_id)
 	
-		var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", self, "_on_challenge_accepted")
+		var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", self, "_on_challenge_accepted", [command_accept])
 		if challenge_accepted_signal > OK:
 			print("[STEAM] Connecting to accept button failed: "+str(challenge_accepted_signal))
 			
-		var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", self, "_on_challenge_rejected")
+		var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", self, "_on_challenge_rejected", [command_reject])
 		if challenge_rejected_signal > OK:
 			print("[STEAM] Connecting to accept button failed: "+str(challenge_rejected_signal))
 
-func _on_Match_Start() -> void:
-	var host_steam_id = Steam.getLobbyOwner(LOBBY_ID)
+func _host_start() -> void:
 	NetworkGlobal.NETWORK_TYPE = 2
 	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
-	if Steam.getSteamID() == host_steam_id:
-		NetworkGlobal.STEAM_IS_HOST = true
-		print("[Steam] Started match as server")
-	else:
-		NetworkGlobal.STEAM_IS_HOST = false
-		NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
-		print("[Steam] Started match as client")
+	
+	NetworkGlobal.STEAM_IS_HOST = true
+	print("[Steam] Started match as server")
+	
+	MenuSignalBus._change_Scene(self, steam_scene)
+
+func _client_start(sender_id: int) -> void:
+	var host_steam_id: int = sender_id
+	NetworkGlobal.NETWORK_TYPE = 2
+	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
+	
+	NetworkGlobal.STEAM_IS_HOST = false
+	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
+	print("[Steam] Started match as client")
+	
 	MenuSignalBus._change_Scene(self, steam_scene)
 
 
@@ -449,9 +459,9 @@ func _add_to_playerlist(steam_id: int, steam_name: String) -> void:
 	if user_steam_id == steam_id:
 		new_member.challenge_button.visible = false
 	
-	var new_challenge: String = "/create_challenge " + str(user_steam_id) + " " + str(steam_id)
+	var command_challenge: String = "/create_challenge " + str(user_steam_id) + " " + str(steam_id)
 	
-	var issue_challenge_signal: int = new_member.challenge_button.connect("button_up", self, "_send_command", [new_challenge])
+	var issue_challenge_signal: int = new_member.challenge_button.connect("button_up", self, "_send_command", [command_challenge])
 	if issue_challenge_signal > OK:
 		print("[STEAM] Connecting member's challenge button failed: " + str(issue_challenge_signal))
 
@@ -500,6 +510,11 @@ func _recieve_command(command: String) -> void:
 	elif command.begins_with("/accept_challenge"):
 		var participants: PoolStringArray = command.split(" ", true)
 		var sender_id: int  = int(participants[1])
+		var recipient_id: int = int(participants[2])
+		if Steam.getSteamID() == sender_id:
+			_host_start()
+		elif Steam.getSteamID() == recipient_id:
+			_client_start(sender_id)
 		
 	elif command.begins_with("/reject_challenge"):
 		pass
