@@ -268,11 +268,11 @@ func _update_challenges() -> void:
 		var command_accept: String = "/accept_challenge " + str(challenge.sender_id) + " " + str(challenge.recipient_id)
 		var command_reject: String = "/reject_challenge " + str(challenge.sender_id) + " " + str(challenge.recipient_id)
 	
-		var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", self, "_on_challenge_accepted", [command_accept])
+		var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", self, "_send_command", [command_accept])
 		if challenge_accepted_signal > OK:
 			print("[STEAM] Connecting to accept button failed: "+str(challenge_accepted_signal))
 			
-		var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", self, "_on_challenge_rejected", [command_reject])
+		var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", self, "_send_command", [command_reject])
 		if challenge_rejected_signal > OK:
 			print("[STEAM] Connecting to accept button failed: "+str(challenge_rejected_signal))
 
