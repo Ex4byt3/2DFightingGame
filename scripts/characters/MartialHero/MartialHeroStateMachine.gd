@@ -41,6 +41,7 @@ func _ready():
 	add_state('SPRINTING')
 	add_state('DASHING')
 	add_state('JUMPSQUAT')
+	add_state('JUMPING')
 	add_state('SHORTHOP')
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
@@ -169,31 +170,17 @@ func transition_state(input: Dictionary):
 		states.JUMPSQUAT:
 			# Increment timer for the frames
 			jumpSquatTimer += 1
-
 			# Stopped jumping before it would be fullhop, it turns into shorthop
 			if input_vector.y != 1:
 				velocity.y = shortHopForce
 				jumpSquatTimer = 0
-				set_state('SHORTHOP')
+				set_state('JUMPING')
 			# Jump has been held for more than 4 frames, fullhop
 			if jumpSquatTimer > jumpSquatFrames:
 				velocity.y = fullHopForce
 				jumpSquatTimer = 0
-				set_state('FULLHOP')
-		states.SHORTHOP:
-			if is_on_floor:
-				set_state('IDLE')
-			else:
-				if velocity.y >= 0:
-					set_state('AIRBORNE')
-				# Handle air acceleration
-				if input_vector.x != 0:
-					velocity.x += SGFixed.mul(airAcceleration, (input_vector.x * ONE))
-					if velocity.x > maxAirSpeed:
-						velocity.x = maxAirSpeed
-					elif velocity.x < -maxAirSpeed:
-						velocity.x = -maxAirSpeed
-		states.FULLHOP:
+				set_state('JUMPING')
+		states.JUMPING:
 			if is_on_floor:
 				set_state('IDLE')
 			else:
