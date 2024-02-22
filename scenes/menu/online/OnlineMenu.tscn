@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/menu/images/online_background_accent.png" type="Texture" id=1]
 [ext_resource path="res://assets/resources/menu/button_groups/lobbytype_buttongroup.tres" type="ButtonGroup" id=2]
 [ext_resource path="res://assets/resources/menu/online/onlinemenu_theme.tres" type="Theme" id=3]
 [ext_resource path="res://scenes/menu/online/LobbyOverlay.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/menu/OnlineMenu.gd" type="Script" id=5]
+[ext_resource path="res://assets/menu/images/ScifiBackground.png" type="Texture" id=6]
 
 [node name="OnlineMenu" type="Control"]
 anchor_right = 1.0
@@ -17,9 +18,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="BackgroundImage" type="TextureRect" parent="MenuBackground"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+texture = ExtResource( 6 )
 expand = true
 
 [node name="BackgroundStyle" type="TextureRect" parent="MenuBackground"]

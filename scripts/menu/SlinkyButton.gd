@@ -54,6 +54,7 @@ func on_mouse_entered() -> void:
 		button_expand_width()
 		button_highlight.visible = true
 		button_slide_right()
+		MenuSignalBus.emit_mouse_entered_slinky(button_text)
 
 
 func on_mouse_exited() -> void:
@@ -61,6 +62,7 @@ func on_mouse_exited() -> void:
 		button_revert_width()
 		button_highlight.visible = false
 		button_slide_left()
+		MenuSignalBus.emit_mouse_exited_slinky("DEFAULT")
 
 
 func on_button_toggled(button_pressed) -> void:

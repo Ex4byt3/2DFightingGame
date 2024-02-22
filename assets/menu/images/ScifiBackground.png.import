@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/istockphoto-1043715004-612x612.jpg-0edd69be765924646b33bae15d868fa4.stex"
+path="res://.import/ScifiBackground.png-be6547f631d233e48984df9626ab0559.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/menu/images/istockphoto-1043715004-612x612.jpg"
-dest_files=[ "res://.import/istockphoto-1043715004-612x612.jpg-0edd69be765924646b33bae15d868fa4.stex" ]
+source_file="res://assets/menu/images/ScifiBackground.png"
+dest_files=[ "res://.import/ScifiBackground.png-be6547f631d233e48984df9626ab0559.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

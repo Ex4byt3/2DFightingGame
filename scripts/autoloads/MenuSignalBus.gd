@@ -13,6 +13,8 @@ signal load_settings_data(settings_dict)
 signal set_buttons_inactive
 signal set_buttons_active
 signal reset_buttons
+signal mouse_entered_slinky(button_name)
+signal mouse_exited_slinky(button_name)
 
 
 ##########################################################
@@ -53,6 +55,11 @@ func emit_set_buttons_active() -> void:
 func emit_reset_buttons() -> void:
 	emit_signal("reset_buttons")
 
+func emit_mouse_entered_slinky(button_name: String) -> void:
+	emit_signal("mouse_entered_slinky", button_name)
+
+func emit_mouse_exited_slinky(button_name: String) -> void:
+	emit_signal("mouse_exited_slinky", button_name)
 
 #####################################
 # Global menu functions #

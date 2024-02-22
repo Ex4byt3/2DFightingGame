@@ -10,6 +10,12 @@ var local_scene = preload("res://scenes/maps/LocalGame.tscn")
 onready var local_tab = $MainPane/LocalTab
 onready var training_tab = $MainPane/TrainingTab
 onready var records_tab = $MainPane/RecordsTab
+onready var footer_notes = $MainPane/Footer/FooterNotes
+
+onready var online_button = $MainPane/MenuButtons/OnlineButton
+onready var local_button = $MainPane/MenuButtons/LocalButton
+onready var training_button = $MainPane/MenuButtons/TrainingButton
+onready var records_button = $MainPane/MenuButtons/RecordsButton
 
 
 # Called when the node enters the scene tree for the first time.
@@ -20,10 +26,27 @@ func _ready():
 # Connect to button signals
 func handle_connecting_signals() -> void:
 	# Connect signals for the menu's primary buttons
-	MenuSignalBus._connect_Signals($MainPane/MenuButtons/OnlineButton.base_button, self, "toggled", "on_online_button_toggled")
-	MenuSignalBus._connect_Signals($MainPane/MenuButtons/LocalButton.base_button, self, "toggled", "on_local_button_toggled")
-	MenuSignalBus._connect_Signals($MainPane/MenuButtons/TrainingButton.base_button, self, "toggled", "on_training_button_toggled")
-	MenuSignalBus._connect_Signals($MainPane/MenuButtons/RecordsButton.base_button, self, "toggled", "on_records_button_toggled")
+	MenuSignalBus._connect_Signals(online_button.base_button, self, "toggled", "on_online_button_toggled")
+	MenuSignalBus._connect_Signals(local_button.base_button, self, "toggled", "on_local_button_toggled")
+	MenuSignalBus._connect_Signals(training_button.base_button, self, "toggled", "on_training_button_toggled")
+	MenuSignalBus._connect_Signals(records_button.base_button, self, "toggled", "on_records_button_toggled")
+	
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "mouse_entered_slinky", "_change_footer_text")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "mouse_exited_slinky", "_change_footer_text")
+
+
+func _change_footer_text(hovered_button: String) -> void:
+	match hovered_button:
+		"ONLINE":
+			footer_notes.set_text("Start custom matches with players around the world!")
+		"LOCAL":
+			footer_notes.set_text("Play alone or with friends locally!")
+		"TRAINING":
+			footer_notes.set_text("Learn to play the game or practice your skills!")
+		"RECORDS":
+			footer_notes.set_text("Review your gameplay records and other information!")
+		"DEFAULT":
+			footer_notes.set_text("Welcome to Project Delta!")
 
 
 #
