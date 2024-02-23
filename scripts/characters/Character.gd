@@ -3,6 +3,7 @@
 # and then character logic will get moved to a seperate script for each character
 # that will then extend this
 extends SGKinematicBody2D
+class_name Character
 
 # State machine
 onready var stateMachine = $StateMachine
@@ -14,37 +15,8 @@ var input_prefix := "player1_"
 var is_on_floor := false
 var controlBuffer := [[0, 0, 0]]
 
-# Character Attributes
-var walkingSpeed = 4
-var sprintingSpeed = 8
-var sprintInputLeinency = 6
-var airAcceleration : int = 0
-var maxAirSpeed = 6
-var gravity = 2
-var airJumpMax = 0
-var airJump = 0
-var knockback_multiplier = 1
-var weight = 100
-var shortHopForce = 8
-var fullHopForce = 16
-var jumpSquatFrames = 4
-
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
-
-func _ready():
-	stateMachine.parent = self
-
-	# Scale appropriate variables to fixed point numbers
-	gravity = SGFixed.ONE / gravity
-	maxAirSpeed *= SGFixed.ONE
-	fullHopForce *= SGFixed.NEG_ONE
-	shortHopForce *= SGFixed.NEG_ONE
-	airAcceleration = SGFixed.ONE / 5
-
-	# Turn player 2 around
-	if self.name == "ClientPlayer":
-		facingRight = false
 
 # like Input.get_vector but for SGFixedVector2
 func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: String, positive_y: String) -> SGFixedVector2:
