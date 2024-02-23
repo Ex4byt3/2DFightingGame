@@ -14,11 +14,39 @@ var input_prefix := "player1_"
 var is_on_floor := false
 var controlBuffer := [[0, 0, 0]]
 
+# Character Attributes
+var walkingSpeed = 4
+var sprintingSpeed = 8
+var frame = 0
+var sprintInputLeinency = 6
+var airAcceleration : int = 0
+var maxAirSpeed = 6
+var gravity = 2
+var airJumpMax = 0
+var airJump = 0
+var knockback_multiplier = 1
+var weight = 100
+var shortHopForce = 8
+var fullHopForce = 16
+var jumpSquatFrames = 4
+
+var facingRight := true # for flipping the sprite
+
 func _ready():
 	stateMachine.parent = self
 
+	# Scale appropriate variables to fixed point numbers
+	gravity = SGFixed.ONE / gravity
+	maxAirSpeed *= SGFixed.ONE
+	fullHopForce *= SGFixed.NEG_ONE
+	shortHopForce *= SGFixed.NEG_ONE
+	airAcceleration = SGFixed.ONE / 5
+
+	# Turn player 2 around
+	if self.name == "ClientPlayer":
+		facingRight = false
+
 # like Input.get_vector but for SGFixedVector2
-# note: Input.is_action_just_pressed returns a float
 func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: String, positive_y: String) -> SGFixedVector2:
 	var input_vector = SGFixed.vector2(0, 0) # note: SGFixedVector2 is always passed by reference and can be copied with SGFixedVector2.copy()
 	input_vector.x = 0
@@ -39,19 +67,19 @@ func _get_local_input() -> Dictionary:
 	if input_vector != SGFixed.vector2(0, 0):
 		input["input_vector_x"] = input_vector.x
 		input["input_vector_y"] = input_vector.y
-	if Input.is_action_just_pressed(input_prefix + "bomb"):
+	if Input.is_action_pressed(input_prefix + "bomb"):
 		input["drop_bomb"] = true
-	if Input.is_action_just_pressed(input_prefix + "light"):
+	if Input.is_action_pressed(input_prefix + "light"):
 		input["attack_light"] = true
-	if Input.is_action_just_pressed(input_prefix + "medium"):
+	if Input.is_action_pressed(input_prefix + "medium"):
 		input["attack_medium"] = true
-	if Input.is_action_just_pressed(input_prefix + "heavy"):
+	if Input.is_action_pressed(input_prefix + "heavy"):
 		input["attack_heavy"] = true
-	if Input.is_action_just_pressed(input_prefix + "impact"):
+	if Input.is_action_pressed(input_prefix + "impact"):
 		input["impact"] = true
-	if Input.is_action_just_pressed(input_prefix + "dash"):
+	if Input.is_action_pressed(input_prefix + "dash"):
 		input["dash"] = true
-	if Input.is_action_just_pressed(input_prefix + "shield"):
+	if Input.is_action_pressed(input_prefix + "shield"):
 		input["shield"] = true
 	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
 		input["sprint_macro"] = true
@@ -66,11 +94,8 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func _network_process(input: Dictionary) -> void:
-	# Get input vector
-	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
-	
 	# Transition state and calculate velocity off of this logic
-	velocity = stateMachine.transition_state(input)
+	stateMachine.transition_state(input)
 	
 	# Update position based off of velocity
 	fixed_position = fixed_position.add(velocity)
@@ -90,6 +115,7 @@ func _save_state() -> Dictionary:
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
 		is_on_floor = is_on_floor,
+		frame = stateMachine.frame
 	}
 
 func _load_state(state: Dictionary) -> void:
@@ -101,6 +127,7 @@ func _load_state(state: Dictionary) -> void:
 	velocity.x = state['velocity_x']
 	velocity.y = state['velocity_y']
 	is_on_floor = state['is_on_floor']
+	stateMachine.frame = state['frame']
 	sync_to_physics_engine()
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
