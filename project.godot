@@ -274,6 +274,8 @@ rollback/max_buffer_size=10
 rollback/sound_manager/default_sound_bus="Sound"
 rollback/classes/network_adaptor="res://addons/godot-rollback-netcode/RPCNetworkAdaptor.gd"
 rollback/classes/message_serializer="res://scripts/networking/CustomMessageSerializer.gd"
+rollback/debug/rollback_ticks=4
+rollback/debug/random_rollback_ticks=10
 rollback/log_inspector/replay_match_scene_path="res://scenes/Main.tscn"
 
 [physics]
