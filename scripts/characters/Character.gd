@@ -17,7 +17,6 @@ var controlBuffer := [[0, 0, 0]]
 # Character Attributes
 var walkingSpeed = 4
 var sprintingSpeed = 8
-var frame = 0
 var sprintInputLeinency = 6
 var airAcceleration : int = 0
 var maxAirSpeed = 6
@@ -31,6 +30,7 @@ var fullHopForce = 16
 var jumpSquatFrames = 4
 
 var facingRight := true # for flipping the sprite
+var frame : int = 0 # Frame counter for anything that happens over time
 
 func _ready():
 	stateMachine.parent = self
@@ -57,7 +57,7 @@ func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: 
 		input_vector.x += 1
 	if Input.is_action_pressed(negative_y):
 		input_vector.y -= 1
-	if Input.is_action_pressed(positive_y):
+	if Input.is_action_just_pressed(positive_y):
 		input_vector.y += 1
 	return input_vector
 
@@ -67,19 +67,19 @@ func _get_local_input() -> Dictionary:
 	if input_vector != SGFixed.vector2(0, 0):
 		input["input_vector_x"] = input_vector.x
 		input["input_vector_y"] = input_vector.y
-	if Input.is_action_pressed(input_prefix + "bomb"):
+	if Input.is_action_just_pressed(input_prefix + "bomb"):
 		input["drop_bomb"] = true
-	if Input.is_action_pressed(input_prefix + "light"):
+	if Input.is_action_just_pressed(input_prefix + "light"):
 		input["attack_light"] = true
-	if Input.is_action_pressed(input_prefix + "medium"):
+	if Input.is_action_just_pressed(input_prefix + "medium"):
 		input["attack_medium"] = true
-	if Input.is_action_pressed(input_prefix + "heavy"):
+	if Input.is_action_just_pressed(input_prefix + "heavy"):
 		input["attack_heavy"] = true
-	if Input.is_action_pressed(input_prefix + "impact"):
+	if Input.is_action_just_pressed(input_prefix + "impact"):
 		input["impact"] = true
-	if Input.is_action_pressed(input_prefix + "dash"):
+	if Input.is_action_just_pressed(input_prefix + "dash"):
 		input["dash"] = true
-	if Input.is_action_pressed(input_prefix + "shield"):
+	if Input.is_action_just_pressed(input_prefix + "shield"):
 		input["shield"] = true
 	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
 		input["sprint_macro"] = true
@@ -95,7 +95,7 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 
 func _network_process(input: Dictionary) -> void:
 	# Transition state and calculate velocity off of this logic
-	stateMachine.transition_state(input)
+	[velocity, frame] = stateMachine.transition_state(input, velocity, is_on_floor, frame)
 	
 	# Update position based off of velocity
 	fixed_position = fixed_position.add(velocity)
@@ -107,7 +107,7 @@ func _network_process(input: Dictionary) -> void:
 func _save_state() -> Dictionary:
 	var control_buffer = []
 	for item in controlBuffer:
-		control_buffer.append(item)
+		control_buffer.append(item.duplicate())
 	return {
 		control_buffer = control_buffer,
 		fixed_position_x = fixed_position.x,
@@ -115,19 +115,19 @@ func _save_state() -> Dictionary:
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
 		is_on_floor = is_on_floor,
-		frame = stateMachine.frame
+		frame = frame
 	}
 
 func _load_state(state: Dictionary) -> void:
 	controlBuffer = []
 	for item in state['control_buffer']:
-		controlBuffer.append(item)
+		controlBuffer.append(item.duplicate())
 	fixed_position.x = state['fixed_position_x']
 	fixed_position.y = state['fixed_position_y']
 	velocity.x = state['velocity_x']
 	velocity.y = state['velocity_y']
 	is_on_floor = state['is_on_floor']
-	stateMachine.frame = state['frame']
+	frame = state['frame']
 	sync_to_physics_engine()
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:

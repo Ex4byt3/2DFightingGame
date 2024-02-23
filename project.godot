@@ -270,7 +270,6 @@ chat_enter={
 [network]
 
 limits/debugger_stdout/max_chars_per_second=21105
-rollback/max_buffer_size=10
 rollback/sound_manager/default_sound_bus="Sound"
 rollback/classes/network_adaptor="res://addons/godot-rollback-netcode/RPCNetworkAdaptor.gd"
 rollback/classes/message_serializer="res://scripts/networking/CustomMessageSerializer.gd"
