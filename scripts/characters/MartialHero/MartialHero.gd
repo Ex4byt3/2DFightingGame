@@ -38,10 +38,10 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 
 func _network_process(input: Dictionary) -> void:
 	# Transition state and calculate velocity off of this logic
-	[velocity, frame] = stateMachine.transition_state(input, velocity, is_on_floor, frame)
+	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+	stateMachine.transition_state(input)
 	
 	# Update position based off of velocity
-	fixed_position = fixed_position.add(velocity)
 	velocity = move_and_slide(velocity, SGFixed.vector2(0, -SGFixed.ONE))
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
@@ -52,6 +52,7 @@ func _save_state() -> Dictionary:
 	for item in controlBuffer:
 		control_buffer.append(item.duplicate())
 	return {
+		playerState = stateMachine.state,
 		control_buffer = control_buffer,
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
@@ -61,16 +62,17 @@ func _save_state() -> Dictionary:
 		frame = frame
 	}
 
-func _load_state(state: Dictionary) -> void:
+func _load_state(loadState: Dictionary) -> void:
+	stateMachine.state = loadState['playerState']
 	controlBuffer = []
-	for item in state['control_buffer']:
+	for item in loadState['control_buffer']:
 		controlBuffer.append(item.duplicate())
-	fixed_position.x = state['fixed_position_x']
-	fixed_position.y = state['fixed_position_y']
-	velocity.x = state['velocity_x']
-	velocity.y = state['velocity_y']
-	is_on_floor = state['is_on_floor']
-	frame = state['frame']
+	fixed_position.x = loadState['fixed_position_x']
+	fixed_position.y = loadState['fixed_position_y']
+	velocity.x = loadState['velocity_x']
+	velocity.y = loadState['velocity_y']
+	is_on_floor = loadState['is_on_floor']
+	frame = loadState['frame']
 	sync_to_physics_engine()
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:

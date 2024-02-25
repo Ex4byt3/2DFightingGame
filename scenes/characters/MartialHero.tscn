@@ -4,12 +4,12 @@
 [ext_resource path="res://scripts/characters/MartialHero/MartialHero.gd" type="Script" id=2]
 [ext_resource path="res://scripts/characters/MartialHero/MartialHeroStateMachine.gd" type="Script" id=3]
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=4]
-[ext_resource path="res://assets/characters/MartialHero/Attack1.png" type="Texture" id=5]
-[ext_resource path="res://assets/characters/MartialHero/Attack2.png" type="Texture" id=6]
+[ext_resource path="res://assets/characters/MartialHero/Run.png" type="Texture" id=5]
+[ext_resource path="res://assets/characters/MartialHero/Jump.png" type="Texture" id=6]
 [ext_resource path="res://assets/characters/MartialHero/Fall.png" type="Texture" id=7]
-[ext_resource path="res://assets/characters/MartialHero/Jump.png" type="Texture" id=8]
-[ext_resource path="res://assets/characters/MartialHero/Run.png" type="Texture" id=9]
-[ext_resource path="res://assets/characters/MartialHero/Death.png" type="Texture" id=10]
+[ext_resource path="res://assets/characters/MartialHero/Attack2.png" type="Texture" id=8]
+[ext_resource path="res://assets/characters/MartialHero/Death.png" type="Texture" id=9]
+[ext_resource path="res://assets/characters/MartialHero/Attack1.png" type="Texture" id=10]
 [ext_resource path="res://assets/characters/MartialHero/Idle.png" type="Texture" id=11]
 
 [sub_resource type="SGRectangleShape2D" id=1]
@@ -29,7 +29,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 5 ) ]
+"values": [ ExtResource( 10 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:hframes")
@@ -69,7 +69,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 6 ) ]
+"values": [ ExtResource( 8 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:hframes")
@@ -109,7 +109,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 10 ) ]
+"values": [ ExtResource( 9 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:hframes")
@@ -230,7 +230,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 8 ) ]
+"values": [ ExtResource( 6 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:hframes")
@@ -281,7 +281,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ null ]
+"values": [ ExtResource( 11 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Sprite:hframes")
@@ -310,7 +310,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
-"values": [ ExtResource( 9 ) ]
+"values": [ ExtResource( 5 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:hframes")

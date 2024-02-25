@@ -42,27 +42,24 @@ func _ready():
 	add_state('DOWN_H')
 	set_state('IDLE')
 
-func transition_state(input: Dictionary, velocity, is_on_floor, frame):
-	# Get everything that is being rolled back from the character
-	var input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
-
+func transition_state(input):
 	# Updating debug label
-	update_debug_label(input_vector)
+	update_debug_label(parent.input_vector)
 
 	# Handle attacks
-	handle_attacks(input_vector, input)
+	handle_attacks(parent.input_vector, input)
 	
 	# Universal changes
-	velocity.y += parent.gravity
-	if is_on_floor:
+	parent.velocity.y += parent.gravity
+	if parent.is_on_floor:
 		reset_jumps()
 
 	match states[state]:
 		states.IDLE:
-			if is_on_floor:
-				if input_vector.x != 0:
+			if parent.is_on_floor:
+				if parent.input_vector.x != 0:
 					# Update which direction the character is facing
-					if input_vector.x > 0:
+					if parent.input_vector.x > 0:
 						parent.facingRight = true
 					else:
 						parent.facingRight = false
@@ -70,17 +67,17 @@ func transition_state(input: Dictionary, velocity, is_on_floor, frame):
 					# Update the direction the character is attempting to walk
 					if input.get("sprint_macro", false):
 						# If the character is using sprint_macro (default SHIFT) they sprint
-						velocity.x = parent.sprintingSpeed * (input_vector.x * ONE)
+						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
 						set_state('SPRINTING')
 					else:
 						# If the character isn't and they are moving in a direction, they are walking
-						velocity.x = parent.walkingSpeed * (input_vector.x * ONE)
+						parent.velocity.x = parent.walkingSpeed * (parent.input_vector.x * ONE)
 						set_state('WALKING')
-				elif input_vector.x == 0:
+				elif parent.input_vector.x == 0:
 					# If the player is not moving left/right, don't move/stop moving
-					velocity.x = 0
+					parent.velocity.x = 0
 					set_state('IDLE')
-				if input_vector.y == 1:
+				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
 					set_state('JUMPSQUAT')
 			else:
@@ -88,48 +85,48 @@ func transition_state(input: Dictionary, velocity, is_on_floor, frame):
 		states.CROUCHING:
 			pass
 		states.WALKING:
-			if is_on_floor:
+			if parent.is_on_floor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
-				if input_vector.x != 0:
+				if parent.input_vector.x != 0:
 					# Face the direction based on where you are trying to move
-					if input_vector.x > 0:
+					if parent.input_vector.x > 0:
 						parent.facingRight = true
 					else:
 						parent.facingRight = false
 					
-					if input.get("sprint_macro", false): # or sprint_check():
+					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
-						velocity.x = parent.sprintingSpeed * (input_vector.x * ONE)
+						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
 						set_state("SPRINTING")
 					else:
 						# Continue walking if you are trying to walk
-						velocity.x = parent.walkingSpeed * (input_vector.x * ONE)
+						parent.velocity.x = parent.walkingSpeed * (parent.input_vector.x * ONE)
 						set_state('WALKING')
 				else:
-					velocity.x = 0
+					parent.velocity.x = 0
 					set_state('IDLE')
-				if input_vector.y == 1:
+				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
 					set_state('JUMPSQUAT')
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
 				set_state('AIRBORNE')
 		states.SPRINTING:
-			if is_on_floor:
+			if parent.is_on_floor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
-				if input_vector.x != 0:
+				if parent.input_vector.x != 0:
 					# Face the direction based on where you are trying to move
-					if input_vector.x > 0:
+					if parent.input_vector.x > 0:
 						parent.facingRight = true
 					else:
 						parent.facingRight = false
 					
-					if input.get("sprint_macro", false): # or sprint_check():
+					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
-						velocity.x = parent.sprintingSpeed * (input_vector.x * ONE)
+						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
 						set_state("SPRINTING")
 				else:
-					velocity.x = 0
+					parent.velocity.x = 0
 					set_state('IDLE')
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
@@ -137,53 +134,48 @@ func transition_state(input: Dictionary, velocity, is_on_floor, frame):
 			pass
 		states.DASHING:
 			pass
-		# JUMPING BROKEN
 		states.JUMPING:
-			if is_on_floor:
+			if parent.is_on_floor:
 				set_state('IDLE')
 			else:
-				if velocity.y >= 0:
+				if parent.velocity.y >= 0:
 					set_state('AIRBORNE')
 				# Handle air acceleration
-				# if input_vector.x != 0:
-				# 	velocity.x += SGFixed.mul(parent.airAcceleration, (input_vector.x * ONE))
-				# 	if velocity.x > parent.maxAirSpeed:
-				# 		velocity.x = parent.maxAirSpeed
-				# 	elif velocity.x < -parent.maxAirSpeed:
-				# 		velocity.x = -parent.maxAirSpeed
-		# JUMPING BROKEN
+				if parent.input_vector.x != 0:
+					parent.velocity.x += SGFixed.mul(parent.airAcceleration, (parent.input_vector.x * ONE))
+					if parent.velocity.x > parent.maxAirSpeed:
+						parent.velocity.x = parent.maxAirSpeed
+					elif parent.velocity.x < -parent.maxAirSpeed:
+						parent.velocity.x = -parent.maxAirSpeed
 		states.JUMPSQUAT:
 			# Increment timer for the frames
-			# frame += 1
-			# # Stopped jumping before it would be fullhop, it turns into shorthop
-			# if input_vector.y != 1:
-			# 	velocity.y = parent.shortHopForce
-			# 	frame = 0
-			# 	set_state('JUMPING')
-			# # Jump has been held for more than 4 frames, fullhop
-			# if frame > parent.jumpSquatFrames:
-			# 	velocity.y = parent.fullHopForce
-			# 	frame = 0
-			# 	set_state('JUMPING')
-			velocity.y = parent.fullHopForce
-			set_state('JUMPING')
-		# JUMPING BROKEN
+			parent.frame += 1
+			# Stopped jumping before it would be fullhop, it turns into shorthop
+			if parent.input_vector.y != 1:
+				parent.velocity.y = parent.shortHopForce
+				parent.frame = 0
+				set_state('JUMPING')
+			# Jump has been held for more than 4 frames, fullhop
+			if parent.frame > parent.jumpSquatFrames:
+				parent.velocity.y = parent.fullHopForce
+				parent.frame = 0
+				set_state('JUMPING')
 		states.AIRBORNE:
-			if is_on_floor:
-				# TO BE ADDED: LANDING
+			if parent.is_on_floor:
+				# TODO: LANDING
 				set_state('IDLE')
 			# This logic needs to be fixed, for jumping again in air (double jump?)
-			if input_vector.y == 1 and parent.airJump > 0:
+			if parent.input_vector.y == 1 and parent.airJump > 0:
 				set_state('JUMPSQUAT')
 				parent.airJump -= 1
 			# If in the air and you are moving, update the velocity based on
 			# air acceleration and air speed (for air drift implementation)
-			# if input_vector.x != 0:
-			# 	velocity.x += SGFixed.mul(parent.airAcceleration, (input_vector.x * ONE))
-			# 	if velocity.x > parent.maxAirSpeed:
-			# 		velocity.x = parent.maxAirSpeed
-			# 	elif velocity.x < -parent.maxAirSpeed:
-			# 		velocity.x = -parent.maxAirSpeed
+			if parent.input_vector.x != 0:
+				parent.velocity.x += SGFixed.mul(parent.airAcceleration, (parent.input_vector.x * ONE))
+				if parent.velocity.x > parent.maxAirSpeed:
+					parent.velocity.x = parent.maxAirSpeed
+				elif parent.velocity.x < -parent.maxAirSpeed:
+					parent.velocity.x = -parent.maxAirSpeed
 		states.ATTACKING:
 			pass
 		states.BLOCKING:
@@ -212,12 +204,10 @@ func transition_state(input: Dictionary, velocity, is_on_floor, frame):
 			pass
 	
 	# Updating input buffer
-	update_input_buffer(input_vector)
+	update_input_buffer(parent.input_vector)
 
 	update_animation()
-	return [velocity, frame]
 
-# BROKEN
 func sprint_check() -> bool:
 	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
 	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
