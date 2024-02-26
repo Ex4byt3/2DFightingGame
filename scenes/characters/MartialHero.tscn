@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd" type="Script" id=1]
 [ext_resource path="res://scripts/characters/Character.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://assets/characters/MartialHero/Run.png" type="Texture" id=9]
 [ext_resource path="res://assets/characters/MartialHero/Death.png" type="Texture" id=10]
 [ext_resource path="res://assets/characters/MartialHero/Idle.png" type="Texture" id=11]
+[ext_resource path="res://scripts/characters/SpriteAnimator.gd" type="Script" id=12]
 
 [sub_resource type="SGRectangleShape2D" id=1]
 extents_x = 2162688
@@ -343,8 +344,9 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -1.42109e-14, -1.42109e-14 )
 scale = Vector2( 2.5, 2.5 )
-texture = ExtResource( 11 )
+texture = ExtResource( 6 )
 hframes = 8
+script = ExtResource( 12 )
 
 [node name="NetworkRandomNumberGenerator" type="Node" parent="."]
 script = ExtResource( 4 )

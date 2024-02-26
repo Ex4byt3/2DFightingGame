@@ -277,28 +277,39 @@ func update_animation():
 		$Sprite.flip_h = true
 	match playerState:
 		State.IDLE:
-			$NetworkAnimationPlayer.play("Idle")
+			$NetworkAnimationPlayer.set_current_animation("Idle")
+			$Sprite.advance_frame("Idle")
 		State.WALKING:
-			$NetworkAnimationPlayer.play("Walk")
+			$NetworkAnimationPlayer.set_current_animation("Walk")
+			$Sprite.advance_frame("Walk")
 		State.SPRINTING:
-			$NetworkAnimationPlayer.play("Walk")  # TODO: add sprint animation, for now it's the same as walking
+			$NetworkAnimationPlayer.set_current_animation("Walk")  # TODO: add sprint animation, for now it's the same as walking
+			$Sprite.advance_frame("Walk")
 		State.JUMPSQUAT:
-			$NetworkAnimationPlayer.play("Jump") # plays the first frame of the jump animation
+			$NetworkAnimationPlayer.set_current_animation("Jump") # plays the first frame of the jump animation
+			$Sprite.advance_frame("Jump")
 		State.JUMPING:
-			$NetworkAnimationPlayer.play("Jump")
+			$NetworkAnimationPlayer.set_current_animation("Jump")
+			$Sprite.advance_frame("Jump")
 			$Sprite.frame = 1 # the second frame is jumping
 		State.FALLING:
-			$NetworkAnimationPlayer.play("Fall")
+			$NetworkAnimationPlayer.set_current_animation("Fall")
+			$Sprite.advance_frame("Fall")
 		State.ATTACKING:
-			$NetworkAnimationPlayer.play("Attack")
+			$NetworkAnimationPlayer.set_current_animation("Attack")
+			$Sprite.advance_frame("Attack")
 		State.BLOCKING:
-			$NetworkAnimationPlayer.play("Block") # TODO: add block animation
+			$NetworkAnimationPlayer.set_current_animation("Block") # TODO: add block animation
+			$Sprite.advance_frame("Block")
 		State.HITSTUN:
-			$NetworkAnimationPlayer.play("Hitstun") # TODO: add hitstun animation
+			$NetworkAnimationPlayer.set_current_animation("Hitstun") # TODO: add hitstun animation
+			$Sprite.advance_frame("Hitstun")
 		State.DEAD:
-			$NetworkAnimationPlayer.play("Dead")
+			$NetworkAnimationPlayer.set_current_animation("Dead")
+			$Sprite.advance_frame("Dead")
 		_:
-			$NetworkAnimationPlayer.play("Idle")
+			$NetworkAnimationPlayer.set_current_animation("Idle")
+			$Sprite.advance_frame("Idle")
 
 func _save_state() -> Dictionary:
 	var control_buffer = []
