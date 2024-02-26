@@ -10,7 +10,7 @@ var STEAM_ID: int = 0
 var STEAM_USERNAME: String = "No one"
 
 func _ready() -> void:
-	print("Starting the GodotSteam Example project...")
+	print("Initializing Steam...")
 	_initialize_Steam()
 
 	if IS_ON_STEAM_DECK:
