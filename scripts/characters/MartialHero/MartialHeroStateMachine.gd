@@ -156,6 +156,10 @@ func transition_state(input):
 				else:
 					parent.velocity.x = 0
 					set_state('IDLE')
+
+				if parent.input_vector.y == 1:
+					# The player is attempting to jump, enter jumpsquat state
+					set_state('JUMPSQUAT')
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
 				set_state('AIRBORNE')
