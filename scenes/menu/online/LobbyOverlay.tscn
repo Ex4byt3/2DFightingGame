@@ -123,7 +123,7 @@ custom_constants/separation = 10
 
 [node name="LobbyMembersPane" type="VBoxContainer" parent="Lobby/LeftPane"]
 margin_right = 483.0
-margin_bottom = 376.0
+margin_bottom = 327.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -135,7 +135,7 @@ text = "Lobby Members"
 [node name="Panel" type="Panel" parent="Lobby/LeftPane/LobbyMembersPane"]
 margin_top = 18.0
 margin_right = 483.0
-margin_bottom = 376.0
+margin_bottom = 327.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -147,24 +147,48 @@ size_flags_vertical = 3
 
 [node name="Members" type="VBoxContainer" parent="Lobby/LeftPane/LobbyMembersPane/Panel/ScrollContainer"]
 margin_right = 483.0
-margin_bottom = 358.0
+margin_bottom = 309.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="LobbyControls" type="HBoxContainer" parent="Lobby/LeftPane"]
-margin_top = 386.0
+[node name="Controls" type="VBoxContainer" parent="Lobby/LeftPane"]
+margin_top = 337.0
 margin_right = 483.0
 margin_bottom = 415.0
 custom_constants/separation = 20
 
-[node name="PasswordButton" type="Button" parent="Lobby/LeftPane/LobbyControls"]
+[node name="MatchControls" type="HBoxContainer" parent="Lobby/LeftPane/Controls"]
+margin_right = 483.0
+margin_bottom = 29.0
+custom_constants/separation = 20
+
+[node name="MatchSettingsButton" type="Button" parent="Lobby/LeftPane/Controls/MatchControls"]
+margin_right = 231.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 160, 29 )
+size_flags_horizontal = 3
+text = "Match Settings"
+
+[node name="VSeparator" type="VSeparator" parent="Lobby/LeftPane/Controls/MatchControls"]
+margin_left = 251.0
+margin_right = 483.0
+margin_bottom = 29.0
+size_flags_horizontal = 3
+
+[node name="LobbyControls" type="HBoxContainer" parent="Lobby/LeftPane/Controls"]
+margin_top = 49.0
+margin_right = 483.0
+margin_bottom = 78.0
+custom_constants/separation = 20
+
+[node name="PasswordButton" type="Button" parent="Lobby/LeftPane/Controls/LobbyControls"]
 margin_right = 231.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 160, 29 )
 size_flags_horizontal = 3
 text = "Change Password"
 
-[node name="ExitLobbyButton" type="Button" parent="Lobby/LeftPane/LobbyControls"]
+[node name="ExitLobbyButton" type="Button" parent="Lobby/LeftPane/Controls/LobbyControls"]
 margin_left = 251.0
 margin_right = 483.0
 margin_bottom = 29.0

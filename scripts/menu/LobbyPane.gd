@@ -24,8 +24,9 @@ onready var ongoing_matches = $Lobby/RightPane/MatchesTab/ScrollContainer/Ongoin
 
 onready var history_tab = $Lobby/RightPane/HistoryTab
 
-onready var password_button = $Lobby/LeftPane/LobbyControls/PasswordButton
-onready var exit_lobby_button = $Lobby/LeftPane/LobbyControls/ExitLobbyButton
+onready var match_settings = $Lobby/LeftPane/Controls/MatchControls/MatchSettingsButton
+onready var password_button = $Lobby/LeftPane/Controls/LobbyControls/PasswordButton
+onready var exit_lobby_button = $Lobby/LeftPane/Controls/LobbyControls/ExitLobbyButton
 
 var lobby_name: String
 var num_players: int
