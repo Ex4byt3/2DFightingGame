@@ -24,17 +24,18 @@ var motion_inputs = {
 
 func _ready():
 	add_state('IDLE')
-	add_state('CROUCHING')
-	add_state('WALKING')
-	add_state('SPRINTING')
-	add_state('DASHING')
+	add_state('CROUCH')
+	add_state('CRAWL')
+	add_state('WALK')
+	add_state('SPRINT')
+	add_state('DASH')
 	add_state('JUMPSQUAT')
-	add_state('JUMPING')
+	add_state('JUMP')
 	add_state('SHORTHOP')
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
-	add_state('ATTACKING')
-	add_state('BLOCKING')
+	add_state('ATTACK')
+	add_state('BLOCK')
 	add_state('HITSTUN')
 	add_state('DEAD')
 	add_state('NEUTRAL_L')
@@ -78,6 +79,13 @@ func transition_state(input):
 	parent.velocity.y += parent.gravity
 	if parent.is_on_floor:
 		reset_jumps()
+		
+	if parent.facingRight:
+		# parent.get_node('Sprite').flip_h = false
+		parent.arrowSprite.flip_h = false
+	else:
+		# parent.get_node('Sprite').flip_h = true
+		parent.arrowSprite.flip_h = true
 
 # very not working
 #	var prased_input = parse_motion_inputs()
@@ -98,23 +106,28 @@ func transition_state(input):
 					if input.get("sprint_macro", false):
 						# If the character is using sprint_macro (default SHIFT) they sprint
 						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
-						set_state('SPRINTING')
+						parent.animation.play("Sprint")
+						set_state('SPRINT')
 					else:
 						# If the character isn't and they are moving in a direction, they are walking
 						parent.velocity.x = parent.walkingSpeed * (parent.input_vector.x * ONE)
-						set_state('WALKING')
+						parent.animation.play("Walk")
+						set_state('WALK')
 				elif parent.input_vector.x == 0:
 					# If the player is not moving left/right, don't move/stop moving
 					parent.velocity.x = 0
+					parent.animation.play("Idle")
 					set_state('IDLE')
 				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
+					parent.animation.play("JumpSquat")
 					set_state('JUMPSQUAT')
 			else:
+				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
-		states.CROUCHING:
+		states.CROUCH:
 			pass
-		states.WALKING:
+		states.WALK:
 			if parent.is_on_floor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
 				if parent.input_vector.x != 0:
@@ -127,21 +140,26 @@ func transition_state(input):
 					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
 						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
-						set_state("SPRINTING")
+						parent.animation.play("Sprint")
+						set_state("SPRINT")
 					else:
 						# Continue walking if you are trying to walk
 						parent.velocity.x = parent.walkingSpeed * (parent.input_vector.x * ONE)
-						set_state('WALKING')
+						# parent.animation.play("Walk")
+						# set_state('WALK')
 				else:
 					parent.velocity.x = 0
+					parent.animation.play("Idle")
 					set_state('IDLE')
 				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
+					parent.animation.play("JumpSquat")
 					set_state('JUMPSQUAT')
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
+				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
-		states.SPRINTING:
+		states.SPRINT:
 			if parent.is_on_floor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
 				if parent.input_vector.x != 0:
@@ -154,25 +172,31 @@ func transition_state(input):
 					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
 						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
-						set_state("SPRINTING")
+						parent.animation.play("Sprint")
+						set_state("SPRINT")
 				else:
 					parent.velocity.x = 0
+					parent.animation.play("Idle")
 					set_state('IDLE')
 
 				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
+					parent.animation.play("JumpSquat")
 					set_state('JUMPSQUAT')
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
+				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
 			pass
-		states.DASHING:
+		states.DASH:
 			pass
-		states.JUMPING:
+		states.JUMP:
 			if parent.is_on_floor:
+				parent.animation.play("Idle")
 				set_state('IDLE')
 			else:
 				if parent.velocity.y >= 0:
+					parent.animation.play("Airborne")
 					set_state('AIRBORNE')
 				# Handle air acceleration
 				if parent.input_vector.x != 0:
@@ -188,18 +212,22 @@ func transition_state(input):
 			if parent.input_vector.y != 1:
 				parent.velocity.y = parent.shortHopForce
 				parent.frame = 0
-				set_state('JUMPING')
+				parent.animation.play("Jump") # can have seperate animation for shothop without seperate state
+				set_state('JUMP')
 			# Jump has been held for more than 4 frames, fullhop
 			if parent.frame > parent.jumpSquatFrames:
 				parent.velocity.y = parent.fullHopForce
 				parent.frame = 0
-				set_state('JUMPING')
+				parent.animation.play("Jump")
+				set_state('JUMP')
 		states.AIRBORNE:
 			if parent.is_on_floor:
 				# TODO: LANDING
+				parent.animation.play("Idle")
 				set_state('IDLE')
 			# This logic needs to be fixed, for jumping again in air (double jump?)
 			if parent.input_vector.y == 1 and parent.airJump > 0:
+				parent.animation.play("JumpSquat")
 				set_state('JUMPSQUAT')
 				parent.airJump -= 1
 			# If in the air and you are moving, update the velocity based on
@@ -210,9 +238,9 @@ func transition_state(input):
 					parent.velocity.x = parent.maxAirSpeed
 				elif parent.velocity.x < -parent.maxAirSpeed:
 					parent.velocity.x = -parent.maxAirSpeed
-		states.ATTACKING:
+		states.ATTACK:
 			pass
-		states.BLOCKING:
+		states.BLOCK:
 			pass
 		states.HITSTUN:
 			pass
@@ -240,8 +268,6 @@ func transition_state(input):
 	# Updating input buffer
 	update_input_buffer(parent.input_vector)
 
-	update_animation()
-
 func sprint_check() -> bool:
 	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
 	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
@@ -254,39 +280,6 @@ func sprint_check() -> bool:
 # Reset the number of jumps you have
 func reset_jumps():
 	parent.airJump = parent.airJumpMax
-
-func update_animation():
-	if parent.facingRight:
-		parent.get_node('Sprite').flip_h = false
-	else:
-		parent.get_node('Sprite').flip_h = true
-	match states[state]:
-		states.IDLE:
-			parent.get_node('NetworkAnimationPlayer').play("Idle")
-		states.WALKING:
-			parent.get_node('NetworkAnimationPlayer').play("Walk")
-		states.SPRINTING:
-			parent.get_node('NetworkAnimationPlayer').play("Walk")  # TODO: add sprint animation, for now it's the same as walking
-		states.JUMPSQUAT:
-			parent.get_node('NetworkAnimationPlayer').play("Jump") # plays the first frame of the jump animation
-		states.SHORTHOP:
-			parent.get_node('NetworkAnimationPlayer').play("Jump")
-			parent.get_node('Sprite').frame = 1 # the second frame is jumping
-		states.FULLHOP:
-			parent.get_node('NetworkAnimationPlayer').play("Jump")
-			parent.get_node('Sprite').frame = 1 # the second frame is jumping
-		states.AIRBORNE:
-			parent.get_node('NetworkAnimationPlayer').play("Fall")
-		states.ATTACKING:
-			parent.get_node('NetworkAnimationPlayer').play("Attack")
-		states.BLOCKING:
-			parent.get_node('NetworkAnimationPlayer').play("Block") # TODO: add block animation
-		states.HITSTUN:
-			parent.get_node('NetworkAnimationPlayer').play("Hitstun") # TODO: add hitstun animation
-		states.DEAD:
-			parent.get_node('NetworkAnimationPlayer').play("Dead")
-		_:
-			parent.get_node('NetworkAnimationPlayer').play("Idle")
 
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):

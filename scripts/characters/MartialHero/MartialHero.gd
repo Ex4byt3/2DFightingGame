@@ -1,5 +1,8 @@
 extends Character
 
+onready var animation = $NetworkAnimationPlayer
+onready var arrowSprite = $DebugSprite/DebugArrow
+
 # Character Attributes
 var walkingSpeed = 4
 var sprintingSpeed = 8
