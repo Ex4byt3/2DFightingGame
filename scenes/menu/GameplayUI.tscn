@@ -1,11 +1,17 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://assets/menu/images/ramlethal.jpg" type="Texture" id=1]
-[ext_resource path="res://scenes/characters/MartialHero.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/menu/GameplayUI.gd" type="Script" id=2]
+[ext_resource path="res://assets/fonts/Orbitron/static/Orbitron-Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/menu/icons/life_icon.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu/icons/timer_icon.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0 )
-colors = PoolColorArray( 0.125, 0.125, 0.125, 1 )
+colors = PoolColorArray( 0.609375, 0.0975952, 0.0975952, 1 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
@@ -17,107 +23,286 @@ colors = PoolColorArray( 0.90625, 0.654243, 0.431885, 1 )
 [sub_resource type="GradientTexture" id=4]
 gradient = SubResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0.109804, 0.301961, 0.568627, 1 )
+[sub_resource type="DynamicFont" id=6]
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0.12549, 0.12549, 0.12549, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Gradient" id=9]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0.200226, 0.405029, 0.949219, 1 )
+
+[sub_resource type="GradientTexture" id=10]
+gradient = SubResource( 9 )
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0.12549, 0.12549, 0.12549, 1 )
+
+[sub_resource type="GradientTexture" id=13]
+gradient = SubResource( 12 )
+
+[sub_resource type="Gradient" id=14]
+offsets = PoolRealArray( 0 )
+colors = PoolColorArray( 0.0852661, 0.187973, 0.496094, 1 )
+
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 14 )
 
 [node name="GameplayUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-
-[node name="MartialHero" parent="." instance=ExtResource( 2 )]
-position = Vector2( 199, 542 )
-fixed_position_x = 13041664
-fixed_position_y = 35520512
+script = ExtResource( 2 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Header" type="Control" parent="VBoxContainer"]
-margin_right = 1280.0
-margin_bottom = 101.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.2
-
-[node name="Panel" type="Panel" parent="VBoxContainer/Header"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Header"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="P1Info" type="Control" parent="VBoxContainer/Header/HBoxContainer"]
-margin_right = 586.0
-margin_bottom = 101.0
+[node name="Header" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1920.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 0, 150 )
 size_flags_horizontal = 3
 
-[node name="CharacterImage" type="TextureRect" parent="VBoxContainer/Header/HBoxContainer/P1Info"]
+[node name="P1Info" type="Control" parent="VBoxContainer/Header"]
+margin_right = 881.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
+
+[node name="CharacterImage" type="TextureRect" parent="VBoxContainer/Header/P1Info"]
 anchor_right = 0.15
 anchor_bottom = 1.0
 margin_left = 10.0
 margin_top = 10.0
+margin_right = -10.0
 margin_bottom = -10.0
 texture = ExtResource( 1 )
 expand = true
 stretch_mode = 5
 
-[node name="HealthBar" type="TextureProgress" parent="VBoxContainer/Header/HBoxContainer/P1Info"]
+[node name="Lives" type="HBoxContainer" parent="VBoxContainer/Header/P1Info"]
 anchor_left = 0.15
-anchor_top = 0.3
+anchor_top = 0.065
+anchor_right = 1.0
+anchor_bottom = 0.2
+margin_top = 0.0549994
+alignment = 2
+
+[node name="Life" type="NinePatchRect" parent="VBoxContainer/Header/P1Info/Lives"]
+margin_left = 728.0
+margin_right = 748.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 20 )
+texture = ExtResource( 4 )
+
+[node name="HealthBackground" type="Panel" parent="VBoxContainer/Header/P1Info"]
+anchor_left = 0.15
+anchor_top = 0.25
+anchor_right = 1.0
+anchor_bottom = 0.5
+custom_styles/panel = SubResource( 11 )
+
+[node name="HealthBar" type="TextureProgress" parent="VBoxContainer/Header/P1Info"]
+anchor_left = 0.15
+anchor_top = 0.25
 anchor_right = 1.0
 anchor_bottom = 0.5
 value = 100.0
 texture_under = SubResource( 2 )
 texture_progress = SubResource( 4 )
+fill_mode = 1
 nine_patch_stretch = true
 
-[node name="PlayerName" type="Label" parent="VBoxContainer/Header/HBoxContainer/P1Info"]
-margin_right = 40.0
-margin_bottom = 14.0
+[node name="PlayerName" type="Label" parent="VBoxContainer/Header/P1Info/HealthBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+text = "PlAYER NAME ERR"
+valign = 1
+uppercase = true
 
-[node name="TextureProgress" type="TextureProgress" parent="VBoxContainer/Header/HBoxContainer/P1Info"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="BurstBar" type="TextureProgress" parent="VBoxContainer/Header/P1Info"]
+anchor_left = 0.65
+anchor_top = 0.55
+anchor_right = 1.0
+anchor_bottom = 0.8
+texture_under = SubResource( 8 )
+texture_progress = SubResource( 10 )
+nine_patch_stretch = true
 
-[node name="Timer" type="Control" parent="VBoxContainer/Header/HBoxContainer"]
-margin_left = 590.0
-margin_right = 690.0
-margin_bottom = 101.0
-rect_min_size = Vector2( 100, 0 )
-size_flags_stretch_ratio = 0.5
+[node name="Label" type="Label" parent="VBoxContainer/Header/P1Info/BurstBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "BURST"
+align = 2
+valign = 1
 
-[node name="Panel" type="Panel" parent="VBoxContainer/Header/HBoxContainer/Timer"]
+[node name="Timer" type="Control" parent="VBoxContainer/Header"]
+margin_left = 885.0
+margin_right = 1035.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 150, 0 )
+
+[node name="TimerBackground" type="NinePatchRect" parent="VBoxContainer/Header/Timer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 10.0
 margin_top = 10.0
 margin_right = -10.0
 margin_bottom = -10.0
-custom_styles/panel = SubResource( 5 )
+texture = ExtResource( 5 )
 
-[node name="P1Info2" type="Control" parent="VBoxContainer/Header/HBoxContainer"]
-margin_left = 694.0
-margin_right = 1280.0
-margin_bottom = 101.0
+[node name="CurrentTime" type="Label" parent="VBoxContainer/Header/Timer/TimerBackground"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "3:00"
+align = 1
+valign = 1
+
+[node name="P2Info" type="Control" parent="VBoxContainer/Header"]
+margin_left = 1039.0
+margin_right = 1920.0
+margin_bottom = 150.0
 size_flags_horizontal = 3
 
+[node name="CharacterImage" type="TextureRect" parent="VBoxContainer/Header/P2Info"]
+anchor_left = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -10.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 5
+
+[node name="Lives" type="HBoxContainer" parent="VBoxContainer/Header/P2Info"]
+anchor_top = 0.065
+anchor_right = 0.85
+anchor_bottom = 0.2
+
+[node name="Life" type="NinePatchRect" parent="VBoxContainer/Header/P2Info/Lives"]
+margin_right = 20.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 20 )
+texture = ExtResource( 4 )
+
+[node name="HealthBackground" type="Panel" parent="VBoxContainer/Header/P2Info"]
+anchor_top = 0.25
+anchor_right = 0.85
+anchor_bottom = 0.5
+custom_styles/panel = SubResource( 11 )
+
+[node name="HealthBar" type="TextureProgress" parent="VBoxContainer/Header/P2Info"]
+anchor_top = 0.25
+anchor_right = 0.85
+anchor_bottom = 0.5
+value = 100.0
+texture_under = SubResource( 2 )
+texture_progress = SubResource( 4 )
+nine_patch_stretch = true
+
+[node name="PlayerName" type="Label" parent="VBoxContainer/Header/P2Info/HealthBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 6 )
+text = "PlAYER NAME ERR"
+align = 2
+valign = 1
+uppercase = true
+
+[node name="BurstBar" type="TextureProgress" parent="VBoxContainer/Header/P2Info"]
+anchor_top = 0.55
+anchor_right = 0.35
+anchor_bottom = 0.8
+texture_under = SubResource( 8 )
+texture_progress = SubResource( 10 )
+fill_mode = 1
+nine_patch_stretch = true
+
+[node name="Label" type="Label" parent="VBoxContainer/Header/P2Info/BurstBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "BURST"
+valign = 1
+
 [node name="Central" type="Control" parent="VBoxContainer"]
-margin_top = 105.0
-margin_right = 1280.0
-margin_bottom = 614.0
+margin_top = 154.0
+margin_right = 1920.0
+margin_bottom = 922.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Footer" type="Control" parent="VBoxContainer"]
-margin_top = 618.0
-margin_right = 1280.0
-margin_bottom = 720.0
+[node name="Footer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 926.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/Footer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="P1Meter" type="Control" parent="VBoxContainer/Footer"]
+margin_right = 958.0
+margin_bottom = 154.0
+size_flags_horizontal = 3
+
+[node name="MeterBar" type="TextureProgress" parent="VBoxContainer/Footer/P1Meter"]
+anchor_left = 0.245
+anchor_top = 0.35
+anchor_right = 0.7
+anchor_bottom = 0.65
+margin_top = 2.67029e-05
+margin_bottom = 2.28882e-05
+max_value = 170.0
+step = 10.0
+texture_under = SubResource( 13 )
+texture_progress = SubResource( 15 )
+nine_patch_stretch = true
+
+[node name="MeterValue" type="TextureRect" parent="VBoxContainer/Footer/P1Meter"]
+anchor_left = 0.15
+anchor_top = 0.2
+anchor_right = 0.15
+anchor_bottom = 0.2
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="P2Meter" type="Control" parent="VBoxContainer/Footer"]
+margin_left = 962.0
+margin_right = 1920.0
+margin_bottom = 154.0
+size_flags_horizontal = 3
+
+[node name="MeterBar" type="TextureProgress" parent="VBoxContainer/Footer/P2Meter"]
+anchor_left = 0.3
+anchor_top = 0.35
+anchor_right = 0.755
+anchor_bottom = 0.65
+margin_top = 2.67029e-05
+margin_bottom = 2.28882e-05
+max_value = 170.0
+step = 10.0
+texture_under = SubResource( 13 )
+texture_progress = SubResource( 15 )
+nine_patch_stretch = true
+
+[node name="MeterValue" type="TextureRect" parent="VBoxContainer/Footer/P2Meter"]
+anchor_left = 0.85
+anchor_top = 0.2
+anchor_right = 0.85
+anchor_bottom = 0.2
+grow_horizontal = 0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 5 )
+expand = true

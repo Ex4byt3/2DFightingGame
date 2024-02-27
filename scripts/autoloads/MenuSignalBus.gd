@@ -9,6 +9,12 @@ signal resolution_selected(index)
 signal set_settings_dict(settings_dict)
 signal load_settings_data(settings_dict)
 
+# Signals for local match ui
+signal load_ui_local(ui_settings)
+signal update_debug(debug_data)
+signal update_input_buffer(input_data)
+signal update_debug_visibility(button_checked)
+
 # Signals for slinky buttons
 signal set_buttons_inactive
 signal set_buttons_active
@@ -40,6 +46,23 @@ func emit_resolution_selected(index: int) -> void:
 
 func emit_load_settings_data(settings_dict: Dictionary) -> void:
 	emit_signal("load_settings_data", settings_dict)
+
+
+###############################
+# Emit functions for match ui #
+###############################
+
+func emit_load_ui_local(ui_settings: Dictionary) -> void:
+	emit_signal("load_ui_local", ui_settings)
+
+func emit_update_debug(debug_data: Dictionary) -> void:
+	emit_signal("update_debug", debug_data)
+
+func emit_update_input_buffer(input_data: Dictionary) -> void:
+	emit_signal("update_input_buffer", input_data)
+
+func emit_update_debug_visibility(button_checked: bool) -> void:
+	emit_signal("update_debug_visibility", button_checked)
 
 
 #####################################

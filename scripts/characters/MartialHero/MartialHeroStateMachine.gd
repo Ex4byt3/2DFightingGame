@@ -1,4 +1,5 @@
 extends StateMachine
+
 var parent = null
 var ONE = SGFixed.ONE
 
@@ -19,6 +20,7 @@ var direction_mapping = {
 var motion_inputs = {
 	"QCF": [[0, -1], [1, -1], [1, 0]]
 }
+
 
 func _ready():
 	add_state('IDLE')
@@ -306,14 +308,26 @@ func handle_attacks(input_vector, input):
 
 
 func update_debug_label(input_vector):
-	var debugLabel = parent.get_parent().get_node("DebugOverlay").get_node(parent.name + "DebugLabel")
-	if self.name == "ServerPlayer":
-		debugLabel.text = "PLAYER ONE DEBUG:\nPOSITION: " + str(parent.fixed_position.x / ONE) + ", " + str(parent.fixed_position.y / ONE) + "\nVELOCITY: " + str(parent.velocity.x / ONE) + ", " + str(parent.velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x) + ", " + str(input_vector.y) + "\nSTATE: " + str(state)
-	else:
-		debugLabel.text = "PLAYER TWO DEBUG:\nPOSITION: " + str(parent.fixed_position.x / ONE) + ", " + str(parent.fixed_position.y / ONE) + "\nVELOCITY: " + str(parent.velocity.x / ONE) + ", " + str(parent.velocity.y / ONE) + "\nINPUT VECTOR: " + str(input_vector.x) + ", " + str(input_vector.y) + "\nSTATE: " + str(state)
+	var player_type: String = self.get_parent().name
+	
+	var debug_data: Dictionary = {
+		"player_type": player_type,
+		"pos_x": str(parent.fixed_position.x / ONE),
+		"pos_y": str(parent.fixed_position.y / ONE),
+		"velocity_x": str(parent.velocity.x / ONE),
+		"velocity_y": str(parent.velocity.y / ONE),
+		"input_vector_x": str(input_vector.x),
+		"input_vector_y": str(input_vector.y),
+		"state": str(state)
+	}
+	
+	MenuSignalBus.emit_update_debug(debug_data)
+
 	
 func update_input_buffer(input_vector):
-	var inputBuffer = parent.get_parent().get_node("DebugOverlay").get_node(parent.name + "InputBuffer")
+	var player_type: String = self.get_parent().name
+	var inputs: Array = []
+
 	if parent.controlBuffer.size() > 20:
 		parent.controlBuffer.pop_back()
 	
@@ -324,11 +338,15 @@ func update_input_buffer(input_vector):
 	else:
 		parent.controlBuffer.push_front([input_vector.x, input_vector.y, 1])
 	
-	if self.name == "ServerPlayer":
-		inputBuffer.text = "PLAYER ONE INPUT BUFFER:\n"
-	else:
-		inputBuffer.text = "PLAYER TWO INPUT BUFFER:\n"
-	
 	for item in parent.controlBuffer:
-		var direction = direction_mapping.get([item[0], item[1]], "NEUTRAL")
-		inputBuffer.text += str(direction) + " " + str(item[2]) + " TICKS\n"
+		var new_input: Array = []
+		new_input.append(str(direction_mapping.get([item[0], item[1]], "NEUTRAL")))
+		new_input.append(str(item[2]))
+		inputs.append(new_input)
+
+	var input_data: Dictionary = {
+		"player_type": player_type,
+		"inputs": inputs,
+	}
+	
+	MenuSignalBus.emit_update_input_buffer(input_data)
