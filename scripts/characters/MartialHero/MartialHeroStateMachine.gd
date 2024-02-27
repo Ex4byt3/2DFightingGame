@@ -16,6 +16,10 @@ var direction_mapping = {
 	[-1, 1]: "UP LEFT" # 7
 }
 
+var motion_inputs = {
+	"QCF": [[0, -1], [1, -1], [1, 0]]
+}
+
 func _ready():
 	add_state('IDLE')
 	add_state('CROUCHING')
@@ -42,6 +46,25 @@ func _ready():
 	add_state('DOWN_H')
 	set_state('IDLE')
 
+# very not working
+#func parse_motion_inputs():
+#	for motion in motion_inputs:
+#		var motion_array = motion_inputs[motion]  # Get the array associated with the current key
+#		if parent.controlBuffer.size() > motion_array.size():
+#			var input_buffer = parent.controlBuffer
+#			for i in range(motion_array.size() - 1, -1, -1):  # Start at the end of the array and decrement i
+#				if i < 2:  # Check only the first two elements (x and y)
+#					if input_buffer[i][0] != motion_array[i][0] or input_buffer[i][1] != motion_array[i][1]:
+#						break
+#				else:
+#					if input_buffer[i][0] != motion_array[i][0] or input_buffer[i][1] != motion_array[i][1]:
+#						break
+#					else:
+#						# return the motion input
+#						return motion
+#	return null
+
+
 func transition_state(input):
 	# Updating debug label
 	update_debug_label(parent.input_vector)
@@ -53,6 +76,11 @@ func transition_state(input):
 	parent.velocity.y += parent.gravity
 	if parent.is_on_floor:
 		reset_jumps()
+
+# very not working
+#	var prased_input = parse_motion_inputs()
+#	if prased_input != null:
+#		print(str(prased_input))
 
 	match states[state]:
 		states.IDLE:
