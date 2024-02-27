@@ -285,6 +285,14 @@ player2_block={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Floor"
+2d_physics/layer_3="Wall"
+2d_physics/layer_4="Ceiling"
+2d_physics/layer_5="Object"
+
 [network]
 
 limits/debugger_stdout/max_chars_per_second=21105

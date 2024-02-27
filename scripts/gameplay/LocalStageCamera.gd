@@ -1,7 +1,8 @@
 extends Camera2D
 
-export var zoom_scale: int = 650
-export var min_zoom: float = 0.5
+export var zoom_scale: int = 1650 # Scales the distance of the players to a reasonable zooming value
+export var min_zoom: float = 0.5 # The distance between players before the camera stops zooming in
+export var max_zoom: float = 1.25 # Max zoom out value. Set to match the width of the stage.
 var players = []
 
 onready var server_player = $"../ServerPlayer"
@@ -29,5 +30,8 @@ func zoom_camera():
 			if i==j: continue
 			var dist: int = (i.global_position - j.global_position).length_squared()
 			max_distance = max(max_distance, dist)
+	if zoom_scale <= 0:
+		zoom_scale = 1
 	var zoom_amount = max(min_zoom, sqrt(max_distance) / zoom_scale)
+	zoom_amount = min(zoom_amount, max_zoom)
 	zoom = Vector2(zoom_amount, zoom_amount)
