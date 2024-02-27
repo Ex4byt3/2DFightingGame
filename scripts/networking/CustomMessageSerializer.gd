@@ -11,7 +11,8 @@ enum HeaderFlags {
 	ATTACK_HEAVY     = 1 << 4, # Bit 4
 	IMPACT           = 1 << 5, # Bit 5
 	DASH             = 1 << 6, # Bit 6
-	BLOCK            = 1 << 7, # Bit 7
+	SHIELD           = 1 << 7, # Bit 7
+	SPRINT_MACRO     = 1 << 8, # Bit 8
 }
 
 func _init():
@@ -23,11 +24,11 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 	buffer.resize(16) # size to be bigger than actual size
 	
 	buffer.put_u32(all_input['$'])
-	buffer.put_u8(all_input.size() - 1) # -1 because of the $ key
+	buffer.put_u16(all_input.size() - 1) # -1 because of the $ key
 	for path in all_input:
 		if path == '$':
 			continue
-		buffer.put_u8(input_path_mapping[path])
+		buffer.put_u16(input_path_mapping[path])
 		
 		var header := 0
 		
@@ -46,10 +47,12 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 			header |= HeaderFlags.IMPACT
 		if input.get('dash', false):
 			header |= HeaderFlags.DASH
-		if input.get('block', false):
-			header |= HeaderFlags.BLOCK
+		if input.get('shield', false):
+			header |= HeaderFlags.SHIELD
+		if input.get('sprint_macro', false):
+			header |= HeaderFlags.SPRINT_MACRO
 		
-		buffer.put_u8(header)
+		buffer.put_u16(header)
 		
 		if input.has('input_vector_x') and input.has('input_vector_y'):
 			buffer.put_64(input['input_vector_x'])
@@ -67,14 +70,14 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 	
 	all_input['$'] = buffer.get_u32()
 	
-	var input_count = buffer.get_u8()
+	var input_count = buffer.get_u16()
 	if input_count == 0:
 		return all_input
 	
-	var path = input_path_mapping_reverse[buffer.get_u8()]
+	var path = input_path_mapping_reverse[buffer.get_u16()]
 	var input := {}
 	
-	var header = buffer.get_u8()
+	var header = buffer.get_u16()
 	if header & HeaderFlags.HAS_INPUT_VECTOR:
 		input["input_vector_x"] = buffer.get_64()
 		input["input_vector_y"] = buffer.get_64()
@@ -90,8 +93,10 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 		input["impact"] = true
 	if header & HeaderFlags.DASH:
 		input["dash"] = true
-	if header & HeaderFlags.BLOCK:
-		input["block"] = true
+	if header & HeaderFlags.SHIELD:
+		input["shield"] = true
+	if header & HeaderFlags.SPRINT_MACRO:
+		input["sprint_macro"] = true
 	
 	all_input[path] = input
 	return all_input

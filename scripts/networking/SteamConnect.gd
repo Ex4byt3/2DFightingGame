@@ -7,7 +7,7 @@ onready var sync_lost_label = $Messages/SyncLostLabel
 onready var server_player = $ServerPlayer
 onready var client_player = $ClientPlayer
 
-const LOG_FILE_DIRECTORY = 'res://logs'
+const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
 
 var logging_enabled := true
 var emptyData: PoolByteArray = [1]
