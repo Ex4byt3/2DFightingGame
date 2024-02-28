@@ -31,8 +31,8 @@ func _save_state() -> Dictionary:
 func _load_state(state: Dictionary) -> void:
 	if state['is_playing']:
 		if not is_playing() or current_animation != state['current_animation']:
-			set_current_animation(state['current_animation'])
-		# seek(state['current_position'], true)
+			play(state['current_animation'])
+		seek(state['current_position'], true)
 		playback_speed = state['current_speed']
 	elif is_playing():
 		if auto_reset and has_animation("RESET"):
