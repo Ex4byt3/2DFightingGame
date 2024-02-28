@@ -4,6 +4,7 @@ extends Control
 # Onready variables for the various menus and header
 onready var main_menu = $MainMenu
 onready var settings_menu = $SettingsMenu
+onready var settings_overlay = $SettingsOverlay
 onready var online_menu = $OnlineMenu
 onready var menu_header = $MenuHeader
 
@@ -22,11 +23,6 @@ func handle_connecting_signals() -> void:
 # When a signal to change the currently displayed menu is recieved
 # this function checks the menu to be shown and displays it
 func _on_change_menu(menu: String) -> void:
-	#MenuSignalBus.emit_reset_buttons()
-	
-	if not menu == "SETTINGS" and settings_menu.visible == true:
-		MenuSignalBus.emit_set_settings_dict(SettingsData.create_storage_dictionary())
-	
 	match menu:
 		"MAIN": # Main menu
 			main_menu.visible = true
@@ -34,9 +30,12 @@ func _on_change_menu(menu: String) -> void:
 			online_menu.visible = false
 			
 		"SETTINGS": # Settings menu
-			main_menu.visible = false
-			settings_menu.visible = true
-			online_menu.visible = false
+			if settings_overlay.visible:
+				settings_overlay.visible = false
+				# Send a signal to save the current settings
+				MenuSignalBus.emit_set_settings_dict(SettingsData.create_storage_dictionary())
+			else:
+				settings_overlay.visible = true
 			
 		"ONLINE": # Online menu
 			main_menu.visible = false

@@ -45,8 +45,8 @@ margin_right = 0.399902
 margin_bottom = -0.052002
 
 [node name="LobbyContainer" type="VBoxContainer" parent="MainPane/LobbyScrollContainer"]
-margin_right = 1152.92
-margin_bottom = 498.812
+margin_right = 1728.92
+margin_bottom = 748.292
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -88,33 +88,33 @@ anchor_right = 0.95
 anchor_bottom = 0.8
 
 [node name="LineEdit" type="LineEdit" parent="MainPane/OnlineMenuBar/SearchPane"]
-margin_right = 448.0
+margin_right = 672.0
 margin_bottom = 29.0
 size_flags_horizontal = 3
 placeholder_text = "type to search"
 
 [node name="Filters" type="HBoxContainer" parent="MainPane/OnlineMenuBar/SearchPane"]
 margin_top = 33.0
-margin_right = 448.0
-margin_bottom = 53.0
+margin_right = 672.0
+margin_bottom = 80.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VSeparator" type="VSeparator" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
-margin_right = 146.0
-margin_bottom = 20.0
+margin_right = 221.0
+margin_bottom = 47.0
 size_flags_horizontal = 3
 
 [node name="LobbyType" type="OptionButton" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
-margin_left = 150.0
-margin_right = 297.0
-margin_bottom = 20.0
+margin_left = 225.0
+margin_right = 446.0
+margin_bottom = 47.0
 size_flags_horizontal = 3
 
 [node name="LobbyState" type="OptionButton" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
-margin_left = 301.0
-margin_right = 448.0
-margin_bottom = 20.0
+margin_left = 450.0
+margin_right = 672.0
+margin_bottom = 47.0
 size_flags_horizontal = 3
 
 [node name="LobbyCreationPopup" type="Panel" parent="MainPane"]

@@ -237,7 +237,7 @@ anchor_bottom = 1.0
 text = "BURST"
 valign = 1
 
-[node name="Central" type="Control" parent="VBoxContainer"]
+[node name="CenterPane" type="Control" parent="VBoxContainer"]
 margin_top = 154.0
 margin_right = 1920.0
 margin_bottom = 922.0

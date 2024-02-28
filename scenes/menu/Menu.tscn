@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://scenes/menu/settings/SettingsOverlay.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/menu/Menu.gd" type="Script" id=19]
-[ext_resource path="res://scenes/menu/settings/SettingsMenu.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/menu/online/OnlineMenu.tscn" type="PackedScene" id=21]
 [ext_resource path="res://scenes/menu/MenuHeader.tscn" type="PackedScene" id=23]
 [ext_resource path="res://scenes/menu/MainMenu.tscn" type="PackedScene" id=26]
@@ -13,12 +13,14 @@ script = ExtResource( 19 )
 
 [node name="MainMenu" parent="." instance=ExtResource( 26 )]
 
-[node name="SettingsMenu" parent="." instance=ExtResource( 20 )]
-visible = false
-
 [node name="OnlineMenu" parent="." instance=ExtResource( 21 )]
 visible = false
 
 [node name="MenuHeader" parent="." instance=ExtResource( 23 )]
 
 [node name="GameScene" type="Node2D" parent="."]
+
+[node name="SettingsOverlay" parent="." instance=ExtResource( 1 )]
+visible = false
+anchor_left = 0.6
+anchor_top = 0.05

@@ -1,4 +1,4 @@
-extends Control
+extends GameOption
 
 
 # Onready variable for the window mode options button
@@ -15,6 +15,7 @@ const WINDOW_MODE_ARRAY: Array = [
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	set_data("Window Mode", "Display")
 	handle_connecting_signals()
 	add_window_mode_items()
 	load_window_mode()

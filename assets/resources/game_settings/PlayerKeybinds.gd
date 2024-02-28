@@ -7,7 +7,13 @@ const JUMP = "player1_up"
 const CROUCH = "player1_down"
 const MOVE_LEFT = "player1_left"
 const MOVE_RIGHT = "player1_right"
-
+const LIGHT_ATTACK = "player1_light"
+const MEDIUM_ATTACK = "player1_medium"
+const HEAVY_ATTACK = "player1_heavy"
+const IMPACT = "player1_impact"
+const DASH = "player1_dash"
+const BLOCK = "player1_block"
+const SHIELD = "player1_shield"
 
 # Define constants for player 2 controls
 const JUMP_P2 = "player2_up"

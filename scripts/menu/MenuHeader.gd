@@ -8,24 +8,22 @@ onready var return_button = $Bars/PageTitle/VBoxContainer/HBoxContainer/ReturnBu
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	handle_connecting_signals()
+	_handle_connecting_signals()
 
 
-func handle_connecting_signals() -> void:
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "change_menu", "on_change_menu")
+func _handle_connecting_signals() -> void:
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "change_menu", "_on_change_menu")
 
 
-func on_change_menu(menu: String) -> void:
+func _on_change_menu(menu: String) -> void:
 	current_menu.set_text(menu)
 
 
 func _on_SettingsButton_button_up():
-#	MenuSignalBus.emit_show_settings_menu()
 	MenuSignalBus.emit_change_menu("SETTINGS")
 
 
 func _on_ReturnButton_button_up():
-#	MenuSignalBus.emit_show_main_menu()
 	MenuSignalBus.emit_change_menu("MAIN")
 
 
