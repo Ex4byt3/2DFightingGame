@@ -18,6 +18,13 @@ var shortHopForce = 8
 var fullHopForce = 16
 var jumpSquatFrames = 4
 
+# valid motion inputs for the character, listed in priority
+const motion_inputs = {
+	623: 'DP',
+	236: 'QCF',
+	214: 'QCB'
+}
+
 func _ready():
 	stateMachine.parent = self
 

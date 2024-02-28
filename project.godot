@@ -56,7 +56,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Demo"
+config/name="Project Delta"
 run/main_scene="res://scenes/menu/Menu.tscn"
 config/icon="res://assets/gameplay/icon.png"
 
@@ -79,10 +79,10 @@ SettingsManager="*res://scripts/autoloads/SaveManager.gd"
 [debug]
 
 multirun/number_of_windows=2
-multirun/window_distance=1270
+multirun/other_window_args="join"
 multirun/add_custom_args=true
 multirun/first_window_args="listen"
-multirun/other_window_args="join"
+multirun/window_distance=1270
 
 [display]
 

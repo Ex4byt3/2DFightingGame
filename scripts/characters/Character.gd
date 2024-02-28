@@ -1,6 +1,31 @@
 extends SGKinematicBody2D
 class_name Character
 
+# for debug overlay
+const direction_mapping = {
+	[1, 1]: "UP RIGHT", # 9
+	[1, 0]: "RIGHT", # 6
+	[0, 1]: "UP", # 8
+	[0, -1]: "DOWN", # 2
+	[1, -1]: "DOWN RIGHT", # 3
+	[-1, -1]: "DOWN LEFT", # 1
+	[-1, 0]: "LEFT", # 4
+	[-1, 1]: "UP LEFT" # 7
+}
+
+# convert a vector to numpad notation
+const directions = {
+	[0,0]: 5, # Neutral
+	[0,1]: 8, # Up
+	[0,-1]: 2, # Down
+	[1,0]: 6, # Forward
+	[-1,0]: 4, # Back
+	[1,1]: 9, # Up Forward
+	[1,-1]: 3, # Down Forward
+	[-1,1]: 7, # Up Back
+	[-1,-1]: 1 # Down Back
+}
+
 # State machine
 onready var stateMachine = $StateMachine
 onready var rng = $NetworkRandomNumberGenerator
@@ -11,6 +36,7 @@ var input_vector := SGFixed.vector2(0, 0)
 var input_prefix := "player1_"
 var is_on_floor := false
 var controlBuffer := [[0, 0, 0]]
+var motionInputLeinency = 45
 
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time

@@ -6,22 +6,6 @@ var ONE = SGFixed.ONE
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
 
-var direction_mapping = {
-	[1, 1]: "UP RIGHT", # 9
-	[1, 0]: "RIGHT", # 6
-	[0, 1]: "UP", # 8
-	[0, -1]: "DOWN", # 2
-	[1, -1]: "DOWN RIGHT", # 3
-	[-1, -1]: "DOWN LEFT", # 1
-	[-1, 0]: "LEFT", # 4
-	[-1, 1]: "UP LEFT" # 7
-}
-
-var motion_inputs = {
-	"QCF": [[0, -1], [1, -1], [1, 0]]
-}
-
-
 func _ready():
 	add_state('IDLE')
 	add_state('CROUCH')
@@ -49,24 +33,34 @@ func _ready():
 	add_state('DOWN_H')
 	set_state('IDLE')
 
-# very not working
-#func parse_motion_inputs():
-#	for motion in motion_inputs:
-#		var motion_array = motion_inputs[motion]  # Get the array associated with the current key
-#		if parent.controlBuffer.size() > motion_array.size():
-#			var input_buffer = parent.controlBuffer
-#			for i in range(motion_array.size() - 1, -1, -1):  # Start at the end of the array and decrement i
-#				if i < 2:  # Check only the first two elements (x and y)
-#					if input_buffer[i][0] != motion_array[i][0] or input_buffer[i][1] != motion_array[i][1]:
-#						break
-#				else:
-#					if input_buffer[i][0] != motion_array[i][0] or input_buffer[i][1] != motion_array[i][1]:
-#						break
-#					else:
-#						# return the motion input
-#						return motion
-#	return null
+func convert_inputs_to_string(inputs):
+	var inputString = ""
+	for input in inputs:
+		inputString = str(parent.directions[input]) + inputString
+	return inputString
 
+
+func parse_motion_inputs():
+	var remainingLeinency = parent.motionInputLeinency
+	var validMotions = []
+	# make a dict of only inputs within the last motionInputLeinency ticks
+	for control in parent.controlBuffer:
+		if control[0] != 0 or control[1] != 0: # if the input is not neutral
+			validMotions.append([control[0], control[1]]) # add the input to the validMotions list
+		remainingLeinency -= control[2] # subtract frames the input was held
+		if remainingLeinency <= 0:
+			break
+	
+	var inputString = convert_inputs_to_string(validMotions)
+	#print(inputString) # all currently valid inputs
+
+	# // can use custom search to maybe be faster than regex
+	var regex = RegEx.new() 
+	for motion in parent.motion_inputs:
+		regex.compile(str(motion)) # compile the regex for the current motion
+		if regex.search(inputString) != null: # if any match is found
+			print(parent.motion_inputs[motion])
+			return motion
 
 func transition_state(input):
 	# Updating debug label
@@ -87,10 +81,8 @@ func transition_state(input):
 		# parent.get_node('Sprite').flip_h = true
 		parent.arrowSprite.flip_h = true
 
-# very not working
-#	var prased_input = parse_motion_inputs()
-#	if prased_input != null:
-#		print(str(prased_input))
+	# if input.has("light"): # enable to only check when light gets pressed, also for debugging
+	parse_motion_inputs()
 
 	match states[state]:
 		states.IDLE:
@@ -333,7 +325,7 @@ func update_input_buffer(input_vector):
 	
 	for item in parent.controlBuffer:
 		var new_input: Array = []
-		new_input.append(str(direction_mapping.get([item[0], item[1]], "NEUTRAL")))
+		new_input.append(str(parent.direction_mapping.get([item[0], item[1]], "NEUTRAL")))
 		new_input.append(str(item[2]))
 		inputs.append(new_input)
 
