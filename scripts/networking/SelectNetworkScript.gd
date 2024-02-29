@@ -24,3 +24,4 @@ func _ready():
 			print("error: No network type selected.")
 			return
 	$Map._ready() # call the _ready function of the map
+	$Map.set_process(true) # start the map's process function

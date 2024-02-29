@@ -1,7 +1,7 @@
 extends Control
 
 # Onready variable for the map holder
-var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
+onready var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
 
 onready var lobby_tile = preload("res://scenes/menu/online/LobbyTile.tscn")
 onready var lobby_member = preload("res://scenes/menu/online/LobbyMember.tscn")
