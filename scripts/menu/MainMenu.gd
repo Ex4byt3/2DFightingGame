@@ -2,9 +2,10 @@ extends Control
 
 
 # Preload the game scenes as packed scenes
-var steam_scene = preload("res://scenes/maps/SteamGame.tscn")
-var local_scene = preload("res://scenes/maps/LocalGame.tscn")
+# var steam_scene = preload("res://scenes/maps/SteamGame.tscn")
+# var local_scene = preload("res://scenes/maps/LocalGame.tscn")
 #var local_texture = preload("res://assets/menu/main/icons/active_local_icon.png")
+var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
 
 # Onready var for primary buttons
 onready var local_tab = $MainPane/LocalTab
@@ -61,7 +62,7 @@ func on_local_button_toggled(button_pressed):
 	if button_pressed == true:
 		NetworkGlobal.NETWORK_TYPE = 0
 		GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
-		MenuSignalBus._change_Scene(self, local_scene)
+		MenuSignalBus._change_Scene(self, map_holder_scene)
 #		var scene_change_error: int = get_tree().change_scene_to(local_scene)
 
 

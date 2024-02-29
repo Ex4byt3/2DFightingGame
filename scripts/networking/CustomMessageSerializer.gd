@@ -1,7 +1,13 @@
 extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 
-var input_path_mapping = {}
-var input_path_mapping_reverse = {}
+const input_path_mapping = {
+		'/root/MapHolder/Map/ServerPlayer': 1,
+		'/root/MapHolder/Map/ClientPlayer': 2
+	}
+const input_path_mapping_reverse = {
+	1: '/root/MapHolder/Map/ServerPlayer',
+	2: '/root/MapHolder/Map/ClientPlayer'
+}
 
 enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
@@ -15,8 +21,8 @@ enum HeaderFlags {
 	SPRINT_MACRO     = 1 << 8, # Bit 8
 }
 
-func _init():
-	MenuSignalBus._connect_Signals(GameSignalBus, self, "network_button_pressed", "_on_network_button_pressed")
+#func _init():
+#	MenuSignalBus._connect_Signals(GameSignalBus, self, "network_button_pressed", "_on_network_button_pressed")
 #	GameSignalBus.connect("network_button_pressed", self, "_on_network_button_pressed")
 
 func serialize_input(all_input: Dictionary) -> PoolByteArray:
@@ -101,18 +107,19 @@ func unserialize_input(serialized: PoolByteArray) -> Dictionary:
 	all_input[path] = input
 	return all_input
 
-func _on_network_button_pressed(network_type: int) -> void:
-	input_path_mapping.clear()
-	input_path_mapping_reverse.clear()
+# This function used to set input_path_mapping but it is no longer needed as input_path_mapping is now static
+#func _on_network_button_pressed(network_type: int) -> void:
+#	input_path_mapping.clear()
+#	input_path_mapping_reverse.clear()
 	
-	if network_type == 1:
-		input_path_mapping['/root/RpcGame/ServerPlayer'] = 1
-		input_path_mapping['/root/RpcGame/ClientPlayer'] = 2
-	elif network_type == 2:
-		input_path_mapping['/root/SteamGame/ServerPlayer'] = 1
-		input_path_mapping['/root/SteamGame/ClientPlayer'] = 2
-	else:
-		input_path_mapping.clear()
+#	if network_type == 1:
+#		input_path_mapping['/root/RpcGame/ServerPlayer'] = 1
+#		input_path_mapping['/root/RpcGame/ClientPlayer'] = 2
+#	elif network_type == 2:
+#		input_path_mapping['/root/SteamGame/ServerPlayer'] = 1
+#		input_path_mapping['/root/SteamGame/ClientPlayer'] = 2
+#	else:
+#		input_path_mapping.clear()
 		
-	for key in input_path_mapping:
-		input_path_mapping_reverse[input_path_mapping[key]] = key
+#	for key in input_path_mapping:
+#		input_path_mapping_reverse[input_path_mapping[key]] = key

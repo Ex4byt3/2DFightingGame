@@ -5,7 +5,13 @@ extends Node
 #  1 = Enet Game
 #  2 = Steam Game
 
-var NETWORK_TYPE = -1
+enum NetworkType {
+	LOCAL = 0,
+	ENET = 1,
+	STEAM = 2
+}
+
+var NETWORK_TYPE : int = -1
 
 # Local Rollback Logic (Probably don't need this)
 # var LOCAL_IS_HOST: bool = false

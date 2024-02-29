@@ -1,7 +1,7 @@
 extends Control
 
-var rpc_scene = preload("res://scenes/maps/RpcGame.tscn")
-var steam_scene = preload("res://scenes/maps/SteamGame.tscn")
+# Onready variable for the map holder
+var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
 
 onready var lobby_tile = preload("res://scenes/menu/online/LobbyTile.tscn")
 onready var lobby_member = preload("res://scenes/menu/online/LobbyMember.tscn")
@@ -305,7 +305,7 @@ func _host_start() -> void:
 	NetworkGlobal.STEAM_IS_HOST = true
 	print("[STEAM] Started match as server")
 	
-	MenuSignalBus._change_Scene(self, steam_scene)
+	MenuSignalBus._change_Scene(self, map_holder_scene)
 
 func _client_start(sender_id: int) -> void:
 	var host_steam_id: int = sender_id
@@ -316,7 +316,7 @@ func _client_start(sender_id: int) -> void:
 	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
 	print("[STEAM] Started match as client")
 	
-	MenuSignalBus._change_Scene(self, steam_scene)
+	MenuSignalBus._change_Scene(self, map_holder_scene)
 
 
 ##################################################
@@ -452,7 +452,7 @@ func _on_rpc_server_button_pressed() -> void:
 	NetworkGlobal.RPC_IS_HOST = true
 	NetworkGlobal.RPC_IP = rpc_host_field.text
 	NetworkGlobal.RPC_PORT = int(rpc_port_field.text)
-	MenuSignalBus._change_Scene(self, rpc_scene)
+	MenuSignalBus._change_Scene(self, map_holder_scene)
 
 
 #
@@ -463,7 +463,7 @@ func _on_rpc_client_button_pressed() -> void:
 	NetworkGlobal.RPC_IS_HOST = false
 	NetworkGlobal.RPC_IP = rpc_host_field.get_text()
 	NetworkGlobal.RPC_PORT = int(rpc_port_field.get_text())
-	MenuSignalBus._change_Scene(self, rpc_scene)
+	MenuSignalBus._change_Scene(self, map_holder_scene)
 
 
 ##################################################
