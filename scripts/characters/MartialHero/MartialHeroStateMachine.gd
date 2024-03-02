@@ -86,6 +86,8 @@ func transition_state(input):
 
 	match states[state]:
 		states.IDLE:
+			if input.get("dash", false):
+				initiate_dash()
 			if parent.is_on_floor:
 				if parent.input_vector.x != 0:
 					# Update which direction the character is facing
@@ -120,6 +122,8 @@ func transition_state(input):
 		states.CROUCH:
 			pass
 		states.WALK:
+			if input.get("dash", false):
+				initiate_dash()
 			if parent.is_on_floor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
 				if parent.input_vector.x != 0:
@@ -181,8 +185,11 @@ func transition_state(input):
 				set_state('AIRBORNE')
 			pass
 		states.DASH:
+			handle_dash_state()
 			pass
 		states.JUMP:
+			if input.get("dash", false):
+				initiate_dash()
 			if parent.is_on_floor:
 				parent.animation.play("Idle")
 				set_state('IDLE')
@@ -213,15 +220,19 @@ func transition_state(input):
 				parent.animation.play("Jump")
 				set_state('JUMP')
 		states.AIRBORNE:
+			if input.get("dash", false):
+				initiate_dash()
 			if parent.is_on_floor:
+				reset_jumps()
 				# TODO: LANDING
 				parent.animation.play("Idle")
 				set_state('IDLE')
 			# This logic needs to be fixed, for jumping again in air (double jump?)
-			if parent.input_vector.y == 1 and parent.airJump > 0:
-				parent.animation.play("JumpSquat")
-				set_state('JUMPSQUAT')
-				parent.airJump -= 1
+			else:
+				if parent.input_vector.y == 1 and parent.airJump > 0:
+					parent.velocity.y = parent.fullHopForce
+					parent.airJump -= 1
+					parent.animation.play("Jump")
 			# If in the air and you are moving, update the velocity based on
 			# air acceleration and air speed (for air drift implementation)
 			if parent.input_vector.x != 0:
@@ -259,6 +270,13 @@ func transition_state(input):
 	
 	# Updating input buffer
 	update_input_buffer(parent.input_vector)
+func initiate_dash():
+	# Set dash velocity. Adjust the multiplier as needed to make it faster than sprinting
+	var dash_speed = parent.sprintingSpeed * SGFixed.ONE * 1.5
+	parent.velocity.x = dash_speed if parent.facingRight else -dash_speed
+	
+	# Set state to DASH
+	set_state('DASH')
 
 func sprint_check() -> bool:
 	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
@@ -272,6 +290,15 @@ func sprint_check() -> bool:
 # Reset the number of jumps you have
 func reset_jumps():
 	parent.airJump = parent.airJumpMax
+
+func handle_dash_state():
+	# If airborne, allow control but maintain dash speed
+	if !parent.is_on_floor:
+		# Apply gravity or any other airborne logic you might need
+		parent.velocity.y += parent.gravity
+	else:
+		# If on the ground, possibly end the dash or transition to another state
+		set_state('IDLE')  # Or any other state you deem appropriate
 
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):
