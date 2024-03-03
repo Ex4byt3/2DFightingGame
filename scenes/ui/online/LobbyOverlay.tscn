@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/resources/menu/online/lobbytile_theme.tres" type="Theme" id=1]
-[ext_resource path="res://scripts/menu/LobbyPane.gd" type="Script" id=2]
-[ext_resource path="res://scenes/menu/online/MatchTile.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/ui/online/LobbyOverlay.gd" type="Script" id=2]
 [ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=4]
 
 [sub_resource type="StyleBoxFlat" id=5]
@@ -48,17 +47,17 @@ anchor_bottom = 0.116
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="Lobby/TitleBox"]
-margin_top = 1.0
+margin_top = 10.0
 margin_right = 99.0
-margin_bottom = 34.0
+margin_bottom = 43.0
 custom_fonts/font = SubResource( 1 )
 text = "Lobby: "
 
 [node name="LobbyNameLabel" type="Label" parent="Lobby/TitleBox"]
 margin_left = 103.0
-margin_top = 1.0
-margin_right = 483.0
-margin_bottom = 34.0
+margin_top = 10.0
+margin_right = 725.0
+margin_bottom = 43.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 2 )
 text = "Default"
@@ -70,8 +69,9 @@ anchor_right = 0.25
 anchor_bottom = 0.161
 
 [node name="StateLabel" type="Label" parent="Lobby/LobbyStatus"]
-margin_right = 76.0
-margin_bottom = 18.0
+margin_top = 5.0
+margin_right = 118.0
+margin_bottom = 23.0
 rect_min_size = Vector2( 70, 0 )
 size_flags_horizontal = 3
 theme = ExtResource( 1 )
@@ -80,15 +80,16 @@ align = 1
 valign = 1
 
 [node name="VSeparator" type="VSeparator" parent="Lobby/LobbyStatus"]
-margin_left = 80.0
-margin_right = 84.0
-margin_bottom = 19.0
+margin_left = 122.0
+margin_right = 126.0
+margin_bottom = 29.0
 custom_styles/separator = SubResource( 3 )
 
 [node name="TypeLabel" type="Label" parent="Lobby/LobbyStatus"]
-margin_left = 88.0
-margin_right = 164.0
-margin_bottom = 18.0
+margin_left = 130.0
+margin_top = 5.0
+margin_right = 249.0
+margin_bottom = 23.0
 rect_min_size = Vector2( 70, 0 )
 size_flags_horizontal = 3
 theme = ExtResource( 1 )
@@ -97,15 +98,16 @@ align = 1
 valign = 1
 
 [node name="VSeparator3" type="VSeparator" parent="Lobby/LobbyStatus"]
-margin_left = 168.0
-margin_right = 172.0
-margin_bottom = 19.0
+margin_left = 253.0
+margin_right = 257.0
+margin_bottom = 29.0
 custom_styles/separator = SubResource( 3 )
 
 [node name="ConnectionLabel" type="Label" parent="Lobby/LobbyStatus"]
-margin_left = 176.0
-margin_right = 253.0
-margin_bottom = 18.0
+margin_left = 261.0
+margin_top = 5.0
+margin_right = 380.0
+margin_bottom = 23.0
 rect_min_size = Vector2( 70, 0 )
 size_flags_horizontal = 3
 theme = ExtResource( 1 )
@@ -122,20 +124,20 @@ size_flags_horizontal = 3
 custom_constants/separation = 10
 
 [node name="LobbyMembersPane" type="VBoxContainer" parent="Lobby/LeftPane"]
-margin_right = 483.0
-margin_bottom = 327.0
+margin_right = 725.0
+margin_bottom = 535.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="LobbyMembersLabel" type="Label" parent="Lobby/LeftPane/LobbyMembersPane"]
-margin_right = 483.0
+margin_right = 725.0
 margin_bottom = 14.0
 text = "Lobby Members"
 
 [node name="Panel" type="Panel" parent="Lobby/LeftPane/LobbyMembersPane"]
 margin_top = 18.0
-margin_right = 483.0
-margin_bottom = 327.0
+margin_right = 725.0
+margin_bottom = 535.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -146,51 +148,49 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Members" type="VBoxContainer" parent="Lobby/LeftPane/LobbyMembersPane/Panel/ScrollContainer"]
-margin_right = 483.0
-margin_bottom = 309.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Controls" type="VBoxContainer" parent="Lobby/LeftPane"]
-margin_top = 337.0
-margin_right = 483.0
-margin_bottom = 415.0
+margin_top = 545.0
+margin_right = 725.0
+margin_bottom = 623.0
 custom_constants/separation = 20
 
 [node name="MatchControls" type="HBoxContainer" parent="Lobby/LeftPane/Controls"]
-margin_right = 483.0
+margin_right = 725.0
 margin_bottom = 29.0
 custom_constants/separation = 20
 
 [node name="MatchSettingsButton" type="Button" parent="Lobby/LeftPane/Controls/MatchControls"]
-margin_right = 231.0
+margin_right = 352.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 160, 29 )
 size_flags_horizontal = 3
 text = "Match Settings"
 
 [node name="VSeparator" type="VSeparator" parent="Lobby/LeftPane/Controls/MatchControls"]
-margin_left = 251.0
-margin_right = 483.0
+margin_left = 372.0
+margin_right = 725.0
 margin_bottom = 29.0
 size_flags_horizontal = 3
 
 [node name="LobbyControls" type="HBoxContainer" parent="Lobby/LeftPane/Controls"]
 margin_top = 49.0
-margin_right = 483.0
+margin_right = 725.0
 margin_bottom = 78.0
 custom_constants/separation = 20
 
 [node name="PasswordButton" type="Button" parent="Lobby/LeftPane/Controls/LobbyControls"]
-margin_right = 231.0
+margin_right = 352.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 160, 29 )
 size_flags_horizontal = 3
 text = "Change Password"
 
 [node name="ExitLobbyButton" type="Button" parent="Lobby/LeftPane/Controls/LobbyControls"]
-margin_left = 251.0
-margin_right = 483.0
+margin_left = 372.0
+margin_right = 725.0
 margin_bottom = 29.0
 rect_min_size = Vector2( 110, 29 )
 size_flags_horizontal = 3
@@ -204,12 +204,12 @@ anchor_bottom = 0.95
 custom_constants/separation = 10
 
 [node name="TabMenu" type="HBoxContainer" parent="Lobby/RightPane"]
-margin_right = 512.0
+margin_right = 768.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="ChatButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-margin_right = 125.0
+margin_right = 189.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 toggle_mode = true
@@ -218,8 +218,8 @@ group = SubResource( 6 )
 text = "Chat"
 
 [node name="ChallengesButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-margin_left = 129.0
-margin_right = 254.0
+margin_left = 193.0
+margin_right = 382.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 toggle_mode = true
@@ -227,8 +227,8 @@ group = SubResource( 6 )
 text = "Challenges"
 
 [node name="MatchesButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-margin_left = 258.0
-margin_right = 383.0
+margin_left = 386.0
+margin_right = 575.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 toggle_mode = true
@@ -236,8 +236,8 @@ group = SubResource( 6 )
 text = "Matches"
 
 [node name="HistoryButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-margin_left = 387.0
-margin_right = 512.0
+margin_left = 579.0
+margin_right = 768.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 toggle_mode = true
@@ -246,29 +246,29 @@ text = "Match History"
 
 [node name="ChatTab" type="VBoxContainer" parent="Lobby/RightPane"]
 margin_top = 40.0
-margin_right = 512.0
-margin_bottom = 498.0
+margin_right = 768.0
+margin_bottom = 748.0
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="Lobby/RightPane/ChatTab"]
-margin_right = 512.0
+margin_right = 768.0
 margin_bottom = 14.0
 text = "Chat"
 
 [node name="Chatbox" type="RichTextLabel" parent="Lobby/RightPane/ChatTab"]
 margin_top = 18.0
-margin_right = 512.0
-margin_bottom = 430.0
+margin_right = 768.0
+margin_bottom = 680.0
 size_flags_vertical = 3
 scroll_following = true
 
 [node name="ChatEntry" type="HBoxContainer" parent="Lobby/RightPane/ChatTab"]
-margin_top = 434.0
-margin_right = 512.0
-margin_bottom = 458.0
+margin_top = 684.0
+margin_right = 768.0
+margin_bottom = 708.0
 
 [node name="ChatLine" type="LineEdit" parent="Lobby/RightPane/ChatTab/ChatEntry"]
-margin_right = 433.0
+margin_right = 689.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 placeholder_text = "enter message here"
@@ -276,8 +276,8 @@ caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="SendMessageButton" type="Button" parent="Lobby/RightPane/ChatTab/ChatEntry"]
-margin_left = 437.0
-margin_right = 512.0
+margin_left = 693.0
+margin_right = 768.0
 margin_bottom = 24.0
 grow_horizontal = 0
 rect_min_size = Vector2( 75, 0 )
@@ -320,14 +320,6 @@ margin_right = 512.0
 margin_bottom = 224.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="MatchTile" parent="Lobby/RightPane/MatchesTab/ScrollContainer/OngoingMatches" instance=ExtResource( 3 )]
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 0.0
-margin_right = 512.0
-margin_bottom = 40.0
 
 [node name="HistoryTab" type="VBoxContainer" parent="Lobby/RightPane"]
 visible = false

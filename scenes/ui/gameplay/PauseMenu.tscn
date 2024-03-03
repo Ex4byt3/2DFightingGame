@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scripts/menu/PauseMenu.gd" type="Script" id=1]
+[ext_resource path="res://scripts/ui/gameplay/PauseMenu.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.784314 )
@@ -41,7 +41,7 @@ margin_bottom = -10.0
 [node name="Title" type="Label" parent="MainPane/Contents"]
 text = "PAUSE MENU"
 
-[node name="LobbyQuitButton" type="Button" parent="MainPane/Contents"]
+[node name="LeaveMatchButton" type="Button" parent="MainPane/Contents"]
 anchor_left = 0.9
 anchor_top = 0.9
 anchor_right = 1.0

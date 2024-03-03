@@ -8,13 +8,15 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="StyleBoxFlat" id=8]
+draw_center = false
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
 
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0, 0.156863, 0.345098, 1 )
+[sub_resource type="StyleBoxEmpty" id=9]
 
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0, 0.12549, 0.27451, 1 )
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=6]
 
@@ -30,10 +32,10 @@ Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 0
 Button/fonts/font = SubResource( 1 )
 Button/styles/disabled = null
-Button/styles/focus = SubResource( 2 )
-Button/styles/hover = SubResource( 4 )
-Button/styles/normal = SubResource( 4 )
-Button/styles/pressed = SubResource( 5 )
+Button/styles/focus = SubResource( 8 )
+Button/styles/hover = SubResource( 8 )
+Button/styles/normal = SubResource( 9 )
+Button/styles/pressed = SubResource( 10 )
 HSeparator/constants/separation = 0
 HSeparator/styles/separator = SubResource( 6 )
 VSeparator/constants/separation = 0

@@ -2,8 +2,8 @@
 
 [ext_resource path="res://assets/menu/images/ScifiBackground.png" type="Texture" id=1]
 [ext_resource path="res://assets/menu/icons/active_local_icon.png" type="Texture" id=2]
-[ext_resource path="res://scripts/menu/MainMenu.gd" type="Script" id=4]
-[ext_resource path="res://scenes/menu/SlinkyButton.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scripts/ui/MainMenu.gd" type="Script" id=4]
+[ext_resource path="res://scenes/ui/SlinkyButton.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/menu/icons/active_online_icon.png" type="Texture" id=16]
 [ext_resource path="res://assets/menu/icons/active_training_icon.png" type="Texture" id=17]
 [ext_resource path="res://assets/menu/icons/active_records_icon.png" type="Texture" id=22]
@@ -22,6 +22,9 @@ border_color = Color( 0.196078, 0.72549, 0.74902, 1 )
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+focus_neighbour_bottom = NodePath("MainPane/MenuButtons/OnlineButton")
+focus_next = NodePath("MainPane/MenuButtons/OnlineButton")
+focus_mode = 2
 script = ExtResource( 4 )
 
 [node name="MenuBackground" type="Control" parent="."]

@@ -10,6 +10,3 @@ margin_right = -50.0
 mouse_filter = 2
 custom_constants/separation = 50
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}

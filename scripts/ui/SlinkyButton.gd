@@ -79,7 +79,7 @@ func on_button_toggled(button_pressed) -> void:
 
 
 func _input(event) -> void:
-	if InputMap.event_is_action(event, "menu_back", true):
+	if event.is_action_released("ui_cancel"):
 		_on_reset_buttons()
 
 

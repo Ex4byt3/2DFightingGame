@@ -3,10 +3,10 @@ extends Control
 # Onready variable for the map holder
 onready var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
 
-onready var lobby_tile = preload("res://scenes/menu/online/LobbyTile.tscn")
-onready var lobby_member = preload("res://scenes/menu/online/LobbyMember.tscn")
-onready var challenge_tile = preload("res://scenes/menu/online/ChallengeTile.tscn")
-onready var match_tile = preload("res://scenes/menu/online/MatchTile.tscn")
+onready var lobby_tile = preload("res://scenes/ui/online/LobbyTile.tscn")
+onready var lobby_member = preload("res://scenes/ui/online/LobbyMember.tscn")
+onready var challenge_tile = preload("res://scenes/ui/online/ChallengeTile.tscn")
+onready var match_tile = preload("res://scenes/ui/online/MatchTile.tscn")
 
 # Onready variables for lobby searches
 onready var refresh_button = $MainPane/OnlineMenuBar/RefreshButton
@@ -81,10 +81,10 @@ func _handle_connecting_signals() -> void:
 
 
 func _input(event) -> void:
-	if InputMap.event_is_action(event, "menu_back", true):
+	if event.is_action_released("ui_cancel"):
 		lobby_creation_popup.visible = false
 		rpc_popup.visible = false
-	if InputMap.event_is_action(event, "chat_enter", true):
+	if event.is_action_released("chat_enter"):
 		if lobby_overlay.chat_line.has_focus():
 			_on_send_message()
 
@@ -229,8 +229,12 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 		var lobby_mode = Steam.getLobbyData(lobby, "mode")
 		var num_players: int = Steam.getNumLobbyMembers(lobby)
 		
+		# If the lobby's name is not blank
 		if lobby_name:
 			new_lobby_tile.lobby_name = lobby_name
+		else:
+			new_lobby_tile.lobby_name = str(Steam.getLobbyOwner(lobby)) + "'s Lobby "
+			
 		if lobby_mode:
 			new_lobby_tile.network_type = lobby_mode
 		
@@ -329,7 +333,10 @@ func _show_lobby_popup() -> void:
 
 func _create_steam_lobby() -> void:
 	lobby_creation_popup.visible = false
-	LOBBY_NAME = lobby_name.text
+	if lobby_name.text:
+		LOBBY_NAME = lobby_name.text
+	else:
+		LOBBY_NAME = Steam.getPersonaName() + "'s Lobby"
 	
 	_on_Create_Steam_Lobby()
 	lobby_overlay.visible = true
@@ -347,6 +354,7 @@ func _join_steam_lobby(lobby_id: int) -> void:
 	lobby_overlay.visible = true
 
 
+# When the lobby's exit button is pressed
 func _on_exit_lobby() -> void:
 	_leave_Steam_Lobby()
 	lobby_overlay.visible = false

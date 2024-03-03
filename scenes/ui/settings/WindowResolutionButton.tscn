@@ -1,14 +1,15 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scripts/menu/WindowModeButton.gd" type="Script" id=1]
+[ext_resource path="res://scripts/ui/settings/WindowResolutionButton.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="StyleBoxEmpty" id=2]
 
-[node name="WindowModeButton" type="MarginContainer"]
+[node name="WindowResolutionButton" type="MarginContainer"]
 anchor_right = 0.25
 anchor_bottom = 0.02
+margin_right = 0.103989
 margin_bottom = 20.0
 script = ExtResource( 1 )
 
@@ -20,7 +21,7 @@ margin_bottom = 34.0
 margin_right = 320.0
 margin_bottom = 34.0
 
-[node name="VSeparator2" type="VSeparator" parent="HBoxContainer"]
+[node name="Control" type="VSeparator" parent="HBoxContainer"]
 margin_right = 4.0
 margin_bottom = 34.0
 custom_styles/separator = SubResource( 1 )
@@ -31,7 +32,7 @@ margin_right = 158.0
 margin_bottom = 34.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "WINDOW MODE"
+text = "WINDOW RESOLUTION"
 valign = 1
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
@@ -40,7 +41,7 @@ margin_right = 166.0
 margin_bottom = 34.0
 custom_styles/separator = SubResource( 2 )
 
-[node name="WindowModeOptions" type="OptionButton" parent="HBoxContainer"]
+[node name="ResolutionOptions" type="OptionButton" parent="HBoxContainer"]
 margin_left = 170.0
 margin_right = 320.0
 margin_bottom = 34.0

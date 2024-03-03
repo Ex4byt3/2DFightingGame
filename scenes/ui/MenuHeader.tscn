@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/menu/icons/active_quit_icon.png" type="Texture" id=2]
 [ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://assets/menu/icons/back_arrow_icon.png" type="Texture" id=4]
-[ext_resource path="res://scripts/menu/MenuHeader.gd" type="Script" id=5]
+[ext_resource path="res://scripts/ui/MenuHeader.gd" type="Script" id=5]
 [ext_resource path="res://assets/menu/icons/delta_logo_placeholder.png" type="Texture" id=6]
 [ext_resource path="res://assets/menu/icons/settings_icon.png" type="Texture" id=7]
 
@@ -41,6 +41,7 @@ font_data = ExtResource( 3 )
 [node name="MenuHeader" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 0.1
+focus_mode = 2
 theme = ExtResource( 1 )
 script = ExtResource( 5 )
 
@@ -93,35 +94,27 @@ valign = 1
 
 [node name="VBoxContainer" type="HBoxContainer" parent="Bars/Header"]
 anchor_left = 0.15
-anchor_top = 0.5
 anchor_right = 0.95
-anchor_bottom = 0.5
-margin_top = -10.0
-margin_bottom = 10.0
-custom_constants/separation = 15
+anchor_bottom = 1.0
+custom_constants/separation = 16
 alignment = 2
 
-[node name="SettingsButton" type="TextureButton" parent="Bars/Header/VBoxContainer"]
-margin_left = 1481.0
-margin_right = 1501.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 20, 20 )
-texture_normal = ExtResource( 7 )
-texture_pressed = ExtResource( 7 )
-texture_hover = ExtResource( 7 )
-expand = true
-stretch_mode = 4
+[node name="SettingsButton" type="Button" parent="Bars/Header/VBoxContainer"]
+margin_left = 1460.0
+margin_right = 1490.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 30, 0 )
+toggle_mode = true
+icon = ExtResource( 7 )
+expand_icon = true
 
-[node name="QuitButton" type="TextureButton" parent="Bars/Header/VBoxContainer"]
-margin_left = 1516.0
+[node name="QuitButton" type="Button" parent="Bars/Header/VBoxContainer"]
+margin_left = 1506.0
 margin_right = 1536.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 20, 20 )
-texture_normal = ExtResource( 2 )
-texture_pressed = ExtResource( 2 )
-texture_hover = ExtResource( 2 )
-expand = true
-stretch_mode = 4
+margin_bottom = 54.0
+rect_min_size = Vector2( 30, 0 )
+icon = ExtResource( 2 )
+expand_icon = true
 
 [node name="PageTitle" type="Control" parent="Bars"]
 margin_top = 54.0
