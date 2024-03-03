@@ -84,10 +84,11 @@ func transition_state(input):
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging
 	parse_motion_inputs()
 
+	if input.get("dash", false):
+		initiate_dash(parent.input_vector)
+
 	match states[state]:
 		states.IDLE:
-			if input.get("dash", false):
-				initiate_dash()
 			if parent.is_on_floor:
 				if parent.input_vector.x != 0:
 					# Update which direction the character is facing
@@ -122,8 +123,6 @@ func transition_state(input):
 		states.CROUCH:
 			pass
 		states.WALK:
-			if input.get("dash", false):
-				initiate_dash()
 			if parent.is_on_floor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
 				if parent.input_vector.x != 0:
@@ -188,8 +187,6 @@ func transition_state(input):
 			handle_dash_state()
 			pass
 		states.JUMP:
-			if input.get("dash", false):
-				initiate_dash()
 			if parent.is_on_floor:
 				parent.animation.play("Idle")
 				set_state('IDLE')
@@ -220,10 +217,7 @@ func transition_state(input):
 				parent.animation.play("Jump")
 				set_state('JUMP')
 		states.AIRBORNE:
-			if input.get("dash", false):
-				initiate_dash()
 			if parent.is_on_floor:
-				reset_jumps()
 				# TODO: LANDING
 				parent.animation.play("Idle")
 				set_state('IDLE')
@@ -270,7 +264,7 @@ func transition_state(input):
 	
 	# Updating input buffer
 	update_input_buffer(parent.input_vector)
-func initiate_dash():
+func initiate_dash(input_vector):
 	# Set dash velocity. Adjust the multiplier as needed to make it faster than sprinting
 	var dash_speed = parent.sprintingSpeed * SGFixed.ONE * 1.5
 	parent.velocity.x = dash_speed if parent.facingRight else -dash_speed
