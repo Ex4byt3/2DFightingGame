@@ -52,7 +52,7 @@ func parse_motion_inputs():
 			break
 	
 	var inputString = convert_inputs_to_string(validMotions)
-	#print(inputString) # all currently valid inputs
+	# print(inputString) # all currently valid inputs
 
 	# // can use custom search to maybe be faster than regex
 	var regex = RegEx.new() 
@@ -65,6 +65,9 @@ func parse_motion_inputs():
 func transition_state(input):
 	# Updating debug label
 	update_debug_label(parent.input_vector)
+
+	# Update pressed actions
+	update_pressed()
 
 	# Handle attacks
 	handle_attacks(parent.input_vector, input)
@@ -115,8 +118,8 @@ func transition_state(input):
 					set_state('IDLE')
 				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
-					parent.animation.play("JumpSquat")
-					set_state('JUMPSQUAT')
+					if parent.usedJump == false:
+						start_jump()
 			else:
 				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
@@ -148,8 +151,8 @@ func transition_state(input):
 					set_state('IDLE')
 				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
-					parent.animation.play("JumpSquat")
-					set_state('JUMPSQUAT')
+					if parent.usedJump == false:
+						start_jump()
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
 				parent.animation.play("Airborne")
@@ -176,8 +179,8 @@ func transition_state(input):
 
 				if parent.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
-					parent.animation.play("JumpSquat")
-					set_state('JUMPSQUAT')
+					if parent.usedJump == false:
+						start_jump()
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
 				parent.animation.play("Airborne")
@@ -208,14 +211,14 @@ func transition_state(input):
 			if parent.input_vector.y != 1:
 				parent.velocity.y = parent.shortHopForce
 				parent.frame = 0
-				parent.animation.play("Jump") # can have seperate animation for shothop without seperate state
-				set_state('JUMP')
+				parent.animation.play("Airborne") # can have seperate animation for shothop without seperate state
+				set_state('AIRBORNE')
 			# Jump has been held for more than 4 frames, fullhop
 			if parent.frame > parent.jumpSquatFrames:
 				parent.velocity.y = parent.fullHopForce
 				parent.frame = 0
-				parent.animation.play("Jump")
-				set_state('JUMP')
+				parent.animation.play("Airborne")
+				set_state('AIRBORNE')
 		states.AIRBORNE:
 			if parent.is_on_floor:
 				# TODO: LANDING
@@ -224,9 +227,9 @@ func transition_state(input):
 			# This logic needs to be fixed, for jumping again in air (double jump?)
 			else:
 				if parent.input_vector.y == 1 and parent.airJump > 0:
-					parent.velocity.y = parent.fullHopForce
-					parent.airJump -= 1
-					parent.animation.play("Jump")
+					if parent.usedJump == false:
+						parent.airJump -= 1
+						start_jump()
 			# If in the air and you are moving, update the velocity based on
 			# air acceleration and air speed (for air drift implementation)
 			if parent.input_vector.x != 0:
@@ -261,9 +264,19 @@ func transition_state(input):
 			pass
 		states.DOWN_H:
 			pass
-	
 	# Updating input buffer
 	update_input_buffer(parent.input_vector)
+
+func start_jump():
+	parent.usedJump = true
+	parent.animation.play("JumpSquat")
+	set_state('JUMPSQUAT')
+
+func update_pressed():
+	# Update pressed
+	if parent.input_vector.y != 1:
+		parent.usedJump = false
+
 func initiate_dash(input_vector):
 	# Set dash velocity. Adjust the multiplier as needed to make it faster than sprinting
 	var dash_speed = parent.sprintingSpeed * SGFixed.ONE * 1.5

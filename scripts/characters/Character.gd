@@ -37,6 +37,8 @@ var input_prefix := "player1_"
 var is_on_floor := false
 var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
+# will need to replace with some sort of array to cover similar cases other than jump
+var usedJump = false
 
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time

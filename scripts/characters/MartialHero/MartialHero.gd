@@ -70,6 +70,7 @@ func _save_state() -> Dictionary:
 		velocity_y = velocity.y,
 		airJump = airJump,
 		is_on_floor = is_on_floor,
+		usedJump = usedJump,
 		frame = frame
 	}
 
@@ -82,8 +83,10 @@ func _load_state(loadState: Dictionary) -> void:
 	fixed_position.y = loadState['fixed_position_y']
 	velocity.x = loadState['velocity_x']
 	velocity.y = loadState['velocity_y']
-	is_on_floor = loadState['is_on_floor']
 	airJump = loadState['airJump']
+	usedJump = loadState['usedJump']
+	is_on_floor = loadState['is_on_floor']
+	
 	frame = loadState['frame']
 	sync_to_physics_engine()
 
