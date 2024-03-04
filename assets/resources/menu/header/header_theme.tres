@@ -1,42 +1,45 @@
-[gd_resource type="Theme" load_steps=8 format=2]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://b5msdtuu5a7wx"]
 
-[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=1]
+[ext_resource type="FontFile" uid="uid://qsp5xkidygp5" path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" id="1"]
 
-[sub_resource type="DynamicFont" id=1]
-size = 14
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 1 )
+[sub_resource type="FontFile" id="1"]
+fallbacks = Array[Font]([ExtResource("1")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id="8"]
 draw_center = false
 border_width_bottom = 2
-border_color = Color( 1, 1, 1, 1 )
+border_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxEmpty" id=9]
+[sub_resource type="StyleBoxEmpty" id="9"]
 
-[sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
+[sub_resource type="StyleBoxFlat" id="10"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
 
-[sub_resource type="StyleBoxEmpty" id=6]
+[sub_resource type="StyleBoxEmpty" id="6"]
 
-[sub_resource type="StyleBoxEmpty" id=7]
+[sub_resource type="StyleBoxEmpty" id="7"]
 
 [resource]
-default_font = SubResource( 1 )
-Button/colors/font_color = Color( 1, 1, 1, 1 )
-Button/colors/font_color_disabled = Color( 1, 1, 1, 1 )
-Button/colors/font_color_focus = Color( 1, 1, 1, 1 )
-Button/colors/font_color_hover = Color( 1, 1, 1, 1 )
-Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
+default_font = SubResource("1")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_color_disabled = Color(1, 1, 1, 1)
+Button/colors/font_color_focus = Color(1, 1, 1, 1)
+Button/colors/font_color_hover = Color(1, 1, 1, 1)
+Button/colors/font_color_pressed = Color(1, 1, 1, 1)
 Button/constants/hseparation = 0
-Button/fonts/font = SubResource( 1 )
+Button/fonts/font = SubResource("1")
 Button/styles/disabled = null
-Button/styles/focus = SubResource( 8 )
-Button/styles/hover = SubResource( 8 )
-Button/styles/normal = SubResource( 9 )
-Button/styles/pressed = SubResource( 10 )
+Button/styles/focus = SubResource("8")
+Button/styles/hover = SubResource("8")
+Button/styles/normal = SubResource("9")
+Button/styles/pressed = SubResource("10")
 HSeparator/constants/separation = 0
-HSeparator/styles/separator = SubResource( 6 )
+HSeparator/styles/separator = SubResource("6")
 VSeparator/constants/separation = 0
-VSeparator/styles/separator = SubResource( 7 )
+VSeparator/styles/separator = SubResource("7")

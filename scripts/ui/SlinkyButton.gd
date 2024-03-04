@@ -1,22 +1,22 @@
 extends Control
 
-onready var selection_highlight = $SelectionHighlight
-onready var info_pane = $InfoPane
-onready var button_icon = $InfoPane/HBoxContainer/ButtonIcon
-onready var button_label = $InfoPane/HBoxContainer/ButtonLabel
-onready var button_highlight = $InfoPane/ButtonHighlight
-onready var base_button = $BaseButton
+@onready var selection_highlight = $SelectionHighlight
+@onready var info_pane = $InfoPane
+@onready var button_icon = $InfoPane/HBoxContainer/ButtonIcon
+@onready var button_label = $InfoPane/HBoxContainer/ButtonLabel
+@onready var button_highlight = $InfoPane/ButtonHighlight
+@onready var base_button = $BaseButton
 
 # Custom properties
 # DO NOT MODIFY IN CODE
-export(bool) var is_active
-export(bool) var is_selected
-export(int) var collapse_width
-export(int) var base_width
-export(int) var expanded_width
-export(int) var slide_offset
-export(Texture) var icon_texture
-export(String) var button_text
+@export var is_active: bool
+@export var is_selected: bool
+@export var collapse_width: int
+@export var base_width: int
+@export var expanded_width: int
+@export var slide_offset: int
+@export var icon_texture: Texture2D
+@export var button_text: String
 
 #
 var resting_position = Vector2()
@@ -31,7 +31,7 @@ func _ready():
 func set_button_appearance() -> void:
 	button_icon.set_texture(icon_texture)
 	button_label.set_text(button_text)
-	resting_position = self.rect_position.x
+	resting_position = self.position.x
 
 
 func handle_connecting_signals() -> void:
@@ -92,29 +92,29 @@ func _on_change_menu(menu: String) -> void:
 ##################################################
 func button_collapse_width() -> void:
 	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_size", Vector2(collapse_width, 80), 0.05)
+	tween.tween_property(info_pane, "size", Vector2(collapse_width, 80), 0.05)
 
 
 func button_expand_width() -> void:
 	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_size", Vector2(expanded_width, 80), 0.05)
+	tween.tween_property(info_pane, "size", Vector2(expanded_width, 80), 0.05)
 
 
 func button_revert_width() -> void:
 	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_size", Vector2(base_width, 80), 0.05)
+	tween.tween_property(info_pane, "size", Vector2(base_width, 80), 0.05)
 
 
 # Moves the button to the right by a number of pixels equal to the slide_offset value
 func button_slide_right() -> void:
 	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_position", Vector2(info_pane.rect_position.x + slide_offset, info_pane.rect_position.y), 0.05)
+	tween.tween_property(info_pane, "position", Vector2(info_pane.position.x + slide_offset, info_pane.position.y), 0.05)
 
 
 # Returns the button to its resting position
 func button_slide_left() -> void:
 	var tween = create_tween()
-	tween.tween_property(info_pane, "rect_position", Vector2(resting_position, info_pane.rect_position.y), 0.05)
+	tween.tween_property(info_pane, "position", Vector2(resting_position, info_pane.position.y), 0.05)
 
 
 ##################################################
@@ -124,7 +124,7 @@ func _on_reset_buttons() -> void:
 	if not is_active:
 		set_active()
 	elif is_selected:
-		base_button.pressed = false
+		base_button.button_pressed = false
 
 
 func set_inactive() -> void:

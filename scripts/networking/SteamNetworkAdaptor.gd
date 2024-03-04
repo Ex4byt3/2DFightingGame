@@ -11,7 +11,7 @@ enum PACKET_TYPE {
 	REMOTE_INPUT_TICK,
 }
 
-var emptyData: PoolByteArray = [1]
+var emptyData: PackedByteArray = [1]
 
 var debug_counter = 0
 
@@ -25,20 +25,20 @@ func _process(delta):
 
 
 # Responsible for creating packets to be sent over the steam network.
-# PoolByteArrays are in the format of [Header: 1 byte, Data: n bytes]
-func create_packet(header: int, data) -> PoolByteArray:
+# PackedByteArrays are in the format of [Header: 1 byte, Data: n bytes]
+func create_packet(header: int, data) -> PackedByteArray:
 	
-	var packet_to_send: PoolByteArray = []
+	var packet_to_send: PackedByteArray = []
 	packet_to_send.append(header)
 	
 	#DEBUG
 	#print('create_packet header: ' + str(header))
 	#print('create_packet data: ' + str(data))
 	
-	# Checking to see if the data is already a PoolByteArray,
-	# if not then we convert it to a PoolByteArray
-	if typeof(data) != TYPE_RAW_ARRAY:
-		data = var2bytes(data)
+	# Checking to see if the data is already a PackedByteArray,
+	# if not then we convert it to a PackedByteArray
+	if typeof(data) != TYPE_PACKED_BYTE_ARRAY:
+		data = var_to_bytes(data)
 	
 	packet_to_send.append_array(data)
 	
@@ -61,10 +61,10 @@ func process_packet(msg: Dictionary) -> void:
 	match header:
 		PACKET_TYPE.REMOTE_PING:
 			#print("ROLLBACK, PING")
-			_remote_ping(bytes2var(data))
+			_remote_ping(bytes_to_var(data))
 		PACKET_TYPE.REMOTE_PING_BACK:
 			#print("ROLLBACK, PINGBACK")
-			_remote_ping_back(bytes2var(data))
+			_remote_ping_back(bytes_to_var(data))
 		PACKET_TYPE.REMOTE_START:
 			#print("ROLLBACK, REMOTESTART")
 			_remote_start()
@@ -111,13 +111,13 @@ func send_remote_stop(peer_id: int) -> void:
 func _remote_stop() -> void:
 	emit_signal("received_remote_stop")
 
-func send_input_tick(peer_id: int, msg: PoolByteArray) -> void:
+func send_input_tick(peer_id: int, msg: PackedByteArray) -> void:
 	#print("SENDING INPUT TICK!")
 	var packet = create_packet(PACKET_TYPE.REMOTE_INPUT_TICK, msg)
 	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 0)
 	
 # _rit is short for _receive_input_tick.
-func _rit(peer_id: int, msg: PoolByteArray) -> void:
+func _rit(peer_id: int, msg: PackedByteArray) -> void:
 	emit_signal("received_input_tick", NetworkGlobal.STEAM_OPP_PEER_ID, msg)
 	
 	# DEBUG
@@ -133,8 +133,8 @@ func is_network_host() -> bool:
 	return NetworkGlobal.STEAM_IS_HOST
 
 # Changed to Global variable
-func get_network_unique_id() -> int:
+func get_unique_id() -> int:
 	return NetworkGlobal.STEAM_PEER_ID
 
 func is_network_master_for_node(node: Node) -> bool:
-	return node.get_network_master() == NetworkGlobal.STEAM_PEER_ID
+	return node.get_multiplayer_authority() == NetworkGlobal.STEAM_PEER_ID

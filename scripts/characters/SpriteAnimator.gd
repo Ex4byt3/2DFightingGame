@@ -1,9 +1,9 @@
-extends Sprite
+extends Sprite2D
 
 var current_frame: int = 0
 var cached_state: String = "Idle"
 
-onready var sprite = self
+@onready var sprite = self
 
 func _ready():
 	pass

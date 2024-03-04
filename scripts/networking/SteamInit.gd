@@ -14,7 +14,7 @@ func _ready() -> void:
 	_initialize_Steam()
 
 	if IS_ON_STEAM_DECK:
-		OS.set_window_fullscreen(true)
+		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (true) else Window.MODE_WINDOWED
 
 func _initialize_Steam() -> void:
 	if Engine.has_singleton("Steam"):

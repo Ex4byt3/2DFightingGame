@@ -14,33 +14,26 @@ func _ready():
 
 # Save the current settings to a .dat file
 func save_settings(data: Dictionary) -> void:
-	var data_string = JSON.print(data)
-	var settings_data_save_file = File.new()
-	var dir = Directory.new()
-	
-	if not dir.dir_exists(SAVE_DIRECTORY):
-		dir.make_dir(SAVE_DIRECTORY)
-	
-	#print(data_string)
-	settings_data_save_file.open(SAVE_DIRECTORY + '/' + SETTINGS_FILE_NAME, File.WRITE)
+	var data_string = JSON.stringify(data)
+	var settings_data_save_file = FileAccess.open(SAVE_DIRECTORY + '/' + SETTINGS_FILE_NAME, FileAccess.WRITE)
 	settings_data_save_file.store_string(data_string)
-	settings_data_save_file.close()
 
 
 # Load saved data from .dat file
 func load_settings_data() -> void:
-	var settings_data_save_file = File.new()
-	if not settings_data_save_file.file_exists(SAVE_DIRECTORY + '/' + SETTINGS_FILE_NAME):
+	if not FileAccess.file_exists(SAVE_DIRECTORY + '/' + SETTINGS_FILE_NAME):
 		return
-		
-	settings_data_save_file.open(SAVE_DIRECTORY + '/' + SETTINGS_FILE_NAME, File.READ)
-	var loaded_settings = {}
+
+	var settings_data_save_file = FileAccess.open(SAVE_DIRECTORY + '/' + SETTINGS_FILE_NAME, FileAccess.READ)
+	var loaded_settings = settings_data_save_file.get_as_text()
 	
-	while settings_data_save_file.get_position() < settings_data_save_file.get_len():
+	while settings_data_save_file.get_position() < settings_data_save_file.get_length():
 		var json_string = settings_data_save_file.get_line()
-		var _parsed_result = JSON.parse(json_string)
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(json_string)
+		var _parsed_result = test_json_conv.get_data()
 		
-		loaded_settings = _parsed_result.result
+		loaded_settings = _parsed_result
 	
 	MenuSignalBus.emit_load_settings_data(loaded_settings)
 	loaded_settings.clear()

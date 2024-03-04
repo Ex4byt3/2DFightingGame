@@ -1,7 +1,7 @@
 extends Node2D
 
 
-onready var map_holder = preload("res://scenes/maps/MapHolder.tscn")
+@onready var map_holder = preload("res://scenes/maps/MapHolder.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -15,7 +15,7 @@ func _handle_connecting_signals() -> void:
 
 
 func _start_match() -> void:
-	var new_match = map_holder.instance()
+	var new_match = map_holder.instantiate()
 	add_child(new_match)
 
 

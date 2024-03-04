@@ -1,9 +1,9 @@
 extends Control
 
 
-onready var searchbar = $SettingsHeader/VBoxContainer/Searchbar
-onready var category_checks = $MainPane/CategoryChecks
-onready var settings_container = $MainPane/ScrollContainer/SettingsContainer
+@onready var searchbar = $SettingsHeader/VBoxContainer/Searchbar
+@onready var category_checks = $MainPane/CategoryChecks
+@onready var settings_container = $MainPane/ScrollContainer/SettingsContainer
 
 var categories: Dictionary = {
 	"Display": true,
@@ -53,4 +53,4 @@ func check_setting_visiblity(setting, search_text: String):
 	if required_checks == passed_checks:
 		return true
 	else:
-		 return false
+		return false

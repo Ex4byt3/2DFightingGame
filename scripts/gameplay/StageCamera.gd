@@ -1,15 +1,15 @@
 extends Camera2D
 
-export (float, 1, 5000) var zoom_scaleX = 1650 # Scales the X distance of the players to a reasonable zooming value.
-export (float, 1, 5000) var zoom_scaleY = 600 # Scales the Y distance of the players to a reasonable zooming value.
-export (float, 0.1, 5000) var min_zoomX: float = 1200 # The X distance between players before the camera stops zooming in.
-export (float, 0.1, 5000) var min_zoomY: float = 400 # The Y distance between players before the camera stops zooming in.
-export (float, 0.1, 10) var max_zoom: float = 1.25 # Max zoom out value. Set to match the width of the stage.
-export (float, -5000, 5000) var cam_y_pos: float = -93 # y value of the cam's position should be constant.
+var zoom_scaleX = 1650 # Scales the X distance of the players to a reasonable zooming value.
+var zoom_scaleY = 600 # Scales the Y distance of the players to a reasonable zooming value.
+var min_zoomX: float = 1200 # The X distance between players before the camera stops zooming in.
+var min_zoomY: float = 400 # The Y distance between players before the camera stops zooming in.
+var max_zoom: float = 1.25 # Max zoom out value. Set to match the width of the stage.
+var cam_y_pos: float = -93 # y value of the cam's position should be constant.
 var players = []
 
-onready var server_player = $"../ServerPlayer"
-onready var client_player = $"../ClientPlayer"
+@onready var server_player = $"../ServerPlayer"
+@onready var client_player = $"../ClientPlayer"
 
 func _ready():
 	players += [server_player, client_player]

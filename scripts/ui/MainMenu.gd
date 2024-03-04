@@ -8,15 +8,15 @@ extends Control
 var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
 
 # Onready var for primary buttons
-onready var local_tab = $MainPane/LocalTab
-onready var training_tab = $MainPane/TrainingTab
-onready var records_tab = $MainPane/RecordsTab
-onready var footer_notes = $MainPane/Footer/FooterNotes
+@onready var local_tab = $MainPane/LocalTab
+@onready var training_tab = $MainPane/TrainingTab
+@onready var records_tab = $MainPane/RecordsTab
+@onready var footer_notes = $MainPane/Footer/FooterNotes
 
-onready var online_button = $MainPane/MenuButtons/OnlineButton
-onready var local_button = $MainPane/MenuButtons/LocalButton
-onready var training_button = $MainPane/MenuButtons/TrainingButton
-onready var records_button = $MainPane/MenuButtons/RecordsButton
+@onready var online_button = $MainPane/MenuButtons/OnlineButton
+@onready var local_button = $MainPane/MenuButtons/LocalButton
+@onready var training_button = $MainPane/MenuButtons/TrainingButton
+@onready var records_button = $MainPane/MenuButtons/RecordsButton
 
 
 # Called when the node enters the scene tree for the first time.

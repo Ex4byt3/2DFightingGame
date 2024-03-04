@@ -1,7 +1,7 @@
 extends Character
 
-onready var animation = $NetworkAnimationPlayer
-onready var arrowSprite = $DebugSprite/DebugArrow
+@onready var animation = $NetworkAnimationPlayer
+@onready var arrowSprite = $DebugSprite/DebugArrow
 
 # Character Attributes
 var walkingSpeed = 4
@@ -10,7 +10,7 @@ var sprintInputLeinency = 6
 var airAcceleration : int = 0
 var maxAirSpeed = 6
 var gravity = 2
-var airJumpMax = 0
+var airJumpMax = 1
 var airJump = 0
 var knockback_multiplier = 1
 var weight = 100
@@ -52,10 +52,13 @@ func _network_process(input: Dictionary) -> void:
 	stateMachine.transition_state(input)
 	
 	# Update position based off of velocity
-	velocity = move_and_slide(velocity, SGFixed.vector2(0, -SGFixed.ONE))
+	set_velocity(velocity)
+	set_up_direction(SGFixed.vector2(0, -SGFixed.ONE))
+	move_and_slide()
+	velocity = velocity
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
-	is_on_floor = is_on_floor() 
+	isOnFloor = is_on_floor() 
 	
 func _save_state() -> Dictionary:
 	var control_buffer = []
@@ -69,7 +72,7 @@ func _save_state() -> Dictionary:
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
 		airJump = airJump,
-		is_on_floor = is_on_floor,
+		isOnFloor = isOnFloor,
 		usedJump = usedJump,
 		frame = frame
 	}
@@ -85,10 +88,10 @@ func _load_state(loadState: Dictionary) -> void:
 	velocity.y = loadState['velocity_y']
 	airJump = loadState['airJump']
 	usedJump = loadState['usedJump']
-	is_on_floor = loadState['is_on_floor']
+	isOnFloor = loadState['isOnFloor']
 	
 	frame = loadState['frame']
 	sync_to_physics_engine()
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
-	fixed_position = old_state['fixed_position'].linear_interpolate(new_state['fixed_position'], weight)
+	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], weight)

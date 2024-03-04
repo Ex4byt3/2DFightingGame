@@ -1,4 +1,4 @@
-extends SGKinematicBody2D
+extends SGCharacterBody2D
 class_name Character
 
 # for debug overlay
@@ -27,14 +27,13 @@ const directions = {
 }
 
 # State machine
-onready var stateMachine = $StateMachine
-onready var rng = $NetworkRandomNumberGenerator
+@onready var stateMachine = $StateMachine
+@onready var rng = $NetworkRandomNumberGenerator
 
 # Variables for every character
-var velocity := SGFixed.vector2(0, 0)
 var input_vector := SGFixed.vector2(0, 0)
 var input_prefix := "player1_"
-var is_on_floor := false
+var isOnFloor := false
 var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
 # will need to replace with some sort of array to cover similar cases other than jump

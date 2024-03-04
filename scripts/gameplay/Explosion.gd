@@ -1,7 +1,7 @@
 extends SGFixedNode2D
 
-onready var despawn_timer = $DespawnTimer
-onready var animation_player = $NetworkAnimationPlayer
+@onready var despawn_timer = $DespawnTimer
+@onready var animation_player = $NetworkAnimationPlayer
 
 const sound = preload("res://assets/sound/explosion.wav")
 

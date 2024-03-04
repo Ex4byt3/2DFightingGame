@@ -1,8 +1,8 @@
 extends MarginContainer
 
 
-onready var button_title = $HBoxContainer/ButtonTitle
-onready var button_area = $ButtonArea
+@onready var button_title = $HBoxContainer/ButtonTitle
+@onready var button_area = $ButtonArea
 
 var title: String
 

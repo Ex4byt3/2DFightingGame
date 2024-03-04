@@ -1,9 +1,9 @@
 extends Control
 
 
-onready var spectate_button = $HBoxContainer/SpectateButton
-onready var p1_name_label = $PlayersNames/Player1Info/NameLabel
-onready var p2_name_label = $PlayersNames/Player2Info/NameLabel
+@onready var spectate_button = $HBoxContainer/SpectateButton
+@onready var p1_name_label = $PlayersNames/Player1Info/NameLabel
+@onready var p2_name_label = $PlayersNames/Player2Info/NameLabel
 
 const DEFAULT_LIVES: int = 2
 

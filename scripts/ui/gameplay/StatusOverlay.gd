@@ -1,9 +1,9 @@
 extends VBoxContainer
 
 
-onready var displayed_time = $Header/Timer/TimerBackground/DisplayedTime
-onready var p1_health_bar = $Header/P1Info/HealthBar
-onready var p2_health_bar = $Header/P2Info/HealthBar
+@onready var displayed_time = $Header/Timer/TimerBackground/DisplayedTime
+@onready var p1_health_bar = $Header/P1Info/HealthBar
+@onready var p2_health_bar = $Header/P2Info/HealthBar
 
 # TODO: Add steam name above character bar.
 # The character's name should be shown on the health bar.

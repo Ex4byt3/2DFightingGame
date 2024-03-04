@@ -2,8 +2,8 @@ extends SGFixedNode2D
 
 const Explosion = preload("res://scenes//gameplay//Explosion.tscn")
 
-onready var explosion_timer = $ExplosionTimer
-onready var animation_player = $NetworkAnimationPlayer
+@onready var explosion_timer = $ExplosionTimer
+@onready var animation_player = $NetworkAnimationPlayer
 
 func _network_spawn(data: Dictionary) -> void:
 	fixed_position.x = data['fixed_position_x']

@@ -1,10 +1,10 @@
 extends Control
 
 
-onready var name_label = $VBoxContainer/NameLabel
-onready var member_avatar = $VBoxContainer/MemberAvatar
-onready var status_label = $VBoxContainer/StatusLabel
-onready var challenge_button = $VBoxContainer/ChallengeButton
+@onready var name_label = $VBoxContainer/NameLabel
+@onready var member_avatar = $VBoxContainer/MemberAvatar
+@onready var status_label = $VBoxContainer/StatusLabel
+@onready var challenge_button = $VBoxContainer/ChallengeButton
 
 var member_steam_id: int
 var member_steam_name: String
@@ -42,7 +42,7 @@ func _set_member_status(new_status: int) -> void:
 	status_label.set_text(member_status)
 
 
-func _on_avatar_loaded(id: int, avatar_size: int, avatar_buffer: PoolByteArray) -> void:
+func _on_avatar_loaded(id: int, avatar_size: int, avatar_buffer: PackedByteArray) -> void:
 	# Check if the current member needs to have its avatar updated
 	if id == member_steam_id and (not member_image or not avatar_buffer == member_image.get_data()):
 		print("[STEAM] Avatar set for " + str(member_steam_id))

@@ -4,10 +4,10 @@ extends Control
 var user_choice_dialogue = preload("res://scenes/ui/UserChoiceDialogue.tscn")
 
 # Onready variables for the various menus and header
-onready var main_menu = $MainMenu
-onready var online_menu = $OnlineMenu
-onready var menu_header = $MenuHeader
-onready var settings_overlay = $SettingsOverlay
+@onready var main_menu = $MainMenu
+@onready var online_menu = $OnlineMenu
+@onready var menu_header = $MenuHeader
+@onready var settings_overlay = $SettingsOverlay
 
 var menu_tree: Array = ["Main"]
 var quit_dialogue
@@ -68,10 +68,10 @@ func _on_change_menu(menu: String) -> void:
 func _input(event) -> void:
 	if event.is_action_released("ui_cancel"):
 		if settings_overlay.visible == true:
-			menu_header.settings_button.pressed = false
+			menu_header.settings_button.button_pressed = false
 			settings_overlay.visible = false
 		else:
-			quit_dialogue = user_choice_dialogue.instance()
+			quit_dialogue = user_choice_dialogue.instantiate()
 			quit_dialogue.title_text = "Quitting Game"
 			quit_dialogue.context_text = "Are you sure you want to quit the game?"
 			add_child(quit_dialogue)
@@ -91,4 +91,4 @@ func _on_dialogue_rejected() -> void:
 # CONTROLS FUNCTIONS
 ##################################################
 func _set_header_bottom_neighbour(current_node, bottom_neighbour) -> void:
-	current_node.set_focus_neighbour(margin_bottom, get_path_to(bottom_neighbour))
+	current_node.set_focus_neighbor(offset_bottom, get_path_to(bottom_neighbour))

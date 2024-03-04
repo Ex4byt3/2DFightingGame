@@ -109,12 +109,12 @@ func emit_mouse_exited_slinky(button_name: String) -> void:
 
 # Connect a signal and show the success code
 func _connect_Signals(origin, target, connecting_signal: String, connecting_function: String) -> void:
-	var signal_error: int = origin.connect(connecting_signal, target, connecting_function)
+	var signal_error: int = origin.connect(connecting_signal, Callable(target, connecting_function))
 	if signal_error > OK:
 		print("[" + str(target) + "] Connecting "+str(connecting_signal)+" to "+str(connecting_function)+" failed: "+str(signal_error))
 
 
 func _change_Scene(current_scene, target_scene) -> void:
-	var scene_change_error: int = current_scene.get_tree().change_scene_to(target_scene)
+	var scene_change_error: int = current_scene.get_tree().change_scene_to_packed(target_scene)
 	if scene_change_error > OK:
-		print("[" + String.get_file() + "] Scene change failed: "+str(scene_change_error))
+		print("[" + target_scene.get_file() + "] Scene change failed: "+str(scene_change_error))

@@ -1,36 +1,36 @@
 extends Control
 
 # Onready variable for the map holder
-onready var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
+@onready var map_holder_scene = preload("res://scenes/maps/MapHolder.tscn")
 
-onready var lobby_tile = preload("res://scenes/ui/online/LobbyTile.tscn")
-onready var lobby_member = preload("res://scenes/ui/online/LobbyMember.tscn")
-onready var challenge_tile = preload("res://scenes/ui/online/ChallengeTile.tscn")
-onready var match_tile = preload("res://scenes/ui/online/MatchTile.tscn")
+@onready var lobby_tile = preload("res://scenes/ui/online/LobbyTile.tscn")
+@onready var lobby_member = preload("res://scenes/ui/online/LobbyMember.tscn")
+@onready var challenge_tile = preload("res://scenes/ui/online/ChallengeTile.tscn")
+@onready var match_tile = preload("res://scenes/ui/online/MatchTile.tscn")
 
 # Onready variables for lobby searches
-onready var refresh_button = $MainPane/OnlineMenuBar/RefreshButton
-onready var lobby_search_bar = $MainPane/OnlineMenuBar/SearchPane/LineEdit
-onready var lobby_type_filter = $MainPane/OnlineMenuBar/SearchPane/Filters/LobbyType
-onready var lobby_state_filter = $MainPane/OnlineMenuBar/SearchPane/Filters/LobbyState
+@onready var refresh_button = $MainPane/OnlineMenuBar/RefreshButton
+@onready var lobby_search_bar = $MainPane/OnlineMenuBar/SearchPane/LineEdit
+@onready var lobby_type_filter = $MainPane/OnlineMenuBar/SearchPane/Filters/LobbyType
+@onready var lobby_state_filter = $MainPane/OnlineMenuBar/SearchPane/Filters/LobbyState
 
 # Onready variables for the lobby creation popup
-onready var open_lobby_popup = $MainPane/OnlineMenuBar/OpenLobbyPopup
-onready var lobby_creation_popup = $MainPane/LobbyCreationPopup
-onready var lobby_name = $MainPane/LobbyCreationPopup/Control/BasicSettings/NameEntry/LineEdit
-onready var lobby_password = $MainPane/LobbyCreationPopup/Control/BasicSettings/PassEntry/LineEdit
-onready var create_lobby_button = $MainPane/LobbyCreationPopup/Control/ColorRect/CreateLobbyButton
-onready var lobby_container = $MainPane/LobbyScrollContainer/LobbyContainer
+@onready var open_lobby_popup = $MainPane/OnlineMenuBar/OpenLobbyPopup
+@onready var lobby_creation_popup = $MainPane/LobbyCreationPopup
+@onready var lobby_name = $MainPane/LobbyCreationPopup/Control/BasicSettings/NameEntry/LineEdit
+@onready var lobby_password = $MainPane/LobbyCreationPopup/Control/BasicSettings/PassEntry/LineEdit
+@onready var create_lobby_button = $MainPane/LobbyCreationPopup/Control/ColorRect/CreateLobbyButton
+@onready var lobby_container = $MainPane/LobbyScrollContainer/LobbyContainer
 
-onready var lobby_overlay = $MainPane/LobbyOverlay
+@onready var lobby_overlay = $MainPane/LobbyOverlay
 
 # Onready variables for ENet popup
-onready var open_enet_popup = $MainPane/OnlineMenuBar/OpenENetPopup
-onready var rpc_popup = $MainPane/RPCPopup
-onready var rpc_server_button = $MainPane/RPCPopup/SelectionContainer/RPCServerButton
-onready var rpc_client_button = $MainPane/RPCPopup/SelectionContainer/RPCClientButton
-onready var rpc_host_field = $MainPane/RPCPopup/InfoPane/EntryContainer/RPCHostField
-onready var rpc_port_field = $MainPane/RPCPopup/InfoPane/EntryContainer/RPCPortField
+@onready var open_enet_popup = $MainPane/OnlineMenuBar/OpenENetPopup
+@onready var rpc_popup = $MainPane/RPCPopup
+@onready var rpc_server_button = $MainPane/RPCPopup/SelectionContainer/RPCServerButton
+@onready var rpc_client_button = $MainPane/RPCPopup/SelectionContainer/RPCClientButton
+@onready var rpc_host_field = $MainPane/RPCPopup/InfoPane/EntryContainer/RPCHostField
+@onready var rpc_port_field = $MainPane/RPCPopup/InfoPane/EntryContainer/RPCPortField
 
 
 var LOBBY_ID: int = 0
@@ -144,7 +144,7 @@ func check_lobby_visiblity(lobby, filter_dict: Dictionary):
 	if required_checks == passed_checks:
 		return true
 	else:
-		 return false
+		return false
 
 
 ##################################################
@@ -223,7 +223,7 @@ func _leave_Steam_Lobby() -> void:
 
 func _on_Lobby_Match_List(lobbies: Array) -> void:
 	for lobby in lobbies:
-		var new_lobby_tile = lobby_tile.instance()
+		var new_lobby_tile = lobby_tile.instantiate()
 		
 		var lobby_name = Steam.getLobbyData(lobby, "name")
 		var lobby_mode = Steam.getLobbyData(lobby, "mode")
@@ -243,7 +243,7 @@ func _on_Lobby_Match_List(lobbies: Array) -> void:
 		
 		lobby_container.add_child(new_lobby_tile)
 		
-		var join_lobby_signal: int = new_lobby_tile.join_button.connect("button_up", self, "_join_steam_lobby", [lobby])
+		var join_lobby_signal: int = new_lobby_tile.join_button.connect("button_up", Callable(self, "_join_steam_lobby").bind(lobby))
 		if join_lobby_signal > OK:
 			print("[STEAM] Connecting tile to lobby: "+str(lobby)+" failed: "+str(join_lobby_signal))
 
@@ -259,7 +259,7 @@ func _update_challenges() -> void:
 		challenge.queue_free()
 	
 	for challenge in CHALLENGES:
-		var new_challenge_tile = challenge_tile.instance()
+		var new_challenge_tile = challenge_tile.instantiate()
 		new_challenge_tile.challenger_id = challenge.sender_id
 		new_challenge_tile.recipient_id = challenge.recipient_id
 		
@@ -271,11 +271,11 @@ func _update_challenges() -> void:
 		var command_accept: String = "/accept_challenge " + str(challenge.sender_id) + " " + str(challenge.recipient_id)
 		var command_reject: String = "/reject_challenge " + str(challenge.sender_id) + " " + str(challenge.recipient_id)
 	
-		var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", self, "_send_command", [command_accept])
+		var challenge_accepted_signal: int = new_challenge_tile.accept_button.connect("button_up", Callable(self, "_send_command").bind(command_accept))
 		if challenge_accepted_signal > OK:
 			print("[STEAM] Connecting to accept button failed: "+str(challenge_accepted_signal))
 			
-		var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", self, "_send_command", [command_reject])
+		var challenge_rejected_signal: int = new_challenge_tile.reject_button.connect("button_up", Callable(self, "_send_command").bind(command_reject))
 		if challenge_rejected_signal > OK:
 			print("[STEAM] Connecting to accept button failed: "+str(challenge_rejected_signal))
 
@@ -291,13 +291,13 @@ func _update_ongoing_matches() -> void:
 		ongoing_match.queue_free()
 	
 	for ongoing_match in ONGOING_MATCHES:
-		var new_match_tile = match_tile.instance()
+		var new_match_tile = match_tile.instantiate()
 		new_match_tile.challenger_id = ongoing_match.sender_id
 		new_match_tile.recipient_id = ongoing_match.recipient_id
 		lobby_overlay.ongoing_matches.add_child(new_match_tile)
 		
 		var command_spectate: String = "/spectate " + ongoing_match.p1_id + " " + ongoing_match.p2_id
-		var spectate_signal: int = new_match_tile.spectate_button.connect("button_up", self, "_send_command", [command_spectate])
+		var spectate_signal: int = new_match_tile.spectate_button.connect("button_up", Callable(self, "_send_command").bind(command_spectate))
 		if spectate_signal > OK:
 				print("[STEAM] Connecting to accept button failed: "+str(spectate_signal))
 
@@ -400,13 +400,13 @@ func _on_Lobby_Message(_result: int, user: int, message: String, type: int) -> v
 	if type == 1:
 		# If the message was a lobby host command
 		if user == Steam.getLobbyOwner(LOBBY_ID) and message.begins_with("/"):
-			var parsed_string: PoolStringArray = message.split(" ", true)
+			var parsed_string: PackedStringArray = message.split(" ", true)
 			print("Lobby owner entered a command: " + parsed_string[0])
 			_recieve_command(message)
 		
 		# Elif the message was a lobby member command
 		elif message.begins_with("/"):
-			var parsed_string: PoolStringArray = message.split(" ", true)
+			var parsed_string: PackedStringArray = message.split(" ", true)
 			print("Lobby member entered a command: " + parsed_string[0])
 			_recieve_command(message)
 		
@@ -487,7 +487,7 @@ func _add_to_playerlist(steam_id: int, steam_name: String) -> void:
 	LOBBY_MEMBERS.append({"steam_id":steam_id, "steam_name":steam_name})
 	
 	var user_steam_id = Steam.getSteamID()
-	var new_member = lobby_member.instance()
+	var new_member = lobby_member.instantiate()
 	new_member.member_steam_id = steam_id
 	new_member.member_steam_name = steam_name
 	lobby_overlay.members.add_child(new_member)
@@ -497,7 +497,7 @@ func _add_to_playerlist(steam_id: int, steam_name: String) -> void:
 	
 	var command_challenge: String = "/create_challenge " + str(user_steam_id) + " " + str(steam_id)
 	
-	var issue_challenge_signal: int = new_member.challenge_button.connect("button_up", self, "_send_command", [command_challenge])
+	var issue_challenge_signal: int = new_member.challenge_button.connect("button_up", Callable(self, "_send_command").bind(command_challenge))
 	if issue_challenge_signal > OK:
 		print("[STEAM] Connecting member's challenge button failed: " + str(issue_challenge_signal))
 
@@ -536,7 +536,7 @@ func _send_command(command: String) -> void:
 
 func _recieve_command(command: String) -> void:
 	if command.begins_with("/create_challenge"):
-		var participants: PoolStringArray = command.split(" ", true)
+		var participants: PackedStringArray = command.split(" ", true)
 		
 		# TODO: Add a way to allow the use of steam personas rather than ids
 		var sender_id: int = int(participants[1])
@@ -553,7 +553,7 @@ func _recieve_command(command: String) -> void:
 			lobby_overlay.chatbox.append_bbcode("[STEAM] Requested challenge already exists")
 		
 	elif command.begins_with("/accept_challenge"):
-		var participants: PoolStringArray = command.split(" ", true)
+		var participants: PackedStringArray = command.split(" ", true)
 		var sender_id: int  = int(participants[1])
 		var recipient_id: int = int(participants[2])
 		if Steam.getSteamID() == sender_id:
@@ -568,7 +568,7 @@ func _recieve_command(command: String) -> void:
 		pass
 	
 	elif command.begins_with("/create_ongoing_match"):
-		var participants: PoolStringArray = command.split(" ", true)
+		var participants: PackedStringArray = command.split(" ", true)
 		
 		# TODO: Add a way to allow the use of steam personas rather than ids
 		var p1_id: int = int(participants[1])
@@ -577,18 +577,18 @@ func _recieve_command(command: String) -> void:
 		_create_ongoing_match(p1_id, p2_id)
 	
 	elif command.begins_with("/spectate"):
-		var participants: PoolStringArray = command.split(" ", true)
+		var participants: PackedStringArray = command.split(" ", true)
 		var p1_id: int = int(participants[1])
 		
 		_spectate_match(p1_id)
 	
 	elif command.begins_with("/kick"):
-		var participants: PoolStringArray = command.split(" ", true)
+		var participants: PackedStringArray = command.split(" ", true)
 		if Steam.getSteamID() == int(participants[1]):
 			_on_exit_lobby()
 	
 	elif command.begins_with("/roll"):
-		var dice: PoolStringArray = command.split(" ", true)
+		var dice: PackedStringArray = command.split(" ", true)
 		var die_sides = int(dice[1])
 		var result = randi() % die_sides + 1
 		lobby_overlay.chatbox.append_bbcode("[SYSTEM] " + Steam.getPersonaName() + " rolled a d" + str(die_sides) + "\n")

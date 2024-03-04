@@ -1,8 +1,8 @@
 extends Control
 
 
-onready var debug_toggle = $MainPane/Contents/DebugToggle
-onready var leave_match_button = $MainPane/Contents/LeaveMatchButton
+@onready var debug_toggle = $MainPane/Contents/DebugToggle
+@onready var leave_match_button = $MainPane/Contents/LeaveMatchButton
 
 
 # Called when the node enters the scene tree for the first time.

@@ -1,9 +1,9 @@
 extends Control
 
 
-onready var status_overlay = $StatusOverlay
-onready var debug_overlay = $DebugOverlay
-onready var pause_menu = $PauseMenu
+@onready var status_overlay = $StatusOverlay
+@onready var debug_overlay = $DebugOverlay
+@onready var pause_menu = $PauseMenu
 
 
 # Called when the node enters the scene tree for the first time.

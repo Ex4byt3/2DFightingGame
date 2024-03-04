@@ -1,10 +1,10 @@
 extends Control
 
 
-onready var choice_title = $MainPane/TitlePanel/CenterContainer/ChoiceTitle
-onready var choice_context = $MainPane/ContextPanel/ChoiceContext
-onready var accept = $MainPane/Choices/Accept
-onready var reject = $MainPane/Choices/Reject
+@onready var choice_title = $MainPane/TitlePanel/CenterContainer/ChoiceTitle
+@onready var choice_context = $MainPane/ContextPanel/ChoiceContext
+@onready var accept = $MainPane/Choices/Accept
+@onready var reject = $MainPane/Choices/Reject
 
 var title_text: String
 var context_text: String

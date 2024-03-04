@@ -1,6 +1,6 @@
 extends Node
 
-onready var player_keybind_resource = preload("res://assets/resources/game_settings/playerkeybinds_default.tres")
+@onready var player_keybind_resource = preload("res://assets/resources/game_settings/playerkeybinds_default.tres")
 
 var window_mode_index: int = 0
 var resolution_index: int = 0
@@ -64,15 +64,15 @@ func _on_keybindings_loaded(data: Dictionary) -> void:
 	
 	# Set the empty key events to the loaded scancodes
 	# Player 1
-	loaded_jump_key.set_physical_scancode(int(data.player1_up))
-	loaded_crouch_key.set_physical_scancode(int(data.player1_down))
-	loaded_move_left_key.set_physical_scancode(int(data.player1_left))
-	loaded_move_right_key.set_physical_scancode(int(data.player1_right))
+	loaded_jump_key.set_physical_keycode(int(data.player1_up))
+	loaded_crouch_key.set_physical_keycode(int(data.player1_down))
+	loaded_move_left_key.set_physical_keycode(int(data.player1_left))
+	loaded_move_right_key.set_physical_keycode(int(data.player1_right))
 	# Player 2
-	loaded_jump_key_p2.set_physical_scancode(int(data.player2_up))
-	loaded_crouch_key_p2.set_physical_scancode(int(data.player2_down))
-	loaded_move_left_key_p2.set_physical_scancode(int(data.player2_left))
-	loaded_move_right_key_p2.set_physical_scancode(int(data.player2_right))
+	loaded_jump_key_p2.set_physical_keycode(int(data.player2_up))
+	loaded_crouch_key_p2.set_physical_keycode(int(data.player2_down))
+	loaded_move_left_key_p2.set_physical_keycode(int(data.player2_left))
+	loaded_move_right_key_p2.set_physical_keycode(int(data.player2_right))
 	
 	# Set the keybindresource values to the loaded ones
 	player_keybind_resource.jump_key = loaded_jump_key
@@ -111,17 +111,17 @@ func _on_window_mode_selected(index: int) -> void:
 	
 	match window_mode_index:
 		0: # bordered window
-			OS.set_borderless_window(false)
-			OS.set_window_fullscreen(false)
+			get_window().borderless = (false)
+			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (false) else Window.MODE_WINDOWED
 		1: # borderless window
-			OS.set_borderless_window(true)
-			OS.set_window_fullscreen(false)
+			get_window().borderless = (true)
+			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (false) else Window.MODE_WINDOWED
 		2: # fullscreen
-			OS.set_borderless_window(false)
-			OS.set_window_fullscreen(true)
+			get_window().borderless = (false)
+			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (true) else Window.MODE_WINDOWED
 		3: # borderless fullscreen
-			OS.set_borderless_window(true)
-			OS.set_window_fullscreen(true)
+			get_window().borderless = (true)
+			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (true) else Window.MODE_WINDOWED
 
 
 # Updates resolution setting to be saved when modified in the settings menu
@@ -130,13 +130,13 @@ func _on_resolution_selected(index: int) -> void:
 	
 	match resolution_index:
 		0: # 640 x 360
-			OS.set_window_size(RESOLUTION_DICTIONARY.values()[0])
+			get_window().set_size(RESOLUTION_DICTIONARY.values()[0])
 		1: # 853 x 480
-			OS.set_window_size(RESOLUTION_DICTIONARY.values()[1])
+			get_window().set_size(RESOLUTION_DICTIONARY.values()[1])
 		2: # 1280 x 720
-			OS.set_window_size(RESOLUTION_DICTIONARY.values()[2])
+			get_window().set_size(RESOLUTION_DICTIONARY.values()[2])
 		3: # 1920 x 1080
-			OS.set_window_size(RESOLUTION_DICTIONARY.values()[3])
+			get_window().set_size(RESOLUTION_DICTIONARY.values()[3])
 
 
 # Create a dictionary of all of the settings information to be saved

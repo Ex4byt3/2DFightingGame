@@ -25,7 +25,7 @@ enum HeaderFlags {
 #	MenuSignalBus._connect_Signals(GameSignalBus, self, "network_button_pressed", "_on_network_button_pressed")
 #	GameSignalBus.connect("network_button_pressed", self, "_on_network_button_pressed")
 
-func serialize_input(all_input: Dictionary) -> PoolByteArray:
+func serialize_input(all_input: Dictionary) -> PackedByteArray:
 	var buffer := StreamPeerBuffer.new()
 	buffer.resize(16) # size to be bigger than actual size
 	
@@ -67,7 +67,7 @@ func serialize_input(all_input: Dictionary) -> PoolByteArray:
 	buffer.resize(buffer.get_position()) # resize to actual size
 	return buffer.data_array
 
-func unserialize_input(serialized: PoolByteArray) -> Dictionary:
+func unserialize_input(serialized: PackedByteArray) -> Dictionary:
 	var buffer := StreamPeerBuffer.new()
 	buffer.put_data(serialized)
 	buffer.seek(0)

@@ -2,15 +2,15 @@ extends Node
 
 const SteamNetworkAdaptor = preload("res://scripts/networking/SteamNetworkAdaptor.gd")
 
-onready var message_label = $Messages/MessageLabel
-onready var sync_lost_label = $Messages/SyncLostLabel
-onready var server_player = $ServerPlayer
-onready var client_player = $ClientPlayer
+@onready var message_label = $Messages/MessageLabel
+@onready var sync_lost_label = $Messages/SyncLostLabel
+@onready var server_player = $ServerPlayer
+@onready var client_player = $ClientPlayer
 
 const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
 
 var logging_enabled := true
-var emptyData: PoolByteArray = [1]
+var emptyData: PackedByteArray = [1]
 
 enum NETWORK_TYPE {
 	LOCAL,
@@ -65,16 +65,16 @@ func setup_match() -> void:
 
 
 # Responsible for creating packets to be sent over the steam network.
-# PoolByteArrays are in the format of [Header: 1 byte, Data: n bytes]
-func create_networking_message(header: int, data) -> PoolByteArray:
+# PackedByteArrays are in the format of [Header: 1 byte, Data: n bytes]
+func create_networking_message(header: int, data) -> PackedByteArray:
 	
-	var packet: PoolByteArray = []
+	var packet: PackedByteArray = []
 	packet.append(header)
 	
-	# Checking to see if the data is already a PoolByteArray,
-	# if not then we convert it to a PoolByteArray
-	if typeof(data) != TYPE_RAW_ARRAY:
-		data = var2bytes(data)
+	# Checking to see if the data is already a PackedByteArray,
+	# if not then we convert it to a PackedByteArray
+	if typeof(data) != TYPE_PACKED_BYTE_ARRAY:
+		data = var_to_bytes(data)
 	
 	packet.append_array(data)
 	return packet
@@ -94,10 +94,10 @@ func process_networking_message(msg: Dictionary) -> void:
 			connect_to_server()
 		SYNC_TYPE.CONNECT:
 			print("SYNC,CONNECT")
-			network_peer_connected()
+			peer_connected()
 		SYNC_TYPE.START:
 			print("SYNC,START")
-			network_peer_connected()
+			peer_connected()
 		SYNC_TYPE.STOP:
 			print("SYNC,STOP")
 			pass
@@ -111,7 +111,7 @@ func connect_to_server() -> void:
 	Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 1)
 
 # Runs on both clients when the users establish a connection
-func network_peer_connected():
+func peer_connected():
 	
 	message_label.text = "Connected!"
 	
@@ -124,8 +124,8 @@ func network_peer_connected():
 		
 	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_PEER_ID)
 	
-	server_player.set_network_master(1)
-	client_player.set_network_master(2)
+	server_player.set_multiplayer_authority(1)
+	client_player.set_multiplayer_authority(2)
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		message_label.text = "Starting..."
@@ -133,25 +133,25 @@ func network_peer_connected():
 		Steam.sendMessageToUser("STEAM_OPP_ID", setup_packet, 0, 1)
 		
 		# Give a little time to get ping data.
-		yield(get_tree().create_timer(2.0), "timeout")
+		await get_tree().create_timer(2.0).timeout
 		SyncManager.start()
 		
-func network_peer_disconnected(peer_id: int):
+func peer_disconnected(peer_id: int):
 	message_label.text = "Disconnected"
 	SyncManager.remove_peer(peer_id)
 
 func _on_server_disconnected() -> void:
-	network_peer_disconnected(NetworkGlobal.STEAM_OPP_ID)
+	peer_disconnected(NetworkGlobal.STEAM_OPP_ID)
 	
 func _on_SyncManager_sync_started() -> void:
 	message_label.text = "Started!"
 	
 	if logging_enabled and not SyncReplay.active:
-		var dir = Directory.new()
-		if not dir.dir_exists(LOG_FILE_DIRECTORY):
-			dir.make_dir(LOG_FILE_DIRECTORY)
+		var dir = DirAccess.open(LOG_FILE_DIRECTORY)
+		if not dir:
+			DirAccess.make_dir_absolute(LOG_FILE_DIRECTORY)
 		
-		var datetime = OS.get_datetime(true)
+		var datetime = Time.get_datetime_dict_from_system(true)
 		var log_file_name = "%04d%02d%02d-%02d%02d%02d-peer-%d.log" % [
 			datetime['year'],
 			datetime['month'],
@@ -159,7 +159,7 @@ func _on_SyncManager_sync_started() -> void:
 			datetime['hour'],
 			datetime['minute'],
 			datetime['second'],
-			SyncManager.network_adaptor.get_network_unique_id(),
+			SyncManager.network_adaptor.get_unique_id(),
 		]
 		
 		SyncManager.start_logging(LOG_FILE_DIRECTORY + '/' + log_file_name)
@@ -180,9 +180,9 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 	
 	match NetworkGlobal.NETWORK_TYPE:
 		NETWORK_TYPE.ENET:
-			var peer = get_tree().network_peer
+			var peer = multiplayer.multiplayer_peer
 			if peer:
-				peer.close_connection()
+				peer.close()
 		NETWORK_TYPE.STEAM:
 			Steam.closeSessionWithUser("STEAM_OPP_ID")
 		_:

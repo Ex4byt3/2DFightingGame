@@ -1,32 +1,32 @@
 extends Control
 
 
-onready var lobby_name_label = $Lobby/TitleBox/LobbyNameLabel
-onready var state_label = $Lobby/LobbyStatus/StateLabel
-onready var type_label = $Lobby/LobbyStatus/TypeLabel
-onready var members = $Lobby/LeftPane/LobbyMembersPane/Panel/ScrollContainer/Members
+@onready var lobby_name_label = $Lobby/TitleBox/LobbyNameLabel
+@onready var state_label = $Lobby/LobbyStatus/StateLabel
+@onready var type_label = $Lobby/LobbyStatus/TypeLabel
+@onready var members = $Lobby/LeftPane/LobbyMembersPane/Panel/ScrollContainer/Members
 
-onready var chat_button = $Lobby/RightPane/TabMenu/ChatButton
-onready var challenges_button =$Lobby/RightPane/TabMenu/ChallengesButton
-onready var matches_button = $Lobby/RightPane/TabMenu/MatchesButton
-onready var history_button = $Lobby/RightPane/TabMenu/HistoryButton
+@onready var chat_button = $Lobby/RightPane/TabMenu/ChatButton
+@onready var challenges_button =$Lobby/RightPane/TabMenu/ChallengesButton
+@onready var matches_button = $Lobby/RightPane/TabMenu/MatchesButton
+@onready var history_button = $Lobby/RightPane/TabMenu/HistoryButton
 
-onready var chat_tab = $Lobby/RightPane/ChatTab
-onready var chatbox = $Lobby/RightPane/ChatTab/Chatbox
-onready var chat_line = $Lobby/RightPane/ChatTab/ChatEntry/ChatLine
-onready var send_message_button = $Lobby/RightPane/ChatTab/ChatEntry/SendMessageButton
+@onready var chat_tab = $Lobby/RightPane/ChatTab
+@onready var chatbox = $Lobby/RightPane/ChatTab/Chatbox
+@onready var chat_line = $Lobby/RightPane/ChatTab/ChatEntry/ChatLine
+@onready var send_message_button = $Lobby/RightPane/ChatTab/ChatEntry/SendMessageButton
 
-onready var challenges_tab = $Lobby/RightPane/ChallengesTab
-onready var challenges = $Lobby/RightPane/ChallengesTab/ScrollContainer/Challenges
+@onready var challenges_tab = $Lobby/RightPane/ChallengesTab
+@onready var challenges = $Lobby/RightPane/ChallengesTab/ScrollContainer/Challenges
 
-onready var matches_tab = $Lobby/RightPane/MatchesTab
-onready var ongoing_matches = $Lobby/RightPane/MatchesTab/ScrollContainer/OngoingMatches
+@onready var matches_tab = $Lobby/RightPane/MatchesTab
+@onready var ongoing_matches = $Lobby/RightPane/MatchesTab/ScrollContainer/OngoingMatches
 
-onready var history_tab = $Lobby/RightPane/HistoryTab
+@onready var history_tab = $Lobby/RightPane/HistoryTab
 
-onready var match_settings = $Lobby/LeftPane/Controls/MatchControls/MatchSettingsButton
-onready var password_button = $Lobby/LeftPane/Controls/LobbyControls/PasswordButton
-onready var exit_lobby_button = $Lobby/LeftPane/Controls/LobbyControls/ExitLobbyButton
+@onready var match_settings = $Lobby/LeftPane/Controls/MatchControls/MatchSettingsButton
+@onready var password_button = $Lobby/LeftPane/Controls/LobbyControls/PasswordButton
+@onready var exit_lobby_button = $Lobby/LeftPane/Controls/LobbyControls/ExitLobbyButton
 
 var lobby_name: String
 var num_players: int

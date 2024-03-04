@@ -2,7 +2,7 @@ extends GameOption
 
 
 # Onready variable for the window mode options button
-onready var window_mode_options = $HBoxContainer/WindowModeOptions
+@onready var window_mode_options = $HBoxContainer/WindowModeOptions
 
 ## Define an array for the window options
 #const WINDOW_MODE_ARRAY: Array = [
@@ -23,7 +23,7 @@ func _ready():
 
 # Connect signals used in this scene
 func handle_connecting_signals() -> void:
-	window_mode_options.connect("item_selected", self, "_on_window_mode_selected")
+	window_mode_options.connect("item_selected", Callable(self, "_on_window_mode_selected"))
 
 
 # Add the items in the resolutions dictionary to the dropdown

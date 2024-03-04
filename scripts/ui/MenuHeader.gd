@@ -3,8 +3,8 @@ extends Control
 
 var menu_tree_button = preload("res://scenes/ui/ReturnButton.tscn")
 
-onready var settings_button = $Bars/Header/VBoxContainer/SettingsButton
-onready var menu_tree_return = $Bars/PageTitle/VBoxContainer/HBoxContainer/MenuTreeReturn
+@onready var settings_button = $Bars/Header/VBoxContainer/SettingsButton
+@onready var menu_tree_return = $Bars/PageTitle/VBoxContainer/HBoxContainer/MenuTreeReturn
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,11 +28,11 @@ func _update_menu_tree_return() -> void:
 	var menu_tree = get_parent().menu_tree
 	for menu in menu_tree:
 		if not menu == "TitleScreen":
-			var new_button = menu_tree_button.instance()
+			var new_button = menu_tree_button.instantiate()
 			new_button.title = menu
 			menu_tree_return.add_child(new_button)
 			
-			var previous_menu_signal = new_button.button_area.connect("button_up", get_parent(), "_goto_previous_menu", [menu])
+			var previous_menu_signal = new_button.button_area.connect("button_up", Callable(get_parent(), "_goto_previous_menu").bind(menu))
 			if previous_menu_signal > OK:
 				print("[SYSTEM] Connecting to menu tree button failed: "+str(previous_menu_signal))
 

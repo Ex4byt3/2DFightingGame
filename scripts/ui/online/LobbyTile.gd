@@ -1,13 +1,13 @@
 extends Control
 
 
-onready var name_label = $InfoPane/Infobox/NameLabel
-onready var type_label = $InfoPane/Infobox/LobbyStatus/TypeLabel
-onready var state_label = $InfoPane/Infobox/LobbyStatus/StateLabel
-onready var connection_label = $InfoPane/Infobox/LobbyStatus/ConnectionLabel
-onready var host_name_label = $InfoPane/ParticipantsInfo/HostNameLabel
-onready var num_members_label = $InfoPane/ParticipantsInfo/Panel/HBoxContainer/NumMembersLabel
-onready var join_button = $Background/Highlight/JoinButton
+@onready var name_label = $InfoPane/Infobox/NameLabel
+@onready var type_label = $InfoPane/Infobox/LobbyStatus/TypeLabel
+@onready var state_label = $InfoPane/Infobox/LobbyStatus/StateLabel
+@onready var connection_label = $InfoPane/Infobox/LobbyStatus/ConnectionLabel
+@onready var host_name_label = $InfoPane/ParticipantsInfo/HostNameLabel
+@onready var num_members_label = $InfoPane/ParticipantsInfo/Panel/HBoxContainer/NumMembersLabel
+@onready var join_button = $Background/Highlight/JoinButton
 
 var lobby_name =  "Default"
 var lobby_type = "Public"

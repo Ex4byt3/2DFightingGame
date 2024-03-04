@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://assets/gameplay/floor.png" type="Texture" id=1]
+[ext_resource path="res://assets/gameplay/floor.png" type="Texture2D" id=1]
 [ext_resource path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" type="Script" id=3]
 [ext_resource path="res://scenes/characters/MartialHero.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/gameplay/StageCamera.gd" type="Script" id=6]
 [ext_resource path="res://scenes/ui/gameplay/GameplayUI.tscn" type="PackedScene" id=7]
-[ext_resource path="res://assets/gameplay/debug/gridtexture.png" type="Texture" id=10]
+[ext_resource path="res://assets/gameplay/debug/gridtexture.png" type="Texture2D" id=10]
 
 [sub_resource type="SGRectangleShape2D" id=1]
 extents_x = 81920000
@@ -21,7 +21,7 @@ extents_y = 54198272
 
 [node name="MessageLabel" type="Label" parent="Messages"]
 anchor_right = 1.0
-margin_bottom = 14.0
+offset_bottom = 14.0
 align = 1
 
 [node name="ResetButton" type="Button" parent="Messages"]
@@ -29,16 +29,16 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -48.0
-margin_top = -20.0
+offset_left = -48.0
+offset_top = -20.0
 text = "RESET"
 
 [node name="SyncLostLabel" type="Label" parent="Messages"]
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -106.0
-margin_bottom = 14.0
+offset_left = -106.0
+offset_bottom = 14.0
 text = "Regaining sync..."
 __meta__ = {
 "_edit_use_anchors_": false
@@ -67,56 +67,56 @@ scale = Vector2( 1, 0.0499878 )
 fixed_scale_y = 3276
 shape = SubResource( 1 )
 
-[node name="Sprite1" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite1" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( -1054.25, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
 flip_h = true
 flip_v = true
 
-[node name="Sprite2" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite2" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( -753.25, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
 flip_h = true
 flip_v = true
 
-[node name="Sprite3" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite3" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( -452.25, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
 flip_h = true
 flip_v = true
 
-[node name="Sprite4" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite4" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( -151.25, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
 flip_h = true
 flip_v = true
 
-[node name="Sprite5" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite5" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( 149.75, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
 flip_h = true
 flip_v = true
 
-[node name="Sprite6" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite6" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( 450.75, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
 flip_h = true
 flip_v = true
 
-[node name="Sprite7" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite7" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( 751.75, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
 flip_h = true
 flip_v = true
 
-[node name="Sprite8" type="Sprite" parent="FloorStaticBody"]
+[node name="Sprite8" type="Sprite2D" parent="FloorStaticBody"]
 position = Vector2( 1052.75, 115 )
 scale = Vector2( 4.71094, 4.50781 )
 texture = ExtResource( 10 )
@@ -133,7 +133,7 @@ scale = Vector2( 1, 0.0499878 )
 fixed_scale_y = 3276
 shape = SubResource( 1 )
 
-[node name="FloorSprite" type="Sprite" parent="CeilingStaticBody"]
+[node name="FloorSprite" type="Sprite2D" parent="CeilingStaticBody"]
 position = Vector2( 2.00272e-05, 0 )
 scale = Vector2( 1.88679, 0.05 )
 texture = ExtResource( 1 )
@@ -147,7 +147,7 @@ collision_layer = 4
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="WallStaticBody_L"]
 shape = SubResource( 2 )
 
-[node name="WallSprite" type="Sprite" parent="WallStaticBody_L"]
+[node name="WallSprite" type="Sprite2D" parent="WallStaticBody_L"]
 position = Vector2( 2.28286e-05, 130 )
 scale = Vector2( 0.0754718, 1.64716 )
 texture = ExtResource( 1 )
@@ -161,7 +161,7 @@ collision_layer = 4
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="WallStaticBody_R"]
 shape = SubResource( 2 )
 
-[node name="WallSprite" type="Sprite" parent="WallStaticBody_R"]
+[node name="WallSprite" type="Sprite2D" parent="WallStaticBody_R"]
 position = Vector2( 2.28286e-05, 130 )
 scale = Vector2( 0.0754718, 1.64716 )
 texture = ExtResource( 1 )
@@ -175,7 +175,7 @@ limit_top = -1350
 limit_right = 1200
 limit_bottom = 185
 limit_smoothed = true
-smoothing_enabled = true
+position_smoothing_enabled = true
 editor_draw_limits = true
 script = ExtResource( 6 )
 

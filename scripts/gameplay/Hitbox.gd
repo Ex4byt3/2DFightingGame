@@ -1,6 +1,6 @@
 extends SGArea2D
 
-onready var despawn_timer = $Hitbox_Shape/DespawnTimer
+@onready var despawn_timer = $Hitbox_Shape/DespawnTimer
 
 func _network_spawn(data: Dictionary) -> void:
 	fixed_position.x = data['fixed_position_x']

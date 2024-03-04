@@ -2,7 +2,7 @@ extends GameOption
 
 
 # Onready variable for the resolution options button
-onready var resolution_options = $HBoxContainer/ResolutionOptions
+@onready var resolution_options = $HBoxContainer/ResolutionOptions
 
 ## Define a dictionary for screen resolution options
 #const RESOLUTION_DICTIONARY: Dictionary = {
@@ -23,7 +23,7 @@ func _ready():
 
 # Connect signals used in this scene
 func _handle_connecting_signals() -> void:
-	resolution_options.connect("item_selected", self, "_on_resolution_selected")
+	resolution_options.connect("item_selected", Callable(self, "_on_resolution_selected"))
 
 
 # Add the items in the resolutions dictionary to the dropdown

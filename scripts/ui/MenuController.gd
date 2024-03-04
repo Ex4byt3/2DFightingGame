@@ -44,9 +44,9 @@ func handle_connecting_signals() -> void:
 func _setup_menu() -> void:
 	var menu_location = menu_tree.back()
 	
-	var this_menu = menu_preloads.get(menu_tree.back()).instance()
-	var this_menu_header = menu_preloads.MenuHeader.instance()
-	var this_settings_overlay = menu_preloads.SettingsOverlay.instance()
+	var this_menu = menu_preloads.get(menu_tree.back()).instantiate()
+	var this_menu_header = menu_preloads.MenuHeader.instantiate()
+	var this_settings_overlay = menu_preloads.SettingsOverlay.instantiate()
 	this_settings_overlay.anchor_left = 0.6
 	this_settings_overlay.anchor_top = 0.05
 	
@@ -63,7 +63,7 @@ func _setup_menu() -> void:
 
 
 func _change_screen(current_scene, target_scene: PackedScene, is_backout: bool) -> void:
-	var this_scene = target_scene.instance()
+	var this_scene = target_scene.instantiate()
 	this_scene.visible = false
 	
 	add_child(this_scene)

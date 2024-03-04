@@ -1,14 +1,14 @@
 extends Control
 
 
-onready var sender_info = $HBoxContainer/SenderInfo
-onready var recipient_info = $HBoxContainer/RecipientInfo
-onready var sender_name_label = $HBoxContainer/SenderInfo/SenderNameLabel
-onready var recipient_name_label = $HBoxContainer/RecipientInfo/RecipientNameLabel
-onready var choice_box = $HBoxContainer/ChoiceBox
-onready var accept_button = $HBoxContainer/ChoiceBox/AcceptButton
-onready var reject_button = $HBoxContainer/ChoiceBox/RejectButton
-onready var pending_label = $HBoxContainer/PendingLabel
+@onready var sender_info = $HBoxContainer/SenderInfo
+@onready var recipient_info = $HBoxContainer/RecipientInfo
+@onready var sender_name_label = $HBoxContainer/SenderInfo/SenderNameLabel
+@onready var recipient_name_label = $HBoxContainer/RecipientInfo/RecipientNameLabel
+@onready var choice_box = $HBoxContainer/ChoiceBox
+@onready var accept_button = $HBoxContainer/ChoiceBox/AcceptButton
+@onready var reject_button = $HBoxContainer/ChoiceBox/RejectButton
+@onready var pending_label = $HBoxContainer/PendingLabel
 
 var recipient_id: int
 var challenger_id: int
