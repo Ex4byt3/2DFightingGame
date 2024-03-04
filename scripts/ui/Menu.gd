@@ -1,5 +1,6 @@
 extends Control
 
+
 var user_choice_dialogue = preload("res://scenes/ui/UserChoiceDialogue.tscn")
 
 # Onready variables for the various menus and header
@@ -8,7 +9,7 @@ onready var online_menu = $OnlineMenu
 onready var menu_header = $MenuHeader
 onready var settings_overlay = $SettingsOverlay
 
-var menu_tree: Array = ["Title"]
+var menu_tree: Array = ["Main"]
 var quit_dialogue
 
 

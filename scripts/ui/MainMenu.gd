@@ -54,7 +54,8 @@ func _change_footer_text(hovered_button: String) -> void:
 func on_online_button_toggled(button_pressed):
 	if button_pressed == true:
 #		MenuSignalBus.emit_show_online_menu()
-		MenuSignalBus.emit_change_menu("ONLINE")
+#		MenuSignalBus.emit_change_menu("ONLINE")
+		MenuSignalBus.emit_change_screen(self, get_parent().menu_preloads.OnlineMenu, false)
 
 
 #
@@ -62,7 +63,8 @@ func on_local_button_toggled(button_pressed):
 	if button_pressed == true:
 		NetworkGlobal.NETWORK_TYPE = 0
 		GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
-		MenuSignalBus._change_Scene(self, map_holder_scene)
+#		MenuSignalBus._change_Scene(self, map_holder_scene)
+		MenuSignalBus.emit_start_match()
 #		var scene_change_error: int = get_tree().change_scene_to(local_scene)
 
 

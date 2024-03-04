@@ -1,6 +1,11 @@
 extends Node
 
 # Signals for changing the currently visible menu
+signal setup_menu
+signal toggle_settings_visibility
+signal start_match
+signal leave_match
+signal change_screen(current_screen, new_screen, is_backout)
 signal change_menu(menu)
 
 # Signals for the settings menu
@@ -9,8 +14,8 @@ signal resolution_selected(index)
 signal set_settings_dict(settings_dict)
 signal load_settings_data(settings_dict)
 
-# Signals for local match ui
-signal load_ui_local(ui_settings)
+# Signals for gameplay ui
+signal load_ui(ui_settings)
 signal update_debug(debug_data)
 signal update_input_buffer(input_data)
 signal update_debug_visibility(button_checked)
@@ -26,6 +31,20 @@ signal mouse_exited_slinky(button_name)
 ##########################################################
 # Emit functions for changing the currently visible menu #
 ##########################################################
+func emit_setup_menu() -> void:
+	emit_signal("setup_menu")
+
+func emit_toggle_settings_visibility() -> void:
+	emit_signal("toggle_settings_visibility")
+
+func emit_start_match() -> void:
+	emit_signal("start_match")
+
+func emit_leave_match() -> void:
+	emit_signal("leave_match")
+
+func emit_change_screen(current_screen, new_screen, is_backout: bool) -> void:
+	emit_signal("change_screen", current_screen, new_screen, is_backout)
 
 func emit_change_menu(menu: String) -> void:
 	emit_signal("change_menu", menu)
@@ -49,10 +68,10 @@ func emit_load_settings_data(settings_dict: Dictionary) -> void:
 
 
 ###############################
-# Emit functions for match ui #
+# Emit functions for gameplay ui #
 ###############################
 
-func emit_load_ui_local(ui_settings: Dictionary) -> void:
+func emit_load_ui(ui_settings: Dictionary) -> void:
 	emit_signal("load_ui_local", ui_settings)
 
 func emit_update_debug(debug_data: Dictionary) -> void:

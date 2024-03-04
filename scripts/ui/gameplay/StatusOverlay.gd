@@ -2,20 +2,33 @@ extends VBoxContainer
 
 
 onready var displayed_time = $Header/Timer/TimerBackground/DisplayedTime
+onready var p1_health_bar = $Header/P1Info/HealthBar
+onready var p2_health_bar = $Header/P2Info/HealthBar
+
+# TODO: Add steam name above character bar.
+# The character's name should be shown on the health bar.
 
 # Player variables
-var p1_name: String
-var p2_name: String
+var p1_steam_persona: String # TODO: Get from lobby
+var p2_steam_persona: String # ^ Same
 var p1_character
 var p2_character
-var p1_health: int = 100
-var p2_health: int = 100
+var p1_character_name: String
+var p2_character_name: String
+var p1_health_max: int = 10000 # TODO: Grab from character specific script
+var p2_health_max: int = 10000 # ^ Same
+
+# Variables updated on process
+var p1_health: int
+var p2_health: int
 var p1_burst: int = 0
 var p2_burst: int = 0
 var p1_meter: int = 0
 var p2_meter: int = 0
-var p1_lives: int = 3
-var p2_lives: int = 3
+
+# Variables updated on signal call
+var p1_lives: int = 3 # Grab from lobby
+var p2_lives: int = 3 # Same
 
 # Timer variables
 var match_time: int = 180
@@ -41,6 +54,13 @@ func _handle_connecting_signals() -> void:
 
 func _init_ui() -> void:
 	_init_timer()
+
+
+func _init_player_health() -> void:
+	p1_health_bar.max_value = p1_health_max 
+	p2_health_bar.max_value = p2_health_max
+	p1_health_bar.value = p1_health_max
+	p2_health_bar.value = p1_health_max
 
 ##################################################
 # PROCESS FUNCTIONS

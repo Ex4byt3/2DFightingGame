@@ -7,30 +7,49 @@ var resolution_index: int = 0
 var storage_dictionary: Dictionary = {}
 var loaded_settings: Dictionary = {}
 
+# Define an array for the window options
+const WINDOW_MODE_ARRAY: Array = [
+	"     Bordered Window",
+	"     Borderless Window",
+	"     Fullscreen",
+	"     Borderless Fullscreen",
+]
+
+# Dictionary for screen resolution options
+const RESOLUTION_DICTIONARY: Dictionary = {
+	"     640 x 360" : Vector2(640, 360),
+	"     853 x 480" : Vector2(853, 480),
+	"     1280 x 720" : Vector2(1280, 720),
+	"     1920 x 1080" : Vector2(1920, 1080),
+}
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	handle_connecting_signals()
+	_handle_connecting_signals()
 	create_storage_dictionary()
 
 
 # Connect relevant signals from the MenuSignalBus
-func handle_connecting_signals() -> void:
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "load_settings_data", "load_settings_data")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "window_mode_selected", "on_window_mode_selected")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "resolution_selected", "on_resolution_selected")
+func _handle_connecting_signals() -> void:
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "load_settings_data", "_load_settings_data")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "window_mode_selected", "_on_window_mode_selected")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "resolution_selected", "_on_resolution_selected")
 
 
 # Loads all relevant setting data upon game launch
-func load_settings_data(data: Dictionary) -> void:
+func _load_settings_data(data: Dictionary) -> void:
 	loaded_settings = data
-	on_window_mode_selected(loaded_settings.window_mode_index)
-	on_resolution_selected(loaded_settings.resolution_index)
-	on_keybindings_loaded(loaded_settings.keybindings_dictionary)
+	_on_window_mode_selected(loaded_settings.window_mode_index)
+	_on_resolution_selected(loaded_settings.resolution_index)
+	_on_keybindings_loaded(loaded_settings.keybindings_dictionary)
 
 
+##################################################
+# KEYBIND FUNCTIONS
+##################################################
 # After keybindings are loaded, assign them to the appropriate keys
-func on_keybindings_loaded(data: Dictionary) -> void:
+func _on_keybindings_loaded(data: Dictionary) -> void:
 	# Create empty key events for each of the hotkeys
 	# Player 1
 	var loaded_jump_key = InputEventKey.new()
@@ -66,27 +85,6 @@ func on_keybindings_loaded(data: Dictionary) -> void:
 	player_keybind_resource.move_right_key = loaded_move_right_key
 
 
-# Updates window mode setting to be saved when modified in the settings menu
-func on_window_mode_selected(index: int) -> void:
-	window_mode_index = index
-
-
-# Updates resolution setting to be saved when modified in the settings menu
-func on_resolution_selected(index: int) -> void:
-	resolution_index = index
-
-
-# Create a dictionary of all of the settings information to be saved
-func create_storage_dictionary() -> Dictionary:
-	var settings_container_dict = {
-		"window_mode_index": window_mode_index,
-		"resolution_index": resolution_index,
-		"keybindings_dictionary" : create_keybindings_dictionary(),
-	}
-
-	return settings_container_dict
-
-
 # Create a dictionary of all the keybindings to be saved
 func create_keybindings_dictionary() -> Dictionary:
 	var keybind_container_dict = {
@@ -103,3 +101,53 @@ func create_keybindings_dictionary() -> Dictionary:
 	}
 
 	return keybind_container_dict
+
+##################################################
+# SETTINGS FUNCTIONS
+##################################################
+# Updates window mode setting to be saved when modified in the settings menu
+func _on_window_mode_selected(index: int) -> void:
+	window_mode_index = index
+	
+	match window_mode_index:
+		0: # bordered window
+			OS.set_borderless_window(false)
+			OS.set_window_fullscreen(false)
+		1: # borderless window
+			OS.set_borderless_window(true)
+			OS.set_window_fullscreen(false)
+		2: # fullscreen
+			OS.set_borderless_window(false)
+			OS.set_window_fullscreen(true)
+		3: # borderless fullscreen
+			OS.set_borderless_window(true)
+			OS.set_window_fullscreen(true)
+
+
+# Updates resolution setting to be saved when modified in the settings menu
+func _on_resolution_selected(index: int) -> void:
+	resolution_index = index
+	
+	match resolution_index:
+		0: # 640 x 360
+			OS.set_window_size(RESOLUTION_DICTIONARY.values()[0])
+		1: # 853 x 480
+			OS.set_window_size(RESOLUTION_DICTIONARY.values()[1])
+		2: # 1280 x 720
+			OS.set_window_size(RESOLUTION_DICTIONARY.values()[2])
+		3: # 1920 x 1080
+			OS.set_window_size(RESOLUTION_DICTIONARY.values()[3])
+
+
+# Create a dictionary of all of the settings information to be saved
+func create_storage_dictionary() -> Dictionary:
+	var settings_container_dict = {
+		"window_mode_index": window_mode_index,
+		"resolution_index": resolution_index,
+		"keybindings_dictionary" : create_keybindings_dictionary(),
+	}
+
+	return settings_container_dict
+
+
+
