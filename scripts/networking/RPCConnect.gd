@@ -5,7 +5,7 @@ const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
 @onready var message_label = $Messages/MessageLabel
 @onready var sync_lost_label = $Messages/SyncLostLabel
 @onready var reset_button = $Messages/ResetButton
-@onready var johnny = $Johnny
+#@onready var johnny = $Johnny
 
 var logging_enabled := true
 
@@ -42,7 +42,7 @@ func setup_match() -> void:
 		on_rpc_client_start(NetworkGlobal.RPC_IP, NetworkGlobal.RPC_PORT)
 
 func on_rpc_server_start(_host: String, port: int) -> void:
-	johnny.randomize()
+	#johnny.randomize()
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, 1)
 	multiplayer.multiplayer_peer = peer
@@ -66,16 +66,16 @@ func _on_network_peer_connected(peer_id: int):
 	
 	if multiplayer.is_server():
 		message_label.text = "Starting..."
-		rpc("set_match_rng", {mother_seed = johnny.get_seed()})
+		#rpc("set_match_rng", {mother_seed = johnny.get_seed()})
 		
 		# Give a little time to get ping data.
 		await get_tree().create_timer(2.0).timeout
 		SyncManager.start()
 
-@rpc("any_peer", "call_local") func set_match_rng(info: Dictionary) -> void:
-	johnny.set_seed(info['mother_seed'])
-	$ClientPlayer.rng.set_seed(johnny.randi())
-	$ServerPlayer.rng.set_seed(johnny.randi())
+#@rpc("any_peer", "call_local") func set_match_rng(info: Dictionary) -> void:
+	#johnny.set_seed(info['mother_seed'])
+	#$ClientPlayer.rng.set_seed(johnny.randi())
+	#$ServerPlayer.rng.set_seed(johnny.randi())
 
 func _on_network_peer_disconnected(peer_id: int):
 	message_label.text = "Disconnected"
