@@ -1,41 +1,47 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://camps3igeedlb"]
 
-[ext_resource path="res://assets/resources/menu/online/matchtile_theme.tres" type="Theme" id=1]
-[ext_resource path="res://scripts/ui/online/MatchTile.gd" type="Script" id=2]
+[ext_resource type="Theme" uid="uid://dl4oixccn3c76" path="res://assets/resources/menu/online/matchtile_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/online/MatchTile.gd" id="2"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 0.392157 )
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.392157)
 
-[sub_resource type="Gradient" id=2]
-offsets = PackedFloat32Array( 0 )
-colors = PackedColorArray( 0.219608, 0.764706, 0, 1 )
+[sub_resource type="Gradient" id="2"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.219608, 0.764706, 0, 1)
 
-[sub_resource type="GradientTexture2D" id=3]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture2D" id="3"]
+gradient = SubResource("2")
 
-[sub_resource type="Gradient" id=4]
-offsets = PackedFloat32Array( 0 )
-colors = PackedColorArray( 0.219608, 0.764706, 0, 1 )
+[sub_resource type="Gradient" id="4"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.219608, 0.764706, 0, 1)
 
-[sub_resource type="GradientTexture2D" id=5]
-gradient = SubResource( 4 )
+[sub_resource type="GradientTexture2D" id="5"]
+gradient = SubResource("4")
 
 [node name="MatchTile" type="Control"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 3
+anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_top = -20.0
 offset_bottom = 20.0
-custom_minimum_size = Vector2( 0, 40 )
-theme = ExtResource( 1 )
-script = ExtResource( 2 )
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1")
+script = ExtResource("2")
 
 [node name="Panel" type="Panel" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_styles/panel = SubResource( 1 )
+theme_override_styles/panel = SubResource("1")
 
 [node name="PlayersNames" type="VBoxContainer" parent="."]
+layout_mode = 0
 anchor_right = 0.3
 anchor_bottom = 1.0
 offset_left = 5.0
@@ -45,23 +51,21 @@ size_flags_horizontal = 3
 alignment = 1
 
 [node name="Player1Info" type="HBoxContainer" parent="PlayersNames"]
-offset_right = 379.0
-offset_bottom = 14.0
 clip_contents = true
+layout_mode = 2
 
 [node name="NameLabel" type="Label" parent="PlayersNames/Player1Info"]
-offset_bottom = 14.0
+layout_mode = 2
 
 [node name="Player2Info" type="HBoxContainer" parent="PlayersNames"]
-offset_top = 18.0
-offset_right = 379.0
-offset_bottom = 32.0
+layout_mode = 2
 
 [node name="NameLabel" type="Label" parent="PlayersNames/Player2Info"]
-offset_bottom = 14.0
 clip_contents = true
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
 anchor_left = 0.3
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -72,101 +76,74 @@ offset_bottom = -5.0
 theme_override_constants/separation = 10
 
 [node name="MatchInfo" type="HBoxContainer" parent="HBoxContainer"]
-offset_right = 766.0
-offset_bottom = 32.0
-custom_minimum_size = Vector2( 200, 0 )
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="Health Bars" type="VBoxContainer" parent="HBoxContainer/MatchInfo"]
-offset_right = 456.0
-offset_bottom = 32.0
+layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 alignment = 1
 
 [node name="P1Health" type="TextureProgressBar" parent="HBoxContainer/MatchInfo/Health Bars"]
-offset_top = 2.0
-offset_right = 456.0
-offset_bottom = 12.0
-custom_minimum_size = Vector2( 0, 10 )
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
 value = 100.0
-texture_progress = SubResource( 3 )
 nine_patch_stretch = true
+texture_progress = SubResource("3")
 
 [node name="P2Health" type="TextureProgressBar" parent="HBoxContainer/MatchInfo/Health Bars"]
-offset_top = 20.0
-offset_right = 456.0
-offset_bottom = 30.0
-custom_minimum_size = Vector2( 0, 10 )
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
 value = 100.0
-texture_progress = SubResource( 5 )
 nine_patch_stretch = true
+texture_progress = SubResource("5")
 
 [node name="KOs" type="VBoxContainer" parent="HBoxContainer/MatchInfo"]
-offset_left = 466.0
-offset_right = 528.0
-offset_bottom = 32.0
+layout_mode = 2
 alignment = 1
 
 [node name="Player1Lives" type="HBoxContainer" parent="HBoxContainer/MatchInfo/KOs"]
-offset_right = 62.0
-offset_bottom = 14.0
+layout_mode = 2
 
 [node name="LivesLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player1Lives"]
-offset_right = 34.0
-offset_bottom = 14.0
+layout_mode = 2
 text = "Lives:"
 
 [node name="NumLivesLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player1Lives"]
-offset_left = 38.0
-offset_right = 62.0
-offset_bottom = 14.0
+layout_mode = 2
 text = "ERR"
 
 [node name="Player2Lives" type="HBoxContainer" parent="HBoxContainer/MatchInfo/KOs"]
-offset_top = 18.0
-offset_right = 62.0
-offset_bottom = 32.0
+layout_mode = 2
 
 [node name="LivesLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player2Lives"]
-offset_right = 34.0
-offset_bottom = 14.0
+layout_mode = 2
 text = "Lives:"
 
 [node name="NumLivesLabel" type="Label" parent="HBoxContainer/MatchInfo/KOs/Player2Lives"]
-offset_left = 38.0
-offset_right = 62.0
-offset_bottom = 14.0
+layout_mode = 2
 text = "ERR"
 
 [node name="Timer" type="HBoxContainer" parent="HBoxContainer/MatchInfo"]
-offset_left = 538.0
-offset_right = 766.0
-offset_bottom = 32.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
 [node name="NinePatchRect" type="NinePatchRect" parent="HBoxContainer/MatchInfo/Timer"]
-offset_bottom = 32.0
+layout_mode = 2
 
 [node name="CurrentTime" type="Label" parent="HBoxContainer/MatchInfo/Timer"]
-offset_left = 4.0
-offset_top = 9.0
-offset_right = 38.0
-offset_bottom = 23.0
+layout_mode = 2
 text = "00:00"
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
-offset_left = 776.0
-offset_right = 776.0
-offset_bottom = 32.0
+layout_mode = 2
 
 [node name="SpectateButton" type="Button" parent="HBoxContainer"]
-offset_left = 786.0
-offset_top = 1.0
-offset_right = 886.0
-offset_bottom = 31.0
-custom_minimum_size = Vector2( 100, 30 )
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
 size_flags_vertical = 4
 text = "Spectate"

@@ -1,50 +1,56 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=11 format=3 uid="uid://gqrfcnwxfrua"]
 
-[ext_resource path="res://assets/resources/menu/header/header_theme.tres" type="Theme" id=1]
-[ext_resource path="res://assets/menu/icons/active_quit_icon.png" type="Texture2D" id=2]
-[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="FontFile" id=3]
-[ext_resource path="res://scripts/ui/MenuHeader.gd" type="Script" id=5]
-[ext_resource path="res://assets/menu/icons/delta_logo_placeholder.png" type="Texture2D" id=6]
-[ext_resource path="res://assets/menu/icons/settings_icon.png" type="Texture2D" id=7]
+[ext_resource type="Theme" uid="uid://b5msdtuu5a7wx" path="res://assets/resources/menu/header/header_theme.tres" id="1"]
+[ext_resource type="Texture2D" uid="uid://dqsv6lqhsbkju" path="res://assets/menu/icons/active_quit_icon.png" id="2"]
+[ext_resource type="FontFile" uid="uid://qsp5xkidygp5" path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" id="3"]
+[ext_resource type="Script" path="res://scripts/ui/MenuHeader.gd" id="5"]
+[ext_resource type="Texture2D" uid="uid://dhu4nt2atki8t" path="res://assets/menu/icons/delta_logo_placeholder.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://dfdwc8lf1ihg6" path="res://assets/menu/icons/settings_icon.png" id="7"]
 
-[sub_resource type="StyleBoxEmpty" id=1]
+[sub_resource type="StyleBoxEmpty" id="1"]
 
-[sub_resource type="FontFile" id=2]
-size = 20
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 3 )
+[sub_resource type="FontFile" id="2"]
+fallbacks = Array[Font]([ExtResource("3")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="Gradient" id=9]
-colors = PackedColorArray( 0, 0.282353, 0.45098, 1, 0.636719, 0.889313, 1, 1 )
+[sub_resource type="Gradient" id="9"]
+colors = PackedColorArray(0, 0.282353, 0.45098, 1, 0.636719, 0.889313, 1, 1)
 
-[sub_resource type="GradientTexture2D" id=10]
-gradient = SubResource( 9 )
+[sub_resource type="GradientTexture2D" id="10"]
+gradient = SubResource("9")
 
 [node name="MenuHeader" type="Control"]
+layout_mode = 3
 anchor_right = 1.0
 anchor_bottom = 0.1
 focus_mode = 2
-theme = ExtResource( 1 )
-script = ExtResource( 5 )
+theme = ExtResource("1")
+script = ExtResource("5")
 
 [node name="Bars" type="VBoxContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 0
 
 [node name="Header" type="Control" parent="Bars"]
-offset_right = 1920.0
-offset_bottom = 54.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="Bars/Header"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.137255, 0.137255, 0.137255, 1 )
+color = Color(0.137255, 0.137255, 0.137255, 1)
 
 [node name="GameLogo" type="HBoxContainer" parent="Bars/Header"]
+layout_mode = 0
 anchor_top = 0.111
 anchor_right = 0.1
 anchor_bottom = 0.9
@@ -52,30 +58,26 @@ offset_top = 0.00399971
 offset_bottom = 0.600002
 
 [node name="VSeparator" type="VSeparator" parent="Bars/Header/GameLogo"]
-offset_bottom = 43.0
-theme_override_styles/separator = SubResource( 1 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("1")
 
 [node name="Logo" type="TextureRect" parent="Bars/Header/GameLogo"]
-offset_left = 4.0
-offset_right = 96.0
-offset_bottom = 43.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
+texture = ExtResource("6")
+expand_mode = 1
 stretch_mode = 6
 
 [node name="Name" type="Label" parent="Bars/Header/GameLogo"]
-offset_left = 100.0
-offset_right = 192.0
-offset_bottom = 43.0
+layout_mode = 2
 size_flags_horizontal = 11
 size_flags_vertical = 3
-theme_override_fonts/font = SubResource( 2 )
+theme_override_fonts/font = SubResource("2")
 text = "DELTA"
-valign = 1
 
 [node name="VBoxContainer" type="HBoxContainer" parent="Bars/Header"]
+layout_mode = 0
 anchor_left = 0.15
 anchor_right = 0.95
 anchor_bottom = 1.0
@@ -83,54 +85,45 @@ theme_override_constants/separation = 16
 alignment = 2
 
 [node name="SettingsButton" type="Button" parent="Bars/Header/VBoxContainer"]
-offset_left = 1460.0
-offset_right = 1490.0
-offset_bottom = 54.0
-custom_minimum_size = Vector2( 30, 0 )
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
 toggle_mode = true
-icon = ExtResource( 7 )
+icon = ExtResource("7")
 expand_icon = true
 
 [node name="QuitButton" type="Button" parent="Bars/Header/VBoxContainer"]
-offset_left = 1506.0
-offset_right = 1536.0
-offset_bottom = 54.0
-custom_minimum_size = Vector2( 30, 0 )
-icon = ExtResource( 2 )
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+icon = ExtResource("2")
 expand_icon = true
 
 [node name="PageTitle" type="Control" parent="Bars"]
-offset_top = 54.0
-offset_right = 1920.0
-offset_bottom = 108.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorRect" type="NinePatchRect" parent="Bars/PageTitle"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = SubResource( 10 )
+texture = SubResource("10")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Bars/PageTitle"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Bars/PageTitle/VBoxContainer"]
-offset_top = 25.0
-offset_right = 1920.0
-offset_bottom = 28.0
+layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="VSeparator" type="VSeparator" parent="Bars/PageTitle/VBoxContainer/HBoxContainer"]
-offset_right = 60.0
-offset_bottom = 3.0
+layout_mode = 2
 theme_override_constants/separation = 60
 
 [node name="MenuTreeReturn" type="HBoxContainer" parent="Bars/PageTitle/VBoxContainer/HBoxContainer"]
-offset_left = 70.0
-offset_right = 70.0
-offset_bottom = 3.0
+layout_mode = 2
 
 [connection signal="button_up" from="Bars/Header/VBoxContainer/SettingsButton" to="." method="_on_SettingsButton_button_up"]
 [connection signal="button_up" from="Bars/Header/VBoxContainer/QuitButton" to="." method="_on_QuitButton_button_up"]

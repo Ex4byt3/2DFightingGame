@@ -1,59 +1,65 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://v8deg4vvnu2d"]
 
-[ext_resource path="res://assets/gameplay/bomb.png" type="Texture2D" id=1]
-[ext_resource path="res://addons/godot-rollback-netcode/NetworkTimer.gd" type="Script" id=2]
-[ext_resource path="res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd" type="Script" id=3]
-[ext_resource path="res://scripts/gameplay/Bomb.gd" type="Script" id=4]
+[ext_resource type="Texture2D" uid="uid://xu00r06j8gyy" path="res://assets/gameplay/bomb.png" id="1"]
+[ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkTimer.gd" id="2"]
+[ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/gameplay/Bomb.gd" id="4"]
 
-
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id="1"]
 length = 0.001
 tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"times": PackedFloat32Array( 0 ),
-"transitions": PackedFloat32Array( 1 ),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [ 0 ]
+"values": [0]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id="2"]
 resource_name = "Tick"
 length = 0.5
-loop = true
+loop_mode = 1
 step = 0.05
 tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"times": PackedFloat32Array( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45 ),
-"transitions": PackedFloat32Array( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4gqid"]
+_data = {
+"RESET": SubResource("1"),
+"Tick": SubResource("2")
 }
 
 [node name="Bomb" type="SGFixedNode2D"]
-script = ExtResource( 4 )
+script = ExtResource("4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2( 0, -19 )
-texture = ExtResource( 1 )
+position = Vector2(0, -19)
+texture = ExtResource("1")
 hframes = 10
 
 [node name="ExplosionTimer" type="Node" parent="."]
-script = ExtResource( 2 )
+script = ExtResource("2")
 wait_ticks = 30
 
 [node name="NetworkAnimationPlayer" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 1 )
-anims/Tick = SubResource( 2 )
-script = ExtResource( 3 )
+libraries = {
+"": SubResource("AnimationLibrary_4gqid")
+}
+script = ExtResource("3")
 
 [connection signal="timeout" from="ExplosionTimer" to="." method="_on_ExplosionTimer_timeout"]

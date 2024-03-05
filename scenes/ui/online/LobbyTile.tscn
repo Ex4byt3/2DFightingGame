@@ -1,94 +1,101 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=19 format=3 uid="uid://bu7v5i6hvij6y"]
 
-[ext_resource path="res://assets/resources/menu/online/lobbytile_theme.tres" type="Theme" id=1]
-[ext_resource path="res://assets/menu/icons/player_icon.png" type="Texture2D" id=2]
-[ext_resource path="res://scripts/ui/online/LobbyTile.gd" type="Script" id=3]
-[ext_resource path="res://assets/fonts/Orbitron/static/Orbitron-Bold.ttf" type="FontFile" id=4]
+[ext_resource type="Theme" uid="uid://cujoi01j6mdn2" path="res://assets/resources/menu/online/lobbytile_theme.tres" id="1"]
+[ext_resource type="Texture2D" uid="uid://dniqas512whmb" path="res://assets/menu/icons/player_icon.png" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/online/LobbyTile.gd" id="3"]
+[ext_resource type="FontFile" uid="uid://rdn2jvl5in8j" path="res://assets/fonts/Orbitron/static/Orbitron-Bold.ttf" id="4"]
 
-[sub_resource type="StyleBoxFlat" id=9]
-bg_color = Color( 0, 0.286275, 0.588235, 1 )
+[sub_resource type="StyleBoxFlat" id="9"]
+bg_color = Color(0, 0.286275, 0.588235, 1)
 
-[sub_resource type="StyleBoxEmpty" id=12]
+[sub_resource type="StyleBoxEmpty" id="16"]
 
-[sub_resource type="StyleBoxEmpty" id=13]
+[sub_resource type="StyleBoxEmpty" id="12"]
 
-[sub_resource type="StyleBoxEmpty" id=14]
+[sub_resource type="StyleBoxEmpty" id="13"]
 
-[sub_resource type="StyleBoxEmpty" id=15]
+[sub_resource type="StyleBoxEmpty" id="15"]
 
-[sub_resource type="StyleBoxEmpty" id=16]
+[sub_resource type="StyleBoxEmpty" id="14"]
 
-[sub_resource type="StyleBoxFlat" id=10]
-bg_color = Color( 0.223529, 0.223529, 0.223529, 1 )
+[sub_resource type="StyleBoxFlat" id="10"]
+bg_color = Color(0.223529, 0.223529, 0.223529, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
-[sub_resource type="FontFile" id=3]
-size = 18
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 4 )
+[sub_resource type="FontFile" id="3"]
+fallbacks = Array[Font]([ExtResource("4")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="StyleBoxEmpty" id=4]
+[sub_resource type="StyleBoxEmpty" id="4"]
 
-[sub_resource type="StyleBoxEmpty" id=1]
+[sub_resource type="StyleBoxEmpty" id="1"]
 
-[sub_resource type="StyleBoxEmpty" id=5]
+[sub_resource type="StyleBoxEmpty" id="5"]
 
-[sub_resource type="StyleBoxEmpty" id=6]
+[sub_resource type="StyleBoxEmpty" id="6"]
 
-[sub_resource type="StyleBoxFlat" id=7]
-bg_color = Color( 0.407843, 0.498039, 0.501961, 1 )
+[sub_resource type="StyleBoxFlat" id="7"]
+bg_color = Color(0.407843, 0.498039, 0.501961, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id=11]
+[sub_resource type="StyleBoxEmpty" id="11"]
 
 [node name="LobbyTile" type="Control"]
+custom_minimum_size = Vector2(500, 50)
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -1280.0
 offset_bottom = -670.0
-custom_minimum_size = Vector2( 500, 50 )
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
-theme = ExtResource( 1 )
-script = ExtResource( 3 )
+theme = ExtResource("1")
+script = ExtResource("3")
 
 [node name="Background" type="HBoxContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 0
 
 [node name="Highlight" type="Panel" parent="Background"]
-offset_right = 20.0
-offset_bottom = 50.0
-custom_minimum_size = Vector2( 20, 0 )
-theme_override_styles/panel = SubResource( 9 )
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("9")
 
 [node name="JoinButton" type="Button" parent="Background/Highlight"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 50.0
 offset_right = 30.0
 offset_bottom = 20.0
 rotation = -90.0
-theme_override_styles/hover = SubResource( 12 )
-theme_override_styles/pressed = SubResource( 13 )
-theme_override_styles/focus = SubResource( 14 )
-theme_override_styles/disabled = SubResource( 15 )
-theme_override_styles/normal = SubResource( 16 )
+theme_override_styles/normal = SubResource("16")
+theme_override_styles/hover = SubResource("12")
+theme_override_styles/pressed = SubResource("13")
+theme_override_styles/disabled = SubResource("15")
+theme_override_styles/focus = SubResource("14")
 text = "JOIN"
 
 [node name="Primary" type="Panel" parent="Background"]
-offset_left = 20.0
-offset_right = 500.0
-offset_bottom = 50.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource( 10 )
+theme_override_styles/panel = SubResource("10")
 
 [node name="InfoPane" type="HBoxContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 25.0
@@ -98,106 +105,76 @@ offset_bottom = -4.0
 theme_override_constants/separation = 0
 
 [node name="Infobox" type="VBoxContainer" parent="InfoPane"]
-offset_right = 226.0
-offset_bottom = 42.0
-custom_minimum_size = Vector2( 200, 0 )
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="NameLabel" type="Label" parent="InfoPane/Infobox"]
-offset_right = 226.0
-offset_bottom = 24.0
+layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color( 1, 1, 1, 1 )
-theme_override_fonts/font = SubResource( 3 )
-theme_override_styles/normal = SubResource( 4 )
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("3")
+theme_override_styles/normal = SubResource("4")
 text = "Lobby Name"
 
 [node name="LobbyStatus" type="HBoxContainer" parent="InfoPane/Infobox"]
-offset_top = 24.0
-offset_right = 226.0
-offset_bottom = 42.0
+layout_mode = 2
 
 [node name="StateLabel" type="Label" parent="InfoPane/Infobox/LobbyStatus"]
-offset_right = 70.0
-offset_bottom = 18.0
-custom_minimum_size = Vector2( 70, 0 )
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource( 1 )
+theme = ExtResource("1")
 text = "Open"
-align = 1
-valign = 1
 
 [node name="VSeparator" type="VSeparator" parent="InfoPane/Infobox/LobbyStatus"]
-offset_left = 74.0
-offset_right = 74.0
-offset_bottom = 18.0
-theme_override_styles/separator = SubResource( 1 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("1")
 
 [node name="TypeLabel" type="Label" parent="InfoPane/Infobox/LobbyStatus"]
-offset_left = 78.0
-offset_right = 148.0
-offset_bottom = 18.0
-custom_minimum_size = Vector2( 70, 0 )
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource( 1 )
+theme = ExtResource("1")
 text = "Public"
-align = 1
-valign = 1
 
 [node name="VSeparator3" type="VSeparator" parent="InfoPane/Infobox/LobbyStatus"]
-offset_left = 152.0
-offset_right = 152.0
-offset_bottom = 18.0
-theme_override_styles/separator = SubResource( 1 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("1")
 
 [node name="ConnectionLabel" type="Label" parent="InfoPane/Infobox/LobbyStatus"]
-offset_left = 156.0
-offset_right = 226.0
-offset_bottom = 18.0
-custom_minimum_size = Vector2( 70, 0 )
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource( 1 )
+theme = ExtResource("1")
 text = "Steam"
-align = 1
-valign = 1
 
 [node name="VSeparator" type="VSeparator" parent="InfoPane"]
-offset_left = 226.0
-offset_right = 346.0
-offset_bottom = 42.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ParticipantsInfo" type="HBoxContainer" parent="InfoPane"]
-offset_left = 346.0
-offset_right = 471.0
-offset_bottom = 42.0
-grow_horizontal = 0
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="HostNameLabel" type="Label" parent="InfoPane/ParticipantsInfo"]
-offset_top = 12.0
-offset_right = 77.0
-offset_bottom = 30.0
-grow_horizontal = 0
-theme_override_colors/font_color = Color( 1, 1, 1, 1 )
-theme_override_styles/normal = SubResource( 5 )
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("5")
 text = "Host: temp"
 
 [node name="VSeparator" type="VSeparator" parent="InfoPane/ParticipantsInfo"]
-offset_left = 81.0
-offset_right = 81.0
-offset_bottom = 42.0
-theme_override_styles/separator = SubResource( 6 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("6")
 
 [node name="Panel" type="Panel" parent="InfoPane/ParticipantsInfo"]
-offset_left = 85.0
-offset_right = 125.0
-offset_bottom = 42.0
-custom_minimum_size = Vector2( 40, 0 )
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
 size_flags_vertical = 5
-theme_override_styles/panel = SubResource( 7 )
+theme_override_styles/panel = SubResource("7")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="InfoPane/ParticipantsInfo/Panel"]
+layout_mode = 0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -206,17 +183,13 @@ offset_bottom = 8.0
 alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="InfoPane/ParticipantsInfo/Panel/HBoxContainer"]
-offset_left = 2.0
-offset_right = 22.0
-offset_bottom = 18.0
-custom_minimum_size = Vector2( 20, 0 )
-texture = ExtResource( 2 )
-expand = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+texture = ExtResource("2")
+expand_mode = 1
 stretch_mode = 5
 
 [node name="NumMembersLabel" type="Label" parent="InfoPane/ParticipantsInfo/Panel/HBoxContainer"]
-offset_left = 26.0
-offset_right = 37.0
-offset_bottom = 18.0
-theme_override_styles/normal = SubResource( 11 )
+layout_mode = 2
+theme_override_styles/normal = SubResource("11")
 text = "0"

@@ -1,40 +1,48 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://cej1s8ilb12pm"]
 
-[ext_resource path="res://scenes/ui/online/LobbyOverlay.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/ui/online/OnlineMenu.gd" type="Script" id=2]
-[ext_resource path="res://assets/resources/menu/button_groups/lobbytype_buttongroup.tres" type="ButtonGroup" id=3]
-[ext_resource path="res://assets/menu/images/online_background_accent.png" type="Texture2D" id=4]
-[ext_resource path="res://assets/menu/images/ScifiBackground.png" type="Texture2D" id=5]
-[ext_resource path="res://assets/resources/menu/online/onlinemenu_theme.tres" type="Theme" id=6]
+[ext_resource type="PackedScene" uid="uid://ekhbdatbpqjt" path="res://scenes/ui/online/LobbyOverlay.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/online/OnlineMenu.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://b2g2t1a441pth" path="res://assets/menu/images/online_background_accent.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://03ubnt3gru1w" path="res://assets/menu/images/ScifiBackground.png" id="5"]
+[ext_resource type="Theme" uid="uid://ia6d88jail2l" path="res://assets/resources/menu/online/onlinemenu_theme.tres" id="6"]
 
 [node name="OnlineMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 6 )
-script = ExtResource( 2 )
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6")
+script = ExtResource("2")
 
 [node name="MenuBackground" type="Control" parent="."]
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="BackgroundImage" type="TextureRect" parent="MenuBackground"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 5 )
-expand = true
+texture = ExtResource("5")
+expand_mode = 1
 
 [node name="BackgroundStyle" type="TextureRect" parent="MenuBackground"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 4 )
-expand = true
+texture = ExtResource("4")
+expand_mode = 1
 
 [node name="MainPane" type="Control" parent="."]
+anchors_preset = 0
 anchor_top = 0.1
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="LobbyScrollContainer" type="ScrollContainer" parent="MainPane"]
+layout_mode = 0
 anchor_left = 0.05
 anchor_top = 0.13
 anchor_right = 0.95
@@ -45,90 +53,89 @@ offset_right = 0.399902
 offset_bottom = -0.052002
 
 [node name="LobbyContainer" type="VBoxContainer" parent="MainPane/LobbyScrollContainer"]
-offset_right = 1728.92
-offset_bottom = 748.292
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="OnlineMenuBar" type="Control" parent="MainPane"]
+anchors_preset = 0
 anchor_top = 0.02
 anchor_right = 1.0
 anchor_bottom = 0.13
 
 [node name="OpenLobbyPopup" type="Button" parent="MainPane/OnlineMenuBar"]
+layout_mode = 0
 anchor_left = 0.05
 anchor_right = 0.2
 anchor_bottom = 0.4
 offset_bottom = 0.488001
-theme = ExtResource( 6 )
+theme = ExtResource("6")
 text = "Create Lobby"
 expand_icon = true
 
 [node name="OpenENetPopup" type="Button" parent="MainPane/OnlineMenuBar"]
+layout_mode = 0
 anchor_left = 0.225
 anchor_right = 0.3
 anchor_bottom = 0.4
 offset_bottom = 0.488001
-theme = ExtResource( 6 )
+theme = ExtResource("6")
 text = "ENet"
 expand_icon = true
 
 [node name="RefreshButton" type="Button" parent="MainPane/OnlineMenuBar"]
+layout_mode = 0
 anchor_left = 0.325
 anchor_right = 0.4
 anchor_bottom = 0.4
-theme = ExtResource( 6 )
+theme = ExtResource("6")
 text = "Refresh"
 expand_icon = true
 
 [node name="SearchPane" type="VBoxContainer" parent="MainPane/OnlineMenuBar"]
+layout_mode = 0
 anchor_left = 0.6
 anchor_top = 0.05
 anchor_right = 0.95
 anchor_bottom = 0.8
 
 [node name="LineEdit" type="LineEdit" parent="MainPane/OnlineMenuBar/SearchPane"]
-offset_right = 672.0
-offset_bottom = 29.0
+layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "type to search"
 
 [node name="Filters" type="HBoxContainer" parent="MainPane/OnlineMenuBar/SearchPane"]
-offset_top = 33.0
-offset_right = 672.0
-offset_bottom = 80.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VSeparator" type="VSeparator" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
-offset_right = 221.0
-offset_bottom = 47.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="LobbyType" type="OptionButton" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
-offset_left = 225.0
-offset_right = 446.0
-offset_bottom = 47.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="LobbyState" type="OptionButton" parent="MainPane/OnlineMenuBar/SearchPane/Filters"]
-offset_left = 450.0
-offset_right = 672.0
-offset_bottom = 47.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="LobbyCreationPopup" type="Panel" parent="MainPane"]
 visible = false
+layout_mode = 0
 anchor_left = 0.05
 anchor_top = 0.1
 anchor_right = 0.4
 anchor_bottom = 0.5
 
 [node name="Control" type="Control" parent="MainPane/LobbyCreationPopup"]
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="BasicSettings" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control"]
+layout_mode = 0
 anchor_left = 0.03
 anchor_top = 0.25
 anchor_right = 0.97
@@ -137,156 +144,138 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="NameEntry" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control/BasicSettings"]
-offset_right = 421.0
-offset_bottom = 55.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/NameEntry"]
-offset_right = 421.0
-offset_bottom = 19.0
+layout_mode = 2
 size_flags_vertical = 1
 text = "Lobby Name"
 
 [node name="LineEdit" type="LineEdit" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/NameEntry"]
-offset_top = 23.0
-offset_right = 421.0
-offset_bottom = 55.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "enter lobby name"
 caret_blink = true
 
 [node name="HSeparator2" type="HSeparator" parent="MainPane/LobbyCreationPopup/Control/BasicSettings"]
-offset_top = 59.0
-offset_right = 421.0
-offset_bottom = 63.0
+layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="PassEntry" type="VBoxContainer" parent="MainPane/LobbyCreationPopup/Control/BasicSettings"]
-offset_top = 67.0
-offset_right = 421.0
-offset_bottom = 123.0
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/PassEntry"]
-offset_right = 421.0
-offset_bottom = 19.0
+layout_mode = 2
 size_flags_vertical = 1
 text = "Password (optional)"
 
 [node name="LineEdit" type="LineEdit" parent="MainPane/LobbyCreationPopup/Control/BasicSettings/PassEntry"]
-offset_top = 23.0
-offset_right = 421.0
-offset_bottom = 56.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "enter lobby password"
 caret_blink = true
 
 [node name="ColorRect" type="ColorRect" parent="MainPane/LobbyCreationPopup/Control"]
+layout_mode = 0
 anchor_top = 0.8
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0.286275, 0.588235, 1 )
+color = Color(0, 0.286275, 0.588235, 1)
 
 [node name="CreateLobbyButton" type="Button" parent="MainPane/LobbyCreationPopup/Control/ColorRect"]
+custom_minimum_size = Vector2(0, 29)
+layout_mode = 0
 anchor_left = 0.4
 anchor_top = 0.2
 anchor_right = 0.6
 anchor_bottom = 0.8
-custom_minimum_size = Vector2( 0, 29 )
 text = "Create"
 
 [node name="SteamButton" type="Button" parent="MainPane/LobbyCreationPopup/Control"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 0
 offset_left = 13.28
 offset_top = 19.4614
 offset_right = 93.28
 offset_bottom = 51.4614
-custom_minimum_size = Vector2( 80, 0 )
 toggle_mode = true
-pressed = true
-group = ExtResource( 3 )
 text = "STEAM"
 
 [node name="RPCPopup" type="Panel" parent="MainPane"]
 visible = false
+layout_mode = 0
 anchor_left = 0.225
 anchor_top = 0.1
 anchor_right = 0.4
 anchor_bottom = 0.3
 
 [node name="InfoPane" type="Control" parent="MainPane/RPCPopup"]
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 0.8
 offset_top = 10.0
 offset_right = -10.0
 
 [node name="EntryContainer" type="GridContainer" parent="MainPane/RPCPopup/InfoPane"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_vertical = 3
-theme_override_constants/v_separation = 6
 theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 6
 columns = 2
 
 [node name="HostLabel" type="Label" parent="MainPane/RPCPopup/InfoPane/EntryContainer"]
-offset_right = 105.0
-offset_bottom = 29.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 text = "host"
-align = 2
-valign = 1
 uppercase = true
 
 [node name="RPCHostField" type="LineEdit" parent="MainPane/RPCPopup/InfoPane/EntryContainer"]
-offset_left = 109.0
-offset_right = 214.0
-offset_bottom = 29.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "127.0.0.1"
 
 [node name="PortLabel" type="Label" parent="MainPane/RPCPopup/InfoPane/EntryContainer"]
-offset_top = 35.0
-offset_right = 105.0
-offset_bottom = 64.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 text = "port"
-align = 2
-valign = 1
 uppercase = true
 
 [node name="RPCPortField" type="LineEdit" parent="MainPane/RPCPopup/InfoPane/EntryContainer"]
-offset_left = 109.0
-offset_top = 35.0
-offset_right = 214.0
-offset_bottom = 64.0
+layout_mode = 2
 text = "6000"
 
 [node name="SelectionContainer" type="HBoxContainer" parent="MainPane/RPCPopup"]
+layout_mode = 0
 anchor_top = 0.77
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 0
 
 [node name="RPCServerButton" type="Button" parent="MainPane/RPCPopup/SelectionContainer"]
-offset_right = 112.0
-offset_bottom = 29.0
-custom_minimum_size = Vector2( 0, 29 )
+custom_minimum_size = Vector2(0, 29)
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "SERVER"
 
 [node name="RPCClientButton" type="Button" parent="MainPane/RPCPopup/SelectionContainer"]
-offset_left = 112.0
-offset_right = 224.0
-offset_bottom = 29.0
-custom_minimum_size = Vector2( 0, 29 )
+custom_minimum_size = Vector2(0, 29)
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "CLIENT"
 
-[node name="LobbyOverlay" parent="MainPane" instance=ExtResource( 1 )]
+[node name="LobbyOverlay" parent="MainPane" instance=ExtResource("1")]
 visible = false
+layout_mode = 1
+grow_horizontal = 2
+grow_vertical = 2

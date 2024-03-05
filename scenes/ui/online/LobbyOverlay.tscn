@@ -1,45 +1,56 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://ekhbdatbpqjt"]
 
-[ext_resource path="res://assets/resources/menu/online/lobbytile_theme.tres" type="Theme" id=1]
-[ext_resource path="res://scripts/ui/online/LobbyOverlay.gd" type="Script" id=2]
-[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="FontFile" id=4]
+[ext_resource type="Theme" uid="uid://cujoi01j6mdn2" path="res://assets/resources/menu/online/lobbytile_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/ui/online/LobbyOverlay.gd" id="2"]
+[ext_resource type="FontFile" uid="uid://qsp5xkidygp5" path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" id="4"]
 
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0, 0.0117647, 0.164706, 0.392157 )
+[sub_resource type="StyleBoxFlat" id="5"]
+bg_color = Color(0, 0.0117647, 0.164706, 0.392157)
 
-[sub_resource type="FontFile" id=1]
-size = 25
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 4 )
+[sub_resource type="FontFile" id="1"]
+fallbacks = Array[Font]([ExtResource("4")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="FontFile" id=2]
-size = 25
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 4 )
+[sub_resource type="FontFile" id="2"]
+fallbacks = Array[Font]([ExtResource("4")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
-[sub_resource type="StyleBoxEmpty" id=3]
-
-[sub_resource type="ButtonGroup" id=6]
+[sub_resource type="StyleBoxEmpty" id="3"]
 
 [node name="LobbyOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 2 )
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
 
 [node name="Background" type="Panel" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_styles/panel = SubResource( 5 )
+theme_override_styles/panel = SubResource("5")
 
 [node name="Lobby" type="Panel" parent="."]
+layout_mode = 0
 anchor_left = 0.05
 anchor_top = 0.13
 anchor_right = 0.95
 anchor_bottom = 0.9
 
 [node name="TitleBox" type="HBoxContainer" parent="Lobby"]
+layout_mode = 0
 anchor_left = 0.03
 anchor_top = 0.05
 anchor_right = 0.45
@@ -47,75 +58,54 @@ anchor_bottom = 0.116
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="Lobby/TitleBox"]
-offset_top = 10.0
-offset_right = 99.0
-offset_bottom = 43.0
-theme_override_fonts/font = SubResource( 1 )
+layout_mode = 2
+theme_override_fonts/font = SubResource("1")
 text = "Lobby: "
 
 [node name="LobbyNameLabel" type="Label" parent="Lobby/TitleBox"]
-offset_left = 103.0
-offset_top = 10.0
-offset_right = 725.0
-offset_bottom = 43.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = SubResource( 2 )
+theme_override_fonts/font = SubResource("2")
 text = "Default"
 
 [node name="LobbyStatus" type="HBoxContainer" parent="Lobby"]
+layout_mode = 0
 anchor_left = 0.03
 anchor_top = 0.125
 anchor_right = 0.25
 anchor_bottom = 0.161
 
 [node name="StateLabel" type="Label" parent="Lobby/LobbyStatus"]
-offset_top = 5.0
-offset_right = 118.0
-offset_bottom = 23.0
-custom_minimum_size = Vector2( 70, 0 )
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource( 1 )
+theme = ExtResource("1")
 text = "Open"
-align = 1
-valign = 1
 
 [node name="VSeparator" type="VSeparator" parent="Lobby/LobbyStatus"]
-offset_left = 122.0
-offset_right = 126.0
-offset_bottom = 29.0
-theme_override_styles/separator = SubResource( 3 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("3")
 
 [node name="TypeLabel" type="Label" parent="Lobby/LobbyStatus"]
-offset_left = 130.0
-offset_top = 5.0
-offset_right = 249.0
-offset_bottom = 23.0
-custom_minimum_size = Vector2( 70, 0 )
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource( 1 )
+theme = ExtResource("1")
 text = "Public"
-align = 1
-valign = 1
 
 [node name="VSeparator3" type="VSeparator" parent="Lobby/LobbyStatus"]
-offset_left = 253.0
-offset_right = 257.0
-offset_bottom = 29.0
-theme_override_styles/separator = SubResource( 3 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("3")
 
 [node name="ConnectionLabel" type="Label" parent="Lobby/LobbyStatus"]
-offset_left = 261.0
-offset_top = 5.0
-offset_right = 380.0
-offset_bottom = 23.0
-custom_minimum_size = Vector2( 70, 0 )
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource( 1 )
+theme = ExtResource("1")
 text = "Steam"
-align = 1
-valign = 1
 
 [node name="LeftPane" type="VBoxContainer" parent="Lobby"]
+layout_mode = 0
 anchor_left = 0.03
 anchor_top = 0.2
 anchor_right = 0.45
@@ -124,79 +114,67 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="LobbyMembersPane" type="VBoxContainer" parent="Lobby/LeftPane"]
-offset_right = 725.0
-offset_bottom = 535.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="LobbyMembersLabel" type="Label" parent="Lobby/LeftPane/LobbyMembersPane"]
-offset_right = 725.0
-offset_bottom = 14.0
+layout_mode = 2
 text = "Lobby Members"
 
 [node name="Panel" type="Panel" parent="Lobby/LeftPane/LobbyMembersPane"]
-offset_top = 18.0
-offset_right = 725.0
-offset_bottom = 535.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Lobby/LeftPane/LobbyMembersPane/Panel"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Members" type="VBoxContainer" parent="Lobby/LeftPane/LobbyMembersPane/Panel/ScrollContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Controls" type="VBoxContainer" parent="Lobby/LeftPane"]
-offset_top = 545.0
-offset_right = 725.0
-offset_bottom = 623.0
+layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="MatchControls" type="HBoxContainer" parent="Lobby/LeftPane/Controls"]
-offset_right = 725.0
-offset_bottom = 29.0
+layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="MatchSettingsButton" type="Button" parent="Lobby/LeftPane/Controls/MatchControls"]
-offset_right = 352.0
-offset_bottom = 29.0
-custom_minimum_size = Vector2( 160, 29 )
+custom_minimum_size = Vector2(160, 29)
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Match Settings"
 
 [node name="VSeparator" type="VSeparator" parent="Lobby/LeftPane/Controls/MatchControls"]
-offset_left = 372.0
-offset_right = 725.0
-offset_bottom = 29.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="LobbyControls" type="HBoxContainer" parent="Lobby/LeftPane/Controls"]
-offset_top = 49.0
-offset_right = 725.0
-offset_bottom = 78.0
+layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="PasswordButton" type="Button" parent="Lobby/LeftPane/Controls/LobbyControls"]
-offset_right = 352.0
-offset_bottom = 29.0
-custom_minimum_size = Vector2( 160, 29 )
+custom_minimum_size = Vector2(160, 29)
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Change Password"
 
 [node name="ExitLobbyButton" type="Button" parent="Lobby/LeftPane/Controls/LobbyControls"]
-offset_left = 372.0
-offset_right = 725.0
-offset_bottom = 29.0
-custom_minimum_size = Vector2( 110, 29 )
+custom_minimum_size = Vector2(110, 29)
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Exit Lobby"
 
 [node name="RightPane" type="VBoxContainer" parent="Lobby"]
+layout_mode = 0
 anchor_left = 0.525
 anchor_top = 0.05
 anchor_right = 0.97
@@ -204,126 +182,92 @@ anchor_bottom = 0.95
 theme_override_constants/separation = 10
 
 [node name="TabMenu" type="HBoxContainer" parent="Lobby/RightPane"]
-offset_right = 768.0
-offset_bottom = 30.0
-custom_minimum_size = Vector2( 0, 30 )
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
 
 [node name="ChatButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-offset_right = 189.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-pressed = true
-group = SubResource( 6 )
 text = "Chat"
 
 [node name="ChallengesButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-offset_left = 193.0
-offset_right = 382.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-group = SubResource( 6 )
 text = "Challenges"
 
 [node name="MatchesButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-offset_left = 386.0
-offset_right = 575.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-group = SubResource( 6 )
 text = "Matches"
 
 [node name="HistoryButton" type="Button" parent="Lobby/RightPane/TabMenu"]
-offset_left = 579.0
-offset_right = 768.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-group = SubResource( 6 )
 text = "Match History"
 
 [node name="ChatTab" type="VBoxContainer" parent="Lobby/RightPane"]
-offset_top = 40.0
-offset_right = 768.0
-offset_bottom = 748.0
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="Lobby/RightPane/ChatTab"]
-offset_right = 768.0
-offset_bottom = 14.0
+layout_mode = 2
 text = "Chat"
 
 [node name="Chatbox" type="RichTextLabel" parent="Lobby/RightPane/ChatTab"]
-offset_top = 18.0
-offset_right = 768.0
-offset_bottom = 680.0
+layout_mode = 2
 size_flags_vertical = 3
 scroll_following = true
 
 [node name="ChatEntry" type="HBoxContainer" parent="Lobby/RightPane/ChatTab"]
-offset_top = 684.0
-offset_right = 768.0
-offset_bottom = 708.0
+layout_mode = 2
 
 [node name="ChatLine" type="LineEdit" parent="Lobby/RightPane/ChatTab/ChatEntry"]
-offset_right = 689.0
-offset_bottom = 24.0
+layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "enter message here"
 caret_blink = true
 caret_blink_interval = 0.5
 
 [node name="SendMessageButton" type="Button" parent="Lobby/RightPane/ChatTab/ChatEntry"]
-offset_left = 693.0
-offset_right = 768.0
-offset_bottom = 24.0
-grow_horizontal = 0
-custom_minimum_size = Vector2( 75, 0 )
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
 text = "SEND"
 
 [node name="ChallengesTab" type="VBoxContainer" parent="Lobby/RightPane"]
 visible = false
-offset_top = 274.0
-offset_right = 512.0
-offset_bottom = 498.0
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Lobby/RightPane/ChallengesTab"]
-offset_right = 512.0
-offset_bottom = 224.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Challenges" type="VBoxContainer" parent="Lobby/RightPane/ChallengesTab/ScrollContainer"]
-offset_right = 512.0
-offset_bottom = 224.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MatchesTab" type="VBoxContainer" parent="Lobby/RightPane"]
 visible = false
-offset_top = 274.0
-offset_right = 512.0
-offset_bottom = 498.0
+layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Lobby/RightPane/MatchesTab"]
-offset_right = 512.0
-offset_bottom = 224.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="OngoingMatches" type="VBoxContainer" parent="Lobby/RightPane/MatchesTab/ScrollContainer"]
-offset_right = 512.0
-offset_bottom = 224.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HistoryTab" type="VBoxContainer" parent="Lobby/RightPane"]
 visible = false
-offset_top = 648.0
-offset_right = 569.0
-offset_bottom = 648.0
+layout_mode = 2
 size_flags_vertical = 3

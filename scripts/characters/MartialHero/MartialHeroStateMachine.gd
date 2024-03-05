@@ -74,7 +74,7 @@ func transition_state(input):
 	
 	# Universal changes
 	parent.velocity.y += parent.gravity
-	if parent.is_on_floor:
+	if parent.isOnFloor:
 		reset_jumps()
 		
 	if parent.facingRight:
@@ -92,7 +92,7 @@ func transition_state(input):
 
 	match states[state]:
 		states.IDLE:
-			if parent.is_on_floor:
+			if parent.isOnFloor:
 				if parent.input_vector.x != 0:
 					# Update which direction the character is facing
 					if parent.input_vector.x > 0:
@@ -126,7 +126,7 @@ func transition_state(input):
 		states.CROUCH:
 			pass
 		states.WALK:
-			if parent.is_on_floor:
+			if parent.isOnFloor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
 				if parent.input_vector.x != 0:
 					# Face the direction based on where you are trying to move
@@ -158,7 +158,7 @@ func transition_state(input):
 				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
 		states.SPRINT:
-			if parent.is_on_floor:
+			if parent.isOnFloor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
 				if parent.input_vector.x != 0:
 					# Face the direction based on where you are trying to move
@@ -190,7 +190,7 @@ func transition_state(input):
 			handle_dash_state()
 			pass
 		states.JUMP:
-			if parent.is_on_floor:
+			if parent.isOnFloor:
 				parent.animation.play("Idle")
 				set_state('IDLE')
 			else:
@@ -220,7 +220,7 @@ func transition_state(input):
 				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
 		states.AIRBORNE:
-			if parent.is_on_floor:
+			if parent.isOnFloor:
 				# TODO: LANDING
 				parent.animation.play("Idle")
 				set_state('IDLE')
@@ -300,7 +300,7 @@ func reset_jumps():
 
 func handle_dash_state():
 	# If airborne, allow control but maintain dash speed
-	if !parent.is_on_floor:
+	if !parent.isOnFloor:
 		# Apply gravity or any other airborne logic you might need
 		parent.velocity.y += parent.gravity
 	else:

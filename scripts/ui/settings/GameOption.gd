@@ -1,5 +1,5 @@
-class_name GameOption
 extends Control
+class_name GameOption
 
 
 var option_label: String = "Default"

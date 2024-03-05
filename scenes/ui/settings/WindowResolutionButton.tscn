@@ -1,50 +1,41 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://b1m6lmyf5akv8"]
 
-[ext_resource path="res://scripts/ui/settings/WindowResolutionButton.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://scripts/ui/settings/WindowResolutionButton.gd" id="1"]
 
-[sub_resource type="StyleBoxEmpty" id=1]
+[sub_resource type="StyleBoxEmpty" id="1"]
 
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="StyleBoxEmpty" id="2"]
 
 [node name="WindowResolutionButton" type="MarginContainer"]
+anchors_preset = -1
 anchor_right = 0.25
 anchor_bottom = 0.02
 offset_right = 0.103989
 offset_bottom = 20.0
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="Panel" type="Button" parent="."]
-offset_right = 320.0
-offset_bottom = 34.0
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-offset_right = 320.0
-offset_bottom = 34.0
+layout_mode = 2
 
 [node name="Control" type="VSeparator" parent="HBoxContainer"]
-offset_right = 4.0
-offset_bottom = 34.0
-theme_override_styles/separator = SubResource( 1 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("1")
 
 [node name="Label" type="Label" parent="HBoxContainer"]
-offset_left = 8.0
-offset_right = 158.0
-offset_bottom = 34.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "WINDOW RESOLUTION"
-valign = 1
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
-offset_left = 162.0
-offset_right = 166.0
-offset_bottom = 34.0
-theme_override_styles/separator = SubResource( 2 )
+layout_mode = 2
+theme_override_styles/separator = SubResource("2")
 
 [node name="ResolutionOptions" type="OptionButton" parent="HBoxContainer"]
-offset_left = 170.0
-offset_right = 320.0
-offset_bottom = 34.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 action_mode = 1

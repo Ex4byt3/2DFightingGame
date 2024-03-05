@@ -1,25 +1,31 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://ownac6w3ldrx"]
 
-[ext_resource path="res://scripts/ui/online/ChallengeTile.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://scripts/ui/online/ChallengeTile.gd" id="1"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 0.392157 )
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.392157)
 
 [node name="ChallengeTile" type="Control"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 3
+anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_top = -20.0
 offset_bottom = 20.0
-custom_minimum_size = Vector2( 0, 40 )
-script = ExtResource( 1 )
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
 
 [node name="Panel" type="Panel" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_styles/panel = SubResource( 1 )
+theme_override_styles/panel = SubResource("1")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 5.0
@@ -28,68 +34,47 @@ offset_right = -5.0
 offset_bottom = -5.0
 
 [node name="SenderInfo" type="HBoxContainer" parent="HBoxContainer"]
-offset_right = 531.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="SenderLabel" type="Label" parent="HBoxContainer/SenderInfo"]
-offset_top = 8.0
-offset_right = 71.0
-offset_bottom = 22.0
+layout_mode = 2
 text = "Challenger:"
 
 [node name="SenderNameLabel" type="Label" parent="HBoxContainer/SenderInfo"]
-offset_left = 75.0
-offset_top = 8.0
-offset_right = 531.0
-offset_bottom = 22.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "ERR"
 
 [node name="RecipientInfo" type="HBoxContainer" parent="HBoxContainer"]
-offset_left = 535.0
-offset_right = 1066.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="RecipientLabel" type="Label" parent="HBoxContainer/RecipientInfo"]
-offset_top = 8.0
-offset_right = 74.0
-offset_bottom = 22.0
+layout_mode = 2
 text = "Challenged:"
 
 [node name="RecipientNameLabel" type="Label" parent="HBoxContainer/RecipientInfo"]
-offset_left = 78.0
-offset_top = 8.0
-offset_right = 531.0
-offset_bottom = 22.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "ERR"
 
 [node name="ChoiceBox" type="HBoxContainer" parent="HBoxContainer"]
-offset_left = 1070.0
-offset_right = 1270.0
-offset_bottom = 30.0
-custom_minimum_size = Vector2( 200, 0 )
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 
 [node name="AcceptButton" type="Button" parent="HBoxContainer/ChoiceBox"]
-offset_right = 98.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Accept"
 
 [node name="RejectButton" type="Button" parent="HBoxContainer/ChoiceBox"]
-offset_left = 102.0
-offset_right = 200.0
-offset_bottom = 30.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Reject"
 
 [node name="PendingLabel" type="Label" parent="HBoxContainer"]
 visible = false
-offset_left = 1141.0
-offset_top = 8.0
-offset_right = 1270.0
-offset_bottom = 22.0
+layout_mode = 2
 text = "Response Pending"
 uppercase = true

@@ -1,72 +1,75 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=12 format=3 uid="uid://cq4h4y04dcrr2"]
 
-[ext_resource path="res://scenes/ui/settings/WindowModeButton.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/ui/settings/WindowResolutionButton.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/ui/settings/SettingsOverlay.gd" type="Script" id=3]
-[ext_resource path="res://assets/menu/icons/settings_icon.png" type="Texture2D" id=4]
-[ext_resource path="res://assets/menu/icons/active_online_icon.png" type="Texture2D" id=5]
-[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="FontFile" id=6]
-[ext_resource path="res://assets/resources/menu/settings/settingsmenu_theme.tres" type="Theme" id=7]
-[ext_resource path="res://assets/resources/menu/settings/category_title_theme.tres" type="Theme" id=8]
+[ext_resource type="PackedScene" uid="uid://lnmvic1sbcuk" path="res://scenes/ui/settings/WindowModeButton.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://b1m6lmyf5akv8" path="res://scenes/ui/settings/WindowResolutionButton.tscn" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/settings/SettingsOverlay.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://dfdwc8lf1ihg6" path="res://assets/menu/icons/settings_icon.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://b8fmjjc38121v" path="res://assets/menu/icons/active_online_icon.png" id="5"]
+[ext_resource type="FontFile" uid="uid://qsp5xkidygp5" path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" id="6"]
+[ext_resource type="Theme" uid="uid://cp5ajgmj1htek" path="res://assets/resources/menu/settings/settingsmenu_theme.tres" id="7"]
+[ext_resource type="Theme" uid="uid://b1wgu7oaph27y" path="res://assets/resources/menu/settings/category_title_theme.tres" id="8"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 0.882353 )
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.882353)
 
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
 
-[sub_resource type="FontFile" id=2]
-size = 30
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 6 )
+[sub_resource type="FontFile" id="2"]
+fallbacks = Array[Font]([ExtResource("6")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
 [node name="SettingsOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 7 )
-script = ExtResource( 3 )
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7")
+script = ExtResource("3")
 
 [node name="Background" type="Panel" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_styles/panel = SubResource( 1 )
+theme_override_styles/panel = SubResource("1")
 
 [node name="SettingsHeader" type="PanelContainer" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 0.075
 offset_bottom = 0.159996
-theme_override_styles/panel = SubResource( 3 )
+theme_override_styles/panel = SubResource("3")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SettingsHeader"]
-offset_right = 1920.0
-offset_bottom = 81.16
+layout_mode = 2
 
 [node name="TitleBar" type="HBoxContainer" parent="SettingsHeader/VBoxContainer"]
-offset_right = 1920.0
-offset_bottom = 39.0
+layout_mode = 2
 
 [node name="SettingsIcon" type="NinePatchRect" parent="SettingsHeader/VBoxContainer/TitleBar"]
-offset_bottom = 39.0
-texture = ExtResource( 4 )
+layout_mode = 2
+texture = ExtResource("4")
 
 [node name="Title" type="Label" parent="SettingsHeader/VBoxContainer/TitleBar"]
-offset_left = 4.0
-offset_right = 179.0
-offset_bottom = 39.0
-theme_override_fonts/font = SubResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = SubResource("2")
 text = "Settings"
-valign = 1
 uppercase = true
 
 [node name="Searchbar" type="LineEdit" parent="SettingsHeader/VBoxContainer"]
-offset_top = 43.0
-offset_right = 1920.0
-offset_bottom = 79.0
+layout_mode = 2
 placeholder_text = "Search"
 caret_blink = true
 
 [node name="MainPane" type="HBoxContainer" parent="."]
+layout_mode = 0
 anchor_top = 0.075
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -77,94 +80,65 @@ offset_bottom = -10.0
 theme_override_constants/separation = 10
 
 [node name="CategoryChecks" type="VBoxContainer" parent="MainPane"]
-offset_right = 50.0
-offset_bottom = 979.0
-custom_minimum_size = Vector2( 50, 0 )
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
 
 [node name="NetworkButton" type="PanelContainer" parent="MainPane/CategoryChecks"]
-offset_right = 50.0
-offset_bottom = 50.0
+layout_mode = 2
 
 [node name="NetworkIcon" type="TextureRect" parent="MainPane/CategoryChecks/NetworkButton"]
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 43.0
-offset_bottom = 43.0
-custom_minimum_size = Vector2( 0, 36 )
-texture = ExtResource( 5 )
-expand = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+texture = ExtResource("5")
+expand_mode = 1
 stretch_mode = 5
 
 [node name="VSeparator" type="VSeparator" parent="MainPane"]
-offset_left = 60.0
-offset_right = 64.0
-offset_bottom = 979.0
+layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MainPane"]
-offset_left = 74.0
-offset_right = 1900.0
-offset_bottom = 979.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="SettingsContainer" type="VBoxContainer" parent="MainPane/ScrollContainer"]
-offset_right = 1826.0
-offset_bottom = 979.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="DisplayTitle" type="Label" parent="MainPane/ScrollContainer/SettingsContainer"]
-offset_right = 1826.0
-offset_bottom = 28.0
-theme = ExtResource( 8 )
+layout_mode = 2
+theme = ExtResource("8")
 text = "Display"
 uppercase = true
 
-[node name="WindowModeButton" parent="MainPane/ScrollContainer/SettingsContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 32.0
-offset_right = 1826.0
-offset_bottom = 58.0
+[node name="WindowModeButton" parent="MainPane/ScrollContainer/SettingsContainer" instance=ExtResource("1")]
+layout_mode = 2
 
-[node name="WindowResolutionButton" parent="MainPane/ScrollContainer/SettingsContainer" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 62.0
-offset_right = 1826.0
-offset_bottom = 88.0
+[node name="WindowResolutionButton" parent="MainPane/ScrollContainer/SettingsContainer" instance=ExtResource("2")]
+layout_mode = 2
 
 [node name="SoundTitle" type="Label" parent="MainPane/ScrollContainer/SettingsContainer"]
-offset_top = 92.0
-offset_right = 1826.0
-offset_bottom = 118.0
+layout_mode = 2
 text = "Sound"
 uppercase = true
 
 [node name="LobbyTitle" type="Label" parent="MainPane/ScrollContainer/SettingsContainer"]
-offset_top = 122.0
-offset_right = 1826.0
-offset_bottom = 148.0
+layout_mode = 2
 text = "Lobby"
 uppercase = true
 
 [node name="NetworkTitle" type="Label" parent="MainPane/ScrollContainer/SettingsContainer"]
-offset_top = 152.0
-offset_right = 1826.0
-offset_bottom = 178.0
+layout_mode = 2
 text = "Network"
 uppercase = true
 
 [node name="KeybindingsTitle" type="Label" parent="MainPane/ScrollContainer/SettingsContainer"]
-offset_top = 182.0
-offset_right = 1826.0
-offset_bottom = 208.0
+layout_mode = 2
 text = "Keybindings"
 uppercase = true
 
 [node name="AccesibilityTitle" type="Label" parent="MainPane/ScrollContainer/SettingsContainer"]
-offset_top = 212.0
-offset_right = 1826.0
-offset_bottom = 238.0
+layout_mode = 2
 text = "Accessibility"
 uppercase = true
