@@ -180,7 +180,5 @@ script = ExtResource("6")
 [node name="MatchUI" type="CanvasLayer" parent="."]
 
 [node name="GameplayUI" parent="MatchUI" instance=ExtResource("7")]
-grow_horizontal = 2
-grow_vertical = 2
 
 [connection signal="pressed" from="Messages/ResetButton" to="." method="_on_ResetButton_pressed"]

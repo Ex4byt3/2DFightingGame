@@ -179,7 +179,7 @@ func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response:
 	if response == 1:
 		LOBBY_ID = lobby_id
 		print("[STEAM] Joined lobby with ID: " + str(LOBBY_ID))
-		lobby_overlay.chatbox.append_bbcode("[STEAM] Joined " + str(Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby_id))) + "'s lobby\n")
+		lobby_overlay.chatbox.append_text("[STEAM] Joined " + str(Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby_id))) + "'s lobby\n")
 		
 		_get_lobby_members()
 		_set_buttons_disabled(true)
@@ -206,7 +206,7 @@ func _on_Lobby_Data_Update(lobby_id: int, member_id: int, key: int) -> void:
 
 func _leave_Steam_Lobby() -> void:
 	if LOBBY_ID != 0:
-		lobby_overlay.chatbox.append_bbcode("[STEAM] Leaving lobby...\n")
+		lobby_overlay.chatbox.append_text("[STEAM] Leaving lobby...\n")
 		Steam.leaveLobby(LOBBY_ID)
 		LOBBY_ID = 0
 
@@ -340,7 +340,7 @@ func _create_steam_lobby() -> void:
 	
 	_on_Create_Steam_Lobby()
 	lobby_overlay.visible = true
-	lobby_overlay.chatbox.append_bbcode("[STEAM] Attempting to create new lobby...\n")
+	lobby_overlay.chatbox.append_text("[STEAM] Attempting to create new lobby...\n")
 	
 	# Clear popup entry lines
 	lobby_name.set_text("")
@@ -348,7 +348,7 @@ func _create_steam_lobby() -> void:
 
 
 func _join_steam_lobby(lobby_id: int) -> void:
-	lobby_overlay.chatbox.append_bbcode("[STEAM] Attempting to join lobby " + str(lobby_id) + "...\n")
+	lobby_overlay.chatbox.append_text("[STEAM] Attempting to join lobby " + str(lobby_id) + "...\n")
 	LOBBY_MEMBERS.clear()
 	Steam.joinLobby(lobby_id)
 	lobby_overlay.visible = true
@@ -376,19 +376,19 @@ func _on_Lobby_Chat_Update(lobby_id: int, changed_id: int, making_change_id: int
 	var new_member = Steam.getFriendPersonaName(changed_id)
 	# If a player has joined the lobby
 	if chat_state == 1:
-		lobby_overlay.chatbox.append_bbcode("[STEAM] "+str(new_member)+" has joined the lobby.\n")
+		lobby_overlay.chatbox.append_text("[STEAM] "+str(new_member)+" has joined the lobby.\n")
 	# Else if a player has left the lobby
 	elif chat_state == 2:
-		lobby_overlay.chatbox.append_bbcode("[STEAM] "+str(new_member)+" has left the lobby.\n")
+		lobby_overlay.chatbox.append_text("[STEAM] "+str(new_member)+" has left the lobby.\n")
 	# Else if a player has been kicked
 	elif chat_state == 8:
-		lobby_overlay.chatbox.append_bbcode("[STEAM] "+str(new_member)+" has been kicked from the lobby.\n")
+		lobby_overlay.chatbox.append_text("[STEAM] "+str(new_member)+" has been kicked from the lobby.\n")
 	# Else if a player has been banned
 	elif chat_state == 16:
-		lobby_overlay.chatbox.append_bbcode("[STEAM] "+str(new_member)+" has been banned from the lobby.\n")
+		lobby_overlay.chatbox.append_text("[STEAM] "+str(new_member)+" has been banned from the lobby.\n")
 	# Else there was some unknown change
 	else:
-		lobby_overlay.chatbox.append_bbcode("[STEAM] "+str(new_member)+" did... something.\n")
+		lobby_overlay.chatbox.append_text("[STEAM] "+str(new_member)+" did... something.\n")
 	# Update the lobby now that a change has occurred
 	_get_lobby_members()
 
@@ -413,21 +413,21 @@ func _on_Lobby_Message(_result: int, user: int, message: String, type: int) -> v
 		# Else this is a normal chat message
 		else:
 			# Append the message to chat
-			lobby_overlay.chatbox.append_bbcode("<" + str(message_source) + "> " + str(message) + "\n")
+			lobby_overlay.chatbox.append_text("<" + str(message_source) + "> " + str(message) + "\n")
 		
 	# This message is not a normal message or a lobby host command
 	else:
 		match type:
-			2: lobby_overlay.chatbox.append_bbcode(str(message_source)+" is typing...\n")
-			3: lobby_overlay.chatbox.append_bbcode(str(message_source)+" sent an invite that won't work in this chat!\n")
-			4: lobby_overlay.chatbox.append_bbcode(str(message_source)+" sent a text emote that is deprecated.\n")
-			6: lobby_overlay.chatbox.append_bbcode(str(message_source)+" has left the chat.\n")
-			7: lobby_overlay.chatbox.append_bbcode(str(message_source)+" has entered the chat.\n")
-			8: lobby_overlay.chatbox.append_bbcode(str(message_source)+" was kicked!\n")
-			9: lobby_overlay.chatbox.append_bbcode(str(message_source)+" was banned!\n")
-			10: lobby_overlay.chatbox.append_bbcode(str(message_source)+" disconnected.\n")
-			11: lobby_overlay.chatbox.append_bbcode(str(message_source)+" sent an old, offline message.\n")
-			12: lobby_overlay.chatbox.append_bbcode(str(message_source)+" sent a link that was removed by the chat filter.\n")
+			2: lobby_overlay.chatbox.append_text(str(message_source)+" is typing...\n")
+			3: lobby_overlay.chatbox.append_text(str(message_source)+" sent an invite that won't work in this chat!\n")
+			4: lobby_overlay.chatbox.append_text(str(message_source)+" sent a text emote that is deprecated.\n")
+			6: lobby_overlay.chatbox.append_text(str(message_source)+" has left the chat.\n")
+			7: lobby_overlay.chatbox.append_text(str(message_source)+" has entered the chat.\n")
+			8: lobby_overlay.chatbox.append_text(str(message_source)+" was kicked!\n")
+			9: lobby_overlay.chatbox.append_text(str(message_source)+" was banned!\n")
+			10: lobby_overlay.chatbox.append_text(str(message_source)+" disconnected.\n")
+			11: lobby_overlay.chatbox.append_text(str(message_source)+" sent an old, offline message.\n")
+			12: lobby_overlay.chatbox.append_text(str(message_source)+" sent a link that was removed by the chat filter.\n")
 
 
 # Send a chat message
@@ -440,7 +440,7 @@ func _on_send_message() -> void:
 		# Pass the message to Steam
 		var is_sent: bool = Steam.sendLobbyChatMsg(LOBBY_ID, message)
 		if not is_sent:
-			lobby_overlay.chatbox.append_bbcode("[ERROR] Chat message failed to send.\n")
+			lobby_overlay.chatbox.append_text("[ERROR] Chat message failed to send.\n")
 		lobby_overlay.chat_line.clear()
 
 
@@ -532,7 +532,7 @@ func _on_Persona_Changed(steam_id: int, change_flag: int) -> void:
 func _send_command(command: String) -> void:
 	var is_sent: bool = Steam.sendLobbyChatMsg(LOBBY_ID, command)
 	if not is_sent:
-			lobby_overlay.chatbox.append_bbcode("[ERROR] Chat message failed to send.\n")
+			lobby_overlay.chatbox.append_text("[ERROR] Chat message failed to send.\n")
 
 func _recieve_command(command: String) -> void:
 	if command.begins_with("/create_challenge"):
@@ -550,7 +550,7 @@ func _recieve_command(command: String) -> void:
 		if is_valid:
 			_create_challenge(sender_id, recipient_id)
 		else:
-			lobby_overlay.chatbox.append_bbcode("[STEAM] Requested challenge already exists")
+			lobby_overlay.chatbox.append_text("[STEAM] Requested challenge already exists")
 		
 	elif command.begins_with("/accept_challenge"):
 		var participants: PackedStringArray = command.split(" ", true)
@@ -591,5 +591,5 @@ func _recieve_command(command: String) -> void:
 		var dice: PackedStringArray = command.split(" ", true)
 		var die_sides = int(dice[1])
 		var result = randi() % die_sides + 1
-		lobby_overlay.chatbox.append_bbcode("[SYSTEM] " + Steam.getPersonaName() + " rolled a d" + str(die_sides) + "\n")
-		lobby_overlay.chatbox.append_bbcode("[SYSTEM] " + Steam.getPersonaName() + " rolled " + str(result) + "\n")
+		lobby_overlay.chatbox.append_text("[SYSTEM] " + Steam.getPersonaName() + " rolled a d" + str(die_sides) + "\n")
+		lobby_overlay.chatbox.append_text("[SYSTEM] " + Steam.getPersonaName() + " rolled " + str(result) + "\n")
