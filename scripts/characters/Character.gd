@@ -28,7 +28,7 @@ const directions = {
 
 # State machine
 @onready var stateMachine = $StateMachine
-@onready var rng = $NetworkRandomNumberGenerator
+#@onready var rng = $NetworkRandomNumberGenerator
 
 # Variables for every character
 var input_vector := SGFixed.vector2(0, 0)
