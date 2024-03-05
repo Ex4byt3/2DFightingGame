@@ -1,12 +1,12 @@
 extends "res://addons/godot-rollback-netcode/MessageSerializer.gd"
 
 const input_path_mapping = {
-		'/root/MapHolder/Map/ServerPlayer': 1,
-		'/root/MapHolder/Map/ClientPlayer': 2
+		'/root/Main/MatchController/MapHolder/Map/ServerPlayer': 1,
+		'/root/Main/MatchController/MapHolder/Map/ClientPlayer': 2
 	}
 const input_path_mapping_reverse = {
-	1: '/root/MapHolder/Map/ServerPlayer',
-	2: '/root/MapHolder/Map/ClientPlayer'
+	1: '/root/Main/MatchController/MapHolder/Map/ServerPlayer',
+	2: '/root/Main/MatchController/MapHolder/Map/ClientPlayer'
 }
 
 enum HeaderFlags {

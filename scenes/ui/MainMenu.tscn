@@ -255,3 +255,4 @@ offset_top = 15.0
 offset_right = -10.0
 offset_bottom = -10.0
 text = "Welcome to Project Delta"
+horizontal_alignment = 1

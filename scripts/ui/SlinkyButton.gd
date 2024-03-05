@@ -41,9 +41,8 @@ func handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(base_button, self, "focus_exited", "on_mouse_exited")
 	MenuSignalBus._connect_Signals(base_button, self, "toggled", "on_button_toggled")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_buttons_inactive", "set_inactive")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_buttons_inactive", "set_active")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_buttons_active", "set_active")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "reset_buttons", "on_reset_buttons")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "change_menu", "_on_change_menu")
 
 
 ##################################################

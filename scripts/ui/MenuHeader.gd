@@ -32,7 +32,7 @@ func _update_menu_tree_return() -> void:
 			new_button.title = menu
 			menu_tree_return.add_child(new_button)
 			
-			var previous_menu_signal = new_button.button_area.connect("button_up", Callable(get_parent(), "_goto_previous_menu").bind(menu))
+			var previous_menu_signal = new_button.button_area.connect("button_up", MenuSignalBus.emit_goto_previous_menu.bind(menu))
 			if previous_menu_signal > OK:
 				print("[SYSTEM] Connecting to menu tree button failed: "+str(previous_menu_signal))
 

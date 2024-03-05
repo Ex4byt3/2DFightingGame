@@ -2,11 +2,12 @@ extends Node
 
 # Signals for changing the currently visible menu
 signal setup_menu
-signal toggle_settings_visibility
+
 signal start_match
 signal leave_match
+signal goto_previous_menu(menu)
 signal change_screen(current_screen, new_screen, is_backout)
-signal change_menu(menu)
+signal toggle_settings_visibility
 
 # Signals for the settings menu
 signal window_mode_selected(index)
@@ -34,20 +35,20 @@ signal mouse_exited_slinky(button_name)
 func emit_setup_menu() -> void:
 	emit_signal("setup_menu")
 
-func emit_toggle_settings_visibility() -> void:
-	emit_signal("toggle_settings_visibility")
-
 func emit_start_match() -> void:
 	emit_signal("start_match")
 
 func emit_leave_match() -> void:
 	emit_signal("leave_match")
 
+func emit_goto_previous_menu(menu: String) -> void:
+	emit_signal("goto_previous_menu", menu)
+
 func emit_change_screen(current_screen, new_screen, is_backout: bool) -> void:
 	emit_signal("change_screen", current_screen, new_screen, is_backout)
 
-func emit_change_menu(menu: String) -> void:
-	emit_signal("change_menu", menu)
+func emit_toggle_settings_visibility() -> void:
+	emit_signal("toggle_settings_visibility")
 
 
 ###############################

@@ -8,17 +8,12 @@ const menu_preloads: Dictionary = {
 	"MenuHeader": preload("res://scenes/ui/MenuHeader.tscn"),
 	"SettingsOverlay": preload("res://scenes/ui/settings/SettingsOverlay.tscn"),
 	"MainMenu": preload("res://scenes/ui/MainMenu.tscn"),
-	"OnlineMenu": preload("res://scenes/ui/online/OnlineMenu.tscn")
+	"OnlineMenu": preload("res://scenes/ui/online/OnlineMenu.tscn"),
+	"LobbyMenu": preload("res://scenes/ui/online/LobbyMenu.tscn")
 }
 
-# Variables for menu node
-#var menu_node: Node
-#var header_node: Node
-#var settings_node: Node
-#var quit_dialogue
-
 var menu_tree: Array = ["TitleScreen"]
-
+var lobby_id: int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,6 +27,7 @@ func _ready():
 func handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_menu", "_setup_menu")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "change_screen", "_change_screen")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "goto_previous_menu", "_goto_previous_menu")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "toggle_settings_visibility", "_toggle_settings_visibility")
 	
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_match", "_start_match")
