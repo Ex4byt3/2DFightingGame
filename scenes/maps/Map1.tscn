@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://drausbesi8av4"]
+[gd_scene load_steps=8 format=3 uid="uid://drausbesi8av4"]
 
 [ext_resource type="Texture2D" uid="uid://caoquouya0c2y" path="res://assets/gameplay/floor.png" id="1"]
-[ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkRandomNumberGenerator.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://b8j7225pk00us" path="res://scenes/characters/MartialHero.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/gameplay/StageCamera.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://8moo65tj8xpu" path="res://scenes/ui/gameplay/GameplayUI.tscn" id="7"]
@@ -52,9 +51,6 @@ position = Vector2(-300, -100)
 fixed_position_x = 19660800
 fixed_position_y = -6553600
 position = Vector2(300, -100)
-
-[node name="Johnny" type="Node" parent="."]
-script = ExtResource("3")
 
 [node name="FloorStaticBody" type="SGStaticBody2D" parent="."]
 collision_layer = 2
