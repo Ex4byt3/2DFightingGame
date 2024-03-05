@@ -86,7 +86,7 @@ func process_networking_message(msg: Dictionary) -> void:
 	var packet = msg["payload"]
 	
 	var header = packet[0]
-	var data = packet.subarray(1, len(packet) - 1)
+	var data = packet.slice(1, len(packet))
 	
 	match header:
 		SYNC_TYPE.HANDSHAKE:
