@@ -80,6 +80,8 @@ func _init_characters() -> void:
 func _init_health() -> void:
 	p1_health_bar.max_value = p1_health_max 
 	p2_health_bar.max_value = p2_health_max
+	p1_health_bar.value = p1_health_max 
+	p2_health_bar.value = p2_health_max
 
 
 func _init_lives() -> void:
