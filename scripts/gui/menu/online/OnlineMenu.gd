@@ -92,8 +92,8 @@ func _filter_lobbies(_filter) -> void:
 	var search_text = searchbar.text
 	
 	var filter_dict = {
-		"Type": type_filter,
-		"State": state_filter,
+		"Type": type_filter.text,
+		"State": state_filter.text,
 		"Text": search_text,
 	}
 	
@@ -109,7 +109,9 @@ func check_lobby_visiblity(lobby, filter_dict: Dictionary):
 	var passed_checks = 0
 	
 	for key in filter_dict.keys():
+		print("Current Key: " + key)
 		var curr_filter = filter_dict.get(key)
+		print("Current Filter: " + curr_filter)
 		
 		if curr_filter and not curr_filter == "All Lobbies":
 			required_checks += 1
@@ -122,7 +124,7 @@ func check_lobby_visiblity(lobby, filter_dict: Dictionary):
 					if curr_filter == lobby.lobby_state:
 						passed_checks += 1
 				"Text":
-					if curr_filter in lobby.lobby_name:
+					if curr_filter and lobby.lobby_name.findn(curr_filter) >= 0:
 						passed_checks += 1
 	
 	if required_checks == passed_checks:

@@ -6,9 +6,6 @@
 [node name="MenuTreeButton" type="PanelContainer"]
 script = ExtResource("1_fcj4v")
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 2
-
 [node name="ButtonOverlay" type="HBoxContainer" parent="."]
 layout_mode = 2
 
@@ -23,3 +20,7 @@ stretch_mode = 5
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "ERR: MENU_NAME"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+flat = true
