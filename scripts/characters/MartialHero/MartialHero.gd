@@ -1,7 +1,11 @@
 extends Character
 
 @onready var animation = $NetworkAnimationPlayer
+@onready var attackAnimationPlayer = $DebugAnimationPlayer
 @onready var arrowSprite = $DebugSprite/DebugArrow
+@onready var attackSprite = $DebugSprite/DebugAttack
+
+var healthBar = null
 
 # Character Attributes
 var walkingSpeed = 4
@@ -17,6 +21,9 @@ var weight = 100
 var shortHopForce = 8
 var fullHopForce = 16
 var jumpSquatFrames = 4
+var health = 100
+var damage = 0
+var takeDamage = false
 
 # valid motion inputs for the character, listed in priority
 const motion_inputs = {
@@ -38,6 +45,9 @@ func _ready():
 	# Turn player 2 around
 	if self.name == "ClientPlayer":
 		facingRight = false
+		healthBar = get_parent().get_node('MatchUI/GameplayUI/StatusOverlay/Header/P2Info/HealthBar')
+	else:
+		healthBar = get_parent().get_node('MatchUI/GameplayUI/StatusOverlay/Header/P1Info/HealthBar')
 
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 	var input = previous_input.duplicate()
@@ -47,9 +57,18 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func _network_process(input: Dictionary) -> void:
+	healthBar.value = health
+	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
+	
+	overlappingHitBoxes = $HurtBox.get_overlapping_areas()
+	if len(overlappingHitBoxes) > 0:
+		if overlappingHitBoxes[0].used == false and overlappingHitBoxes[0].attacking_player != self.name:
+			takeDamage = true
+			damage = overlappingHitBoxes[0].damage
+			overlappingHitBoxes[0].used = true
 	
 	# Update position based off of velocity
 	set_velocity(velocity)
@@ -74,7 +93,11 @@ func _save_state() -> Dictionary:
 		airJump = airJump,
 		isOnFloor = isOnFloor,
 		usedJump = usedJump,
-		frame = frame
+		frame = frame,
+		health = health,
+		damage = damage,
+		takeDamage = takeDamage,
+		facingRight = facingRight
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -89,7 +112,10 @@ func _load_state(loadState: Dictionary) -> void:
 	airJump = loadState['airJump']
 	usedJump = loadState['usedJump']
 	isOnFloor = loadState['isOnFloor']
-	
+	health = loadState['health']
+	damage = loadState['damage']
+	takeDamage = loadState['takeDamage']
+	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	sync_to_physics_engine()
 

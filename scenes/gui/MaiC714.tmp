@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4hyhtqlpwu8v"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_q0ldh"]
+[ext_resource type="Script" path="res://scripts/gui/gameplay/MatchController.gd" id="2_68d7u"]
+[ext_resource type="PackedScene" uid="uid://bs70o7gme8ukv" path="res://scenes/gui/menu/MenuController.tscn" id="3_cyecs"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_q0ldh")
+
+[node name="MatchController" type="Node2D" parent="."]
+script = ExtResource("2_68d7u")
+
+[node name="MenuController" parent="." instance=ExtResource("3_cyecs")]

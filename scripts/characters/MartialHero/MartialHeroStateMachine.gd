@@ -18,6 +18,7 @@ func _ready():
 	add_state('SHORTHOP')
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
+	add_state('ATTACKED')
 	add_state('ATTACK')
 	add_state('BLOCK')
 	add_state('HITSTUN')
@@ -78,10 +79,10 @@ func transition_state(input):
 		reset_jumps()
 		
 	if parent.facingRight:
-		# parent.get_node('Sprite').flip_h = false
+		parent.attackSprite.flip_h = false
 		parent.arrowSprite.flip_h = false
 	else:
-		# parent.get_node('Sprite').flip_h = true
+		parent.attackSprite.flip_h = true
 		parent.arrowSprite.flip_h = true
 
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging
@@ -92,7 +93,9 @@ func transition_state(input):
 
 	match states[state]:
 		states.IDLE:
-			if parent.isOnFloor:
+			if parent.takeDamage:
+				set_state('ATTACKED')
+			elif parent.isOnFloor:
 				if parent.input_vector.x != 0:
 					# Update which direction the character is facing
 					if parent.input_vector.x > 0:
@@ -238,6 +241,11 @@ func transition_state(input):
 					parent.velocity.x = parent.maxAirSpeed
 				elif parent.velocity.x < -parent.maxAirSpeed:
 					parent.velocity.x = -parent.maxAirSpeed
+		states.ATTACKED:
+			parent.health -= parent.damage
+			parent.damage = 0
+			parent.takeDamage = false
+			set_state('IDLE')
 		states.ATTACK:
 			pass
 		states.BLOCK:
@@ -310,20 +318,90 @@ func handle_dash_state():
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):
 	# Because if it is not true it is null, need to add the false argument to default it to false instead of null
+	var spawn_position_x = parent.fixed_position.x
+	
+	if parent.facingRight:
+		spawn_position_x = (55 * ONE)
+	else:
+		spawn_position_x = -(55 * ONE)
+	
 	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", get_parent().get_parent(), Bomb, { fixed_position_x = parent.fixed_position.x, fixed_position_y = parent.fixed_position.y })
+		SyncManager.spawn("Bomb", parent.get_parent(), Bomb, { 
+			fixed_position_x = parent.fixed_position.x,
+			fixed_position_y = parent.fixed_position.y 
+		})
 	if input.get("attack_light", false):
-		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = parent.fixed_position.x, fixed_position_y = parent.fixed_position.y })
+		if parent.get_node("SpawnHitbox").get_child_count() == 0:
+			parent.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, { 
+				fixed_position_x = spawn_position_x,
+				fixed_position_y = 0,
+				fixed_scale_x = 1 * ONE,
+				fixed_scale_y = 1 * ONE,
+				fixed_rotation = 0,
+				damage = 1000,
+				attacking_player = parent.name
+			})
 	if input.get("attack_medium", false):
-		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = parent.fixed_position.x, fixed_position_y = parent.fixed_position.y })
+		if parent.get_node("SpawnHitbox").get_child_count() == 0:
+			parent.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+				fixed_position_x = spawn_position_x,
+				fixed_position_y = 0,
+				fixed_scale_x = 1 * ONE,
+				fixed_scale_y = 1 * ONE,
+				fixed_rotation = 0,
+				damage = 2000,
+				attacking_player = parent.name
+			})
 	if input.get("attack_heavy", false):
-		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = parent.fixed_position.x, fixed_position_y = parent.fixed_position.y })
+		if parent.get_node("SpawnHitbox").get_child_count() == 0:
+			parent.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+				fixed_position_x = spawn_position_x,
+				fixed_position_y = 0,
+				fixed_scale_x = 1 * ONE,
+				fixed_scale_y = 1 * ONE,
+				fixed_rotation = 0,
+				damage = 3000,
+				attacking_player = parent.name
+			})
 	if input.get("impact", false):
-		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = parent.fixed_position.x, fixed_position_y = parent.fixed_position.y })
+		if parent.get_node("SpawnHitbox").get_child_count() == 0:
+			parent.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+				fixed_position_x = spawn_position_x,
+				fixed_position_y = 0,
+				fixed_scale_x = 1 * ONE,
+				fixed_scale_y = 1 * ONE,
+				fixed_rotation = 0,
+				damage = 1000,
+				attacking_player = parent.name
+			})
 	if input.get("dash", false):
-		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = parent.fixed_position.x, fixed_position_y = parent.fixed_position.y })
+		if parent.get_node("SpawnHitbox").get_child_count() == 0:
+			parent.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+				fixed_position_x = spawn_position_x,
+				fixed_position_y = 0,
+				fixed_scale_x = 1 * ONE,
+				fixed_scale_y = 1 * ONE,
+				fixed_rotation = 0,
+				damage = 1000,
+				attacking_player = parent.name
+			})
 	if input.get("block", false):
-		SyncManager.spawn("Attack_Light", get_parent().get_parent(), Attack_Light, { fixed_position_x = parent.fixed_position.x, fixed_position_y = parent.fixed_position.y })
+		if parent.get_node("SpawnHitbox").get_child_count() == 0:
+			parent.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+				fixed_position_x = spawn_position_x,
+				fixed_position_y = 0,
+				fixed_scale_x = 1 * ONE,
+				fixed_scale_y = 1 * ONE,
+				fixed_rotation = 0,
+				damage = 1000,
+				attacking_player = parent.name
+			})
 
 
 func update_debug_label(input_vector):
