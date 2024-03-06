@@ -735,7 +735,13 @@ hframes = 9
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="."]
 shape = SubResource("1")
-visible = false
+
+[node name="ColorRect" type="ColorRect" parent="SGCollisionShape2D"]
+offset_left = -36.0
+offset_top = -63.0
+offset_right = 36.0
+offset_bottom = 63.0
+color = Color(0, 0, 1, 0.607843)
 
 [node name="NormNetworkAnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -759,5 +765,13 @@ script = ExtResource("1")
 
 [node name="HurtBox" type="SGCollisionShape2D" parent="HurtBox"]
 shape = SubResource("SGRectangleShape2D_dufex")
+
+[node name="ColorRect" type="ColorRect" parent="HurtBox/HurtBox"]
+offset_left = 38.0
+offset_top = -63.0
+offset_right = 113.0
+offset_bottom = 18.0
+scale = Vector2(-1.0101, 1.5565)
+color = Color(0, 1, 0, 0.411765)
 
 [node name="SpawnHitbox" type="SGFixedNode2D" parent="."]

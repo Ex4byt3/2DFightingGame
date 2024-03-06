@@ -62,7 +62,10 @@ func _network_process(input: Dictionary) -> void:
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
 	
-	overlappingHitBoxes = $HurtBox.get_overlapping_areas()
+	var hurtBox = get_node("HurtBox")
+	overlappingHitBoxes = hurtBox.get_overlapping_areas()
+	for area in overlappingHitBoxes:
+		print(area.used, " ", area.attacking_player, " ", self.name)
 	if len(overlappingHitBoxes) > 0:
 		if overlappingHitBoxes[0].used == false and overlappingHitBoxes[0].attacking_player != self.name:
 			takeDamage = true

@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://8moo65tj8xpu" path="res://scenes/gui/gameplay/GameplayUI.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://rgop4j6sft35" path="res://assets/gameplay/debug/gridtexture.png" id="10"]
 
-
 [sub_resource type="SGRectangleShape2D" id="1"]
 extents_x = 81920000
 extents_y = 38020160
