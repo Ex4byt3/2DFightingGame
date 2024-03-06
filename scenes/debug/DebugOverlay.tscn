@@ -36,9 +36,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.7
 text = "PLAYER TWO DEBUG:"
+horizontal_alignment = 2
 
 [node name="ClientPlayerInputBuffer" type="Label" parent="DebugLabels"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "PLAYER TWO INPUT BUFFER:"
+horizontal_alignment = 2

@@ -6,7 +6,7 @@ const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNe
 @onready var sync_lost_label = $Messages/SyncLostLabel
 @onready var server_player = $ServerPlayer
 @onready var client_player = $ClientPlayer
-@onready var johnny = $Johnny
+#@onready var johnny = $Johnny
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
