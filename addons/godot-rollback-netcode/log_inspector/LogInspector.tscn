@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://58hro2kq3tlw" path="res://addons/godot-rollback-netcode/log_inspector/FrameViewer.tscn" id="4"]
 [ext_resource type="Script" path="res://addons/godot-rollback-netcode/log_inspector/ReplayServer.gd" id="5"]
 
-
 [node name="LogInspector" type="AcceptDialog"]
 title = "Log Inspector"
 size = Vector2i(1024, 600)

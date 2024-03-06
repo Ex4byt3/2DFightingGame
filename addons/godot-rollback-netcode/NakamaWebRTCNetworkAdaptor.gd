@@ -34,7 +34,6 @@
 		#OnlineMatch.webrtc_peer_added.connect(self._on_OnlineMatch_webrtc_peer_added)
 		#OnlineMatch.webrtc_peer_removed.connect(self._on_OnlineMatch_webrtc_peer_removed)
 		#OnlineMatch.disconnected.connect(self._on_OnlineMatch_disconnected)
-		#OnlineMatch.match_left.connect(self._on_OnlineMatch_match_left)
 	#else:
 		#push_error("Can't find OnlineMatch singleton that the NakamaWebRTCNetworkAdaptor depends on!")
 #
@@ -43,7 +42,6 @@
 		#OnlineMatch.webrtc_peer_added.disconnect(self._on_OnlineMatch_webrtc_peer_added)
 		#OnlineMatch.webrtc_peer_removed.disconnect(self._on_OnlineMatch_webrtc_peer_removed)
 		#OnlineMatch.disconnected.disconnect(self._on_OnlineMatch_disconnected)
-		#OnlineMatch.match_left.disconnect(self._on_OnlineMatch_match_left)
 #
 #func start_network_adaptor(sync_manager) -> void:
 	#_last_messages.clear()
@@ -83,9 +81,6 @@
 		#_data_channels.erase(peer_id)
 #
 #func _on_OnlineMatch_disconnected() -> void:
-	#_data_channels.clear()
-#
-#func _on_OnlineMatch_match_left() -> void:
 	#_data_channels.clear()
 #
 #func send_input_tick(peer_id: int, msg: PackedByteArray) -> void:
