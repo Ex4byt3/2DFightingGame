@@ -47,6 +47,10 @@ func _ready():
 	if self.name == "ClientPlayer":
 		facingRight = false
 		player = 2
+		$HurtBox.set_collision_layer_bit(1, false)
+		$HurtBox.set_collision_mask_bit(2, false)
+		$HurtBox.set_collision_layer_bit(2, true)
+		$HurtBox.set_collision_mask_bit(1, true)
 
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 	var input = previous_input.duplicate()
@@ -76,7 +80,6 @@ func _network_process(input: Dictionary) -> void:
 	set_velocity(velocity)
 	set_up_direction(SGFixed.vector2(0, -SGFixed.ONE))
 	move_and_slide()
-	velocity = velocity
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
 	isOnFloor = is_on_floor() 

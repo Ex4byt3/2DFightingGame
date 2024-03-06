@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=39 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/characters/MartialHero/MartialHero.gd" id="2"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cw5w1a2dae8o6" path="res://assets/characters/MartialHero/Idle.png" id="11"]
 [ext_resource type="Script" path="res://scripts/characters/SpriteAnimator.gd" id="12"]
 [ext_resource type="Texture2D" uid="uid://cwji0bj8ykdyu" path="res://assets/characters/debug/placeholders.png" id="13"]
+[ext_resource type="Script" path="res://scenes/characters/HurtBox.gd" id="14_mb0le"]
 
 [sub_resource type="SGRectangleShape2D" id="1"]
 extents_x = 2424832
@@ -761,7 +762,10 @@ libraries = {
 }
 script = ExtResource("1")
 
-[node name="HurtBox" type="SGArea2D" parent="."]
+[node name="HurtBox" type="SGArea2D" parent="." groups=["network_sync"]]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("14_mb0le")
 
 [node name="HurtBox" type="SGCollisionShape2D" parent="HurtBox"]
 shape = SubResource("SGRectangleShape2D_dufex")
@@ -773,5 +777,6 @@ offset_right = 113.0
 offset_bottom = 18.0
 scale = Vector2(-1.0101, 1.5565)
 color = Color(0, 1, 0, 0.411765)
+metadata/_edit_use_anchors_ = true
 
 [node name="SpawnHitbox" type="SGFixedNode2D" parent="."]

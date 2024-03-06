@@ -19,6 +19,11 @@ func _network_spawn(data: Dictionary) -> void:
 	fixed_rotation = data['fixed_rotation']
 	damage = data['damage']
 	attacking_player = data['attacking_player']
+	if attacking_player == "ClientPlayer":
+		set_collision_layer_bit(1, false)
+		set_collision_mask_bit(2, false)
+		set_collision_layer_bit(2, true)
+		set_collision_mask_bit(1, true)
 	despawn_timer.start()
 
 func _network_despawn() -> void:
