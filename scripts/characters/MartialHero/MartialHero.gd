@@ -21,9 +21,10 @@ var weight = 100
 var shortHopForce = 8
 var fullHopForce = 16
 var jumpSquatFrames = 4
-var health = 100
+var health = 10000
 var damage = 0
 var takeDamage = false
+var player = 1
 
 # valid motion inputs for the character, listed in priority
 const motion_inputs = {
@@ -45,9 +46,7 @@ func _ready():
 	# Turn player 2 around
 	if self.name == "ClientPlayer":
 		facingRight = false
-		healthBar = get_parent().get_node('MatchUI/GameplayUI/StatusOverlay/Header/P2Info/HealthBar')
-	else:
-		healthBar = get_parent().get_node('MatchUI/GameplayUI/StatusOverlay/Header/P1Info/HealthBar')
+		player = 2
 
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 	var input = previous_input.duplicate()
@@ -57,7 +56,7 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func _network_process(input: Dictionary) -> void:
-	healthBar.value = health
+	MenuSignalBus.emit_update_health(health, player)
 	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))

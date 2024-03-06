@@ -1116,9 +1116,10 @@ func _physics_process(_delta: float) -> void:
 	if _mechanized:
 		_rollback_ticks = mechanized_rollback_ticks
 	else:
-		if debug_random_rollback_ticks > 0:
+		if debug_random_rollback_ticks > 0 and _current_tick > 0:
 			randomize()
-			debug_rollback_ticks = randi() % debug_random_rollback_ticks
+			var random_rollback_ticks = min(_current_tick, randi() % (debug_random_rollback_ticks + 1))
+			_rollback_ticks = max(_rollback_ticks, random_rollback_ticks)
 		if debug_rollback_ticks > 0 and _current_tick >= debug_rollback_ticks:
 			_rollback_ticks = max(_rollback_ticks, debug_rollback_ticks)
 
