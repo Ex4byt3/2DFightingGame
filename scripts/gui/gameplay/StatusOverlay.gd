@@ -31,8 +31,8 @@ var p1_meter_val: int = 0
 var p2_meter_val: int = 0
 
 # Variables updated on signal call
-var p1_num_lives: int = 3 # Grab from lobby
-var p2_num_lives: int = 3 # Same
+var p1_num_lives: int = 2 # Grab from lobby
+var p2_num_lives: int = 2 # Same
 
 # Timer variables
 var match_time: int = 180
@@ -61,18 +61,31 @@ func _handle_connecting_signals() -> void:
 
 func _init_ui() -> void:
 	_init_timer()
+	_init_characters()
+	_init_health()
+	_init_lives()
 
 
-func _init_player_health() -> void:
+func _init_timer() -> void:
+	add_child(match_timer)
+	match_timer.set_one_shot(true)
+	match_timer.set_wait_time(match_time)
+	match_timer.start()
+
+
+func _init_characters() -> void:
+	pass
+
+
+func _init_health() -> void:
 	p1_health_bar.max_value = p1_health_max 
 	p2_health_bar.max_value = p2_health_max
-	p1_health_bar.value = p1_health_max
+	p1_health_bar.value = p1_health_max 
 	p2_health_bar.value = p2_health_max
 
 
-func _init_player_burst() -> void:
-	p1_burst_bar.value = p1_burst_val
-	p2_burst_bar.value = p2_burst_val
+func _init_lives() -> void:
+	pass
 
 
 ##################################################
@@ -82,14 +95,24 @@ func _update_ui() -> void:
 	_set_time()
 
 
-func _update_player_data() -> void:
+##################################################
+# PLAYER STATUS FUNCTIONS
+##################################################
+func _set_player_health() -> void:
 	p1_health_bar.value = p1_health_val
 	p2_health_bar.value = p2_health_val
 
 
-##################################################
-# UPDATE FUNCTIONS
-##################################################
+func _set_player_burst() -> void:
+	p1_burst_bar.value = p1_burst_val
+	p2_burst_bar.value = p2_burst_val
+
+
+func _set_player_meter() -> void:
+	p1_burst_bar.value = p1_burst_val
+	p2_burst_bar.value = p2_burst_val
+
+
 func _update_health(hp_val: int, player: int) -> void:
 	match player:
 		1: # Player 1
@@ -98,6 +121,7 @@ func _update_health(hp_val: int, player: int) -> void:
 			p2_health_val = hp_val
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
+	_set_player_health()
 
 
 func _update_burst(burst_val: int, player: int) -> void:
@@ -108,6 +132,7 @@ func _update_burst(burst_val: int, player: int) -> void:
 			p2_burst_val = burst_val
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
+	_set_player_burst()
 
 
 func _update_meter(meter_val: int, player: int) -> void:
@@ -118,18 +143,12 @@ func _update_meter(meter_val: int, player: int) -> void:
 			p2_meter_val = meter_val
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
+	_set_player_meter()
 
 
 ##################################################
 # TIMER FUNCTIONS
 ##################################################
-func _init_timer() -> void:
-	add_child(match_timer)
-	match_timer.set_one_shot(true)
-	match_timer.set_wait_time(match_time)
-	match_timer.start()
-
-
 func _set_time() -> void:
 	var minutes: int = match_timer.time_left / 60
 	var seconds: int = match_timer.time_left - 60 * minutes

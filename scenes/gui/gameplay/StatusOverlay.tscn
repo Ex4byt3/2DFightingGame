@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://bpb3irbilm2vu"]
+[gd_scene load_steps=21 format=3 uid="uid://bpb3irbilm2vu"]
 
 [ext_resource type="Texture2D" uid="uid://vjxjlgsxp5l8" path="res://assets/menu/icons/timer_icon.png" id="1"]
 [ext_resource type="Texture2D" uid="uid://c3i2f1gal0425" path="res://assets/menu/images/ramlethal.jpg" id="2"]
 [ext_resource type="Texture2D" uid="uid://bv10ohqhc1drx" path="res://assets/menu/icons/life_icon.png" id="3"]
+[ext_resource type="PackedScene" uid="uid://s2hgyln4u0ve" path="res://scenes/gui/gameplay/Life.tscn" id="3_wp5wc"]
 [ext_resource type="FontFile" uid="uid://rdn2jvl5in8j" path="res://assets/fonts/Orbitron/static/Orbitron-Bold.ttf" id="4"]
 [ext_resource type="Script" path="res://scripts/gui/gameplay/StatusOverlay.gd" id="5"]
 
@@ -96,10 +97,8 @@ anchor_bottom = 0.2
 offset_top = 0.0549994
 alignment = 2
 
-[node name="Life" type="NinePatchRect" parent="Header/P1Info/Lives"]
-custom_minimum_size = Vector2(20, 20)
+[node name="Life" parent="Header/P1Info/Lives" instance=ExtResource("3_wp5wc")]
 layout_mode = 2
-texture = ExtResource("3")
 
 [node name="HealthBackground" type="Panel" parent="Header/P1Info"]
 layout_mode = 0
