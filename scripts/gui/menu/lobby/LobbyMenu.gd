@@ -52,6 +52,9 @@ func _init_lobby() -> void:
 	_get_lobby_members()
 	LOBBY_ID = get_parent().lobby_id
 	lobby_name_label.set_text(Steam.getLobbyData(LOBBY_ID, "name"))
+	mode_label.set_text(Steam.getLobbyData(LOBBY_ID, "mode"))
+	type_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_type"))
+	state_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_state"))
 
 
 ##################################################

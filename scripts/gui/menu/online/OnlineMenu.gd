@@ -160,6 +160,10 @@ func _on_Lobby_Created(connect: int, lobby_id: int) -> void:
 		print("[STEAM] Setting lobby name data successful: "+str(lobby_data))
 		lobby_data = Steam.setLobbyData(lobby_id, "mode", "Steam")
 		print("[STEAM] Setting lobby mode data successful: "+str(lobby_data))
+		lobby_data = Steam.setLobbyData(lobby_id, "lobby_type", "Temp")
+		print("[STEAM] Setting lobby type data successful: "+str(lobby_data))
+		lobby_data = Steam.setLobbyData(lobby_id, "lobby_state", "Open")
+		print("[STEAM] Setting lobby state data successful: "+str(lobby_data))
 	
 	else:
 		print("[STEAM] Failed to create lobby")
@@ -191,17 +195,30 @@ func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response:
 
 func _on_Lobby_Match_List(lobbies: Array) -> void:
 	for lobby in lobbies:
+		var owner_persona_name = Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby))
 		var lobby_name = Steam.getLobbyData(lobby, "name")
 		var lobby_mode = Steam.getLobbyData(lobby, "mode")
+		var lobby_type = Steam.getLobbyData(lobby, "lobby_type")
+		var lobby_state = Steam.getLobbyData(lobby, "lobby_state")
 		var num_players: int = Steam.getNumLobbyMembers(lobby)
 		
 		var new_lobby_tile = lobby_tile.instantiate()
 		
+		if lobby_name:
+			new_lobby_tile.lobby_name = lobby_name
+		else:
+			new_lobby_tile.lobby_name = owner_persona_name + "'s Lobby"
+		
 		if lobby_mode:
 			new_lobby_tile.network_type = lobby_mode
 		
+		if lobby_type:
+			new_lobby_tile.lobby_type = lobby_type
+		
+		if lobby_state:
+			new_lobby_tile.lobby_state = lobby_state
+		
 		new_lobby_tile.num_lobby_members = num_players
-		new_lobby_tile.lobby_host_name = Steam.getFriendPersonaName(lobby)
 		
 		lobbytile_container.add_child(new_lobby_tile)
 		

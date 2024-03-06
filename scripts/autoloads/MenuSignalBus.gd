@@ -2,7 +2,6 @@ extends Node
 
 # Signals for changing the currently visible menu
 signal setup_menu
-
 signal start_match
 signal leave_match
 signal goto_previous_menu(menu)
@@ -21,6 +20,11 @@ signal update_debug(debug_data)
 signal update_input_buffer(input_data)
 signal update_debug_visibility(button_checked)
 
+# Signals for status ui
+signal update_health(hp_val, player)
+signal update_burst(burst_val, player)
+signal update_meter(meter_val, player)
+
 # Signals for slinky buttons
 signal set_buttons_inactive
 signal set_buttons_active
@@ -29,9 +33,9 @@ signal mouse_entered_slinky(button_name)
 signal mouse_exited_slinky(button_name)
 
 
-##########################################################
-# Emit functions for changing the currently visible menu #
-##########################################################
+##################################################
+# EMIT FUNCTIONS FOR MANIPULATING THE GAME MENU
+##################################################
 func emit_setup_menu() -> void:
 	emit_signal("setup_menu")
 
@@ -51,9 +55,9 @@ func emit_toggle_settings_visibility() -> void:
 	emit_signal("toggle_settings_visibility")
 
 
-###############################
-# Emit functions for settings #
-###############################
+##################################################
+# EMIT FUNCTIONS FOR SETTINGS
+##################################################
 
 func emit_set_settings_dict(settings_dict: Dictionary) -> void:
 	emit_signal("set_settings_dict", settings_dict)
@@ -68,10 +72,9 @@ func emit_load_settings_data(settings_dict: Dictionary) -> void:
 	emit_signal("load_settings_data", settings_dict)
 
 
-###############################
-# Emit functions for gameplay ui #
-###############################
-
+##################################################
+# EMIT FUNCTIONS FOR GAMEPLAY UI
+##################################################
 func emit_load_ui(ui_settings: Dictionary) -> void:
 	emit_signal("load_ui_local", ui_settings)
 
@@ -85,9 +88,22 @@ func emit_update_debug_visibility(button_checked: bool) -> void:
 	emit_signal("update_debug_visibility", button_checked)
 
 
-#####################################
-# Emit functions for slinky buttons #
-#####################################
+##################################################
+# EMIT FUNCTIONS FOR STATUS UI
+##################################################
+func emit_update_health(hp_val: int, player: int) -> void:
+	emit_signal("update_health", hp_val, player)
+
+func emit_update_burst(burst_val: int, player: int) -> void:
+	emit_signal("update_burst", burst_val, player)
+
+func emit_update_meter(meter_val: int, player: int) -> void:
+	emit_signal("update_meter", meter_val, player)
+
+
+##################################################
+# EMIT FUNCTIONS FOR SLINKY BUTTONS
+##################################################
 
 func emit_set_buttons_inactive() -> void:
 	emit_signal("set_buttons_inactive")
@@ -104,10 +120,10 @@ func emit_mouse_entered_slinky(button_name: String) -> void:
 func emit_mouse_exited_slinky(button_name: String) -> void:
 	emit_signal("mouse_exited_slinky", button_name)
 
-#####################################
-# Global menu functions #
-#####################################
 
+##################################################
+# GLOBAL FUNCTIONS
+##################################################
 # Connect a signal and show the success code
 func _connect_Signals(origin, target, connecting_signal: String, connecting_function: String) -> void:
 	var signal_error: int = origin.connect(connecting_signal, Callable(target, connecting_function))
