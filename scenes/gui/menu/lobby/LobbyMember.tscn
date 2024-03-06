@@ -1,0 +1,72 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnp6pdxlyfnov"]
+
+[ext_resource type="Script" path="res://scripts/gui/menu/lobby/LobbyMember.gd" id="1_5jttv"]
+[ext_resource type="Texture2D" uid="uid://dniqas512whmb" path="res://assets/menu/icons/player_icon.png" id="2_ih8is"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[node name="LobbyMember" type="Control"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 3
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+script = ExtResource("1_5jttv")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("1")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+theme_override_constants/separation = 10
+
+[node name="MemberAvatar" type="NinePatchRect" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_ih8is")
+
+[node name="NameLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 7
+text = "ERR: NAME_NOT_FOUND"
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 9
+size_flags_vertical = 7
+text = "ERR: STATUS"
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ChallengeButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(90, 30)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Challenge"

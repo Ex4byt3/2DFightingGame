@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=3 uid="uid://df1s2kfihcplq"]
+
+[ext_resource type="Theme" uid="uid://def50kwxevtv3" path="res://assets/resources/gui/headermenu_theme.tres" id="1_87tvy"]
+[ext_resource type="Texture2D" uid="uid://dhu4nt2atki8t" path="res://assets/menu/icons/delta_logo_placeholder.png" id="2_qk1g8"]
+[ext_resource type="Script" path="res://scripts/gui/menu/header/HeaderMenu.gd" id="2_yqv2n"]
+[ext_resource type="Texture2D" uid="uid://dfdwc8lf1ihg6" path="res://assets/menu/icons/settings_icon.png" id="3_ukfnk"]
+[ext_resource type="Texture2D" uid="uid://dqsv6lqhsbkju" path="res://assets/menu/icons/active_quit_icon.png" id="4_fcvph"]
+
+[sub_resource type="Gradient" id="Gradient_h30ve"]
+colors = PackedColorArray(0, 0.406009, 0.680994, 1, 0.379284, 0.728327, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_drd34"]
+gradient = SubResource("Gradient_h30ve")
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_27tar"]
+texture = SubResource("GradientTexture2D_drd34")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_elrg7"]
+bg_color = Color(0.133333, 0.133333, 0.133333, 1)
+
+[node name="HeaderMenu" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 0.075
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_87tvy")
+script = ExtResource("2_yqv2n")
+
+[node name="Bars" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="PanelContainer" parent="Bars"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_27tar")
+
+[node name="MarginContainer" type="MarginContainer" parent="Bars/TopBar"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Bars/TopBar/MarginContainer"]
+layout_mode = 2
+
+[node name="GameLogo" type="TextureRect" parent="Bars/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_qk1g8")
+expand_mode = 3
+
+[node name="GameTitle" type="Label" parent="Bars/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "DELTA"
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Bars/TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="SettingsButton" type="Button" parent="Bars/TopBar/MarginContainer/HBoxContainer/ButtonContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("3_ukfnk")
+icon_alignment = 1
+expand_icon = true
+
+[node name="QuitButton" type="Button" parent="Bars/TopBar/MarginContainer/HBoxContainer/ButtonContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+icon = ExtResource("4_fcvph")
+icon_alignment = 1
+expand_icon = true
+
+[node name="BottomBar" type="PanelContainer" parent="Bars"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+theme_override_styles/panel = SubResource("StyleBoxFlat_elrg7")
+
+[node name="MarginContainer" type="MarginContainer" parent="Bars/BottomBar"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Bars/BottomBar/MarginContainer"]
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="Bars/BottomBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="MenuTreeButtonContainer" type="HBoxContainer" parent="Bars/BottomBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

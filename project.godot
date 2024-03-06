@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Project Delta"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/gui/Main.tscn"
 config/features=PackedStringArray("4.2")
 config/icon="res://assets/gameplay/icon.png"
 
@@ -306,7 +306,7 @@ rollback/classes/network_adaptor="res://addons/godot-rollback-netcode/RPCNetwork
 rollback/classes/message_serializer="res://scripts/networking/CustomMessageSerializer.gd"
 rollback/debug/rollback_ticks=4
 rollback/debug/random_rollback_ticks=10
-rollback/log_inspector/replay_match_scene_path="res://scenes/Main.tscn"
+rollback/log_inspector/replay_match_scene_path="res://scenes/gui/Main.tscn"
 
 [physics]
 

@@ -1,0 +1,139 @@
+[gd_scene load_steps=7 format=3 uid="uid://camps3igeedlb"]
+
+[ext_resource type="Theme" uid="uid://dl4oixccn3c76" path="res://assets/resources/menu/online/matchtile_theme.tres" id="1_51hpw"]
+[ext_resource type="Script" path="res://scripts/gui/menu/lobby/MatchTile.gd" id="2_pqxnq"]
+
+[sub_resource type="Gradient" id="2"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.219608, 0.764706, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="3"]
+gradient = SubResource("2")
+
+[sub_resource type="Gradient" id="4"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.219608, 0.764706, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="5"]
+gradient = SubResource("4")
+
+[node name="MatchTile" type="Control"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 3
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_51hpw")
+script = ExtResource("2_pqxnq")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="PlayersNames" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="P1NameLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/PlayersNames"]
+layout_mode = 2
+
+[node name="P2NameLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/PlayersNames"]
+clip_contents = true
+layout_mode = 2
+
+[node name="InfoBox" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MatchInfo" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Health Bars" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="P1Health" type="TextureProgressBar" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/Health Bars"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+value = 100.0
+nine_patch_stretch = true
+texture_progress = SubResource("3")
+
+[node name="P2Health" type="TextureProgressBar" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/Health Bars"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+value = 100.0
+nine_patch_stretch = true
+texture_progress = SubResource("5")
+
+[node name="KOs" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo"]
+layout_mode = 2
+alignment = 1
+
+[node name="Player1Lives" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/KOs"]
+layout_mode = 2
+
+[node name="LivesLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/KOs/Player1Lives"]
+layout_mode = 2
+text = "Lives:"
+
+[node name="NumLivesLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/KOs/Player1Lives"]
+layout_mode = 2
+text = "ERR"
+
+[node name="Player2Lives" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/KOs"]
+layout_mode = 2
+
+[node name="LivesLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/KOs/Player2Lives"]
+layout_mode = 2
+text = "Lives:"
+
+[node name="NumLivesLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/KOs/Player2Lives"]
+layout_mode = 2
+text = "ERR"
+
+[node name="Timer" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="NinePatchRect" type="NinePatchRect" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/Timer"]
+layout_mode = 2
+
+[node name="CurrentTime" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox/MatchInfo/Timer"]
+layout_mode = 2
+text = "00:00"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox"]
+layout_mode = 2
+
+[node name="SpectateButton" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/InfoBox"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Spectate"

@@ -1,0 +1,152 @@
+[gd_scene load_steps=10 format=3 uid="uid://bu7v5i6hvij6y"]
+
+[ext_resource type="Script" path="res://scripts/gui/menu/online/LobbyTile.gd" id="1_vybod"]
+[ext_resource type="FontFile" uid="uid://rdn2jvl5in8j" path="res://assets/fonts/Orbitron/static/Orbitron-Bold.ttf" id="2_vh4iy"]
+[ext_resource type="Texture2D" uid="uid://dniqas512whmb" path="res://assets/menu/icons/player_icon.png" id="3_7n8co"]
+
+[sub_resource type="FontFile" id="3"]
+fallbacks = Array[Font]([ExtResource("2_vh4iy")])
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+
+[sub_resource type="StyleBoxEmpty" id="4"]
+
+[sub_resource type="StyleBoxEmpty" id="5"]
+
+[sub_resource type="StyleBoxEmpty" id="6"]
+
+[sub_resource type="StyleBoxFlat" id="7"]
+bg_color = Color(0.407843, 0.498039, 0.501961, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="11"]
+
+[node name="LobbyTile" type="Control"]
+custom_minimum_size = Vector2(500, 50)
+layout_mode = 3
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_vybod")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="InfoPane" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Infobox" type="VBoxContainer" parent="PanelContainer/MarginContainer/InfoPane"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="NameLabel" type="Label" parent="PanelContainer/MarginContainer/InfoPane/Infobox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("3")
+theme_override_styles/normal = SubResource("4")
+text = "Lobby Name"
+
+[node name="LobbyStatus" type="HBoxContainer" parent="PanelContainer/MarginContainer/InfoPane/Infobox"]
+layout_mode = 2
+
+[node name="ModePanel" type="PanelContainer" parent="PanelContainer/MarginContainer/InfoPane/Infobox/LobbyStatus"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/InfoPane/Infobox/LobbyStatus/ModePanel"]
+layout_mode = 2
+text = "ERR: MODE"
+
+[node name="StatePanel" type="PanelContainer" parent="PanelContainer/MarginContainer/InfoPane/Infobox/LobbyStatus"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/InfoPane/Infobox/LobbyStatus/StatePanel"]
+layout_mode = 2
+text = "ERR: STATE"
+
+[node name="TypePanel" type="PanelContainer" parent="PanelContainer/MarginContainer/InfoPane/Infobox/LobbyStatus"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/InfoPane/Infobox/LobbyStatus/TypePanel"]
+layout_mode = 2
+text = "ERR: TYPE"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/InfoPane"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ParticipantsInfo" type="HBoxContainer" parent="PanelContainer/MarginContainer/InfoPane"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HostNameLabel" type="Label" parent="PanelContainer/MarginContainer/InfoPane/ParticipantsInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("5")
+text = "Host: ERR: HOST_NAME"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/InfoPane/ParticipantsInfo"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("6")
+
+[node name="Panel" type="Panel" parent="PanelContainer/MarginContainer/InfoPane/ParticipantsInfo"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_vertical = 5
+theme_override_styles/panel = SubResource("7")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/InfoPane/ParticipantsInfo/Panel"]
+layout_mode = 0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -8.0
+offset_bottom = 8.0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/InfoPane/ParticipantsInfo/Panel/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+texture = ExtResource("3_7n8co")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NumMembersLabel" type="Label" parent="PanelContainer/MarginContainer/InfoPane/ParticipantsInfo/Panel/HBoxContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("11")
+text = "0"
+vertical_alignment = 1
+
+[node name="JoinButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true

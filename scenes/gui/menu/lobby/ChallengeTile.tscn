@@ -1,0 +1,84 @@
+[gd_scene load_steps=3 format=3 uid="uid://ownac6w3ldrx"]
+
+[ext_resource type="Script" path="res://scripts/gui/menu/lobby/ChallengeTile.gd" id="1_hh78n"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[node name="ChallengeTile" type="Control"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 3
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hh78n")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("1")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="SenderInfo" type="HBoxContainer" parent="Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SenderLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/SenderInfo"]
+layout_mode = 2
+text = "Challenger:"
+
+[node name="SenderNameLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/SenderInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ERR"
+
+[node name="RecipientInfo" type="HBoxContainer" parent="Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RecipientLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/RecipientInfo"]
+layout_mode = 2
+text = "Challenged:"
+
+[node name="RecipientNameLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/RecipientInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "ERR"
+
+[node name="ChoiceBox" type="HBoxContainer" parent="Panel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="AcceptButton" type="Button" parent="Panel/MarginContainer/HBoxContainer/ChoiceBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Accept"
+
+[node name="RejectButton" type="Button" parent="Panel/MarginContainer/HBoxContainer/ChoiceBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Reject"
+
+[node name="PendingLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Response Pending"
+uppercase = true

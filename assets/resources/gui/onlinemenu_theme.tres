@@ -1,0 +1,17 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://citcf1vymhp3"]
+
+[ext_resource type="StyleBox" uid="uid://beh7a27qfdobx" path="res://assets/resources/gui/buttons/hovered/button_hovered_style_box_flat.tres" id="1_c85dx"]
+[ext_resource type="StyleBox" uid="uid://bwc3akbqsv0he" path="res://assets/resources/gui/buttons/normal/button_normal_style_box_flat.tres" id="2_10onb"]
+[ext_resource type="StyleBox" uid="uid://bhjca7pebo0ta" path="res://assets/resources/gui/buttons/pressed/button_pressed_style_box_flat.tres" id="3_18d1k"]
+[ext_resource type="FontVariation" uid="uid://b7ua60tmfg5j3" path="res://assets/resources/gui/fonts/menu_normal_font.tres" id="4_yb8hw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_su7og"]
+
+[resource]
+default_font = ExtResource("4_yb8hw")
+default_font_size = 16
+Button/styles/focus = null
+Button/styles/hover = ExtResource("1_c85dx")
+Button/styles/normal = ExtResource("2_10onb")
+Button/styles/pressed = ExtResource("3_18d1k")
+VSeparator/styles/separator = SubResource("StyleBoxEmpty_su7og")
