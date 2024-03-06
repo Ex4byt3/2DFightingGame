@@ -4,6 +4,10 @@ extends VBoxContainer
 @onready var displayed_time = $Header/Timer/TimerBackground/DisplayedTime
 @onready var p1_health_bar = $Header/P1Info/HealthBar
 @onready var p2_health_bar = $Header/P2Info/HealthBar
+@onready var p1_burst_bar = $Header/P1Info/BurstBar
+@onready var p2_burst_bar = $Header/P2Info/BurstBar
+@onready var p1_meter_bar = $Footer/P1Meter/MeterBar
+@onready var p2_meter_bar = $Footer/P2Meter/MeterBar
 
 # TODO: Add steam name above character bar.
 # The character's name should be shown on the health bar.
@@ -19,16 +23,16 @@ var p1_health_max: int = 10000 # TODO: Grab from character specific script
 var p2_health_max: int = 10000 # ^ Same
 
 # Variables updated on process
-var p1_health: int
-var p2_health: int
-var p1_burst: int = 0
-var p2_burst: int = 0
-var p1_meter: int = 0
-var p2_meter: int = 0
+var p1_health_val: int = p1_health_max
+var p2_health_val: int
+var p1_burst_val: int = 0
+var p2_burst_val: int = 0
+var p1_meter_val: int = 0
+var p2_meter_val: int = 0
 
 # Variables updated on signal call
-var p1_lives: int = 3 # Grab from lobby
-var p2_lives: int = 3 # Same
+var p1_num_lives: int = 3 # Grab from lobby
+var p2_num_lives: int = 3 # Same
 
 # Timer variables
 var match_time: int = 180
@@ -50,6 +54,9 @@ func _process(delta):
 ##################################################
 func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(match_timer, self, "timeout", "_on_timeout")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_health", "_update_health")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_burst", "_update_burst")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_meter", "_update_meter")
 
 
 func _init_ui() -> void:
@@ -60,7 +67,13 @@ func _init_player_health() -> void:
 	p1_health_bar.max_value = p1_health_max 
 	p2_health_bar.max_value = p2_health_max
 	p1_health_bar.value = p1_health_max
-	p2_health_bar.value = p1_health_max
+	p2_health_bar.value = p2_health_max
+
+
+func _init_player_burst() -> void:
+	p1_burst_bar.value = p1_burst_val
+	p2_burst_bar.value = p2_burst_val
+
 
 ##################################################
 # PROCESS FUNCTIONS
@@ -70,7 +83,41 @@ func _update_ui() -> void:
 
 
 func _update_player_data() -> void:
-	pass
+	p1_health_bar.value = p1_health_val
+	p2_health_bar.value = p2_health_val
+
+
+##################################################
+# UPDATE FUNCTIONS
+##################################################
+func _update_health(hp_val: int, player: int) -> void:
+	match player:
+		1: # Player 1
+			p1_health_val = hp_val
+		2: # Player 2
+			p2_health_val = hp_val
+		_: # Player does not exist
+			print("[SYSTEM] ERROR: player does not exist")
+
+
+func _update_burst(burst_val: int, player: int) -> void:
+	match player:
+		1: # Player 1
+			p1_burst_val = burst_val
+		2: # Player 2
+			p2_burst_val = burst_val
+		_: # Player does not exist
+			print("[SYSTEM] ERROR: player does not exist")
+
+
+func _update_meter(meter_val: int, player: int) -> void:
+	match player:
+		1: # Player 1
+			p1_meter_val = meter_val
+		2: # Player 2
+			p2_meter_val = meter_val
+		_: # Player does not exist
+			print("[SYSTEM] ERROR: player does not exist")
 
 
 ##################################################
@@ -94,3 +141,11 @@ func _set_time() -> void:
 
 func _on_timeout() -> void:
 	pass
+
+
+##################################################
+# TWEEN FUNCTIONS
+##################################################
+func _animate_health() -> void:
+	var tween = create_tween()
+

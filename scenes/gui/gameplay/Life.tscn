@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://s2hgyln4u0ve"]
+
+[ext_resource type="Texture2D" uid="uid://bv10ohqhc1drx" path="res://assets/menu/icons/life_icon.png" id="1_xx4s6"]
+
+[node name="Life" type="NinePatchRect"]
+custom_minimum_size = Vector2(20, 20)
+texture = ExtResource("1_xx4s6")

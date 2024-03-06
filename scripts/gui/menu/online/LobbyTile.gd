@@ -9,11 +9,11 @@ extends Control
 @onready var num_members_label = $PanelContainer/MarginContainer/InfoPane/ParticipantsInfo/Panel/HBoxContainer/NumMembersLabel
 @onready var join_button = $JoinButton
 
-var lobby_name =  "Default"
+var lobby_name: String
+var network_type = "Steam"
 var lobby_type = "Public"
 var lobby_state = "Open"
-var network_type = "Steam"
-var lobby_host_name: String = "Default"
+var lobby_host_name: String
 var num_lobby_members: int = 0
 var max_lobby_members: int = 0
 

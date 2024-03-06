@@ -22,7 +22,6 @@ extends Control
 @onready var previous_matches = $MainPane/HBoxContainer/RightPane/LobbyTabs/HistoryTab/ScrollContainer/PreviousMatches
 @onready var match_settings = $MainPane/HBoxContainer/RightPane/LobbyTabs/MatchSettingsTab/ScrollContainer/MatchSettings
 
-
 var LOBBY_ID: int = 0
 var LOBBY_NAME: String = "Default"
 var LOBBY_MEMBERS: Array = []
@@ -53,6 +52,9 @@ func _init_lobby() -> void:
 	_get_lobby_members()
 	LOBBY_ID = get_parent().lobby_id
 	lobby_name_label.set_text(Steam.getLobbyData(LOBBY_ID, "name"))
+	mode_label.set_text(Steam.getLobbyData(LOBBY_ID, "mode"))
+	type_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_type"))
+	state_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_state"))
 
 
 ##################################################
@@ -158,7 +160,7 @@ func _host_start() -> void:
 	print("[STEAM] Started match as server")
 	
 	MenuSignalBus.emit_start_match()
-	#MenuSignalBus._change_Scene(self, map_holder_scene)
+
 
 func _client_start(sender_id: int) -> void:
 	var host_steam_id: int = sender_id
@@ -170,7 +172,6 @@ func _client_start(sender_id: int) -> void:
 	print("[STEAM] Started match as client")
 	
 	MenuSignalBus.emit_start_match()
-	#MenuSignalBus._change_Scene(self, map_holder_scene)
 
 
 ##################################################
@@ -316,7 +317,7 @@ func _recieve_command(command: String) -> void:
 		if is_valid:
 			_create_challenge(sender_id, recipient_id)
 		else:
-			chat_display.append_text("[STEAM] Requested challenge already exists")
+			chat_display.append_text("[STEAM] Requested challenge already exists\n")
 		
 	elif command.begins_with("/accept_challenge"):
 		var participants: PackedStringArray = command.split(" ", true)

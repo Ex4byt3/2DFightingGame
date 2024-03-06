@@ -92,8 +92,8 @@ func _filter_lobbies(_filter) -> void:
 	var search_text = searchbar.text
 	
 	var filter_dict = {
-		"Type": type_filter,
-		"State": state_filter,
+		"Type": type_filter.text,
+		"State": state_filter.text,
 		"Text": search_text,
 	}
 	
@@ -109,7 +109,9 @@ func check_lobby_visiblity(lobby, filter_dict: Dictionary):
 	var passed_checks = 0
 	
 	for key in filter_dict.keys():
+		print("Current Key: " + key)
 		var curr_filter = filter_dict.get(key)
+		print("Current Filter: " + curr_filter)
 		
 		if curr_filter and not curr_filter == "All Lobbies":
 			required_checks += 1
@@ -122,7 +124,7 @@ func check_lobby_visiblity(lobby, filter_dict: Dictionary):
 					if curr_filter == lobby.lobby_state:
 						passed_checks += 1
 				"Text":
-					if curr_filter in lobby.lobby_name:
+					if curr_filter and lobby.lobby_name.findn(curr_filter) >= 0:
 						passed_checks += 1
 	
 	if required_checks == passed_checks:
@@ -158,6 +160,10 @@ func _on_Lobby_Created(connect: int, lobby_id: int) -> void:
 		print("[STEAM] Setting lobby name data successful: "+str(lobby_data))
 		lobby_data = Steam.setLobbyData(lobby_id, "mode", "Steam")
 		print("[STEAM] Setting lobby mode data successful: "+str(lobby_data))
+		lobby_data = Steam.setLobbyData(lobby_id, "lobby_type", "Temp")
+		print("[STEAM] Setting lobby type data successful: "+str(lobby_data))
+		lobby_data = Steam.setLobbyData(lobby_id, "lobby_state", "Open")
+		print("[STEAM] Setting lobby state data successful: "+str(lobby_data))
 	
 	else:
 		print("[STEAM] Failed to create lobby")
@@ -189,17 +195,30 @@ func _on_Lobby_Joined(lobby_id: int, _permissions: int, _locked: bool, response:
 
 func _on_Lobby_Match_List(lobbies: Array) -> void:
 	for lobby in lobbies:
+		var owner_persona_name = Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby))
 		var lobby_name = Steam.getLobbyData(lobby, "name")
 		var lobby_mode = Steam.getLobbyData(lobby, "mode")
+		var lobby_type = Steam.getLobbyData(lobby, "lobby_type")
+		var lobby_state = Steam.getLobbyData(lobby, "lobby_state")
 		var num_players: int = Steam.getNumLobbyMembers(lobby)
 		
 		var new_lobby_tile = lobby_tile.instantiate()
 		
+		if lobby_name:
+			new_lobby_tile.lobby_name = lobby_name
+		else:
+			new_lobby_tile.lobby_name = owner_persona_name + "'s Lobby"
+		
 		if lobby_mode:
 			new_lobby_tile.network_type = lobby_mode
 		
+		if lobby_type:
+			new_lobby_tile.lobby_type = lobby_type
+		
+		if lobby_state:
+			new_lobby_tile.lobby_state = lobby_state
+		
 		new_lobby_tile.num_lobby_members = num_players
-		new_lobby_tile.lobby_host_name = Steam.getFriendPersonaName(lobby)
 		
 		lobbytile_container.add_child(new_lobby_tile)
 		
