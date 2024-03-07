@@ -275,7 +275,7 @@ func _start_rpc_server() -> void:
 	NetworkGlobal.RPC_IS_HOST = true
 	NetworkGlobal.RPC_IP = ip_entry_line.text
 	NetworkGlobal.RPC_PORT = int(port_entry_line.text)
-	MenuSignalBus.emit_start_match()
+	MenuSignalBus.emit_create_match()
 
 
 func _start_rpc_client() -> void:
@@ -285,7 +285,7 @@ func _start_rpc_client() -> void:
 	NetworkGlobal.RPC_IS_HOST = false
 	NetworkGlobal.RPC_IP = ip_entry_line.get_text()
 	NetworkGlobal.RPC_PORT = int(port_entry_line.get_text())
-	MenuSignalBus.emit_start_match()
+	MenuSignalBus.emit_create_match()
 
 
 ##################################################

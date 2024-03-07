@@ -9,27 +9,24 @@ const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
 
 var logging_enabled := true
 
+
 func _ready() -> void:
+	_handle_connecting_signals()
+	setup_match()
+
+
+func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(multiplayer, self, "peer_connected", "_on_network_peer_connected")
 	MenuSignalBus._connect_Signals(multiplayer, self, "peer_disconnected", "_on_network_peer_disconnected")
 	MenuSignalBus._connect_Signals(multiplayer, self, "server_disconnected", "_on_server_disconnected")
-#	multiplayer.peer_connected.connect(_on_network_peer_connected)
-#	multiplayer.peer_disconnected.connect(_on_network_peer_disconnected)
-#	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_started", "_on_SyncManager_sync_started")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_stopped", "_on_SyncManager_sync_stopped")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_lost", "_on_SyncManager_sync_lost")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_regained", "_on_SyncManager_sync_regained")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_error", "_on_SyncManager_sync_error")
-#	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
-#	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
-#	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
-#	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
-#	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
-	
-	setup_match()
-	
+
+
 func setup_match() -> void:
 	
 	if NetworkGlobal.NETWORK_TYPE != 1:

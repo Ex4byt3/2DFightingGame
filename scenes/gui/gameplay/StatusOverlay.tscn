@@ -1,10 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://bpb3irbilm2vu"]
+[gd_scene load_steps=18 format=3 uid="uid://bpb3irbilm2vu"]
 
 [ext_resource type="Texture2D" uid="uid://vjxjlgsxp5l8" path="res://assets/menu/icons/timer_icon.png" id="1"]
+[ext_resource type="Theme" uid="uid://bomuf0lsbqw2o" path="res://assets/resources/gui/status_overlay_theme.tres" id="1_dj4ys"]
 [ext_resource type="Texture2D" uid="uid://c3i2f1gal0425" path="res://assets/menu/images/ramlethal.jpg" id="2"]
-[ext_resource type="Texture2D" uid="uid://bv10ohqhc1drx" path="res://assets/menu/icons/life_icon.png" id="3"]
-[ext_resource type="PackedScene" uid="uid://s2hgyln4u0ve" path="res://scenes/gui/gameplay/Life.tscn" id="3_wp5wc"]
-[ext_resource type="FontFile" uid="uid://rdn2jvl5in8j" path="res://assets/fonts/Orbitron/static/Orbitron-Bold.ttf" id="4"]
 [ext_resource type="Script" path="res://scripts/gui/gameplay/StatusOverlay.gd" id="5"]
 
 [sub_resource type="StyleBoxFlat" id="11"]
@@ -23,15 +21,6 @@ colors = PackedColorArray(0.90625, 0.654243, 0.431885, 1)
 
 [sub_resource type="GradientTexture2D" id="4"]
 gradient = SubResource("3")
-
-[sub_resource type="FontFile" id="6"]
-fallbacks = Array[Font]([ExtResource("4")])
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
 
 [sub_resource type="Gradient" id="7"]
 offsets = PackedFloat32Array(0)
@@ -65,6 +54,7 @@ gradient = SubResource("14")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource("1_dj4ys")
 script = ExtResource("5")
 
 [node name="Header" type="HBoxContainer" parent="."]
@@ -88,7 +78,7 @@ texture = ExtResource("2")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Lives" type="HBoxContainer" parent="Header/P1Info"]
+[node name="HealthHeader" type="HBoxContainer" parent="Header/P1Info"]
 layout_mode = 0
 anchor_left = 0.15
 anchor_top = 0.065
@@ -97,8 +87,14 @@ anchor_bottom = 0.2
 offset_top = 0.0549994
 alignment = 2
 
-[node name="Life" parent="Header/P1Info/Lives" instance=ExtResource("3_wp5wc")]
+[node name="CharacterName" type="Label" parent="Header/P1Info/HealthHeader"]
 layout_mode = 2
+text = "ERR: CHARACTER_NAME"
+
+[node name="Lives" type="HBoxContainer" parent="Header/P1Info/HealthHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
 
 [node name="HealthBackground" type="Panel" parent="Header/P1Info"]
 layout_mode = 0
@@ -121,14 +117,25 @@ nine_patch_stretch = true
 texture_under = SubResource("2")
 texture_progress = SubResource("4")
 
-[node name="PlayerName" type="Label" parent="Header/P1Info/HealthBar"]
-layout_mode = 0
+[node name="HealthOverlay" type="HBoxContainer" parent="Header/P1Info/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerName" type="Label" parent="Header/P1Info/HealthBar/HealthOverlay"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = SubResource("6")
-text = "PlAYER NAME ERR"
+text = "ERR: PLAYER_NAME"
+vertical_alignment = 1
 uppercase = true
+
+[node name="CurrentHealth" type="Label" parent="Header/P1Info/HealthBar/HealthOverlay"]
+layout_mode = 2
+text = "ERR: PLAYER_HEALTH"
 
 [node name="BurstBar" type="TextureProgressBar" parent="Header/P1Info"]
 layout_mode = 0
@@ -145,6 +152,8 @@ layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "BURST"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="Timer" type="Control" parent="Header"]
 custom_minimum_size = Vector2(150, 0)
@@ -186,16 +195,19 @@ texture = ExtResource("2")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Lives" type="HBoxContainer" parent="Header/P2Info"]
+[node name="HealthHeader" type="HBoxContainer" parent="Header/P2Info"]
 layout_mode = 0
 anchor_top = 0.065
 anchor_right = 0.85
 anchor_bottom = 0.2
 
-[node name="Life" type="NinePatchRect" parent="Header/P2Info/Lives"]
-custom_minimum_size = Vector2(20, 20)
+[node name="Lives" type="HBoxContainer" parent="Header/P2Info/HealthHeader"]
 layout_mode = 2
-texture = ExtResource("3")
+size_flags_horizontal = 3
+
+[node name="CharacterName" type="Label" parent="Header/P2Info/HealthHeader"]
+layout_mode = 2
+text = "ERR: CHARACTER NAME"
 
 [node name="HealthBackground" type="Panel" parent="Header/P2Info"]
 layout_mode = 0
@@ -215,13 +227,25 @@ nine_patch_stretch = true
 texture_under = SubResource("2")
 texture_progress = SubResource("4")
 
-[node name="PlayerName" type="Label" parent="Header/P2Info/HealthBar"]
-layout_mode = 0
+[node name="HealthOverlay" type="HBoxContainer" parent="Header/P2Info/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CurrentHealth" type="Label" parent="Header/P2Info/HealthBar/HealthOverlay"]
+layout_mode = 2
+text = "ERR: PLAYER_HEALTH"
+
+[node name="PlayerName" type="Label" parent="Header/P2Info/HealthBar/HealthOverlay"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = SubResource("6")
-text = "PlAYER NAME ERR"
+text = "ERR: PLAYER_NAME"
+horizontal_alignment = 2
+vertical_alignment = 1
 uppercase = true
 
 [node name="BurstBar" type="TextureProgressBar" parent="Header/P2Info"]
@@ -239,6 +263,7 @@ layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "BURST"
+vertical_alignment = 1
 
 [node name="CenterPane" type="Control" parent="."]
 layout_mode = 2

@@ -30,7 +30,7 @@ func handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "goto_previous_menu", "_goto_previous_menu")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "toggle_settings_visibility", "_toggle_settings_visibility")
 	
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_match", "_start_match")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "create_match", "_create_match")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "leave_match", "_leave_match")
 
 
@@ -99,7 +99,7 @@ func _pop_removed_menus(pop_to: String) -> void:
 ##################################################
 # MATCH RELATED FUNCTIONS
 ##################################################
-func _start_match() -> void:
+func _create_match() -> void:
 	for item in get_children():
 		item.queue_free()
 

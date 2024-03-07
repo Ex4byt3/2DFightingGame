@@ -27,6 +27,7 @@ var LOBBY_NAME: String = "Default"
 var LOBBY_MEMBERS: Array = []
 var CHALLENGES: Array = []
 var ONGOING_MATCHES: Array = []
+var using_owner_settings: bool  = true
 
 
 # Called when the node enters the scene tree for the first time.
@@ -55,6 +56,7 @@ func _init_lobby() -> void:
 	mode_label.set_text(Steam.getLobbyData(LOBBY_ID, "mode"))
 	type_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_type"))
 	state_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_state"))
+	MenuSignalBus.emit_set_match_settings_source(using_owner_settings)
 
 
 ##################################################
@@ -159,7 +161,7 @@ func _host_start() -> void:
 	NetworkGlobal.STEAM_IS_HOST = true
 	print("[STEAM] Started match as server")
 	
-	MenuSignalBus.emit_start_match()
+	MenuSignalBus.emit_create_match()
 
 
 func _client_start(sender_id: int) -> void:
@@ -171,7 +173,7 @@ func _client_start(sender_id: int) -> void:
 	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
 	print("[STEAM] Started match as client")
 	
-	MenuSignalBus.emit_start_match()
+	MenuSignalBus.emit_create_match()
 
 
 ##################################################

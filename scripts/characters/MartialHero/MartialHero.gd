@@ -7,7 +7,7 @@ extends Character
 
 var healthBar = null
 
-# Character Attributes
+# Character motion attributes
 var walkingSpeed = 4
 var sprintingSpeed = 8
 var sprintInputLeinency = 6
@@ -21,37 +21,91 @@ var weight = 100
 var shortHopForce = 8
 var fullHopForce = 16
 var jumpSquatFrames = 4
-var health = 10000
+
+# Character attack attributes
 var damage = 0
 var takeDamage = false
-var player = 1
 
-# valid motion inputs for the character, listed in priority
+# Valid motion inputs for the character, listed in priority
 const motion_inputs = {
 	623: 'DP',
 	236: 'QCF',
 	214: 'QCB'
 }
 
+# Local character data
+var martial_hero_img = preload("res://assets/menu/images/ramlethal.jpg")
+var martial_hero_name = "Martial Hero"
+var max_health = 10000
+
+
 func _ready():
 	stateMachine.parent = self
+	_handle_connecting_signals()
+	_scale_to_fixed()
+	_rotate_client_player()
+	
+	MenuSignalBus.emit_send_character_settings()
 
-	# Scale appropriate variables to fixed point numbers
+
+##################################################
+# ONREADY FUNCTIONS
+##################################################
+func _handle_connecting_signals() -> void:
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_character_settings", "_apply_character_settings")
+
+
+# Scale appropriate variables to fixed point numbers
+func _scale_to_fixed() -> void:
 	gravity = SGFixed.ONE / gravity
 	maxAirSpeed *= SGFixed.ONE
 	fullHopForce *= SGFixed.NEG_ONE
 	shortHopForce *= SGFixed.NEG_ONE
 	airAcceleration = SGFixed.ONE / 5
 
-	# Turn player 2 around
+
+# Rotate the second player
+func _rotate_client_player() -> void:
 	if self.name == "ClientPlayer":
 		facingRight = false
-		player = 2
 		$HurtBox.set_collision_layer_bit(1, false)
 		$HurtBox.set_collision_mask_bit(2, false)
 		$HurtBox.set_collision_layer_bit(2, true)
 		$HurtBox.set_collision_mask_bit(1, true)
 
+
+##################################################
+# STATUS MANIPULATION FUNCTIONS
+##################################################
+func _apply_character_settings(character_settings: Dictionary) -> void:
+	print("[SYSTEM] " + self.name + " received character settings!")
+	num_lives = character_settings.character_lives
+	burst = character_settings.initial_burst
+	meter = character_settings.initial_meter
+	print("[SYSTEM] " + self.name + "'s character settings have been applied!")
+	
+	MenuSignalBus.emit_update_lives(num_lives, self.name)
+	
+	_init_character_data()
+
+
+func _init_character_data() -> void:
+	character_img = martial_hero_img
+	character_name = martial_hero_name
+	health = max_health
+	
+	MenuSignalBus.emit_update_character_image(character_img, self.name)
+	MenuSignalBus.emit_update_character_name(character_name, self.name)
+	MenuSignalBus.emit_update_max_health(max_health, self.name)
+
+
+func _setup_round() -> void:
+	health = max_health
+
+
+##################################################
+# NETWORK RELATED FUNCTIONS
+##################################################
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 	var input = previous_input.duplicate()
 	input.erase("drop_bomb")
@@ -59,8 +113,17 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 		input.erase("input_vector")
 	return input
 
+
 func _network_process(input: Dictionary) -> void:
-	MenuSignalBus.emit_update_health(health, player)
+	# Update the character's health in the status overlay
+	MenuSignalBus.emit_update_health(health, self.name)
+	
+	# Check if the character has been ko'd
+	if health <= 0:
+		num_lives -= 1
+		if num_lives > 0:
+			MenuSignalBus.emit_life_lost(self.name)
+			MenuSignalBus.emit_update_lives(num_lives, self.name)
 	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
@@ -83,7 +146,11 @@ func _network_process(input: Dictionary) -> void:
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
 	isOnFloor = is_on_floor() 
-	
+
+
+##################################################
+# STATE MACHINE FUNCTIONS
+##################################################
 func _save_state() -> Dictionary:
 	var control_buffer = []
 	for item in controlBuffer:
@@ -99,11 +166,20 @@ func _save_state() -> Dictionary:
 		isOnFloor = isOnFloor,
 		usedJump = usedJump,
 		frame = frame,
-		health = health,
 		damage = damage,
 		takeDamage = takeDamage,
-		facingRight = facingRight
+		facingRight = facingRight,
+		
+		health = health,
+		max_health = max_health,
+		burst = burst,
+		meter = meter,
+		character_img = character_img,
+		character_name = character_name,
+		num_lives = num_lives
+		
 	}
+
 
 func _load_state(loadState: Dictionary) -> void:
 	stateMachine.state = loadState['playerState']
@@ -117,12 +193,22 @@ func _load_state(loadState: Dictionary) -> void:
 	airJump = loadState['airJump']
 	usedJump = loadState['usedJump']
 	isOnFloor = loadState['isOnFloor']
-	health = loadState['health']
+	#health = loadState['health']
 	damage = loadState['damage']
 	takeDamage = loadState['takeDamage']
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
+	
+	health = loadState['health']
+	max_health = loadState['max_health']
+	burst = loadState['burst']
+	meter = loadState['meter']
+	character_img = loadState['character_img']
+	character_name = loadState['character_name']
+	num_lives = num_lives
+	
 	sync_to_physics_engine()
+
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], weight)

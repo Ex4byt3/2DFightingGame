@@ -1,6 +1,7 @@
 extends SGCharacterBody2D
 class_name Character
 
+
 # for debug overlay
 const direction_mapping = {
 	[1, 1]: "UP RIGHT", # 9
@@ -43,6 +44,18 @@ var usedJump = false
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
 
+# Variables for status in all characters
+var character_name: String
+var character_img: Texture2D
+var health: int
+var burst: int
+var meter: int
+var num_lives: int
+
+
+##################################################
+# INPUT FUNCTIONS
+##################################################
 # like Input.get_vector but for SGFixedVector2
 func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: String, positive_y: String) -> SGFixedVector2:
 	var new_vector = SGFixed.vector2(0, 0) # note: SGFixedVector2 is always passed by reference and can be copied with SGFixedVector2.copy()
@@ -57,6 +70,7 @@ func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: 
 	if Input.is_action_pressed(positive_y):
 		new_vector.y += 1
 	return new_vector
+
 
 func _get_local_input() -> Dictionary:
 	input_vector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
