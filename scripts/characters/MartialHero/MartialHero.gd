@@ -23,6 +23,9 @@ var fullHopForce = 16
 var jumpSquatFrames = 4
 var maxFallSpeed = 20
 
+var dash_x_direction = 0
+var dash_y_direction = 0
+
 # Character attack attributes
 var damage = 0
 var takeDamage = false

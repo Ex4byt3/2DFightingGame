@@ -293,26 +293,10 @@ func update_pressed():
 		parent.usedJump = false
 
 func initiate_dash(input_vector):
-	var dash_speed = parent.sprintingSpeed * SGFixed.ONE * 8
-
+	parent.frame = 15
+	parent.dash_x_direction = input_vector.x * (parent.sprintingSpeed * SGFixed.ONE * 2.5)
+	parent.dash_y_direction = input_vector.y * (parent.sprintingSpeed * SGFixed.ONE * -2.5)
 	
-	var dash_direction = Vector2.ZERO
-	if input_vector.x != 0:
-		dash_direction.x = sign(input_vector.x)
-	if input_vector.y != 0:
-		
-		dash_direction.y = -sign(input_vector.y) 
-
-	
-	dash_direction = dash_direction.normalized()
-
-	
-	if input_vector.y != 0:
-		parent.velocity.y = -dash_speed if input_vector.y ==1 else dash_speed
-
-	# Set the dash state duration, if applicable.
-	parent.frame = 20
-
 	# Transition to the DASH state.
 	set_state('DASH')
 
@@ -330,18 +314,24 @@ func reset_jumps():
 	parent.airJump = parent.airJumpMax
 
 func handle_dash_state():
-	print("DASHING!")
+	
 	# Decrease the dash duration each frame.
 	if !parent.frame == 0:
+		parent.velocity.x = parent.dash_x_direction
+		parent.velocity.y = parent.dash_y_direction
 		parent.frame -= 1
 	else:
-		# Once the dash duration ends, transition back to IDLE or any appropriate state.
-		set_state('IDLE')
+		# Once the dash duration ends, transition back to IDLE or any appropriate state.\
+		parent.velocity.y = 0
+		if parent.isOnFloor:
+			set_state("IDLE")
+		else:
+			set_state("AIRBORNE")
 	
-	if !parent.isOnFloor:
-		parent.velocity.y += parent.gravity
-		if parent.velocity.y > parent.maxFallSpeed: 
-			parent.velocity.y = parent.maxFallSpeed
+	#if !parent.isOnFloor:
+		#parent.velocity.y += parent.gravity
+		#if parent.velocity.y > parent.maxFallSpeed: 
+			#parent.velocity.y = parent.maxFallSpeed
 
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):
