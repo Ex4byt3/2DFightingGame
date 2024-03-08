@@ -738,6 +738,7 @@ hframes = 9
 shape = SubResource("1")
 
 [node name="ColorRect" type="ColorRect" parent="SGCollisionShape2D"]
+visible = false
 offset_left = -36.0
 offset_top = -63.0
 offset_right = 36.0

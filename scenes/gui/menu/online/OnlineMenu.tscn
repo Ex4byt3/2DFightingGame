@@ -156,6 +156,7 @@ text = "IP Address"
 
 [node name="IPEntryLine" type="LineEdit" parent="DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+text = "localhost"
 
 [node name="PortEntryTitle" type="Label" parent="DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -163,6 +164,7 @@ text = "Port"
 
 [node name="PortEntryLine" type="LineEdit" parent="DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+text = "6000"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2

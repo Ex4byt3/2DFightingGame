@@ -16,6 +16,7 @@ func _ready():
 	add_state('CRAWL')
 	add_state('WALK')
 	add_state('SPRINT')
+	add_state('SLIDE')
 	add_state('DASH')
 	add_state('JUMPSQUAT')
 	add_state('JUMP')
@@ -81,7 +82,10 @@ func transition_state(input):
 	handle_attacks(parent.input_vector, input)
 	
 	# Universal changes
-	parent.velocity.y += parent.gravity
+	if states[state] != states.DASH:
+		# If not dashing, apply gravity
+		parent.velocity.y += parent.gravity
+
 	if parent.isOnFloor:
 		reset_jumps()
 		
@@ -96,7 +100,7 @@ func transition_state(input):
 	parse_motion_inputs()
 
 	if input.get("dash", false):
-		initiate_dash(parent.input_vector)
+		start_dash(parent.input_vector)
 
 	match states[state]:
 		states.IDLE:
@@ -113,12 +117,12 @@ func transition_state(input):
 					# Update the direction the character is attempting to walk
 					if input.get("sprint_macro", false):
 						# If the character is using sprint_macro (default SHIFT) they sprint
-						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
+						parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
 						parent.animation.play("Sprint")
 						set_state('SPRINT')
 					else:
 						# If the character isn't and they are moving in a direction, they are walking
-						parent.velocity.x = parent.walkingSpeed * (parent.input_vector.x * ONE)
+						parent.velocity.x = parent.walkSpeed * (parent.input_vector.x * ONE)
 						parent.animation.play("Walk")
 						set_state('WALK')
 				elif parent.input_vector.x == 0:
@@ -127,9 +131,8 @@ func transition_state(input):
 					parent.animation.play("Idle")
 					set_state('IDLE')
 				if parent.input_vector.y == 1:
-					# The player is attempting to jump, enter jumpsquat state
-					if parent.usedJump == false:
-						start_jump()
+					# The player is attempting to jump
+					start_jump()
 			else:
 				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
@@ -147,12 +150,12 @@ func transition_state(input):
 					
 					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
-						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
+						parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
 						parent.animation.play("Sprint")
 						set_state("SPRINT")
 					else:
 						# Continue walking if you are trying to walk
-						parent.velocity.x = parent.walkingSpeed * (parent.input_vector.x * ONE)
+						parent.velocity.x = parent.walkSpeed * (parent.input_vector.x * ONE)
 						# parent.animation.play("Walk")
 						# set_state('WALK')
 				else:
@@ -167,6 +170,29 @@ func transition_state(input):
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
 				parent.animation.play("Airborne")
 				set_state('AIRBORNE')
+		states.SLIDE:
+			if parent.input_vector.y == 1:
+				# The player is attempting to jump
+				start_jump()
+
+			if parent.velocity.x > 0:
+				if parent.input_vector.x == 1: # if the player is moving with the slide it decays slower, else it dwcays quickly
+					parent.velocity.x -= parent.slideDecay / 2
+				else:
+					parent.velocity.x -= parent.slideDecay
+				if parent.velocity.x < parent.sprintSpeed * ONE: # when the player reaches their sprint speed, they start sprinting instead of sliding
+					parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
+					parent.animation.play("Sprint")
+					set_state('SPRINT')
+			else: # do the same for the other direction
+				if parent.input_vector.x == -1:
+					parent.velocity.x += parent.slideDecay / 2
+				else:
+					parent.velocity.x += parent.slideDecay
+				if parent.velocity.x > -parent.sprintSpeed * ONE:
+					parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
+					parent.animation.play("Sprint")
+					set_state('SPRINT')
 		states.SPRINT:
 			if parent.isOnFloor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
@@ -179,7 +205,7 @@ func transition_state(input):
 					
 					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
-						parent.velocity.x = parent.sprintingSpeed * (parent.input_vector.x * ONE)
+						parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
 						parent.animation.play("Sprint")
 						set_state("SPRINT")
 				else:
@@ -197,8 +223,18 @@ func transition_state(input):
 				set_state('AIRBORNE')
 			pass
 		states.DASH:
-			handle_dash_state()
-			pass
+			if parent.frame < parent.dashDuration:
+				parent.frame += 1
+				pass
+			else: # once the dash duration ends
+				parent.frame = 0
+				parent.velocity.x /= 3 # you keep 1/3 of your dash speed
+				parent.velocity.y /= 3
+				if parent.velocity.y != 0: # dashing makes isOnFloor false, this is the replacement for that
+					parent.animation.play("Airborne")
+					set_state('AIRBORNE')
+				else:
+					set_state('SLIDE')
 		states.JUMP:
 			if parent.isOnFloor:
 				parent.animation.play("Idle")
@@ -242,7 +278,9 @@ func transition_state(input):
 						start_jump()
 			# If in the air and you are moving, update the velocity based on
 			# air acceleration and air speed (for air drift implementation)
-			if parent.input_vector.x != 0:
+			if abs(parent.velocity.x) > parent.maxAirSpeed:
+				parent.velocity.x += SGFixed.mul(parent.airAcceleration, (parent.input_vector.x * ONE))
+			elif parent.input_vector.x != 0:
 				parent.velocity.x += SGFixed.mul(parent.airAcceleration, (parent.input_vector.x * ONE))
 				if parent.velocity.x > parent.maxAirSpeed:
 					parent.velocity.x = parent.maxAirSpeed
@@ -283,21 +321,31 @@ func transition_state(input):
 	update_input_buffer(parent.input_vector)
 
 func start_jump():
-	parent.usedJump = true
-	parent.animation.play("JumpSquat")
-	set_state('JUMPSQUAT')
+	if parent.usedJump == false:
+		parent.usedJump = true
+		parent.animation.play("JumpSquat")
+		set_state('JUMPSQUAT')
 
 func update_pressed():
-	# Update pressed
 	if parent.input_vector.y != 1:
 		parent.usedJump = false
 
-func initiate_dash(input_vector):
-	parent.frame = 15
-	parent.dash_x_direction = input_vector.x * (parent.sprintingSpeed * SGFixed.ONE * 2.5)
-	parent.dash_y_direction = input_vector.y * (parent.sprintingSpeed * SGFixed.ONE * -2.5)
-	
-	# Transition to the DASH state.
+func start_dash(input_vector):
+	# if the input vector is neutral, dash in the direction the player is facing
+	if input_vector.x == 0 and input_vector.y == 0:
+		if parent.facingRight:
+			parent.velocity.x = parent.dashSpeed * ONE
+		else:
+			parent.velocity.x = -parent.dashSpeed * ONE
+		parent.velocity.y = 0
+	else:
+		# if the input vector is not neutral, dash in the direction of the input vector
+		var normalized_input_vector = input_vector.normalized() # note, normalize scales the vecotor to a fixed vector
+		parent.velocity.x = parent.dashSpeed * normalized_input_vector.x
+		parent.velocity.y = parent.dashSpeed * -normalized_input_vector.y
+
+	# Transition to the DASH state
+	parent.animation.play("Dash")
 	set_state('DASH')
 
 func sprint_check() -> bool:
@@ -312,26 +360,6 @@ func sprint_check() -> bool:
 # Reset the number of jumps you have
 func reset_jumps():
 	parent.airJump = parent.airJumpMax
-
-func handle_dash_state():
-	
-	# Decrease the dash duration each frame.
-	if !parent.frame == 0:
-		parent.velocity.x = parent.dash_x_direction
-		parent.velocity.y = parent.dash_y_direction
-		parent.frame -= 1
-	else:
-		# Once the dash duration ends, transition back to IDLE or any appropriate state.\
-		parent.velocity.y = 0
-		if parent.isOnFloor:
-			set_state("IDLE")
-		else:
-			set_state("AIRBORNE")
-	
-	#if !parent.isOnFloor:
-		#parent.velocity.y += parent.gravity
-		#if parent.velocity.y > parent.maxFallSpeed: 
-			#parent.velocity.y = parent.maxFallSpeed
 
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):

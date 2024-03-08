@@ -8,12 +8,15 @@ extends Character
 var healthBar = null
 
 # Character motion attributes
-var walkingSpeed = 4
-var sprintingSpeed = 8
+var walkSpeed = 4
+var sprintSpeed = 8
+var slideDecay = 4 # divisor
+var dashSpeed = 30
+var dashDuration = 10
 var sprintInputLeinency = 6
 var airAcceleration : int = 0
 var maxAirSpeed = 6
-var gravity = 2
+var gravity = 2 # divsor
 var airJumpMax = 1
 var airJump = 0
 var knockback_multiplier = 1
@@ -22,9 +25,6 @@ var shortHopForce = 8
 var fullHopForce = 16
 var jumpSquatFrames = 4
 var maxFallSpeed = 20
-
-var dash_x_direction = 0
-var dash_y_direction = 0
 
 # Character attack attributes
 var damage = 0
@@ -44,6 +44,7 @@ var max_health = 10000
 
 
 func _ready():
+	set_up_direction(SGFixed.vector2(0, -SGFixed.ONE))
 	stateMachine.parent = self
 	_handle_connecting_signals()
 	_scale_to_fixed()
@@ -66,12 +67,14 @@ func _scale_to_fixed() -> void:
 	fullHopForce *= SGFixed.NEG_ONE
 	shortHopForce *= SGFixed.NEG_ONE
 	airAcceleration = SGFixed.ONE / 5
+	slideDecay = SGFixed.ONE / slideDecay
 
 
 # Rotate the second player
 func _rotate_client_player() -> void:
 	if self.name == "ClientPlayer":
 		facingRight = false
+		# also flip collision layer and mask for client player
 		$HurtBox.set_collision_layer_bit(1, false)
 		$HurtBox.set_collision_mask_bit(2, false)
 		$HurtBox.set_collision_layer_bit(2, true)
@@ -144,8 +147,6 @@ func _network_process(input: Dictionary) -> void:
 			overlappingHitBoxes[0].used = true
 	
 	# Update position based off of velocity
-	set_velocity(velocity)
-	set_up_direction(SGFixed.vector2(0, -SGFixed.ONE))
 	move_and_slide()
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
