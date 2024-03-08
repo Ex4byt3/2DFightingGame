@@ -3,6 +3,10 @@ extends StateMachine
 var parent = null
 var ONE = SGFixed.ONE
 
+var defaultDashDuration = 20
+
+
+
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
 
@@ -32,6 +36,9 @@ func _ready():
 	add_state('DOWN_L')
 	add_state('DOWN_M')
 	add_state('DOWN_H')
+	set_state('IDLE')
+	
+func _on_dash_timer_timeout():
 	set_state('IDLE')
 
 func convert_inputs_to_string(inputs):
@@ -286,11 +293,27 @@ func update_pressed():
 		parent.usedJump = false
 
 func initiate_dash(input_vector):
-	# Set dash velocity. Adjust the multiplier as needed to make it faster than sprinting
-	var dash_speed = parent.sprintingSpeed * SGFixed.ONE * 1.5
-	parent.velocity.x = dash_speed if parent.facingRight else -dash_speed
+	var dash_speed = parent.sprintingSpeed * SGFixed.ONE * 8
+
 	
-	# Set state to DASH
+	var dash_direction = Vector2.ZERO
+	if input_vector.x != 0:
+		dash_direction.x = sign(input_vector.x)
+	if input_vector.y != 0:
+		
+		dash_direction.y = -sign(input_vector.y) 
+
+	
+	dash_direction = dash_direction.normalized()
+
+	
+	if input_vector.y != 0:
+		parent.velocity.y = -dash_speed if input_vector.y ==1 else dash_speed
+
+	# Set the dash state duration, if applicable.
+	parent.frame = 20
+
+	# Transition to the DASH state.
 	set_state('DASH')
 
 func sprint_check() -> bool:
@@ -307,13 +330,18 @@ func reset_jumps():
 	parent.airJump = parent.airJumpMax
 
 func handle_dash_state():
-	# If airborne, allow control but maintain dash speed
-	if !parent.isOnFloor:
-		# Apply gravity or any other airborne logic you might need
-		parent.velocity.y += parent.gravity
+	print("DASHING!")
+	# Decrease the dash duration each frame.
+	if !parent.frame == 0:
+		parent.frame -= 1
 	else:
-		# If on the ground, possibly end the dash or transition to another state
-		set_state('IDLE')  # Or any other state you deem appropriate
+		# Once the dash duration ends, transition back to IDLE or any appropriate state.
+		set_state('IDLE')
+	
+	if !parent.isOnFloor:
+		parent.velocity.y += parent.gravity
+		if parent.velocity.y > parent.maxFallSpeed: 
+			parent.velocity.y = parent.maxFallSpeed
 
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):

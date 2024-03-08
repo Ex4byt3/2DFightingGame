@@ -21,6 +21,7 @@ var weight = 100
 var shortHopForce = 8
 var fullHopForce = 16
 var jumpSquatFrames = 4
+var maxFallSpeed = 20
 
 # Character attack attributes
 var damage = 0
