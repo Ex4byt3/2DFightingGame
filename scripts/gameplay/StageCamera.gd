@@ -1,9 +1,9 @@
 extends Camera2D
 
-@export var min_distX: float = 1200 # The X distance between players before the camera stops zooming in.
-@export var min_distY: float = 400 # The Y distance between players before the camera stops zooming in.
-@export var max_zoom: float = 0.8 # Max zoom out value. Set to match the width of the stage.
-@export var min_zoom: float = 1.5 # Min zoom in value.
+@export var min_distX: float = 500 # 1200 # The X distance between players before the camera stops zooming in.
+@export var min_distY: float = 500 # 400 # The Y distance between players before the camera stops zooming in.
+@export var max_zoom: float = 0.6 # 0.5 # Max zoom out value. Set to match the width of the stage.
+@export var min_zoom: float = 1.2 # 1.5 # Min zoom in value.
 @export_range(0.1, 2) var zoom_scale: float = 1.2
 var players = []
 var cam_y_pos # y value of the cam's position should be constant.
@@ -32,7 +32,7 @@ func update_position():
 	playerAvg /= players.size()
 	self.position = Vector2(playerAvg.x, cam_y_pos)
 
-func zoom_camera():
+func zoom_camera(): # TODO: optimize for only 2 players
 	# Zoom camera based on the distance of the 2 furthest players. Accounts for min X/Y zoom settings.
 	var max_distanceX: float = 0
 	var max_distanceY: float = 0
@@ -48,7 +48,7 @@ func zoom_camera():
 	var zoom_amount:float = min(scale_zoomX(max_distanceX), scale_zoomY(max_distanceY))
 	zoom_amount = min(zoom_amount, min_zoom)
 	zoom_amount = max(zoom_amount, max_zoom)
-	self.zoom = Vector2(zoom_amount, zoom_amount)
+	zoom = Vector2(zoom_amount, zoom_amount)
 
 func scale_zoomX(dist: float) -> float:
 	var val = ((dist - min_distX) / (max_distX - min_distX)) * (max_zoom - min_zoom) + min_zoom
