@@ -19,12 +19,12 @@ var dashVector = SGFixed.vector2(0, 0)
 var sprintInputLeinency = 6
 @export_range(5, 20) var airAcceleration = 4 # divisor
 var maxAirSpeed = 6
-var gravity = 2 # divsor
+var gravity = (SGFixed.ONE / 10) * 6 # divsor
 var maxAirJump = 1
 var airJump = 0
 var knockback_multiplier = 1
 var weight = 100
-var shortHopForce = 8
+var shortHopForce = 12
 var fullHopForce = 16
 var airHopForce = 12
 @export_range(0, 5) var jumpSquatFrames = 3
@@ -65,7 +65,7 @@ func _handle_connecting_signals() -> void:
 
 # Scale appropriate variables to fixed point numbers
 func _scale_to_fixed() -> void:
-	gravity = SGFixed.ONE / gravity
+	# gravity = SGFixed.div()
 	maxAirSpeed *= SGFixed.ONE
 	fullHopForce *= SGFixed.NEG_ONE
 	shortHopForce *= SGFixed.NEG_ONE
