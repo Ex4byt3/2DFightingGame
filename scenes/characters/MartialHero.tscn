@@ -692,6 +692,7 @@ extents_y = 4191239
 
 [node name="MartialHero" type="SGCharacterBody2D" groups=["network_sync"]]
 script = ExtResource("2")
+dashDuration = 6
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("3")

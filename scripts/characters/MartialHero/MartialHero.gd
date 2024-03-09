@@ -10,20 +10,24 @@ var healthBar = null
 # Character motion attributes
 var walkSpeed = 4
 var sprintSpeed = 8
-var slideDecay = 4 # divisor
-var dashSpeed = 30
-var dashDuration = 10
+@export_range(1, 10) var slideDecay = 4 # divisor
+var slideJumpBoost = 0 # set in ready
+var dashVector = SGFixed.vector2(0, 0)
+@export_range(20, 50) var dashSpeed = 30
+@export_range(5, 20) var keptDashSpeed = 15
+@export_range(5, 20) var dashDuration = 6
 var sprintInputLeinency = 6
-var airAcceleration : int = 0
+@export_range(5, 20) var airAcceleration = 4 # divisor
 var maxAirSpeed = 6
 var gravity = 2 # divsor
-var airJumpMax = 1
+var maxAirJump = 1
 var airJump = 0
 var knockback_multiplier = 1
 var weight = 100
 var shortHopForce = 8
 var fullHopForce = 16
-var jumpSquatFrames = 4
+var airHopForce = 12
+@export_range(0, 5) var jumpSquatFrames = 3
 var maxFallSpeed = 20
 
 # Character attack attributes
@@ -45,7 +49,6 @@ var max_health = 10000
 
 func _ready():
 	set_up_direction(SGFixed.vector2(0, -SGFixed.ONE))
-	stateMachine.parent = self
 	_handle_connecting_signals()
 	_scale_to_fixed()
 	_rotate_client_player()
@@ -66,8 +69,10 @@ func _scale_to_fixed() -> void:
 	maxAirSpeed *= SGFixed.ONE
 	fullHopForce *= SGFixed.NEG_ONE
 	shortHopForce *= SGFixed.NEG_ONE
-	airAcceleration = SGFixed.ONE / 5
+	airHopForce *= SGFixed.NEG_ONE
+	airAcceleration = SGFixed.ONE / airAcceleration
 	slideDecay = SGFixed.ONE / slideDecay
+	slideJumpBoost = SGFixed.ONE + (SGFixed.ONE / 2) # to maintain intiger division // 1.5
 
 
 # Rotate the second player
@@ -163,24 +168,28 @@ func _save_state() -> Dictionary:
 	return {
 		playerState = stateMachine.state,
 		control_buffer = control_buffer,
+
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
+
+		dashVector_x = dashVector.x,
+		dashVector_y = dashVector.y,
 		airJump = airJump,
 		isOnFloor = isOnFloor,
 		usedJump = usedJump,
 		frame = frame,
 		damage = damage,
-		takeDamage = takeDamage,
+		takeDamage = takeDamage, # TODO: replace with HITSTUN state
 		facingRight = facingRight,
 		
 		health = health,
 		max_health = max_health,
 		burst = burst,
 		meter = meter,
-		character_img = character_img,
-		character_name = character_name,
+		character_img = character_img, # TODO: is only loaded once, does not change, remove from state
+		character_name = character_name, # TODO: is only loaded once, does not change, remove from state
 		num_lives = num_lives
 		
 	}
@@ -195,12 +204,16 @@ func _load_state(loadState: Dictionary) -> void:
 	fixed_position.y = loadState['fixed_position_y']
 	velocity.x = loadState['velocity_x']
 	velocity.y = loadState['velocity_y']
+
+	dashVector.x = loadState['dashVector_x']
+	dashVector.y = loadState['dashVector_y']
 	airJump = loadState['airJump']
 	usedJump = loadState['usedJump']
 	isOnFloor = loadState['isOnFloor']
-	#health = loadState['health']
+
+	health = loadState['health']
 	damage = loadState['damage']
-	takeDamage = loadState['takeDamage']
+	takeDamage = loadState['takeDamage'] # TODO: replace with HITSTUN state
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	
@@ -208,8 +221,8 @@ func _load_state(loadState: Dictionary) -> void:
 	max_health = loadState['max_health']
 	burst = loadState['burst']
 	meter = loadState['meter']
-	character_img = loadState['character_img']
-	character_name = loadState['character_name']
+	character_img = loadState['character_img'] # TODO: is only loaded once, does not change, remove from state
+	character_name = loadState['character_name'] # TODO: is only loaded once, does not change, remove from state
 	num_lives = num_lives
 	
 	sync_to_physics_engine()

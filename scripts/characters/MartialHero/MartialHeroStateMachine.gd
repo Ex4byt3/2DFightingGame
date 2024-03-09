@@ -1,6 +1,6 @@
 extends StateMachine
 
-var parent = null
+@onready var player = self.get_parent()
 var ONE = SGFixed.ONE
 
 var defaultDashDuration = 20
@@ -45,15 +45,14 @@ func _on_dash_timer_timeout():
 func convert_inputs_to_string(inputs):
 	var inputString = ""
 	for input in inputs:
-		inputString = str(parent.directions[input]) + inputString
+		inputString = str(player.directions[input]) + inputString
 	return inputString
 
-
 func parse_motion_inputs():
-	var remainingLeinency = parent.motionInputLeinency
+	var remainingLeinency = player.motionInputLeinency
 	var validMotions = []
 	# make a dict of only inputs within the last motionInputLeinency ticks
-	for control in parent.controlBuffer:
+	for control in player.controlBuffer:
 		if control[0] != 0 or control[1] != 0: # if the input is not neutral
 			validMotions.append([control[0], control[1]]) # add the input to the validMotions list
 		remainingLeinency -= control[2] # subtract frames the input was held
@@ -65,231 +64,240 @@ func parse_motion_inputs():
 
 	# // can use custom search to maybe be faster than regex
 	var regex = RegEx.new() 
-	for motion in parent.motion_inputs:
+	for motion in player.motion_inputs:
 		regex.compile(str(motion)) # compile the regex for the current motion
 		if regex.search(inputString) != null: # if any match is found
-			print(parent.motion_inputs[motion])
+			print(player.motion_inputs[motion])
 			return motion
 
 func transition_state(input):
 	# Updating debug label
-	update_debug_label(parent.input_vector)
+	update_debug_label(player.input_vector)
 
 	# Update pressed actions
 	update_pressed()
 
 	# Handle attacks
-	handle_attacks(parent.input_vector, input)
+	handle_attacks(player.input_vector, input)
 	
 	# Universal changes
 	if states[state] != states.DASH:
 		# If not dashing, apply gravity
-		parent.velocity.y += parent.gravity
+		player.velocity.y += player.gravity
 
-	if parent.isOnFloor:
+	if player.isOnFloor:
 		reset_jumps()
 		
-	if parent.facingRight:
-		parent.attackSprite.flip_h = false
-		parent.arrowSprite.flip_h = false
+	if player.facingRight:
+		player.attackSprite.flip_h = false
+		player.arrowSprite.flip_h = false
 	else:
-		parent.attackSprite.flip_h = true
-		parent.arrowSprite.flip_h = true
+		player.attackSprite.flip_h = true
+		player.arrowSprite.flip_h = true
 
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging
 	parse_motion_inputs()
 
-	if input.get("dash", false):
-		start_dash(parent.input_vector)
+	# can currently *always* dash, this will work for now but there will later be states where you cannot
+	if input.get("dash", false) and not player.isOnFloor:
+		# TODO: scaling meter cost
+		start_dash(player.input_vector)
 
 	match states[state]:
 		states.IDLE:
-			if parent.takeDamage:
+			if player.takeDamage:
 				set_state('ATTACKED')
-			elif parent.isOnFloor:
-				if parent.input_vector.x != 0:
+			elif player.isOnFloor:
+				if player.input_vector.x != 0:
 					# Update which direction the character is facing
-					if parent.input_vector.x > 0:
-						parent.facingRight = true
+					if player.input_vector.x > 0:
+						player.facingRight = true
 					else:
-						parent.facingRight = false
+						player.facingRight = false
 					
 					# Update the direction the character is attempting to walk
 					if input.get("sprint_macro", false):
 						# If the character is using sprint_macro (default SHIFT) they sprint
-						parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
-						parent.animation.play("Sprint")
+						player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+						player.animation.play("Sprint")
 						set_state('SPRINT')
 					else:
 						# If the character isn't and they are moving in a direction, they are walking
-						parent.velocity.x = parent.walkSpeed * (parent.input_vector.x * ONE)
-						parent.animation.play("Walk")
+						player.velocity.x = player.walkSpeed * (player.input_vector.x * ONE)
+						player.animation.play("Walk")
 						set_state('WALK')
-				elif parent.input_vector.x == 0:
+				elif player.input_vector.x == 0:
 					# If the player is not moving left/right, don't move/stop moving
-					parent.velocity.x = 0
-					parent.animation.play("Idle")
+					player.velocity.x = 0
+					player.animation.play("Idle")
 					set_state('IDLE')
-				if parent.input_vector.y == 1:
+				if player.input_vector.y == 1:
 					# The player is attempting to jump
 					start_jump()
 			else:
-				parent.animation.play("Airborne")
+				player.animation.play("Airborne")
 				set_state('AIRBORNE')
 		states.CROUCH:
 			pass
 		states.WALK:
-			if parent.isOnFloor:
+			if player.isOnFloor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
-				if parent.input_vector.x != 0:
+				if player.input_vector.x != 0:
 					# Face the direction based on where you are trying to move
-					if parent.input_vector.x > 0:
-						parent.facingRight = true
+					if player.input_vector.x > 0:
+						player.facingRight = true
 					else:
-						parent.facingRight = false
+						player.facingRight = false
 					
 					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
-						parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
-						parent.animation.play("Sprint")
+						player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+						player.animation.play("Sprint")
 						set_state("SPRINT")
 					else:
 						# Continue walking if you are trying to walk
-						parent.velocity.x = parent.walkSpeed * (parent.input_vector.x * ONE)
-						# parent.animation.play("Walk")
+						player.velocity.x = player.walkSpeed * (player.input_vector.x * ONE)
+						# player.animation.play("Walk")
 						# set_state('WALK')
 				else:
-					parent.velocity.x = 0
-					parent.animation.play("Idle")
+					player.velocity.x = 0
+					player.animation.play("Idle")
 					set_state('IDLE')
-				if parent.input_vector.y == 1:
+				if player.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
-					if parent.usedJump == false:
-						start_jump()
+					start_jump()
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
-				parent.animation.play("Airborne")
+				player.animation.play("Airborne")
 				set_state('AIRBORNE')
 		states.SLIDE:
-			if parent.input_vector.y == 1:
+			if player.input_vector.y == 1:
 				# The player is attempting to jump
+				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
 				start_jump()
 
-			if parent.velocity.x > 0:
-				if parent.input_vector.x == 1: # if the player is moving with the slide it decays slower, else it dwcays quickly
-					parent.velocity.x -= parent.slideDecay / 2
+			if player.velocity.x > 0:
+				if player.input_vector.x == 1: # if the player is moving with the slide it decays slower, else it dwcays quickly
+					player.velocity.x -= player.slideDecay
 				else:
-					parent.velocity.x -= parent.slideDecay
-				if parent.velocity.x < parent.sprintSpeed * ONE: # when the player reaches their sprint speed, they start sprinting instead of sliding
-					parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
-					parent.animation.play("Sprint")
+					player.velocity.x -= player.slideDecay
+				if player.velocity.x < player.sprintSpeed * ONE: # when the player reaches their sprint speed, they start sprinting instead of sliding
+					player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+					player.animation.play("Sprint")
 					set_state('SPRINT')
 			else: # do the same for the other direction
-				if parent.input_vector.x == -1:
-					parent.velocity.x += parent.slideDecay / 2
+				if player.input_vector.x == -1:
+					player.velocity.x += player.slideDecay
 				else:
-					parent.velocity.x += parent.slideDecay
-				if parent.velocity.x > -parent.sprintSpeed * ONE:
-					parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
-					parent.animation.play("Sprint")
+					player.velocity.x += player.slideDecay
+				if player.velocity.x > -player.sprintSpeed * ONE:
+					player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+					player.animation.play("Sprint")
 					set_state('SPRINT')
 		states.SPRINT:
-			if parent.isOnFloor:
+			if player.isOnFloor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
-				if parent.input_vector.x != 0:
+				if player.input_vector.x != 0:
 					# Face the direction based on where you are trying to move
-					if parent.input_vector.x > 0:
-						parent.facingRight = true
+					if player.input_vector.x > 0:
+						player.facingRight = true
 					else:
-						parent.facingRight = false
+						player.facingRight = false
 					
 					if input.get("sprint_macro", false) or sprint_check():
 						# Sprint if you are trying to sprint
-						parent.velocity.x = parent.sprintSpeed * (parent.input_vector.x * ONE)
-						parent.animation.play("Sprint")
+						player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+						player.animation.play("Sprint")
 						set_state("SPRINT")
 				else:
-					parent.velocity.x = 0
-					parent.animation.play("Idle")
+					player.velocity.x = 0
+					player.animation.play("Idle")
 					set_state('IDLE')
 
-				if parent.input_vector.y == 1:
+				if player.input_vector.y == 1:
 					# The player is attempting to jump, enter jumpsquat state
-					if parent.usedJump == false:
-						start_jump()
+					start_jump()
 			else:
 				# Not on the ground while walking somehow, you are now airborne, goodluck!
-				parent.animation.play("Airborne")
+				player.animation.play("Airborne")
 				set_state('AIRBORNE')
 			pass
 		states.DASH:
-			if parent.frame < parent.dashDuration:
-				parent.frame += 1
+			if player.isOnFloor: # if you ever hit the floor, you slide
+				player.velocity.x = player.keptDashSpeed * player.dashVector.x
+				player.velocity.y = player.keptDashSpeed * -player.dashVector.y # player is on the floor, so y velocity is 0
+				player.frame = 0
+				set_state('SLIDE')
+			if player.frame < player.dashDuration:
+				player.frame += 1
 				pass
 			else: # once the dash duration ends
-				parent.frame = 0
-				parent.velocity.x /= 3 # you keep 1/3 of your dash speed
-				parent.velocity.y /= 3
-				if parent.velocity.y != 0: # dashing makes isOnFloor false, this is the replacement for that
-					parent.animation.play("Airborne")
-					set_state('AIRBORNE')
-				else:
+				player.frame = 0
+				player.velocity.x = player.keptDashSpeed * player.dashVector.x
+				player.velocity.y = player.keptDashSpeed * -player.dashVector.y
+				if player.isOnFloor: 
 					set_state('SLIDE')
+				else:
+					player.animation.play("Airborne")
+					set_state('AIRBORNE')
 		states.JUMP:
-			if parent.isOnFloor:
-				parent.animation.play("Idle")
+			if player.isOnFloor:
+				player.animation.play("Idle")
 				set_state('IDLE')
 			else:
-				if parent.velocity.y >= 0:
-					parent.animation.play("Airborne")
+				if player.velocity.y >= 0:
+					player.animation.play("Airborne")
 					set_state('AIRBORNE')
-				# Handle air acceleration
-				if parent.input_vector.x != 0:
-					parent.velocity.x += SGFixed.mul(parent.airAcceleration, (parent.input_vector.x * ONE))
-					if parent.velocity.x > parent.maxAirSpeed:
-						parent.velocity.x = parent.maxAirSpeed
-					elif parent.velocity.x < -parent.maxAirSpeed:
-						parent.velocity.x = -parent.maxAirSpeed
 		states.JUMPSQUAT:
 			# Increment timer for the frames
-			parent.frame += 1
+			player.frame += 1
+			if player.isOnFloor:
 			# Stopped jumping before it would be fullhop, it turns into shorthop
-			if parent.input_vector.y != 1:
-				parent.velocity.y = parent.shortHopForce
-				parent.frame = 0
-				parent.animation.play("Airborne") # can have seperate animation for shothop without seperate state
-				set_state('AIRBORNE')
-			# Jump has been held for more than 4 frames, fullhop
-			if parent.frame > parent.jumpSquatFrames:
-				parent.velocity.y = parent.fullHopForce
-				parent.frame = 0
-				parent.animation.play("Airborne")
-				set_state('AIRBORNE')
+				if player.input_vector.y != 1:
+					player.velocity.y = player.shortHopForce
+					player.frame = 0
+					player.animation.play("Airborne") # can have seperate animation for shothop without seperate state
+					set_state('AIRBORNE')
+				# Jump has been held for more than 4 frames, fullhop
+				if player.frame > player.jumpSquatFrames:
+					player.velocity.y = player.fullHopForce
+					player.frame = 0
+					player.animation.play("Airborne")
+					set_state('AIRBORNE')
+			else: # air jump
+				if player.frame > player.jumpSquatFrames:
+					player.velocity.y = player.airHopForce
+					player.animation.play("Airborne") # TODO: double jump animation
+					set_state('AIRBORNE')
 		states.AIRBORNE:
-			if parent.isOnFloor:
+			if player.isOnFloor:
 				# TODO: LANDING
-				parent.animation.play("Idle")
+				player.animation.play("Idle")
 				set_state('IDLE')
-			# This logic needs to be fixed, for jumping again in air (double jump?)
 			else:
-				if parent.input_vector.y == 1 and parent.airJump > 0:
-					if parent.usedJump == false:
-						parent.airJump -= 1
+				if player.input_vector.y == 1 and player.airJump > 0:
+					if player.usedJump == false:
+						player.airJump -= 1
 						start_jump()
 			# If in the air and you are moving, update the velocity based on
 			# air acceleration and air speed (for air drift implementation)
-			if abs(parent.velocity.x) > parent.maxAirSpeed:
-				parent.velocity.x += SGFixed.mul(parent.airAcceleration, (parent.input_vector.x * ONE))
-			elif parent.input_vector.x != 0:
-				parent.velocity.x += SGFixed.mul(parent.airAcceleration, (parent.input_vector.x * ONE))
-				if parent.velocity.x > parent.maxAirSpeed:
-					parent.velocity.x = parent.maxAirSpeed
-				elif parent.velocity.x < -parent.maxAirSpeed:
-					parent.velocity.x = -parent.maxAirSpeed
+			if abs(player.velocity.x) > player.maxAirSpeed: # if you are moving faster than max air speed, you may only slow down
+				if player.velocity.x > 0:
+					if player.input_vector.x == -1:
+						player.velocity.x -= SGFixed.mul(player.airAcceleration, (ONE))
+				else:
+					if player.input_vector.x == 1:
+						player.velocity.x += SGFixed.mul(player.airAcceleration, (ONE))
+			elif player.input_vector.x != 0:
+				player.velocity.x += SGFixed.mul(player.airAcceleration, (player.input_vector.x * ONE))
+				if player.velocity.x > player.maxAirSpeed:
+					player.velocity.x = player.maxAirSpeed
+				elif player.velocity.x < -player.maxAirSpeed:
+					player.velocity.x = -player.maxAirSpeed
 		states.ATTACKED:
-			parent.health -= parent.damage
-			parent.damage = 0
-			parent.takeDamage = false
+			player.health -= player.damage
+			player.damage = 0
+			player.takeDamage = false
 			set_state('IDLE')
 		states.ATTACK:
 			pass
@@ -318,135 +326,135 @@ func transition_state(input):
 		states.DOWN_H:
 			pass
 	# Updating input buffer
-	update_input_buffer(parent.input_vector)
+	update_input_buffer(player.input_vector)
 
 func start_jump():
-	if parent.usedJump == false:
-		parent.usedJump = true
-		parent.animation.play("JumpSquat")
+	if player.usedJump == false: # you must let go of the jump button to jump again
+		player.usedJump = true
+		player.animation.play("JumpSquat")
 		set_state('JUMPSQUAT')
 
-func update_pressed():
-	if parent.input_vector.y != 1:
-		parent.usedJump = false
+func update_pressed(): # will later update any buttons that must be let go of to be pressed again
+	if player.input_vector.y != 1:
+		player.usedJump = false
 
 func start_dash(input_vector):
 	# if the input vector is neutral, dash in the direction the player is facing
-	if input_vector.x == 0 and input_vector.y == 0:
-		if parent.facingRight:
-			parent.velocity.x = parent.dashSpeed * ONE
+	player.dashVector = input_vector.normalized()
+	if player.dashVector.x == 0 and player.dashVector.y == 0:
+		if player.facingRight:
+			player.velocity.x = player.dashSpeed * ONE
 		else:
-			parent.velocity.x = -parent.dashSpeed * ONE
-		parent.velocity.y = 0
+			player.velocity.x = -player.dashSpeed * ONE
+		player.velocity.y = 0
 	else:
 		# if the input vector is not neutral, dash in the direction of the input vector
-		var normalized_input_vector = input_vector.normalized() # note, normalize scales the vecotor to a fixed vector
-		parent.velocity.x = parent.dashSpeed * normalized_input_vector.x
-		parent.velocity.y = parent.dashSpeed * -normalized_input_vector.y
+		player.velocity.x = player.dashSpeed * player.dashVector.x
+		player.velocity.y = player.dashSpeed * -player.dashVector.y # up is negative in godot
 
 	# Transition to the DASH state
-	parent.animation.play("Dash")
+	player.animation.play("Dash")
 	set_state('DASH')
 
 func sprint_check() -> bool:
 	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
 	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
-	if parent.controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
-		if parent.controlBuffer[0][2] < parent.sprintInputLeinency and parent.controlBuffer[1][2] < parent.sprintInputLeinency and parent.controlBuffer[2][2] < parent.sprintInputLeinency:
-			if parent.controlBuffer[0][0] == parent.controlBuffer[2][0] and parent.controlBuffer[0][1] == parent.controlBuffer[2][1] and parent.controlBuffer[1][0] == 0 and parent.controlBuffer[1][1] == 0:
+	if player.controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
+		if player.controlBuffer[0][2] < player.sprintInputLeinency and player.controlBuffer[1][2] < player.sprintInputLeinency and player.controlBuffer[2][2] < player.sprintInputLeinency:
+			if player.controlBuffer[0][0] == player.controlBuffer[2][0] and player.controlBuffer[0][1] == player.controlBuffer[2][1] and player.controlBuffer[1][0] == 0 and player.controlBuffer[1][1] == 0:
 				return true
 	return false
 
 # Reset the number of jumps you have
 func reset_jumps():
-	parent.airJump = parent.airJumpMax
+	player.airJump = player.maxAirJump
 
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):
 	# Because if it is not true it is null, need to add the false argument to default it to false instead of null
-	var spawn_position_x = parent.fixed_position.x
+	var spawn_position_x = player.fixed_position.x
 	
-	if parent.facingRight:
+	if player.facingRight:
 		spawn_position_x = (55 * ONE)
 	else:
 		spawn_position_x = -(55 * ONE)
 	
 	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", parent.get_parent(), Bomb, { 
-			fixed_position_x = parent.fixed_position.x,
-			fixed_position_y = parent.fixed_position.y 
+		SyncManager.spawn("Bomb", player.get_parent(), Bomb, { 
+			fixed_position_x = player.fixed_position.x,
+			fixed_position_y = player.fixed_position.y 
 		})
 	if input.get("attack_light", false):
-		if parent.get_node("SpawnHitbox").get_child_count() == 0:
-			parent.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, { 
+		if player.get_node("SpawnHitbox").get_child_count() == 0:
+			player.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, { 
 				fixed_position_x = spawn_position_x,
 				fixed_position_y = 0,
 				fixed_scale_x = 1 * ONE,
 				fixed_scale_y = 1 * ONE,
 				fixed_rotation = 0,
 				damage = 1000,
-				attacking_player = parent.name
+				attacking_player = player.name
 			})
 	if input.get("attack_medium", false):
-		if parent.get_node("SpawnHitbox").get_child_count() == 0:
-			parent.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+		if player.get_node("SpawnHitbox").get_child_count() == 0:
+			player.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
 				fixed_position_x = spawn_position_x,
 				fixed_position_y = 0,
 				fixed_scale_x = 1 * ONE,
 				fixed_scale_y = 1 * ONE,
 				fixed_rotation = 0,
 				damage = 2000,
-				attacking_player = parent.name
+				attacking_player = player.name
 			})
 	if input.get("attack_heavy", false):
-		if parent.get_node("SpawnHitbox").get_child_count() == 0:
-			parent.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+		if player.get_node("SpawnHitbox").get_child_count() == 0:
+			player.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
 				fixed_position_x = spawn_position_x,
 				fixed_position_y = 0,
 				fixed_scale_x = 1 * ONE,
 				fixed_scale_y = 1 * ONE,
 				fixed_rotation = 0,
 				damage = 3000,
-				attacking_player = parent.name
+				attacking_player = player.name
 			})
 	if input.get("impact", false):
-		if parent.get_node("SpawnHitbox").get_child_count() == 0:
-			parent.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+		if player.get_node("SpawnHitbox").get_child_count() == 0:
+			player.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
 				fixed_position_x = spawn_position_x,
 				fixed_position_y = 0,
 				fixed_scale_x = 1 * ONE,
 				fixed_scale_y = 1 * ONE,
 				fixed_rotation = 0,
 				damage = 1000,
-				attacking_player = parent.name
+				attacking_player = player.name
 			})
 	if input.get("dash", false):
-		if parent.get_node("SpawnHitbox").get_child_count() == 0:
-			parent.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+		if player.get_node("SpawnHitbox").get_child_count() == 0:
+			player.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
 				fixed_position_x = spawn_position_x,
 				fixed_position_y = 0,
 				fixed_scale_x = 1 * ONE,
 				fixed_scale_y = 1 * ONE,
 				fixed_rotation = 0,
 				damage = 1000,
-				attacking_player = parent.name
+				attacking_player = player.name
 			})
 	if input.get("block", false):
-		if parent.get_node("SpawnHitbox").get_child_count() == 0:
-			parent.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", parent.get_node("SpawnHitbox"), Attack_Light, {
+		if player.get_node("SpawnHitbox").get_child_count() == 0:
+			player.attackAnimationPlayer.play("DebugAttack")
+			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
 				fixed_position_x = spawn_position_x,
 				fixed_position_y = 0,
 				fixed_scale_x = 1 * ONE,
 				fixed_scale_y = 1 * ONE,
 				fixed_rotation = 0,
 				damage = 1000,
-				attacking_player = parent.name
+				attacking_player = player.name
 			})
 
 
@@ -455,10 +463,10 @@ func update_debug_label(input_vector):
 	
 	var debug_data: Dictionary = {
 		"player_type": player_type,
-		"pos_x": str(parent.fixed_position.x / ONE),
-		"pos_y": str(parent.fixed_position.y / ONE),
-		"velocity_x": str(parent.velocity.x / ONE),
-		"velocity_y": str(parent.velocity.y / ONE),
+		"pos_x": str(player.fixed_position.x / ONE),
+		"pos_y": str(player.fixed_position.y / ONE),
+		"velocity_x": str(player.velocity.x / ONE),
+		"velocity_y": str(player.velocity.y / ONE),
 		"input_vector_x": str(input_vector.x),
 		"input_vector_y": str(input_vector.y),
 		"state": str(state)
@@ -471,19 +479,19 @@ func update_input_buffer(input_vector):
 	var player_type: String = self.get_parent().name
 	var inputs: Array = []
 
-	if parent.controlBuffer.size() > 20:
-		parent.controlBuffer.pop_back()
+	if player.controlBuffer.size() > 20:
+		player.controlBuffer.pop_back()
 	
-	if parent.controlBuffer.front()[0] == input_vector.x and parent.controlBuffer.front()[1] == input_vector.y:
-		var ticks = parent.controlBuffer.front()[2]
-		parent.controlBuffer.pop_front()
-		parent.controlBuffer.push_front([input_vector.x, input_vector.y, ticks+1])
+	if player.controlBuffer.front()[0] == input_vector.x and player.controlBuffer.front()[1] == input_vector.y:
+		var ticks = player.controlBuffer.front()[2]
+		player.controlBuffer.pop_front()
+		player.controlBuffer.push_front([input_vector.x, input_vector.y, ticks+1])
 	else:
-		parent.controlBuffer.push_front([input_vector.x, input_vector.y, 1])
+		player.controlBuffer.push_front([input_vector.x, input_vector.y, 1])
 	
-	for item in parent.controlBuffer:
+	for item in player.controlBuffer:
 		var new_input: Array = []
-		new_input.append(str(parent.direction_mapping.get([item[0], item[1]], "NEUTRAL")))
+		new_input.append(str(player.direction_mapping.get([item[0], item[1]], "NEUTRAL")))
 		new_input.append(str(item[2]))
 		inputs.append(new_input)
 
