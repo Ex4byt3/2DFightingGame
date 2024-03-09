@@ -385,11 +385,11 @@ func handle_attacks(input_vector, input):
 	else:
 		spawn_position_x = -(55 * ONE)
 	
-	if input.get("drop_bomb", false):
-		SyncManager.spawn("Bomb", player.get_parent(), Bomb, { 
-			fixed_position_x = player.fixed_position.x,
-			fixed_position_y = player.fixed_position.y 
-		})
+	#if input.get("drop_bomb", false):
+		#SyncManager.spawn("Bomb", player.get_parent(), Bomb, { 
+			#fixed_position_x = player.fixed_position.x,
+			#fixed_position_y = player.fixed_position.y 
+		#})
 	if input.get("attack_light", false):
 		if player.get_node("SpawnHitbox").get_child_count() == 0:
 			player.attackAnimationPlayer.play("DebugAttack")

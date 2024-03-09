@@ -20,9 +20,7 @@ func _network_spawn(data: Dictionary) -> void:
 	damage = data['damage']
 	attacking_player = data['attacking_player']
 	if attacking_player == "ClientPlayer":
-		set_collision_layer_bit(1, false)
 		set_collision_mask_bit(2, false)
-		set_collision_layer_bit(2, true)
 		set_collision_mask_bit(1, true)
 	despawn_timer.start()
 
@@ -37,13 +35,13 @@ func _on_despawn_timer_timeout():
 
 func _save_state() -> Dictionary:
 	return {
-		fixed_rotation = fixed_rotation,
+		# fixed_rotation = fixed_rotation,
 		used = used,
 		tick = tick
 	}
 
 func _load_state(loadState: Dictionary) -> void:
-	fixed_rotation = loadState['fixed_rotation']
+	# fixed_rotation = loadState['fixed_rotation']
 	used = loadState['used']
 	tick = loadState['tick']
 	sync_to_physics_engine()

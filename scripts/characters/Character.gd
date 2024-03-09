@@ -37,7 +37,7 @@ var input_prefix := "player1_"
 var isOnFloor := false
 var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
-var overlappingHitBoxes := []
+var overlappingHurtbox := []
 # will need to replace with some sort of array to cover similar cases other than jump
 var usedJump = false
 

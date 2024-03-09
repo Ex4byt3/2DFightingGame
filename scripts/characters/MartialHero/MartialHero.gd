@@ -81,9 +81,7 @@ func _rotate_client_player() -> void:
 		facingRight = false
 		# also flip collision layer and mask for client player
 		$HurtBox.set_collision_layer_bit(1, false)
-		$HurtBox.set_collision_mask_bit(2, false)
 		$HurtBox.set_collision_layer_bit(2, true)
-		$HurtBox.set_collision_mask_bit(1, true)
 
 
 ##################################################
@@ -141,15 +139,14 @@ func _network_process(input: Dictionary) -> void:
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
 	
-	var hurtBox = get_node("HurtBox")
-	overlappingHitBoxes = hurtBox.get_overlapping_areas()
-	for area in overlappingHitBoxes:
-		print(area.used, " ", area.attacking_player, " ", self.name)
-	if len(overlappingHitBoxes) > 0:
-		if overlappingHitBoxes[0].used == false and overlappingHitBoxes[0].attacking_player != self.name:
+	overlappingHurtbox = $HurtBox.get_overlapping_areas()
+	if len(overlappingHurtbox) > 0:
+		print(overlappingHurtbox[0].used, " ", overlappingHurtbox[0].attacking_player, " ", self.name)
+	if len(overlappingHurtbox) > 0:
+		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
 			takeDamage = true
-			damage = overlappingHitBoxes[0].damage
-			overlappingHitBoxes[0].used = true
+			damage = overlappingHurtbox[0].damage
+			overlappingHurtbox[0].used = true
 	
 	# Update position based off of velocity
 	move_and_slide()
