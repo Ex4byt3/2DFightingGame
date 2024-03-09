@@ -19,6 +19,7 @@ enum HeaderFlags {
 	DASH             = 1 << 6, # Bit 6
 	SHIELD           = 1 << 7, # Bit 7
 	SPRINT_MACRO     = 1 << 8, # Bit 8
+	JUMP			 = 1 << 9, # Bit 9
 }
 
 #func _init():
@@ -57,6 +58,8 @@ func serialize_input(all_input: Dictionary) -> PackedByteArray:
 			header |= HeaderFlags.SHIELD
 		if input.get('sprint_macro', false):
 			header |= HeaderFlags.SPRINT_MACRO
+		if input.get('jump', false):
+			header |= HeaderFlags.JUMP
 		
 		buffer.put_u16(header)
 		
@@ -103,6 +106,8 @@ func unserialize_input(serialized: PackedByteArray) -> Dictionary:
 		input["shield"] = true
 	if header & HeaderFlags.SPRINT_MACRO:
 		input["sprint_macro"] = true
+	if header & HeaderFlags.JUMP:
+		input["jump"] = true
 	
 	all_input[path] = input
 	return all_input

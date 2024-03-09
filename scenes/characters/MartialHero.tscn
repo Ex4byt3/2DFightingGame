@@ -770,6 +770,7 @@ collision_mask = 4
 shape = SubResource("SGRectangleShape2D_dufex")
 
 [node name="ColorRect" type="ColorRect" parent="HurtBox/HurtBox"]
+visible = false
 offset_left = 38.0
 offset_top = -63.0
 offset_right = 113.0

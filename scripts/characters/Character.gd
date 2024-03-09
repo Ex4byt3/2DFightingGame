@@ -94,5 +94,7 @@ func _get_local_input() -> Dictionary:
 		input["shield"] = true
 	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
 		input["sprint_macro"] = true
+	if Input.is_action_just_pressed(input_prefix + "jump"):
+		input["jump"] = true
 	
 	return input

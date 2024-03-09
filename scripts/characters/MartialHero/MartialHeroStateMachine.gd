@@ -131,7 +131,7 @@ func transition_state(input):
 					player.velocity.x = 0
 					player.animation.play("Idle")
 					set_state('IDLE')
-				if player.input_vector.y == 1:
+				if jump_check(input):
 					# The player is attempting to jump
 					start_jump()
 			else:
@@ -163,7 +163,7 @@ func transition_state(input):
 					player.velocity.x = 0
 					player.animation.play("Idle")
 					set_state('IDLE')
-				if player.input_vector.y == 1:
+				if jump_check(input):
 					# The player is attempting to jump, enter jumpsquat state
 					start_jump()
 			else:
@@ -171,7 +171,7 @@ func transition_state(input):
 				player.animation.play("Airborne")
 				set_state('AIRBORNE')
 		states.SLIDE:
-			if player.input_vector.y == 1:
+			if jump_check(input):
 				# The player is attempting to jump
 				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
 				start_jump()
@@ -214,7 +214,7 @@ func transition_state(input):
 					player.animation.play("Idle")
 					set_state('IDLE')
 
-				if player.input_vector.y == 1:
+				if jump_check(input):
 					# The player is attempting to jump, enter jumpsquat state
 					start_jump()
 			else:
@@ -275,7 +275,7 @@ func transition_state(input):
 				player.animation.play("Idle")
 				set_state('IDLE')
 			else:
-				if player.input_vector.y == 1 and player.airJump > 0:
+				if jump_check(input) and player.airJump > 0:
 					if player.usedJump == false:
 						player.airJump -= 1
 						start_jump()
@@ -355,6 +355,12 @@ func start_dash(input_vector):
 	# Transition to the DASH state
 	player.animation.play("Dash")
 	set_state('DASH')
+	
+func jump_check(input) -> bool:
+	if player.input_vector.y == 1 or input.has("jump"):
+		return true
+	else:
+		return false
 
 func sprint_check() -> bool:
 	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
