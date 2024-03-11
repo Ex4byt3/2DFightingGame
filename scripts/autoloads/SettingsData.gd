@@ -7,18 +7,6 @@ extends Node
 var window_mode_index: int = 0
 var resolution_index: int = 0
 
-# Variables for local match settings
-var match_timelimit: int  = 180 # In seconds
-
-# Variables for local character settings
-var character_lives: int = 2
-var initial_burst: int = 100
-var initial_meter: int = 0
-var damage_mult: int = 1
-var burst_mult: int = 1
-var meter_mult: int = 1
-var knockback_mult: int = 1
-
 # Dictionary for match settings
 var match_settings: Dictionary = {
 	"time_limit": 180,
@@ -33,10 +21,6 @@ var match_settings: Dictionary = {
 
 # Dictionaries and variables for loading match and character settings
 var is_using_lobby: bool = false
-var local_match_settings: Dictionary = {}
-var local_character_settings: Dictionary = {}
-var lobby_match_settings: Dictionary = {}
-var lobby_character_settings: Dictionary = {}
 
 # Dictionaries for saving and loading settings
 var storage_dictionary: Dictionary = {}
@@ -72,7 +56,6 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "resolution_selected", "_on_resolution_selected")
 	
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "send_match_settings", "_send_match_settings")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "send_required_match_data", "_send_required_match_data")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_match_settings_source", "_set_match_settings_source")
 
 
@@ -83,62 +66,11 @@ func _load_settings_data(data: Dictionary) -> void:
 	_on_resolution_selected(loaded_settings.resolution_index)
 	_on_keybindings_loaded(loaded_settings.keybindings_dictionary)
 	#_on_match_settings_loaded(loaded_settings.match_settings_dictionary)
-	#_on_character_settings_loaded(loaded_settings.character_settings_dictionary)
 
 
 ##################################################
 # MATCH SETTINGS FUNCTIONS
 ##################################################
-func _set_match_settings_source(using_owner_settings: bool) -> void:
-	is_using_lobby = using_owner_settings
-
-
-func _on_match_settings_loaded(data: Dictionary) -> void:
-	match_timelimit = data.match_timelimit
-
-
-func create_match_settings_dictionary() -> Dictionary:
-	var match_settings_dict: Dictionary = {
-		"match_timelimit": match_timelimit
-	}
-	return match_settings_dict
-
-
-func _on_character_settings_loaded(data: Dictionary) -> void:
-	character_lives = data.character_lives
-	initial_burst = data.initial_burst
-	initial_meter = data.initial_meter
-	damage_mult = data.damage_mult
-	burst_mult = data.burst_mult
-	meter_mult = data.meter_mult
-	knockback_mult = data.knockback_mult
-
-
-func create_character_settings_dictionary() -> Dictionary:
-	var character_settings_dict: Dictionary = {
-		"character_lives": character_lives,
-		"initial_burst": initial_burst,
-		"initial_meter": initial_meter,
-		"damage_mult": damage_mult,
-		"burst_mult": burst_mult,
-		"meter_mult": meter_mult,
-		"knockback_mult": knockback_mult
-	}
-	return character_settings_dict
-
-
-func _send_required_match_data() -> void:
-	print("[SYSTEM] Sending required match data...")
-	var match_settings_to_send = create_match_settings_dictionary()
-	var character_settings_to_send = create_character_settings_dictionary()
-	
-	if is_using_lobby:
-		match_settings_to_send = lobby_match_settings
-		character_settings_to_send = lobby_character_settings
-		
-	MenuSignalBus.call_deferred("emit_receive_required_match_data", match_settings_to_send, character_settings_to_send)
-
-
 func _send_match_settings() -> void:
 	print("[SYSTEM] Sending match settings...")
 	
@@ -248,8 +180,7 @@ func create_storage_dictionary() -> Dictionary:
 		"window_mode_index": window_mode_index,
 		"resolution_index": resolution_index,
 		"keybindings_dictionary" : create_keybindings_dictionary(),
-		"match_settings_dictionary": create_match_settings_dictionary(),
-		"character_settings_dictionary": create_character_settings_dictionary()
+		"match_settings_dictionary": match_settings
 	}
 
 	return settings_container_dict

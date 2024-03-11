@@ -25,11 +25,7 @@ signal player_ready(player_id)
 # Signals for match settings
 signal send_match_settings
 signal update_match_settings(match_settings)
-signal send_character_settings
-signal send_required_match_data
-signal receive_required_match_data(match_settings, character_settings)
 signal apply_match_settings(match_settings)
-signal apply_character_settings(character_settings)
 signal set_match_settings_source(using_owner_settings)
 
 # Signals for gameplay ui
@@ -121,20 +117,8 @@ func emit_send_match_settings() -> void:
 func emit_update_match_settings(match_settings: Dictionary) -> void:
 	emit_signal("update_match_settings", match_settings)
 
-func emit_send_character_settings() -> void:
-	emit_signal("send_character_settings")
-
-func emit_send_required_match_data() -> void:
-	emit_signal("send_required_match_data")
-
-func emit_receive_required_match_data(match_settings: Dictionary, character_settings: Dictionary) -> void:
-	emit_signal("receive_required_match_data", match_settings, character_settings)
-
 func emit_apply_match_settings(match_settings: Dictionary) -> void:
 	emit_signal("apply_match_settings", match_settings)
-
-func emit_apply_character_settings(character_settings: Dictionary) -> void:
-	emit_signal("apply_character_settings", character_settings)
 
 func emit_set_match_settings_source(using_owner_settings: bool) -> void:
 	emit_signal("set_match_settings_source", using_owner_settings)

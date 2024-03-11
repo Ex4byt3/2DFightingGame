@@ -52,8 +52,6 @@ func _ready():
 	_handle_connecting_signals()
 	_scale_to_fixed()
 	_rotate_client_player()
-	
-	MenuSignalBus.emit_send_character_settings()
 
 
 ##################################################
@@ -107,6 +105,8 @@ func _init_character_data() -> void:
 	MenuSignalBus.emit_update_character_image(character_img, self.name)
 	MenuSignalBus.emit_update_character_name(character_name, self.name)
 	MenuSignalBus.emit_update_max_health(max_health, self.name)
+	MenuSignalBus.emit_update_burst(burst, self.name)
+	MenuSignalBus.emit_update_meter(meter, self.name)
 
 
 func _setup_round() -> void:

@@ -24,14 +24,12 @@ func _ready():
 func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "create_match", "_create_match")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "leave_match", "_leave_match")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "receive_required_match_data", "_receive_required_match_data")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_match_settings", "_update_match_settings")
 
 
 func _create_match() -> void:
 	var new_match = map_holder.instantiate()
 	add_child(new_match)
-	#MenuSignalBus.emit_send_required_match_data()
 	MenuSignalBus.emit_send_match_settings()
 
 
@@ -39,17 +37,6 @@ func _leave_match() -> void:
 	SyncManager.stop()
 	for child in get_children():
 		child.queue_free()
-
-
-func _receive_required_match_data(new_match_settings: Dictionary, new_character_settings: Dictionary) -> void:
-	print("[SYSTEM] Required match data received!")
-	match_settings = new_match_settings
-	character_settings = new_character_settings
-	
-	print("[SYSTEM] Sending match settings...")
-	MenuSignalBus.emit_apply_match_settings(match_settings)
-	print("[SYSTEM] Sending character settings...")
-	MenuSignalBus.emit_apply_character_settings(character_settings)
 
 
 func _update_match_settings(new_settings:Dictionary) -> void:
