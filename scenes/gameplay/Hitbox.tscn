@@ -1,18 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmy4joobxaaqa"]
+[gd_scene load_steps=3 format=3 uid="uid://cmy4joobxaaqa"]
 
-[ext_resource type="Script" path="res://scripts/gameplay/Hitbox.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/gameplay/HitboxChild.gd" id="1_xkykw"]
 [ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkTimer.gd" id="2_junxh"]
-
-[sub_resource type="SGRectangleShape2D" id="1"]
-extents_x = 2343505
 
 [node name="Hitbox" type="SGArea2D" groups=["network_sync"]]
 collision_layer = 0
 collision_mask = 4
-script = ExtResource("1")
+script = ExtResource("1_xkykw")
 
 [node name="Hitbox_Shape" type="SGCollisionShape2D" parent="."]
-shape = SubResource("1")
 debug_color = Color(0.992157, 0, 0.266667, 0.419608)
 
 [node name="DespawnTimer" type="Node" parent="."]

@@ -141,8 +141,6 @@ func _network_process(input: Dictionary) -> void:
 	
 	overlappingHurtbox = $HurtBox.get_overlapping_areas()
 	if len(overlappingHurtbox) > 0:
-		print(overlappingHurtbox[0].used, " ", overlappingHurtbox[0].attacking_player, " ", self.name)
-	if len(overlappingHurtbox) > 0:
 		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
 			takeDamage = true
 			damage = overlappingHurtbox[0].damage

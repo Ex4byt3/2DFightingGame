@@ -5,8 +5,6 @@ var ONE = SGFixed.ONE
 
 var defaultDashDuration = 20
 
-
-
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
 
@@ -378,12 +376,7 @@ func reset_jumps():
 # TODO: parse input buffer
 func handle_attacks(input_vector, input):
 	# Because if it is not true it is null, need to add the false argument to default it to false instead of null
-	var spawn_position_x = player.fixed_position.x
-	
-	if player.facingRight:
-		spawn_position_x = (55 * ONE)
-	else:
-		spawn_position_x = -(55 * ONE)
+	var spawnHitBox = player.get_node("SpawnHitbox")
 	
 	#if input.get("drop_bomb", false):
 		#SyncManager.spawn("Bomb", player.get_parent(), Bomb, { 
@@ -391,77 +384,23 @@ func handle_attacks(input_vector, input):
 			#fixed_position_y = player.fixed_position.y 
 		#})
 	if input.get("attack_light", false):
-		if player.get_node("SpawnHitbox").get_child_count() == 0:
+		if spawnHitBox.get_child_count() == 0:
 			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, { 
-				fixed_position_x = spawn_position_x,
-				fixed_position_y = 0,
-				fixed_scale_x = 1 * ONE,
-				fixed_scale_y = 1 * ONE,
-				fixed_rotation = 0,
+			SyncManager.spawn("Attack_Light", spawnHitBox, Attack_Light, { 
 				damage = 1000,
-				attacking_player = player.name
+				attacking_player = player.name,
+				hitboxShapes = spawnHitBox.get_hitbox_shapes("light")
 			})
 	if input.get("attack_medium", false):
-		if player.get_node("SpawnHitbox").get_child_count() == 0:
-			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
-				fixed_position_x = spawn_position_x,
-				fixed_position_y = 0,
-				fixed_scale_x = 1 * ONE,
-				fixed_scale_y = 1 * ONE,
-				fixed_rotation = 0,
-				damage = 2000,
-				attacking_player = player.name
-			})
+		pass
 	if input.get("attack_heavy", false):
-		if player.get_node("SpawnHitbox").get_child_count() == 0:
-			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
-				fixed_position_x = spawn_position_x,
-				fixed_position_y = 0,
-				fixed_scale_x = 1 * ONE,
-				fixed_scale_y = 1 * ONE,
-				fixed_rotation = 0,
-				damage = 3000,
-				attacking_player = player.name
-			})
+		pass
 	if input.get("impact", false):
-		if player.get_node("SpawnHitbox").get_child_count() == 0:
-			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
-				fixed_position_x = spawn_position_x,
-				fixed_position_y = 0,
-				fixed_scale_x = 1 * ONE,
-				fixed_scale_y = 1 * ONE,
-				fixed_rotation = 0,
-				damage = 1000,
-				attacking_player = player.name
-			})
+		pass
 	if input.get("dash", false):
-		if player.get_node("SpawnHitbox").get_child_count() == 0:
-			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
-				fixed_position_x = spawn_position_x,
-				fixed_position_y = 0,
-				fixed_scale_x = 1 * ONE,
-				fixed_scale_y = 1 * ONE,
-				fixed_rotation = 0,
-				damage = 1000,
-				attacking_player = player.name
-			})
+		pass
 	if input.get("block", false):
-		if player.get_node("SpawnHitbox").get_child_count() == 0:
-			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", player.get_node("SpawnHitbox"), Attack_Light, {
-				fixed_position_x = spawn_position_x,
-				fixed_position_y = 0,
-				fixed_scale_x = 1 * ONE,
-				fixed_scale_y = 1 * ONE,
-				fixed_rotation = 0,
-				damage = 1000,
-				attacking_player = player.name
-			})
+		pass
 
 
 func update_debug_label(input_vector):
