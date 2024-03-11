@@ -60,7 +60,7 @@ func _ready():
 # ONREADY FUNCTIONS
 ##################################################
 func _handle_connecting_signals() -> void:
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_character_settings", "_apply_character_settings")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
 
 
 # Scale appropriate variables to fixed point numbers
@@ -87,12 +87,12 @@ func _rotate_client_player() -> void:
 ##################################################
 # STATUS MANIPULATION FUNCTIONS
 ##################################################
-func _apply_character_settings(character_settings: Dictionary) -> void:
-	print("[SYSTEM] " + self.name + " received character settings!")
-	num_lives = character_settings.character_lives
-	burst = character_settings.initial_burst
-	meter = character_settings.initial_meter
-	print("[SYSTEM] " + self.name + "'s character settings have been applied!")
+func _apply_match_settings(match_settings: Dictionary) -> void:
+	print("[SYSTEM] " + self.name + " received settings!")
+	num_lives = match_settings.character_lives
+	burst = match_settings.initial_burst
+	meter = match_settings.initial_meter
+	print("[SYSTEM] " + self.name + "'s settings have been applied!")
 	
 	MenuSignalBus.emit_update_lives(num_lives, self.name)
 	

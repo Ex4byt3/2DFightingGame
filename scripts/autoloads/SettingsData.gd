@@ -14,6 +14,22 @@ var match_timelimit: int  = 180 # In seconds
 var character_lives: int = 2
 var initial_burst: int = 100
 var initial_meter: int = 0
+var damage_mult: int = 1
+var burst_mult: int = 1
+var meter_mult: int = 1
+var knockback_mult: int = 1
+
+# Dictionary for match settings
+var match_settings: Dictionary = {
+	"time_limit": 180,
+	"character_lives": 2,
+	"initial_burst": 100,
+	"initial_meter": 0,
+	"damage_mult": 1,
+	"burst_mult": 1,
+	"meter_mult": 1,
+	"knockback_mult": 1
+}
 
 # Dictionaries and variables for loading match and character settings
 var is_using_lobby: bool = false
@@ -55,6 +71,7 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "window_mode_selected", "_on_window_mode_selected")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "resolution_selected", "_on_resolution_selected")
 	
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "send_match_settings", "_send_match_settings")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "send_required_match_data", "_send_required_match_data")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_match_settings_source", "_set_match_settings_source")
 
@@ -91,6 +108,10 @@ func _on_character_settings_loaded(data: Dictionary) -> void:
 	character_lives = data.character_lives
 	initial_burst = data.initial_burst
 	initial_meter = data.initial_meter
+	damage_mult = data.damage_mult
+	burst_mult = data.burst_mult
+	meter_mult = data.meter_mult
+	knockback_mult = data.knockback_mult
 
 
 func create_character_settings_dictionary() -> Dictionary:
@@ -98,6 +119,10 @@ func create_character_settings_dictionary() -> Dictionary:
 		"character_lives": character_lives,
 		"initial_burst": initial_burst,
 		"initial_meter": initial_meter,
+		"damage_mult": damage_mult,
+		"burst_mult": burst_mult,
+		"meter_mult": meter_mult,
+		"knockback_mult": knockback_mult
 	}
 	return character_settings_dict
 
@@ -112,7 +137,12 @@ func _send_required_match_data() -> void:
 		character_settings_to_send = lobby_character_settings
 		
 	MenuSignalBus.call_deferred("emit_receive_required_match_data", match_settings_to_send, character_settings_to_send)
+
+
+func _send_match_settings() -> void:
+	print("[SYSTEM] Sending match settings...")
 	
+	MenuSignalBus.call_deferred("emit_update_match_settings", match_settings)
 
 
 ##################################################

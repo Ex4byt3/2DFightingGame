@@ -93,7 +93,7 @@ func _init_health() -> void:
 
 
 func _apply_match_settings(match_settings: Dictionary) -> void:
-	match_time = match_settings.match_timelimit
+	match_time = match_settings.time_limit
 
 
 ##################################################
@@ -101,7 +101,6 @@ func _apply_match_settings(match_settings: Dictionary) -> void:
 ##################################################
 func _update_ui() -> void:
 	_set_time()
-	
 
 
 ##################################################

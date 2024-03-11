@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://h12l3d1hcmap"]
+[gd_scene load_steps=4 format=3 uid="uid://h12l3d1hcmap"]
 
 [ext_resource type="Theme" uid="uid://bka6i68urcl7m" path="res://assets/resources/gui/lobbymenu_theme.tres" id="1_ranky"]
 [ext_resource type="Script" path="res://scripts/gui/menu/lobby/LobbyMenu.gd" id="2_04whh"]
+[ext_resource type="PackedScene" uid="uid://dwrql3a4v1lau" path="res://scenes/gui/menu/lobby/SpinSetting.tscn" id="3_3vela"]
 
 [node name="LobbyMenu" type="Control"]
 layout_mode = 3
@@ -175,3 +176,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="LivesSetting" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/MatchSettingsTab/ScrollContainer/MatchSettings" instance=ExtResource("3_3vela")]
+layout_mode = 2

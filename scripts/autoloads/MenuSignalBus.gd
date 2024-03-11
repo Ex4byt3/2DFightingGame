@@ -24,6 +24,7 @@ signal player_ready(player_id)
 
 # Signals for match settings
 signal send_match_settings
+signal update_match_settings(match_settings)
 signal send_character_settings
 signal send_required_match_data
 signal receive_required_match_data(match_settings, character_settings)
@@ -116,7 +117,10 @@ func emit_player_ready(player_id: String) -> void:
 ##################################################
 func emit_send_match_settings() -> void:
 	emit_signal("send_match_settings")
-#
+
+func emit_update_match_settings(match_settings: Dictionary) -> void:
+	emit_signal("update_match_settings", match_settings)
+
 func emit_send_character_settings() -> void:
 	emit_signal("send_character_settings")
 
