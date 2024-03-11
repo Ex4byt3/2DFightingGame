@@ -12,7 +12,7 @@ var match_settings: Dictionary = {
 	"time_limit": 180,
 	"character_lives": 2,
 	"initial_burst": 100,
-	"initial_meter": 0,
+	"initial_meter": 3,
 	"damage_mult": 1,
 	"burst_mult": 1,
 	"meter_mult": 1,

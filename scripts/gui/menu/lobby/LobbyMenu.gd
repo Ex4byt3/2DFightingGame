@@ -319,7 +319,7 @@ func _update_lobby_match_settings() -> void:
 
 func _set_lobby_match_settings() -> void:
 	SettingsData.is_using_lobby = using_owner_settings
-	SettingsData.lobby_match_settings
+	SettingsData.match_settings
 
 
 func _send_command(command: String) -> void:

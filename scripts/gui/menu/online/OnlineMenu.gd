@@ -38,8 +38,7 @@ const LOBBY_TYPE: Array = ["All Lobbies", "Public", "Private"]
 const LOBBY_STATE: Array = ["Open", "Full"]
 
 # Variables for lobby match settings
-var MATCH_SETTINGS: Dictionary = SettingsData.create_match_settings_dictionary()
-var CHARACTER_SETTINGS: Dictionary = SettingsData.create_character_settings_dictionary()
+var MATCH_SETTINGS: Dictionary = SettingsData.match_settings
 
 
 # Called when the node enters the scene tree for the first time.
