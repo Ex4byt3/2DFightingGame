@@ -4,6 +4,7 @@ extends StateMachine
 var ONE = SGFixed.ONE
 
 var defaultDashDuration = 20
+var prevVelocity = 0
 
 
 
@@ -27,6 +28,7 @@ func _ready():
 	add_state('ATTACK')
 	add_state('BLOCK')
 	add_state('HITSTUN')
+	add_state('KNOCKDOWN')
 	add_state('DEAD')
 	add_state('NEUTRAL_L')
 	add_state('NEUTRAL_M')
@@ -104,9 +106,11 @@ func transition_state(input):
 		start_dash(player.input_vector)
 
 	if input.get("shield", false): 
-		## DEBUG for Knockback 
+		## DEBUG for HITSTUN 
+		player.frame = 30
+		player.apply_knockback(30 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
+		player.isOnFloor = false
 		set_state('HITSTUN')
-		player.apply_knockback(16 * ONE, SGFixed.PI_DIV_4)
 
 	match states[state]:
 		states.IDLE:
@@ -185,7 +189,7 @@ func transition_state(input):
 				if player.input_vector.x == 1: # if the player is moving with the slide it decays slower, else it dwcays quickly
 					player.velocity.x -= player.slideDecay
 				else:
-					player.velocity.x -= player.slideDecay
+					player.velocity.x -= player.slideDecay # TODO: same as in the previous if statement
 				if player.velocity.x < player.sprintSpeed * ONE: # when the player reaches their sprint speed, they start sprinting instead of sliding
 					player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
 					player.animation.play("Sprint")
@@ -309,8 +313,34 @@ func transition_state(input):
 		states.BLOCK:
 			pass
 		states.HITSTUN:
-			# TODO: implement hitstun
-			set_state('AIRBORNE')
+			# Expects player.frame to be set beforehand.
+			# Set player.isOnFloor = false before setting this state.
+			if player.isOnFloor:
+				if prevVelocity >= 40 * ONE: 
+					player.frame = 0
+					set_state('KNOCKDOWN')
+				else: # Enter Hitstun slide
+					if player.velocity.x == 0 || player.frame == 0: # exit Hitstun slide
+						player.frame = 0
+						set_state('IDLE')
+					# Mimic slide during Hitstun
+					player.frame -= 1
+					if player.velocity.x > 0:
+						player.velocity.x -= player.slideDecay
+						if player.velocity.x < 0:
+							player.velocity.x = 0
+					else: # if velocity < 0
+						player.velocity.x += player.slideDecay
+						if player.velocity.x > 0:
+							player.velocity.x = 0
+			elif player.frame > 0:
+				prevVelocity = player.velocity.length() # Velocity before hitting floor
+				player.frame -= 1
+			else:
+				set_state('AIRBORNE')
+		states.KNOCKDOWN:
+			#set_state('KNOCKDOWN')
+			pass
 		states.DEAD:
 			pass
 		states.NEUTRAL_L:
