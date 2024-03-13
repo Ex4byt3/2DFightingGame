@@ -6,6 +6,7 @@ extends Character
 @onready var attackSprite = $DebugSprite/DebugAttack
 
 var healthBar = null
+var ONE = SGFixed.ONE
 
 # Character motion attributes
 var walkSpeed = 4
@@ -19,7 +20,7 @@ var dashVector = SGFixed.vector2(0, 0)
 var sprintInputLeinency = 6
 @export_range(5, 20) var airAcceleration = 4 # divisor
 var maxAirSpeed = 6
-var gravity = (SGFixed.ONE / 10) * 6 # divsor
+var gravity = (ONE / 10) * 6 # divisor
 var maxAirJump = 1
 var airJump = 0
 var knockback_multiplier = 1
@@ -52,7 +53,7 @@ var max_health = 10000
 
 
 func _ready():
-	set_up_direction(SGFixed.vector2(0, -SGFixed.ONE))
+	set_up_direction(SGFixed.vector2(0, -ONE))
 	_handle_connecting_signals()
 	_scale_to_fixed()
 	_rotate_client_player()
@@ -68,13 +69,15 @@ func _handle_connecting_signals() -> void:
 # Scale appropriate variables to fixed point numbers
 func _scale_to_fixed() -> void:
 	# gravity = SGFixed.div()
-	maxAirSpeed *= SGFixed.ONE
+	maxAirSpeed *= ONE
 	fullHopForce *= SGFixed.NEG_ONE
 	shortHopForce *= SGFixed.NEG_ONE
 	airHopForce *= SGFixed.NEG_ONE
-	airAcceleration = SGFixed.ONE / airAcceleration
-	slideDecay = SGFixed.ONE / slideDecay
-	slideJumpBoost = SGFixed.ONE + (SGFixed.ONE / 2) # to maintain intiger division // 1.5
+	airAcceleration = ONE / airAcceleration
+	slideDecay = ONE / slideDecay
+	slideJumpBoost = ONE + (ONE / 2) # to maintain intiger division // 1.5
+	weight *= ONE
+	knockback_multiplier *= ONE
 
 
 # Rotate the second player
@@ -238,3 +241,13 @@ func _load_state(loadState: Dictionary) -> void:
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], weight)
+
+
+func apply_knockback(force: int, angle_radians: int):
+	# Assuming 'force' is scaled already
+	var knockback = SGFixed.vector2(ONE, 0) # RIGHT
+	var weight_scale = SGFixed.div(weight, 100 * ONE) # Can adjust the second number to adjust weight scaling.
+	knockback.rotate(-angle_radians) # -y is up
+	knockback.imul(SGFixed.div(force, weight_scale))
+	knockback.imul(knockback_multiplier)
+	velocity = knockback

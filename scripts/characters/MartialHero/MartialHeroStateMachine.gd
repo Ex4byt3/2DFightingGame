@@ -103,6 +103,11 @@ func transition_state(input):
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
 
+	if input.get("shield", false): 
+		## DEBUG for Knockback 
+		set_state('HITSTUN')
+		player.apply_knockback(16 * ONE, SGFixed.PI_DIV_4)
+
 	match states[state]:
 		states.IDLE:
 			if player.takeDamage:
@@ -304,7 +309,8 @@ func transition_state(input):
 		states.BLOCK:
 			pass
 		states.HITSTUN:
-			pass
+			# TODO: implement hitstun
+			set_state('AIRBORNE')
 		states.DEAD:
 			pass
 		states.NEUTRAL_L:
