@@ -20,11 +20,13 @@ var dashVector = SGFixed.vector2(0, 0)
 var sprintInputLeinency = 6
 @export_range(5, 20) var airAcceleration = 4 # divisor
 var maxAirSpeed = 6
+var knockdownVelocity = 40 # Velocity at which the player will enter knockdown when hitting the floor
 var gravity = (ONE / 10) * 6 # divisor
 var maxAirJump = 1
 var airJump = 0
 var knockback_multiplier = 1
 var weight = 100
+var weight_knockback_scale = 100 # divisor. knockback = force / (weight / weight_knockback_scale)
 var shortHopForce = 12
 var fullHopForce = 16
 var airHopForce = 12
@@ -78,6 +80,8 @@ func _scale_to_fixed() -> void:
 	slideJumpBoost = ONE + (ONE / 2) # to maintain intiger division // 1.5
 	weight *= ONE
 	knockback_multiplier *= ONE
+	weight_knockback_scale *= ONE
+	knockdownVelocity *= ONE
 
 
 # Rotate the second player
@@ -138,7 +142,7 @@ func _network_process(input: Dictionary) -> void:
 	if meter_frame_counter >= meter_frame_rate:
 		increase_meter_over_time()
 		meter_frame_counter = 0
-		print("Meter increased over time. Current meter:", meter)
+		#print("Meter increased over time. Current meter:", meter)
 	else:
 		meter_frame_counter += 1
 	
@@ -246,7 +250,7 @@ func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: fl
 func apply_knockback(force: int, angle_radians: int):
 	# Assuming 'force' is scaled already
 	var knockback = SGFixed.vector2(ONE, 0) # RIGHT
-	var weight_scale = SGFixed.div(weight, 100 * ONE) # Can adjust the second number to adjust weight scaling.
+	var weight_scale = SGFixed.div(weight, weight_knockback_scale) # Can adjust the second number to adjust weight scaling.
 	knockback.rotate(-angle_radians) # -y is up
 	knockback.imul(SGFixed.div(force, weight_scale))
 	knockback.imul(knockback_multiplier)

@@ -110,5 +110,5 @@ func increase_meter(amount: int):
 
 func increase_meter_over_time():
 	increase_meter(meter_rate)
-	print("Meter increased by ", meter_rate, ". New meter value: ", meter)
+	#print("Meter increased by ", meter_rate, ". New meter value: ", meter)
 			

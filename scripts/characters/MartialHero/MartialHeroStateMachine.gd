@@ -316,7 +316,7 @@ func transition_state(input):
 			# Expects player.frame to be set beforehand.
 			# Set player.isOnFloor = false before setting this state.
 			if player.isOnFloor:
-				if prevVelocity >= 40 * ONE: 
+				if prevVelocity >= player.knockdownVelocity: 
 					player.frame = 0
 					set_state('KNOCKDOWN')
 				else: # Enter Hitstun slide
