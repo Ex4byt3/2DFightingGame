@@ -50,6 +50,9 @@ var character_img: Texture2D
 var health: int
 var burst: int
 var meter: int
+var max_meter = 90000
+var meter_rate = 10
+
 var num_lives: int
 
 
@@ -98,3 +101,14 @@ func _get_local_input() -> Dictionary:
 		input["jump"] = true
 	
 	return input
+
+func increase_meter(amount: int):
+	meter += amount
+	if meter > max_meter:
+		meter = max_meter
+	return meter
+
+func increase_meter_over_time():
+	increase_meter(meter_rate)
+	print("Meter increased by ", meter_rate, ". New meter value: ", meter)
+			

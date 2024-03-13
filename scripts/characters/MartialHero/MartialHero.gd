@@ -30,6 +30,10 @@ var airHopForce = 12
 @export_range(0, 5) var jumpSquatFrames = 3
 var maxFallSpeed = 20
 
+# Character meter variables
+var meter_frame_counter = 0 
+var meter_frame_rate = 60
+
 # Character attack attributes
 var damage = 0
 var takeDamage = false
@@ -127,6 +131,13 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 func _network_process(input: Dictionary) -> void:
 	# Update the character's health in the status overlay
 	MenuSignalBus.emit_update_health(health, self.name)
+	
+	if meter_frame_counter >= meter_frame_rate:
+		increase_meter_over_time()
+		meter_frame_counter = 0
+		print("Meter increased over time. Current meter:", meter)
+	else:
+		meter_frame_counter += 1
 	
 	# Check if the character has been ko'd
 	if health <= 0:
