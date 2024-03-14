@@ -8,6 +8,7 @@ signal change_screen(current_screen, new_screen, is_backout)
 signal toggle_settings_visibility
 
 # Signals for the settings menu
+signal update_section_visibility(section_title, is_pressed)
 signal window_mode_selected(index)
 signal resolution_selected(index)
 signal set_settings_dict(settings_dict)
@@ -63,21 +64,24 @@ func emit_goto_previous_menu(menu: String) -> void:
 func emit_change_screen(current_screen, new_screen, is_backout: bool) -> void:
 	emit_signal("change_screen", current_screen, new_screen, is_backout)
 
-func emit_toggle_settings_visibility() -> void:
-	emit_signal("toggle_settings_visibility")
-
 
 ##################################################
 # EMIT FUNCTIONS FOR SETTINGS
 ##################################################
-func emit_set_settings_dict(settings_dict: Dictionary) -> void:
-	emit_signal("set_settings_dict", settings_dict)
+func emit_toggle_settings_visibility() -> void:
+	emit_signal("toggle_settings_visibility")
+
+func emit_update_section_visibility(section_title: String, is_pressed: bool) -> void:
+	emit_signal("update_section_visibility", section_title, is_pressed)
 
 func emit_window_mode_selected(index: int) -> void:
 	emit_signal("window_mode_selected", index)
 
 func emit_resolution_selected(index: int) -> void:
 	emit_signal("resolution_selected", index)
+
+func emit_set_settings_dict(settings_dict: Dictionary) -> void:
+	emit_signal("set_settings_dict", settings_dict)
 
 func emit_load_settings_data(settings_dict: Dictionary) -> void:
 	emit_signal("load_settings_data", settings_dict)
@@ -192,9 +196,3 @@ func _connect_Signals(origin, target, connecting_signal: String, connecting_func
 	var signal_error: int = origin.connect(connecting_signal, Callable(target, connecting_function))
 	if signal_error > OK:
 		print("[" + str(target) + "] Connecting "+str(connecting_signal)+" to "+str(connecting_function)+" failed: "+str(signal_error))
-
-
-#func _change_Scene(current_scene, target_scene) -> void:
-	#var scene_change_error: int = current_scene.get_tree().change_scene_to_packed(target_scene)
-	#if scene_change_error > OK:
-		#print("[" + target_scene.get_file() + "] Scene change failed: "+str(scene_change_error))
