@@ -10,7 +10,7 @@ var resolution_index: int = 0
 # Dictionary for match settings
 var match_settings: Dictionary = {
 	"time_limit": 180,
-	"character_lives": 2,
+	"character_lives": 4,
 	"initial_burst": 100,
 	"initial_meter": 3,
 	"damage_mult": 1,

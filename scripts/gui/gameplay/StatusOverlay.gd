@@ -159,20 +159,22 @@ func _update_lives(num_lives: int, player_id: String) -> void:
 		"ServerPlayer": # Player 1
 			p1_num_lives = num_lives
 			var p1_num_lives_displayed = p1_lives_display.get_child_count()
+			
 			if p1_num_lives_displayed < p1_num_lives:
 				for num in range(p1_num_lives_displayed, p1_num_lives):
 					p1_lives_display.add_child(heart.instantiate())
 			elif p1_num_lives_displayed > p1_num_lives:
-				for num in range(p1_num_lives_displayed, p1_num_lives):
+				for num in range(p1_num_lives, p1_num_lives_displayed):
 					p1_lives_display.get_child(0).queue_free()
 		"ClientPlayer": # Player 2
 			p2_num_lives = num_lives
 			var p2_num_lives_displayed = p2_lives_display.get_child_count()
+			
 			if p2_num_lives_displayed < p2_num_lives:
 				for num in range(p2_num_lives_displayed, p2_num_lives):
 					p2_lives_display.add_child(heart.instantiate())
 			elif p2_num_lives_displayed > p2_num_lives:
-				for num in range(p2_num_lives_displayed, p2_num_lives):
+				for num in range(p2_num_lives, p2_num_lives_displayed):
 					p2_lives_display.get_child(0).queue_free()
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
@@ -214,16 +216,8 @@ func _update_character_name(character_name: String, player_id: String) -> void:
 			print("[SYSTEM] ERROR: player does not exist")
 
 
-func _life_lost(player_id: String) -> void:
-	print("[SYSTEM] " + player_id + " KO'd")
-	match player_id:
-		"ServerPlayer":
-			pass
-		"ClientPlayer":
-			pass
-	
-	#MenuSignalBus.emit_setup_round()
-	#MenuSignalBus.emit_start_round()
+#func _life_lost(player_id: String) -> void:
+	#print("[SYSTEM] " + player_id + " KO'd")
 
 
 ##################################################

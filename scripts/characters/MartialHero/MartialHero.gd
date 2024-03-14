@@ -51,7 +51,7 @@ const motion_inputs = {
 # Local character data
 var martial_hero_img = preload("res://assets/menu/images/ramlethal.jpg")
 var martial_hero_name = "Martial Hero"
-var max_health = 10000
+const max_health = 10000
 
 
 func _ready():
@@ -66,6 +66,8 @@ func _ready():
 ##################################################
 func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_setup_round")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
 
 
 # Scale appropriate variables to fixed point numbers
@@ -104,6 +106,9 @@ func _apply_match_settings(match_settings: Dictionary) -> void:
 	print("[SYSTEM] " + self.name + "'s settings have been applied!")
 	
 	MenuSignalBus.emit_update_lives(num_lives, self.name)
+	print("[SYSTEM] " + self.name + "'s lives remaining: " + str(num_lives))
+	MenuSignalBus.emit_update_burst(burst, self.name)
+	MenuSignalBus.emit_update_meter(meter, self.name)
 	
 	_init_character_data()
 
@@ -116,12 +121,12 @@ func _init_character_data() -> void:
 	MenuSignalBus.emit_update_character_image(character_img, self.name)
 	MenuSignalBus.emit_update_character_name(character_name, self.name)
 	MenuSignalBus.emit_update_max_health(max_health, self.name)
-	MenuSignalBus.emit_update_burst(burst, self.name)
-	MenuSignalBus.emit_update_meter(meter, self.name)
 
 
 func _setup_round() -> void:
 	health = max_health
+	print("[SYSTEM] Reset " + self.name + "'s health: " + str(health))
+	MenuSignalBus.emit_update_health(health, self.name)
 
 
 ##################################################
@@ -146,20 +151,13 @@ func _network_process(input: Dictionary) -> void:
 	else:
 		meter_frame_counter += 1
 	
-	# Check if the character has been ko'd
-	if health <= 0:
-		num_lives -= 1
-		if num_lives > 0:
-			MenuSignalBus.emit_life_lost(self.name)
-			MenuSignalBus.emit_update_lives(num_lives, self.name)
-	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
 	
 	overlappingHurtbox = $HurtBox.get_overlapping_areas()
-	if len(overlappingHurtbox) > 0:
-		print(overlappingHurtbox[0].used, " ", overlappingHurtbox[0].attacking_player, " ", self.name)
+	#if len(overlappingHurtbox) > 0:
+		#print(overlappingHurtbox[0].used, " ", overlappingHurtbox[0].attacking_player, " ", self.name)
 	if len(overlappingHurtbox) > 0:
 		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
 			takeDamage = true
@@ -200,11 +198,11 @@ func _save_state() -> Dictionary:
 		facingRight = facingRight,
 		
 		health = health,
-		max_health = max_health,
+		#max_health = max_health,
 		burst = burst,
 		meter = meter,
-		character_img = character_img, # TODO: is only loaded once, does not change, remove from state
-		character_name = character_name, # TODO: is only loaded once, does not change, remove from state
+		#character_img = character_img, # TODO: is only loaded once, does not change, remove from state
+		#character_name = character_name, # TODO: is only loaded once, does not change, remove from state
 		num_lives = num_lives
 		
 	}
@@ -233,11 +231,11 @@ func _load_state(loadState: Dictionary) -> void:
 	frame = loadState['frame']
 	
 	health = loadState['health']
-	max_health = loadState['max_health']
+	#max_health = loadState['max_health']
 	burst = loadState['burst']
 	meter = loadState['meter']
-	character_img = loadState['character_img'] # TODO: is only loaded once, does not change, remove from state
-	character_name = loadState['character_name'] # TODO: is only loaded once, does not change, remove from state
+	#character_img = loadState['character_img'] # TODO: is only loaded once, does not change, remove from state
+	#character_name = loadState['character_name'] # TODO: is only loaded once, does not change, remove from state
 	num_lives = num_lives
 	
 	sync_to_physics_engine()

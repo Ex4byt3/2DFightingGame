@@ -25,6 +25,7 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "create_match", "_create_match")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "leave_match", "_leave_match")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_match_settings", "_update_match_settings")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "life_lost", "_life_lost")
 
 
 func _create_match() -> void:
@@ -44,5 +45,9 @@ func _update_match_settings(new_settings:Dictionary) -> void:
 	MenuSignalBus.emit_apply_match_settings(match_settings)
 
 
+func _life_lost(player_id: String) -> void:
+	print("\n[SYSTEM] " + player_id + " KO'd")
+	print("[SYSTEM] Setting up new round...")
+	MenuSignalBus.emit_setup_round()
 
 

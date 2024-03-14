@@ -47,13 +47,13 @@ var frame : int = 0 # Frame counter for anything that happens over time
 # Variables for status in all characters
 var character_name: String
 var character_img: Texture2D
+var num_lives: int
 var health: int
 var burst: int
 var meter: int
 var max_meter = 90000
 var meter_rate = 10
-
-var num_lives: int
+var is_dead: bool = false
 
 
 ##################################################

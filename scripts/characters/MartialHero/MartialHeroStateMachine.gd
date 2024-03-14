@@ -111,6 +111,10 @@ func transition_state(input):
 		player.apply_knockback(30 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 		player.isOnFloor = false
 		set_state('HITSTUN')
+	
+	if player.health <= 0:
+		if not player.is_dead:
+			set_state('DEAD')
 
 	match states[state]:
 		states.IDLE:
@@ -342,7 +346,11 @@ func transition_state(input):
 			#set_state('KNOCKDOWN')
 			pass
 		states.DEAD:
-			pass
+			player.is_dead = true
+			player.num_lives -= 1
+			MenuSignalBus.emit_life_lost(player.name)
+			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
+			print("[SYSTEM] " + player.name + "'s lives: " + str(player.num_lives))
 		states.NEUTRAL_L:
 			pass
 		states.NEUTRAL_M:
