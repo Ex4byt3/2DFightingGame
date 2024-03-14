@@ -130,8 +130,8 @@ func _network_process(input: Dictionary) -> void:
 	
 	# Check if the character has been ko'd
 	if health <= 0:
-		num_lives -= 1
 		if num_lives > 0:
+			num_lives -= 1
 			MenuSignalBus.emit_life_lost(self.name)
 			MenuSignalBus.emit_update_lives(num_lives, self.name)
 	
@@ -140,6 +140,8 @@ func _network_process(input: Dictionary) -> void:
 	stateMachine.transition_state(input)
 	
 	overlappingHurtbox = $HurtBox.get_overlapping_areas()
+	#if len(overlappingHurtbox) > 0:
+		#print(overlappingHurtbox[0].used, " ", overlappingHurtbox[0].attacking_player, " ", self.name)
 	if len(overlappingHurtbox) > 0:
 		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
 			takeDamage = true

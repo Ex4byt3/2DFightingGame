@@ -4,12 +4,12 @@
 [ext_resource type="Script" path="res://addons/godot-rollback-netcode/NetworkTimer.gd" id="2_junxh"]
 
 [node name="Hitbox" type="SGArea2D" groups=["network_sync"]]
-collision_layer = 0
+collision_layer = 7
 collision_mask = 4
 script = ExtResource("1_xkykw")
 
 [node name="Hitbox_Shape" type="SGCollisionShape2D" parent="."]
-debug_color = Color(0.992157, 0, 0.266667, 0.419608)
+debug_color = Color(0.992157, 0, 0.266667, 0.501961)
 
 [node name="DespawnTimer" type="Node" parent="."]
 script = ExtResource("2_junxh")

@@ -22,7 +22,7 @@ func _ready():
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
 	add_state('ATTACKED')
-	add_state('ATTACK')
+	add_state('LIGHT_ATTACK')
 	add_state('BLOCK')
 	add_state('HITSTUN')
 	add_state('DEAD')
@@ -228,7 +228,6 @@ func transition_state(input):
 				set_state('SLIDE')
 			if player.frame < player.dashDuration:
 				player.frame += 1
-				pass
 			else: # once the dash duration ends
 				player.frame = 0
 				player.velocity.x = player.keptDashSpeed * player.dashVector.x
@@ -297,8 +296,14 @@ func transition_state(input):
 			player.damage = 0
 			player.takeDamage = false
 			set_state('IDLE')
-		states.ATTACK:
-			pass
+		states.LIGHT_ATTACK:
+			player.frame += 1
+			var timer = 0
+			for shapeItem in player.get_node("SpawnHitbox").get_hitbox_shapes("light"):
+				timer += shapeItem["ticks"]
+			if player.frame >= timer:
+				player.frame = 0
+				set_state('IDLE')
 		states.BLOCK:
 			pass
 		states.HITSTUN:
@@ -391,6 +396,7 @@ func handle_attacks(input_vector, input):
 				attacking_player = player.name,
 				hitboxShapes = spawnHitBox.get_hitbox_shapes("light")
 			})
+			set_state('LIGHT_ATTACK')
 	if input.get("attack_medium", false):
 		pass
 	if input.get("attack_heavy", false):
@@ -418,7 +424,6 @@ func update_debug_label(input_vector):
 	}
 	
 	MenuSignalBus.emit_update_debug(debug_data)
-
 	
 func update_input_buffer(input_vector):
 	var player_type: String = self.get_parent().name
