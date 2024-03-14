@@ -48,6 +48,10 @@ window/size/window_width_override=720
 window/size/window_height_override=480
 window/stretch/mode="canvas_items"
 
+[dotnet]
+
+project/assembly_name="Project Delta"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot-rollback-netcode/plugin.cfg")

@@ -384,22 +384,17 @@ func update_pressed(): # will later update any buttons that must be let go of to
 
 func start_dash(input_vector):
 	# if the input vector is neutral, dash in the direction the player is facing
-	if player.meter >= 5000:
-			player.meter -= 5000
-			player.dashVector = input_vector.normalized()
-			if player.dashVector.x == 0 and player.dashVector.y == 0:
-				if player.facingRight:
-					player.velocity.x = player.dashSpeed * ONE
-				else:
-					player.velocity.x = -player.dashSpeed * ONE
-				player.velocity.y = 0
-			else:
-				# if the input vector is not neutral, dash in the direction of the input vector
-				player.velocity.x = player.dashSpeed * player.dashVector.x
-				player.velocity.y = player.dashSpeed * -player.dashVector.y # up is negative in godot
+	player.dashVector = input_vector.normalized()
+	if player.dashVector.x == 0 and player.dashVector.y == 0:
+		if player.facingRight:
+			player.velocity.x = player.dashSpeed * ONE
+		else:
+			player.velocity.x = -player.dashSpeed * ONE
+		player.velocity.y = 0
 	else:
-		print("Not enough meter to dash")
-
+		# if the input vector is not neutral, dash in the direction of the input vector
+		player.velocity.x = player.dashSpeed * player.dashVector.x
+		player.velocity.y = player.dashSpeed * -player.dashVector.y # up is negative in godot
 	# Transition to the DASH state
 	player.animation.play("Dash")
 	set_state('DASH')

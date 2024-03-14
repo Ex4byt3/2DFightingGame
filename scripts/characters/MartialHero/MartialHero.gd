@@ -30,7 +30,7 @@ var weight_knockback_scale = 100 # divisor. knockback = force / (weight / weight
 var shortHopForce = 12
 var fullHopForce = 16
 var airHopForce = 12
-@export_range(0, 5) var jumpSquatFrames = 3
+var jumpSquatFrames = 3
 var maxFallSpeed = 20
 
 # Character meter variables
