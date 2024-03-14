@@ -102,13 +102,18 @@ func _get_local_input() -> Dictionary:
 	
 	return input
 
-func increase_meter(amount: int):
-	meter += amount
-	if meter > max_meter:
-		meter = max_meter
-	return meter
+func increase_meter(amount: int) -> void:
+	if meter < max_meter:
+		meter += amount
+		# only ARMG will allow meter to go over max
+		if meter > max_meter:
+			meter = max_meter
+	#print("Meter increased by ", amount, ". New meter value: ", meter)
 
-func increase_meter_over_time():
-	increase_meter(meter_rate)
-	#print("Meter increased by ", meter_rate, ". New meter value: ", meter)
-			
+func decrease_meter(amount: int) -> void:
+	if meter > 0:
+		meter -= amount
+		# you can't have negative meter
+		if meter < 0:
+			meter = 0
+	#print("Meter decreased by ", amount, ". New meter value: ", meter)

@@ -69,20 +69,17 @@ func parse_motion_inputs():
 	for motion in player.motion_inputs:
 		regex.compile(str(motion)) # compile the regex for the current motion
 		if regex.search(inputString) != null: # if any match is found
-			print(player.motion_inputs[motion])
+			# print(player.motion_inputs[motion])
 			return motion
 
 func transition_state(input):
-	# Updating debug label
 	update_debug_label(player.input_vector)
-
-	# Update pressed actions
 	update_pressed()
-
-	# Handle attacks
 	handle_attacks(player.input_vector, input)
 	
-	# Universal changes
+	#####################
+	# Universal Changes #
+	#####################
 	if states[state] != states.DASH:
 		# If not dashing, apply gravity
 		player.velocity.y += player.gravity
@@ -97,7 +94,7 @@ func transition_state(input):
 		player.attackSprite.flip_h = true
 		player.arrowSprite.flip_h = true
 
-	# if input.has("light"): # enable to only check when light gets pressed, also for debugging
+	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
 
 	# can currently *always* dash, this will work for now but there will later be states where you cannot
@@ -105,8 +102,8 @@ func transition_state(input):
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
 
+	## DEBUG for HITSTUN 
 	if input.get("shield", false): 
-		## DEBUG for HITSTUN 
 		player.frame = 30
 		player.apply_knockback(30 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 		player.isOnFloor = false
@@ -116,10 +113,13 @@ func transition_state(input):
 		if not player.is_dead:
 			set_state('DEAD')
 
+	#################
+	# State Changes #
+	#################
 	match states[state]:
 		states.IDLE:
 			if player.takeDamage:
-				set_state('ATTACKED')
+				set_state('ATTACKED') # TODO: change to HITSTUN
 			elif player.isOnFloor:
 				if player.input_vector.x != 0:
 					# Update which direction the character is facing
@@ -307,7 +307,7 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
-		states.ATTACKED:
+		states.ATTACKED: # TODO: handle damage logic in take_damage() in character.gd
 			player.health -= player.damage
 			player.damage = 0
 			player.takeDamage = false
@@ -378,7 +378,7 @@ func start_jump():
 		player.animation.play("JumpSquat")
 		set_state('JUMPSQUAT')
 
-func update_pressed(): # will later update any buttons that must be let go of to be pressed again
+func update_pressed(): # note: will later update any buttons that must be let go of to be pressed again, currently only jump
 	if player.input_vector.y != 1:
 		player.usedJump = false
 
@@ -406,7 +406,6 @@ func jump_check(input) -> bool:
 		return false
 
 func sprint_check() -> bool:
-	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
 	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
 	if player.controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
 		if player.controlBuffer[0][2] < player.sprintInputLeinency and player.controlBuffer[1][2] < player.sprintInputLeinency and player.controlBuffer[2][2] < player.sprintInputLeinency:
@@ -427,12 +426,6 @@ func handle_attacks(input_vector, input):
 		spawn_position_x = (55 * ONE)
 	else:
 		spawn_position_x = -(55 * ONE)
-	
-	#if input.get("drop_bomb", false):
-		#SyncManager.spawn("Bomb", player.get_parent(), Bomb, { 
-			#fixed_position_x = player.fixed_position.x,
-			#fixed_position_y = player.fixed_position.y 
-		#})
 	if input.get("attack_light", false):
 		if player.get_node("SpawnHitbox").get_child_count() == 0:
 			player.attackAnimationPlayer.play("DebugAttack")
@@ -523,7 +516,7 @@ func update_debug_label(input_vector):
 	
 	MenuSignalBus.emit_update_debug(debug_data)
 
-	
+# input buffer has [x, y, ticks] for each input
 func update_input_buffer(input_vector):
 	var player_type: String = self.get_parent().name
 	var inputs: Array = []

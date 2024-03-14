@@ -36,6 +36,7 @@ var maxFallSpeed = 20
 # Character meter variables
 var meter_frame_counter = 0 
 var meter_frame_rate = 60
+# TODO: other forms of meter gain
 
 # Character attack attributes
 var damage = 0
@@ -46,6 +47,7 @@ const motion_inputs = {
 	623: 'DP',
 	236: 'QCF',
 	214: 'QCB'
+	# TODO: list actual special move inputs
 }
 
 # Local character data
@@ -143,26 +145,14 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 func _network_process(input: Dictionary) -> void:
 	# Update the character's health in the status overlay
 	MenuSignalBus.emit_update_health(health, self.name)
-	
-	if meter_frame_counter >= meter_frame_rate:
-		increase_meter_over_time()
-		meter_frame_counter = 0
-		#print("Meter increased over time. Current meter:", meter)
-	else:
-		meter_frame_counter += 1
+
+	increase_meter_over_time()
 	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
 	
-	overlappingHurtbox = $HurtBox.get_overlapping_areas()
-	#if len(overlappingHurtbox) > 0:
-		#print(overlappingHurtbox[0].used, " ", overlappingHurtbox[0].attacking_player, " ", self.name)
-	if len(overlappingHurtbox) > 0:
-		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
-			takeDamage = true
-			damage = overlappingHurtbox[0].damage
-			overlappingHurtbox[0].used = true
+
 	
 	# Update position based off of velocity
 	move_and_slide()
@@ -170,6 +160,36 @@ func _network_process(input: Dictionary) -> void:
 	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
 	isOnFloor = is_on_floor() 
 
+func increase_meter_over_time() -> void:
+	if meter_frame_counter >= meter_frame_rate:
+		increase_meter(meter_rate)
+		meter_frame_counter = 0
+		#print("Meter increased over time.")
+	else:
+		meter_frame_counter += 1
+
+func check_hitbox_collision() -> void:
+	overlappingHurtbox = $HurtBox.get_overlapping_areas() # should only ever return 1 hitbox so we always use index 0
+	if len(overlappingHurtbox) > 0: 
+		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
+			takeDamage = true
+			damage = overlappingHurtbox[0].damage # TODO: take damage funciton
+			# TODO: other hitbox properties
+			overlappingHurtbox[0].used = true
+
+# TODO: implement this function
+func take_damage() -> void:
+	health -= damage
+	MenuSignalBus.emit_update_health(health, self.name)
+
+func apply_knockback(force: int, angle_radians: int):
+	# Assuming 'force' is scaled already
+	var knockback = SGFixed.vector2(ONE, 0) # RIGHT
+	var weight_scale = SGFixed.div(weight, weight_knockback_scale) # Can adjust the second number to adjust weight scaling.
+	knockback.rotate(-angle_radians) # -y is up
+	knockback.imul(SGFixed.div(force, weight_scale))
+	knockback.imul(knockback_multiplier)
+	velocity = knockback
 
 ##################################################
 # STATE MACHINE FUNCTIONS
@@ -243,13 +263,3 @@ func _load_state(loadState: Dictionary) -> void:
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
 	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], weight)
-
-
-func apply_knockback(force: int, angle_radians: int):
-	# Assuming 'force' is scaled already
-	var knockback = SGFixed.vector2(ONE, 0) # RIGHT
-	var weight_scale = SGFixed.div(weight, weight_knockback_scale) # Can adjust the second number to adjust weight scaling.
-	knockback.rotate(-angle_radians) # -y is up
-	knockback.imul(SGFixed.div(force, weight_scale))
-	knockback.imul(knockback_multiplier)
-	velocity = knockback
