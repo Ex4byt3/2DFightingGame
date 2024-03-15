@@ -27,6 +27,7 @@ var airJump = 0
 var knockback_multiplier = 1
 var weight = 100
 var weight_knockback_scale = 100 # divisor. knockback = force / (weight / weight_knockback_scale)
+var quickGetUpFrames = 30
 var shortHopForce = 12
 var fullHopForce = 16
 var airHopForce = 12
@@ -261,5 +262,5 @@ func _load_state(loadState: Dictionary) -> void:
 	sync_to_physics_engine()
 
 
-func _interpolate_state(old_state: Dictionary, new_state: Dictionary, weight: float) -> void:
-	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], weight)
+func _interpolate_state(old_state: Dictionary, new_state: Dictionary, player_weight: float) -> void:
+	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], player_weight)

@@ -29,6 +29,7 @@ func _ready():
 	add_state('BLOCK')
 	add_state('HITSTUN')
 	add_state('KNOCKDOWN')
+	add_state('QGETUP')
 	add_state('DEAD')
 	add_state('NEUTRAL_L')
 	add_state('NEUTRAL_M')
@@ -105,7 +106,7 @@ func transition_state(input):
 	## DEBUG for HITSTUN 
 	if input.get("shield", false): 
 		player.frame = 30
-		player.apply_knockback(30 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
+		player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 		player.isOnFloor = false
 		set_state('HITSTUN')
 	
@@ -322,9 +323,10 @@ func transition_state(input):
 			if player.isOnFloor:
 				if prevVelocity >= player.knockdownVelocity: 
 					player.frame = 0
+					player.velocity = SGFixed.vector2(0, 0)
 					set_state('KNOCKDOWN')
 				else: # Enter Hitstun slide
-					if player.velocity.x == 0 || player.frame == 0: # exit Hitstun slide
+					if player.velocity.x == 0 or player.frame == 0: # exit Hitstun slide
 						player.frame = 0
 						set_state('IDLE')
 					# Mimic slide during Hitstun
@@ -341,10 +343,40 @@ func transition_state(input):
 				prevVelocity = player.velocity.length() # Velocity before hitting floor
 				player.frame -= 1
 			else:
+				player.frame = 0
 				set_state('AIRBORNE')
 		states.KNOCKDOWN:
-			#set_state('KNOCKDOWN')
-			pass
+			# TODO: add invulnerability when damage is finished
+			if player.input_vector.y > 0:
+				# if press up, quick get up facing your current direction
+				player.frame = player.quickGetUpFrames
+				set_state('QGETUP')
+			elif player.input_vector.x != 0:
+				# if press L/R, quick get up facing that direction
+				player.facingRight = player.input_vector.x > 0
+				player.frame = player.quickGetUpFrames
+				set_state('QGETUP')
+			elif input.get("light", false):
+				# if press certain attacks, perform reversal
+				# TODO: add reversal get up attack once attacks are added
+				pass
+		states.QGETUP:
+			# Expects player.frame to be set beforehand
+			# Quick get up from knockdown facing the current direction
+			# Can be interrupted with a dash
+			if input.get("dash", false):
+				# TODO: interrupt animation with dash
+				player.frame = 0
+				if player.facingRight:
+					start_dash(SGFixed.vector2(ONE, 0))
+				else:
+					start_dash(SGFixed.vector2(-ONE, 0))
+			elif player.frame <= 0:
+				# quick get up complete without dashing, exit into idle
+				player.frame = 0
+				set_state('IDLE')
+			else:
+				player.frame -= 1
 		states.DEAD:
 			player.is_dead = true
 			player.num_lives -= 1
