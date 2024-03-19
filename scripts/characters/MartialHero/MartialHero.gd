@@ -5,6 +5,8 @@ extends Character
 @onready var arrowSprite = $DebugSprite/DebugArrow
 @onready var attackSprite = $DebugSprite/DebugAttack
 
+@onready var overlappingHitboxes = []
+
 var healthBar = null
 
 # Character motion attributes
@@ -80,8 +82,8 @@ func _rotate_client_player() -> void:
 	if self.name == "ClientPlayer":
 		facingRight = false
 		# also flip collision layer and mask for client player
-		$HurtBox.set_collision_layer_bit(1, false)
-		$HurtBox.set_collision_layer_bit(2, true)
+		$HurtBox.set_collision_mask_bit(1, false)
+		$HurtBox.set_collision_mask_bit(2, true)
 
 
 ##################################################
@@ -139,14 +141,14 @@ func _network_process(input: Dictionary) -> void:
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
 	
-	overlappingHurtbox = $HurtBox.get_overlapping_areas()
-	#if len(overlappingHurtbox) > 0:
-		#print(overlappingHurtbox[0].used, " ", overlappingHurtbox[0].attacking_player, " ", self.name)
-	if len(overlappingHurtbox) > 0:
-		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
+	var overlappingHitboxes = $HurtBox.get_overlapping_areas()
+	if len(overlappingHitboxes) > 1:
+		print(len(overlappingHitboxes))
+	if len(overlappingHitboxes) > 0:
+		if overlappingHitboxes[0].used == false and overlappingHitboxes[0].attacking_player != self.name:
 			takeDamage = true
-			damage = overlappingHurtbox[0].damage
-			overlappingHurtbox[0].used = true
+			damage = overlappingHitboxes[0].damage
+			overlappingHitboxes[0].used = true
 	
 	# Update position based off of velocity
 	move_and_slide()
@@ -165,7 +167,7 @@ func _save_state() -> Dictionary:
 	return {
 		playerState = stateMachine.state,
 		control_buffer = control_buffer,
-
+		
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
@@ -197,6 +199,7 @@ func _load_state(loadState: Dictionary) -> void:
 	controlBuffer = []
 	for item in loadState['control_buffer']:
 		controlBuffer.append(item.duplicate())
+	
 	fixed_position.x = loadState['fixed_position_x']
 	fixed_position.y = loadState['fixed_position_y']
 	velocity.x = loadState['velocity_x']

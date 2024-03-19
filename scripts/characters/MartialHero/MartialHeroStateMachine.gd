@@ -389,7 +389,7 @@ func handle_attacks(input_vector, input):
 			#fixed_position_y = player.fixed_position.y 
 		#})
 	if input.get("attack_light", false):
-		if spawnHitBox.get_child_count() == 0:
+		if spawnHitBox.get_child_count() < 3:
 			player.attackAnimationPlayer.play("DebugAttack")
 			SyncManager.spawn("Attack_Light", spawnHitBox, Attack_Light, { 
 				damage = 1000,

@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://drausbesi8av4"]
+[gd_scene load_steps=9 format=3 uid="uid://drausbesi8av4"]
 
 [ext_resource type="Texture2D" uid="uid://caoquouya0c2y" path="res://assets/gameplay/floor.png" id="1"]
+[ext_resource type="Script" path="res://scripts/maps/GameManager.gd" id="1_dn0f8"]
 [ext_resource type="PackedScene" uid="uid://b8j7225pk00us" path="res://scenes/characters/MartialHero.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/gameplay/StageCamera.gd" id="6"]
 [ext_resource type="PackedScene" uid="uid://8moo65tj8xpu" path="res://scenes/gui/gameplay/GameplayUI.tscn" id="7"]
@@ -52,18 +53,21 @@ offset_left = -106.0
 offset_bottom = 14.0
 text = "Regaining sync..."
 
+[node name="GameManager" type="Node" parent="." groups=["network_sync"]]
+script = ExtResource("1_dn0f8")
+
 [node name="ServerPlayer" parent="." instance=ExtResource("5")]
-fixed_position_x = 62259200
-fixed_position_y = 83820544
-position = Vector2(950, 1279)
+fixed_position_x = 46137344
+fixed_position_y = 76414976
+position = Vector2(704, 1166)
 
 [node name="ClientPlayer" parent="." instance=ExtResource("5")]
-fixed_position_x = 101580800
-fixed_position_y = 83820544
-position = Vector2(1550, 1279)
+fixed_position_x = 99090432
+fixed_position_y = 76677120
+position = Vector2(1512, 1170)
 
 [node name="FloorStaticBody" type="SGStaticBody2D" parent="."]
-collision_layer = 2
+collision_layer = 0
 fixed_position_x = 81920000
 fixed_position_y = 92340224
 position = Vector2(1250, 1409)
@@ -130,7 +134,7 @@ flip_h = true
 flip_v = true
 
 [node name="CeilingStaticBody" type="SGStaticBody2D" parent="."]
-collision_layer = 8
+collision_layer = 0
 fixed_position_x = 81920000
 fixed_position_y = 1900544
 position = Vector2(1250, 29)
@@ -146,7 +150,7 @@ scale = Vector2(1.88679, 0.05)
 texture = ExtResource("1")
 
 [node name="WallStaticBody_L" type="SGStaticBody2D" parent="."]
-collision_layer = 4
+collision_layer = 0
 fixed_position_x = 3276800
 fixed_position_y = 38076416
 position = Vector2(50, 581)
@@ -160,7 +164,7 @@ scale = Vector2(0.0754718, 1.64716)
 texture = ExtResource("1")
 
 [node name="WallStaticBody_R" type="SGStaticBody2D" parent="."]
-collision_layer = 4
+collision_layer = 0
 fixed_position_x = 160563200
 fixed_position_y = 38076416
 position = Vector2(2450, 581)
@@ -188,5 +192,9 @@ script = ExtResource("6")
 [node name="MatchUI" type="CanvasLayer" parent="."]
 
 [node name="GameplayUI" parent="MatchUI" instance=ExtResource("7")]
+offset_left = -1.0
+offset_top = -18.0
+offset_right = -1.0
+offset_bottom = -18.0
 
 [connection signal="pressed" from="Messages/ResetButton" to="." method="_on_ResetButton_pressed"]
