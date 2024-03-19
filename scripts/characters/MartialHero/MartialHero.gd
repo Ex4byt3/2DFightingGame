@@ -8,6 +8,7 @@ extends Character
 @onready var overlappingHitboxes = []
 
 var healthBar = null
+var thrownHits = 0
 
 # Character motion attributes
 var walkSpeed = 4
@@ -141,19 +142,10 @@ func _network_process(input: Dictionary) -> void:
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
 	
-	var overlappingHitboxes = $HurtBox.get_overlapping_areas()
-	if len(overlappingHitboxes) > 1:
-		print(len(overlappingHitboxes))
-	if len(overlappingHitboxes) > 0:
-		if overlappingHitboxes[0].used == false and overlappingHitboxes[0].attacking_player != self.name:
-			takeDamage = true
-			damage = overlappingHitboxes[0].damage
-			overlappingHitboxes[0].used = true
-	
 	# Update position based off of velocity
 	move_and_slide()
 	
-	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
+	# Update is_on_floor, does not work if called before move_and_slide, works if called after though
 	isOnFloor = is_on_floor() 
 
 
@@ -182,6 +174,7 @@ func _save_state() -> Dictionary:
 		damage = damage,
 		takeDamage = takeDamage, # TODO: replace with HITSTUN state
 		facingRight = facingRight,
+		thrownHits = thrownHits,
 		
 		health = health,
 		max_health = max_health,
@@ -216,6 +209,7 @@ func _load_state(loadState: Dictionary) -> void:
 	takeDamage = loadState['takeDamage'] # TODO: replace with HITSTUN state
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
+	thrownHits = loadState['thrownHits']
 	
 	health = loadState['health']
 	max_health = loadState['max_health']

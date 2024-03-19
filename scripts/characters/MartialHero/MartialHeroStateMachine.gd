@@ -389,13 +389,16 @@ func handle_attacks(input_vector, input):
 			#fixed_position_y = player.fixed_position.y 
 		#})
 	if input.get("attack_light", false):
-		if spawnHitBox.get_child_count() < 3:
+		if player.thrownHits == 0:
 			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", spawnHitBox, Attack_Light, { 
+			SyncManager.spawn("Attack_Light", player.get_parent(), Attack_Light, {
+				fixed_position_x = player.fixed_position_x,
+				fixed_position_y = player.fixed_position_y, 
 				damage = 1000,
 				attacking_player = player.name,
 				hitboxShapes = spawnHitBox.get_hitbox_shapes("light")
 			})
+			player.thrownHits += 1
 			set_state('LIGHT_ATTACK')
 	if input.get("attack_medium", false):
 		pass
