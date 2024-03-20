@@ -5,7 +5,10 @@ extends Character
 @onready var arrowSprite = $DebugSprite/DebugArrow
 @onready var attackSprite = $DebugSprite/DebugAttack
 
+@onready var overlappingHitboxes = []
+
 var healthBar = null
+var thrownHits = 0
 var ONE = SGFixed.ONE
 
 # Character motion attributes
@@ -94,8 +97,8 @@ func _rotate_client_player() -> void:
 	if self.name == "ClientPlayer":
 		facingRight = false
 		# also flip collision layer and mask for client player
-		$HurtBox.set_collision_layer_bit(1, false)
-		$HurtBox.set_collision_layer_bit(2, true)
+		$HurtBox.set_collision_mask_bit(1, false)
+		$HurtBox.set_collision_mask_bit(2, true)
 
 
 ##################################################
@@ -147,18 +150,16 @@ func _network_process(input: Dictionary) -> void:
 	# Update the character's health in the status overlay
 	MenuSignalBus.emit_update_health(health, self.name)
 
-	increase_meter_over_time()
+	# increase_meter_over_time()
 	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
 	stateMachine.transition_state(input)
 	
-
-	
 	# Update position based off of velocity
 	move_and_slide()
 	
-	# Update is_on_floor, does not work if called before move_and_slide, works if called a though
+	# Update is_on_floor, does not work if called before move_and_slide, works if called after though
 	isOnFloor = is_on_floor() 
 
 func increase_meter_over_time() -> void:
@@ -202,7 +203,7 @@ func _save_state() -> Dictionary:
 	return {
 		playerState = stateMachine.state,
 		control_buffer = control_buffer,
-
+		
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
@@ -217,6 +218,7 @@ func _save_state() -> Dictionary:
 		damage = damage,
 		takeDamage = takeDamage, # TODO: replace with HITSTUN state
 		facingRight = facingRight,
+		thrownHits = thrownHits,
 		
 		health = health,
 		#max_health = max_health,
@@ -234,6 +236,7 @@ func _load_state(loadState: Dictionary) -> void:
 	controlBuffer = []
 	for item in loadState['control_buffer']:
 		controlBuffer.append(item.duplicate())
+	
 	fixed_position.x = loadState['fixed_position_x']
 	fixed_position.y = loadState['fixed_position_y']
 	velocity.x = loadState['velocity_x']
@@ -250,6 +253,7 @@ func _load_state(loadState: Dictionary) -> void:
 	takeDamage = loadState['takeDamage'] # TODO: replace with HITSTUN state
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
+	thrownHits = loadState['thrownHits']
 	
 	health = loadState['health']
 	#max_health = loadState['max_health']
