@@ -1,27 +1,28 @@
 extends Character
 
+# Our nodes that we use in the scene
 @onready var animation = $NetworkAnimationPlayer
 @onready var attackAnimationPlayer = $DebugAnimationPlayer
 @onready var arrowSprite = $DebugSprite/DebugArrow
 @onready var attackSprite = $DebugSprite/DebugAttack
 
-@onready var overlappingHitboxes = []
-
-var healthBar = null
-var thrownHits = 0
+# SGFixed numbers
 var ONE = SGFixed.ONE
+var NEG_ONE = SGFixed.NEG_ONE
 
 # Character motion attributes
-var walkSpeed = 4
-var sprintSpeed = 8
 @export_range(1, 10) var slideDecay = 4 # divisor
-var slideJumpBoost = 0 # set in ready
-var dashVector = SGFixed.vector2(0, 0)
 @export_range(20, 50) var dashSpeed = 30
 @export_range(5, 20) var keptDashSpeed = 15
 @export_range(5, 20) var dashDuration = 6
-var sprintInputLeinency = 6
 @export_range(5, 20) var airAcceleration = 4 # divisor
+var walkSpeed = 4
+var sprintSpeed = 8
+var slideJumpBoost = 0 # set in ready
+var dashVector = SGFixed.vector2(0, 0)
+var knockbackForce = 0
+var knockbackAngle = 0
+var sprintInputLeinency = 6
 var maxAirSpeed = 6
 var knockdownVelocity = 40 # Velocity at which the player will enter knockdown when hitting the floor
 var gravity = (ONE / 10) * 6 # divisor
@@ -45,6 +46,7 @@ var meter_frame_rate = 60
 # Character attack attributes
 var damage = 0
 var takeDamage = false
+var thrownHits = 0
 
 # Valid motion inputs for the character, listed in priority
 const motion_inputs = {
@@ -59,7 +61,7 @@ var martial_hero_img = preload("res://assets/menu/images/ramlethal.jpg")
 var martial_hero_name = "Martial Hero"
 const max_health = 10000
 
-
+# Calling all onready functions
 func _ready():
 	set_up_direction(SGFixed.vector2(0, -ONE))
 	_handle_connecting_signals()
@@ -67,9 +69,7 @@ func _ready():
 	_rotate_client_player()
 
 
-##################################################
-# ONREADY FUNCTIONS
-##################################################
+# Connecting signals to our menu
 func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_setup_round")
@@ -78,11 +78,10 @@ func _handle_connecting_signals() -> void:
 
 # Scale appropriate variables to fixed point numbers
 func _scale_to_fixed() -> void:
-	# gravity = SGFixed.div()
 	maxAirSpeed *= ONE
-	fullHopForce *= SGFixed.NEG_ONE
-	shortHopForce *= SGFixed.NEG_ONE
-	airHopForce *= SGFixed.NEG_ONE
+	fullHopForce *= NEG_ONE
+	shortHopForce *= NEG_ONE
+	airHopForce *= NEG_ONE
 	airAcceleration = ONE / airAcceleration
 	slideDecay = ONE / slideDecay
 	slideJumpBoost = ONE + (ONE / 2) # to maintain intiger division // 1.5
@@ -101,9 +100,7 @@ func _rotate_client_player() -> void:
 		$HurtBox.set_collision_mask_bit(2, true)
 
 
-##################################################
-# STATUS MANIPULATION FUNCTIONS
-##################################################
+# Status manipulation function
 func _apply_match_settings(match_settings: Dictionary) -> void:
 	print("[SYSTEM] " + self.name + " received settings!")
 	num_lives = match_settings.character_lives
@@ -118,7 +115,7 @@ func _apply_match_settings(match_settings: Dictionary) -> void:
 	
 	_init_character_data()
 
-
+# Initializing the character data
 func _init_character_data() -> void:
 	character_img = martial_hero_img
 	character_name = martial_hero_name
@@ -128,16 +125,13 @@ func _init_character_data() -> void:
 	MenuSignalBus.emit_update_character_name(character_name, self.name)
 	MenuSignalBus.emit_update_max_health(max_health, self.name)
 
-
+# Settuping up the round health
 func _setup_round() -> void:
 	health = max_health
 	print("[SYSTEM] Reset " + self.name + "'s health: " + str(health))
 	MenuSignalBus.emit_update_health(health, self.name)
 
-
-##################################################
-# NETWORK RELATED FUNCTIONS
-##################################################
+# Network-related function
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 	var input = previous_input.duplicate()
 	input.erase("drop_bomb")
@@ -150,7 +144,7 @@ func _network_process(input: Dictionary) -> void:
 	# Update the character's health in the status overlay
 	MenuSignalBus.emit_update_health(health, self.name)
 
-	# increase_meter_over_time()
+	# increase_meter_over_time() # This was currently not rollback safe, commented for rollback testing hitboxes
 	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
@@ -211,6 +205,8 @@ func _save_state() -> Dictionary:
 
 		dashVector_x = dashVector.x,
 		dashVector_y = dashVector.y,
+		knockbackForce = knockbackForce,
+		knockbackAngle = knockbackAngle,
 		airJump = airJump,
 		isOnFloor = isOnFloor,
 		usedJump = usedJump,
@@ -244,6 +240,8 @@ func _load_state(loadState: Dictionary) -> void:
 
 	dashVector.x = loadState['dashVector_x']
 	dashVector.y = loadState['dashVector_y']
+	knockbackForce = loadState['knockbackForce']
+	knockbackAngle = loadState['knockbackAngle']
 	airJump = loadState['airJump']
 	usedJump = loadState['usedJump']
 	isOnFloor = loadState['isOnFloor']

@@ -192,9 +192,5 @@ script = ExtResource("6")
 [node name="MatchUI" type="CanvasLayer" parent="."]
 
 [node name="GameplayUI" parent="MatchUI" instance=ExtResource("7")]
-offset_left = -1.0
-offset_top = -18.0
-offset_right = -1.0
-offset_bottom = -18.0
 
 [connection signal="pressed" from="Messages/ResetButton" to="." method="_on_ResetButton_pressed"]

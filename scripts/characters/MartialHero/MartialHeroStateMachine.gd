@@ -1,13 +1,14 @@
 extends StateMachine
 
 @onready var player = self.get_parent()
+@onready var spawnHitBox = player.get_node("SpawnHitbox")
 var ONE = SGFixed.ONE
 
 var defaultDashDuration = 20
 var prevVelocity = 0
 
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
-const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
+const Hitbox = preload("res://scenes//gameplay//Hitbox.tscn")
 
 func _ready():
 	add_state('IDLE')
@@ -22,14 +23,12 @@ func _ready():
 	add_state('SHORTHOP')
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
-	add_state('ATTACKED')
-	add_state('LIGHT_ATTACK')
+	add_state('NEUTRAL_LIGHT')
 	add_state('BLOCK')
 	add_state('HITSTUN')
 	add_state('KNOCKDOWN')
 	add_state('QGETUP')
 	add_state('DEAD')
-	add_state('NEUTRAL_L')
 	add_state('NEUTRAL_M')
 	add_state('NEUTRAL_H')
 	add_state('FORWARD_L')
@@ -74,7 +73,6 @@ func parse_motion_inputs():
 func transition_state(input):
 	update_debug_label(player.input_vector)
 	update_pressed()
-	handle_attacks(player.input_vector, input)
 	
 	#####################
 	# Universal Changes #
@@ -111,15 +109,17 @@ func transition_state(input):
 	if player.health <= 0:
 		if not player.is_dead:
 			set_state('DEAD')
-
+	elif player.takeDamage:
+		set_state('HITSTUN') # TODO: change to HITSTUN
+	elif input.get("attack_light", false) and player.thrownHits == 0:
+		do_attack("neutral_light")
+	
 	#################
 	# State Changes #
 	#################
 	match states[state]:
 		states.IDLE:
-			if player.takeDamage:
-				set_state('ATTACKED') # TODO: change to HITSTUN
-			elif player.isOnFloor:
+			if player.isOnFloor:
 				if player.input_vector.x != 0:
 					# Update which direction the character is facing
 					if player.input_vector.x > 0:
@@ -305,15 +305,12 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
-		states.ATTACKED: # TODO: handle damage logic in take_damage() in character.gd
-			player.health -= player.damage
-			player.damage = 0
-			player.takeDamage = false
-			set_state('IDLE')
-		states.LIGHT_ATTACK:
+		states.NEUTRAL_LIGHT:
+			player.velocity.x = 0
+			player.velocity.y = 0
 			player.frame += 1
 			var timer = 0
-			for shapeItem in player.get_node("SpawnHitbox").get_hitbox_shapes("light"):
+			for shapeItem in player.get_node("SpawnHitbox").get_hitbox_shapes("neutral_light"):
 				timer += shapeItem["ticks"]
 			if player.frame >= timer:
 				player.frame = 0
@@ -321,33 +318,43 @@ func transition_state(input):
 		states.BLOCK:
 			pass
 		states.HITSTUN:
-			# Expects player.frame to be set beforehand.
-			# Set player.isOnFloor = false before setting this state.
-			if player.isOnFloor:
-				if prevVelocity >= player.knockdownVelocity: 
-					player.frame = 0
-					player.velocity = SGFixed.vector2(0, 0)
-					set_state('KNOCKDOWN')
-				else: # Enter Hitstun slide
-					if player.velocity.x == 0 or player.frame == 0: # exit Hitstun slide
-						player.frame = 0
-						set_state('IDLE')
-					# Mimic slide during Hitstun
-					player.frame -= 1
-					if player.velocity.x > 0:
-						player.velocity.x -= player.slideDecay
-						if player.velocity.x < 0:
-							player.velocity.x = 0
-					else: # if velocity < 0
-						player.velocity.x += player.slideDecay
-						if player.velocity.x > 0:
-							player.velocity.x = 0
-			elif player.frame > 0:
-				prevVelocity = player.velocity.length() # Velocity before hitting floor
-				player.frame -= 1
-			else:
-				player.frame = 0
+			#set_state('KNOCKDOWN')
+			if player.frame == 0:
+				player.health -= player.damage
+				#player.apply_knockback(player.knockbackForce, player.knockbackAngle)
+				player.knockbackForce = 0
+				player.knockbackAngle = 0
+				player.damage = 0
+				player.takeDamage = false
 				set_state('AIRBORNE')
+			else:
+				# NOT IMPLEMENTED YET
+				# Expects player.frame to be set beforehand.
+				if player.isOnFloor:
+					if prevVelocity >= player.knockdownVelocity: 
+						player.frame = 0
+						player.velocity = SGFixed.vector2(0, 0)
+						set_state('KNOCKDOWN')
+					else: # Enter Hitstun slide
+						if player.velocity.x == 0 or player.frame == 0: # exit Hitstun slide
+							player.frame = 0
+							set_state('IDLE')
+						# Mimic slide during Hitstun
+						player.frame -= 1
+						if player.velocity.x > 0:
+							player.velocity.x -= player.slideDecay
+							if player.velocity.x < 0:
+								player.velocity.x = 0
+						else: # if velocity < 0
+							player.velocity.x += player.slideDecay
+							if player.velocity.x > 0:
+								player.velocity.x = 0
+				elif player.frame > 0:
+					prevVelocity = player.velocity.length() # Velocity before hitting floor
+					player.frame -= 1
+				else:
+					player.frame = 0
+					set_state('AIRBORNE')
 		states.KNOCKDOWN:
 			# TODO: add invulnerability when damage is finished
 			if player.input_vector.y > 0:
@@ -386,8 +393,6 @@ func transition_state(input):
 			MenuSignalBus.emit_life_lost(player.name)
 			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
 			print("[SYSTEM] " + player.name + "'s lives: " + str(player.num_lives))
-		states.NEUTRAL_L:
-			pass
 		states.NEUTRAL_M:
 			pass
 		states.NEUTRAL_H:
@@ -452,39 +457,39 @@ func sprint_check() -> bool:
 func reset_jumps():
 	player.airJump = player.maxAirJump
 
-# TODO: parse input buffer
-func handle_attacks(input_vector, input):
-	# Because if it is not true it is null, need to add the false argument to default it to false instead of null
-	var spawnHitBox = player.get_node("SpawnHitbox")
+func do_attack(attack_type: String):
+	# Throw attack
+	SyncManager.spawn("Hitbox", player.get_parent(), Hitbox, {
+		fixed_position_x = player.fixed_position_x,
+		fixed_position_y = player.fixed_position_y, 
+		attacking_player = player.name,
+		damage = spawnHitBox.get_damages(attack_type),
+		hitboxShapes = spawnHitBox.get_hitbox_shapes(attack_type),
+		knockbackForce = spawnHitBox.get_knockbacks(attack_type)["force"],
+		knockbackAngle = spawnHitBox.get_knockbacks(attack_type)["angle"]
+	})
+	player.thrownHits += 1 # Increment number of thrown attacks
 	
-	#if input.get("drop_bomb", false):
-		#SyncManager.spawn("Bomb", player.get_parent(), Bomb, { 
-			#fixed_position_x = player.fixed_position.x,
-			#fixed_position_y = player.fixed_position.y 
-		#})
-	if input.get("attack_light", false):
-		if player.thrownHits == 0:
+	match attack_type:
+		"neutral_light":
 			player.attackAnimationPlayer.play("DebugAttack")
-			SyncManager.spawn("Attack_Light", player.get_parent(), Attack_Light, {
-				fixed_position_x = player.fixed_position_x,
-				fixed_position_y = player.fixed_position_y, 
-				damage = 1000,
-				attacking_player = player.name,
-				hitboxShapes = spawnHitBox.get_hitbox_shapes("light")
-			})
-			player.thrownHits += 1
-			set_state('LIGHT_ATTACK')
-	if input.get("attack_medium", false):
-		pass
-	if input.get("attack_heavy", false):
-		pass
-	if input.get("impact", false):
-		pass
-	if input.get("dash", false):
-		pass
-	if input.get("block", false):
-		pass
-
+			set_state('NEUTRAL_LIGHT')
+		"neutral_medium":
+			pass
+		"neutral_heavy":
+			pass
+		"forward_light":
+			pass
+		"forward_medium":
+			pass
+		"forward_heavy":
+			pass
+		"down_light":
+			pass
+		"down_medium":
+			pass
+		"down_heavy":
+			pass
 
 func update_debug_label(input_vector):
 	var player_type: String = self.get_parent().name

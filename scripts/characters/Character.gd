@@ -1,35 +1,37 @@
 extends SGCharacterBody2D
+
+# Character class which contains variables/functions applicable to all character archetypes
 class_name Character
 
 
-# for debug overlay
-const direction_mapping = {
-	[1, 1]: "UP RIGHT", # 9
-	[1, 0]: "RIGHT", # 6
-	[0, 1]: "UP", # 8
-	[0, -1]: "DOWN", # 2
-	[1, -1]: "DOWN RIGHT", # 3
-	[-1, -1]: "DOWN LEFT", # 1
-	[-1, 0]: "LEFT", # 4
-	[-1, 1]: "UP LEFT" # 7
+# For our debug overlay
+const direction_mapping = {  # Numpad Notation:
+	[-1, -1]: "DOWN LEFT",   # 1
+	[0, -1]:  "DOWN",        # 2
+	[1, -1]:  "DOWN RIGHT",  # 3
+	[-1, 0]:  "LEFT",        # 4
+	[0, 0]:   "NEUTRAL",     # 5
+	[1, 0]:   "RIGHT",       # 6
+	[-1, 1]:  "UP LEFT",     # 7
+	[0, 1]:   "UP",          # 8
+	[1, 1]:   "UP RIGHT"     # 9
 }
 
-# convert a vector to numpad notation
+# Convert vector to Numpad Notation
 const directions = {
-	[0,0]: 5, # Neutral
-	[0,1]: 8, # Up
-	[0,-1]: 2, # Down
-	[1,0]: 6, # Forward
-	[-1,0]: 4, # Back
-	[1,1]: 9, # Up Forward
-	[1,-1]: 3, # Down Forward
-	[-1,1]: 7, # Up Back
-	[-1,-1]: 1 # Down Back
+	[-1, -1]: 1, # Down Back
+	[0, -1]:  2, # Down
+	[1, -1]:  3, # Down Forward
+	[-1, 0]:  4, # Back
+	[0, 0]:   5, # Neutral
+	[1, 0]:   6, # Forward
+	[-1, 1]:  7, # Up Back
+	[0, 1]:   8, # Up
+	[1, 1]:   9  # Up Forward
 }
 
 # State machine
 @onready var stateMachine = $StateMachine
-#@onready var rng = $NetworkRandomNumberGenerator
 
 # Variables for every character
 var input_vector := SGFixed.vector2(0, 0)
@@ -38,9 +40,7 @@ var isOnFloor := false
 var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
 var overlappingHurtbox := []
-# will need to replace with some sort of array to cover similar cases other than jump
-var usedJump = false
-
+var usedJump = false # will need to replace with some sort of array to cover similar cases other than jump
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
 
@@ -56,10 +56,8 @@ var meter_rate = 10
 var is_dead: bool = false
 
 
-##################################################
-# INPUT FUNCTIONS
-##################################################
-# like Input.get_vector but for SGFixedVector2
+# Input functions
+# Like Input.get_vector but for SGFixedVector2
 func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: String, positive_y: String) -> SGFixedVector2:
 	var new_vector = SGFixed.vector2(0, 0) # note: SGFixedVector2 is always passed by reference and can be copied with SGFixedVector2.copy()
 	new_vector.x = 0
@@ -74,7 +72,7 @@ func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: 
 		new_vector.y += 1
 	return new_vector
 
-
+# Getting local input using SG Physics
 func _get_local_input() -> Dictionary:
 	input_vector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
 	var input := {}
@@ -102,6 +100,7 @@ func _get_local_input() -> Dictionary:
 	
 	return input
 
+# Increase meter function
 func increase_meter(amount: int) -> void:
 	if meter < max_meter:
 		meter += amount
@@ -110,6 +109,7 @@ func increase_meter(amount: int) -> void:
 			meter = max_meter
 	#print("Meter increased by ", amount, ". New meter value: ", meter)
 
+# Decrease meter function
 func decrease_meter(amount: int) -> void:
 	if meter > 0:
 		meter -= amount
