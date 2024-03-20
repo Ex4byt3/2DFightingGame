@@ -4,6 +4,7 @@ extends StateMachine
 var ONE = SGFixed.ONE
 
 var defaultDashDuration = 20
+var prevVelocity = 0
 
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const Attack_Light = preload("res://scenes//gameplay//Hitbox.tscn")
@@ -25,6 +26,8 @@ func _ready():
 	add_state('LIGHT_ATTACK')
 	add_state('BLOCK')
 	add_state('HITSTUN')
+	add_state('KNOCKDOWN')
+	add_state('QGETUP')
 	add_state('DEAD')
 	add_state('NEUTRAL_L')
 	add_state('NEUTRAL_M')
@@ -65,20 +68,17 @@ func parse_motion_inputs():
 	for motion in player.motion_inputs:
 		regex.compile(str(motion)) # compile the regex for the current motion
 		if regex.search(inputString) != null: # if any match is found
-			print(player.motion_inputs[motion])
+			# print(player.motion_inputs[motion])
 			return motion
 
 func transition_state(input):
-	# Updating debug label
 	update_debug_label(player.input_vector)
-
-	# Update pressed actions
 	update_pressed()
-
-	# Handle attacks
 	handle_attacks(player.input_vector, input)
 	
-	# Universal changes
+	#####################
+	# Universal Changes #
+	#####################
 	if states[state] != states.DASH:
 		# If not dashing, apply gravity
 		player.velocity.y += player.gravity
@@ -93,7 +93,7 @@ func transition_state(input):
 		player.attackSprite.flip_h = true
 		player.arrowSprite.flip_h = true
 
-	# if input.has("light"): # enable to only check when light gets pressed, also for debugging
+	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
 
 	# can currently *always* dash, this will work for now but there will later be states where you cannot
@@ -101,10 +101,24 @@ func transition_state(input):
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
 
+	## DEBUG for HITSTUN 
+	if input.get("shield", false): 
+		player.frame = 30
+		player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
+		player.isOnFloor = false
+		set_state('HITSTUN')
+	
+	if player.health <= 0:
+		if not player.is_dead:
+			set_state('DEAD')
+
+	#################
+	# State Changes #
+	#################
 	match states[state]:
 		states.IDLE:
 			if player.takeDamage:
-				set_state('ATTACKED')
+				set_state('ATTACKED') # TODO: change to HITSTUN
 			elif player.isOnFloor:
 				if player.input_vector.x != 0:
 					# Update which direction the character is facing
@@ -178,7 +192,7 @@ func transition_state(input):
 				if player.input_vector.x == 1: # if the player is moving with the slide it decays slower, else it dwcays quickly
 					player.velocity.x -= player.slideDecay
 				else:
-					player.velocity.x -= player.slideDecay
+					player.velocity.x -= player.slideDecay # TODO: same as in the previous if statement
 				if player.velocity.x < player.sprintSpeed * ONE: # when the player reaches their sprint speed, they start sprinting instead of sliding
 					player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
 					player.animation.play("Sprint")
@@ -291,7 +305,7 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
-		states.ATTACKED:
+		states.ATTACKED: # TODO: handle damage logic in take_damage() in character.gd
 			player.health -= player.damage
 			player.damage = 0
 			player.takeDamage = false
@@ -307,9 +321,71 @@ func transition_state(input):
 		states.BLOCK:
 			pass
 		states.HITSTUN:
-			pass
+			# Expects player.frame to be set beforehand.
+			# Set player.isOnFloor = false before setting this state.
+			if player.isOnFloor:
+				if prevVelocity >= player.knockdownVelocity: 
+					player.frame = 0
+					player.velocity = SGFixed.vector2(0, 0)
+					set_state('KNOCKDOWN')
+				else: # Enter Hitstun slide
+					if player.velocity.x == 0 or player.frame == 0: # exit Hitstun slide
+						player.frame = 0
+						set_state('IDLE')
+					# Mimic slide during Hitstun
+					player.frame -= 1
+					if player.velocity.x > 0:
+						player.velocity.x -= player.slideDecay
+						if player.velocity.x < 0:
+							player.velocity.x = 0
+					else: # if velocity < 0
+						player.velocity.x += player.slideDecay
+						if player.velocity.x > 0:
+							player.velocity.x = 0
+			elif player.frame > 0:
+				prevVelocity = player.velocity.length() # Velocity before hitting floor
+				player.frame -= 1
+			else:
+				player.frame = 0
+				set_state('AIRBORNE')
+		states.KNOCKDOWN:
+			# TODO: add invulnerability when damage is finished
+			if player.input_vector.y > 0:
+				# if press up, quick get up facing your current direction
+				player.frame = player.quickGetUpFrames
+				set_state('QGETUP')
+			elif player.input_vector.x != 0:
+				# if press L/R, quick get up facing that direction
+				player.facingRight = player.input_vector.x > 0
+				player.frame = player.quickGetUpFrames
+				set_state('QGETUP')
+			elif input.get("light", false):
+				# if press certain attacks, perform reversal
+				# TODO: add reversal get up attack once attacks are added
+				pass
+		states.QGETUP:
+			# Expects player.frame to be set beforehand
+			# Quick get up from knockdown facing the current direction
+			# Can be interrupted with a dash
+			if input.get("dash", false):
+				# TODO: interrupt animation with dash
+				player.frame = 0
+				if player.facingRight:
+					start_dash(SGFixed.vector2(ONE, 0))
+				else:
+					start_dash(SGFixed.vector2(-ONE, 0))
+			elif player.frame <= 0:
+				# quick get up complete without dashing, exit into idle
+				player.frame = 0
+				set_state('IDLE')
+			else:
+				player.frame -= 1
 		states.DEAD:
-			pass
+			player.is_dead = true
+			player.num_lives -= 1
+			MenuSignalBus.emit_life_lost(player.name)
+			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
+			print("[SYSTEM] " + player.name + "'s lives: " + str(player.num_lives))
 		states.NEUTRAL_L:
 			pass
 		states.NEUTRAL_M:
@@ -337,7 +413,7 @@ func start_jump():
 		player.animation.play("JumpSquat")
 		set_state('JUMPSQUAT')
 
-func update_pressed(): # will later update any buttons that must be let go of to be pressed again
+func update_pressed(): # note: will later update any buttons that must be let go of to be pressed again, currently only jump
 	if player.input_vector.y != 1:
 		player.usedJump = false
 
@@ -354,7 +430,6 @@ func start_dash(input_vector):
 		# if the input vector is not neutral, dash in the direction of the input vector
 		player.velocity.x = player.dashSpeed * player.dashVector.x
 		player.velocity.y = player.dashSpeed * -player.dashVector.y # up is negative in godot
-
 	# Transition to the DASH state
 	player.animation.play("Dash")
 	set_state('DASH')
@@ -366,7 +441,6 @@ func jump_check(input) -> bool:
 		return false
 
 func sprint_check() -> bool:
-	# input buffer has [x, y, ticks] for each input, this will need to expand to [x, y, [button list], ticks] or something of the like later
 	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
 	if player.controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
 		if player.controlBuffer[0][2] < player.sprintInputLeinency and player.controlBuffer[1][2] < player.sprintInputLeinency and player.controlBuffer[2][2] < player.sprintInputLeinency:
@@ -427,7 +501,8 @@ func update_debug_label(input_vector):
 	}
 	
 	MenuSignalBus.emit_update_debug(debug_data)
-	
+
+# input buffer has [x, y, ticks] for each input
 func update_input_buffer(input_vector):
 	var player_type: String = self.get_parent().name
 	var inputs: Array = []

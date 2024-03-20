@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://bpb3irbilm2vu"]
+[gd_scene load_steps=19 format=3 uid="uid://bpb3irbilm2vu"]
 
 [ext_resource type="Texture2D" uid="uid://vjxjlgsxp5l8" path="res://assets/menu/icons/timer_icon.png" id="1"]
 [ext_resource type="Theme" uid="uid://bomuf0lsbqw2o" path="res://assets/resources/gui/status_overlay_theme.tres" id="1_dj4ys"]
 [ext_resource type="Texture2D" uid="uid://c3i2f1gal0425" path="res://assets/menu/images/ramlethal.jpg" id="2"]
 [ext_resource type="Script" path="res://scripts/gui/gameplay/StatusOverlay.gd" id="5"]
+[ext_resource type="PackedScene" uid="uid://8crpifyeinar" path="res://scenes/gui/gameplay/PlayerWinBanner.tscn" id="5_87jiy"]
 
 [sub_resource type="StyleBoxFlat" id="11"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
@@ -269,6 +270,10 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="PlayerWinBanner" parent="CenterPane" instance=ExtResource("5_87jiy")]
+visible = false
+layout_mode = 1
 
 [node name="Footer" type="HBoxContainer" parent="."]
 layout_mode = 2

@@ -6,7 +6,7 @@ extends Control
 const menu_preloads: Dictionary = {
 	"TitleScreen": preload("res://scenes/gui/menu/title/TitleScreen.tscn"),
 	"HeaderMenu": preload("res://scenes/gui/menu/header/HeaderMenu.tscn"),
-	"SettingsOverlay": preload("res://scenes/ui/settings/SettingsOverlay.tscn"),
+	"SettingsOverlay": preload("res://scenes/gui/menu/settings/SettingsOverlay.tscn"),
 	"MainMenu": preload("res://scenes/gui//menu/main/MainMenu.tscn"),
 	"OnlineMenu": preload("res://scenes/gui/menu/online/OnlineMenu.tscn"),
 	"LobbyMenu": preload("res://scenes/gui/menu/lobby/LobbyMenu.tscn")
@@ -43,8 +43,8 @@ func _setup_menu() -> void:
 	var this_menu = menu_preloads.get(menu_tree.back()).instantiate()
 	var this_menu_header = menu_preloads.HeaderMenu.instantiate()
 	var this_settings_overlay = menu_preloads.SettingsOverlay.instantiate()
-	this_settings_overlay.anchor_left = 0.6
-	this_settings_overlay.anchor_top = 0.05
+	#this_settings_overlay.anchor_left = 0.6
+	#this_settings_overlay.anchor_top = 0.05
 	
 	this_settings_overlay.visible = false
 	

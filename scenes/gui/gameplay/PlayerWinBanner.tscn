@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://8crpifyeinar"]
+
+[node name="PlayerWinBanner" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+alignment = 1
+
+[node name="WinnerTitle" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "WINNER: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WinnerName" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "ERR: MISSING_NAME"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -8,6 +8,7 @@ signal change_screen(current_screen, new_screen, is_backout)
 signal toggle_settings_visibility
 
 # Signals for the settings menu
+signal update_section_visibility(section_title, is_pressed)
 signal window_mode_selected(index)
 signal resolution_selected(index)
 signal set_settings_dict(settings_dict)
@@ -24,11 +25,8 @@ signal player_ready(player_id)
 
 # Signals for match settings
 signal send_match_settings
-signal send_character_settings
-signal send_required_match_data
-signal receive_required_match_data(match_settings, character_settings)
+signal update_match_settings(match_settings)
 signal apply_match_settings(match_settings)
-signal apply_character_settings(character_settings)
 signal set_match_settings_source(using_owner_settings)
 
 # Signals for gameplay ui
@@ -66,21 +64,24 @@ func emit_goto_previous_menu(menu: String) -> void:
 func emit_change_screen(current_screen, new_screen, is_backout: bool) -> void:
 	emit_signal("change_screen", current_screen, new_screen, is_backout)
 
-func emit_toggle_settings_visibility() -> void:
-	emit_signal("toggle_settings_visibility")
-
 
 ##################################################
 # EMIT FUNCTIONS FOR SETTINGS
 ##################################################
-func emit_set_settings_dict(settings_dict: Dictionary) -> void:
-	emit_signal("set_settings_dict", settings_dict)
+func emit_toggle_settings_visibility() -> void:
+	emit_signal("toggle_settings_visibility")
+
+func emit_update_section_visibility(section_title: String, is_pressed: bool) -> void:
+	emit_signal("update_section_visibility", section_title, is_pressed)
 
 func emit_window_mode_selected(index: int) -> void:
 	emit_signal("window_mode_selected", index)
 
 func emit_resolution_selected(index: int) -> void:
 	emit_signal("resolution_selected", index)
+
+func emit_set_settings_dict(settings_dict: Dictionary) -> void:
+	emit_signal("set_settings_dict", settings_dict)
 
 func emit_load_settings_data(settings_dict: Dictionary) -> void:
 	emit_signal("load_settings_data", settings_dict)
@@ -116,21 +117,12 @@ func emit_player_ready(player_id: String) -> void:
 ##################################################
 func emit_send_match_settings() -> void:
 	emit_signal("send_match_settings")
-#
-func emit_send_character_settings() -> void:
-	emit_signal("send_character_settings")
 
-func emit_send_required_match_data() -> void:
-	emit_signal("send_required_match_data")
-
-func emit_receive_required_match_data(match_settings: Dictionary, character_settings: Dictionary) -> void:
-	emit_signal("receive_required_match_data", match_settings, character_settings)
+func emit_update_match_settings(match_settings: Dictionary) -> void:
+	emit_signal("update_match_settings", match_settings)
 
 func emit_apply_match_settings(match_settings: Dictionary) -> void:
 	emit_signal("apply_match_settings", match_settings)
-
-func emit_apply_character_settings(character_settings: Dictionary) -> void:
-	emit_signal("apply_character_settings", character_settings)
 
 func emit_set_match_settings_source(using_owner_settings: bool) -> void:
 	emit_signal("set_match_settings_source", using_owner_settings)
@@ -204,9 +196,3 @@ func _connect_Signals(origin, target, connecting_signal: String, connecting_func
 	var signal_error: int = origin.connect(connecting_signal, Callable(target, connecting_function))
 	if signal_error > OK:
 		print("[" + str(target) + "] Connecting "+str(connecting_signal)+" to "+str(connecting_function)+" failed: "+str(signal_error))
-
-
-func _change_Scene(current_scene, target_scene) -> void:
-	var scene_change_error: int = current_scene.get_tree().change_scene_to_packed(target_scene)
-	if scene_change_error > OK:
-		print("[" + target_scene.get_file() + "] Scene change failed: "+str(scene_change_error))

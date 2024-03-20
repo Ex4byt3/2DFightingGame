@@ -37,6 +37,9 @@ enum LOBBY_AVAILABILITY {PUBLIC, PRIVATE, FRIENDS, INVISIBLE}
 const LOBBY_TYPE: Array = ["All Lobbies", "Public", "Private"]
 const LOBBY_STATE: Array = ["Open", "Full"]
 
+# Variables for lobby match settings
+var MATCH_SETTINGS: Dictionary = SettingsData.match_settings
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -164,6 +167,11 @@ func _on_Lobby_Created(connect: int, lobby_id: int) -> void:
 		print("[STEAM] Setting lobby type data successful: "+str(lobby_data))
 		lobby_data = Steam.setLobbyData(lobby_id, "lobby_state", "Open")
 		print("[STEAM] Setting lobby state data successful: "+str(lobby_data))
+		lobby_data = Steam.setLobbyData(lobby_id, "lobby_password", "")
+		print("[STEAM] Setting lobby password data successful: "+str(lobby_data))
+		
+		_set_lobby_match_settings(lobby_id, MATCH_SETTINGS)
+		#_set_lobby_character_settings(lobby_id, CHARACTER_SETTINGS)
 	
 	else:
 		print("[STEAM] Failed to create lobby")
@@ -302,3 +310,18 @@ func _refresh_lobbies() -> void:
 	
 	Steam.addRequestLobbyListDistanceFilter(3)
 	Steam.requestLobbyList()
+
+
+func _set_lobby_match_settings(lobby_id: int, match_settings: Dictionary) -> void:
+	var lobby_data: bool
+	for key in match_settings.keys():
+		lobby_data = Steam.setLobbyData(lobby_id, key, str(match_settings.get(key)))
+		print("[STEAM] Setting lobby " + key + " data successful: "+str(lobby_data))
+
+
+func _set_lobby_character_settings(lobby_id: int, character_settings: Dictionary) -> void:
+	var lobby_data: bool
+	for key in character_settings.keys():
+		lobby_data = Steam.setLobbyData(lobby_id, key, str(character_settings.get(key)))
+		print("[STEAM] Setting lobby " + key + " data successful: "+str(lobby_data))
+

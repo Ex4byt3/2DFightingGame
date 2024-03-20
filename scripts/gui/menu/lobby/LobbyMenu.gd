@@ -29,6 +29,9 @@ var CHALLENGES: Array = []
 var ONGOING_MATCHES: Array = []
 var using_owner_settings: bool  = true
 
+# Variables for lobby match settings
+var MATCH_SETTINGS: Dictionary = {}
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,6 +60,8 @@ func _init_lobby() -> void:
 	type_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_type"))
 	state_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_state"))
 	MenuSignalBus.emit_set_match_settings_source(using_owner_settings)
+	_update_lobby_match_settings()
+	_set_lobby_match_settings()
 
 
 ##################################################
@@ -161,6 +166,8 @@ func _host_start() -> void:
 	NetworkGlobal.STEAM_IS_HOST = true
 	print("[STEAM] Started match as server")
 	
+	_set_lobby_match_settings()
+	
 	MenuSignalBus.emit_create_match()
 
 
@@ -172,6 +179,8 @@ func _client_start(sender_id: int) -> void:
 	NetworkGlobal.STEAM_IS_HOST = false
 	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
 	print("[STEAM] Started match as client")
+	
+	_set_lobby_match_settings()
 	
 	MenuSignalBus.emit_create_match()
 
@@ -296,6 +305,21 @@ func _get_lobby_members() -> void:
 func _on_Persona_Changed(steam_id: int, change_flag: int) -> void:
 	print("[STEAM] Lobby member " + Steam.getFriendPersonaName(steam_id) + "'s information changed: " + str(change_flag))
 	_get_lobby_members()
+
+
+func _update_lobby_match_settings() -> void:
+	var lobby_data: Dictionary = Steam.getAllLobbyData(LOBBY_ID)
+	lobby_data.erase("name")
+	lobby_data.erase("mode")
+	lobby_data.erase("lobby_type")
+	lobby_data.erase("lobby_state")
+	lobby_data.erase("lobby_password")
+	MATCH_SETTINGS = lobby_data
+
+
+func _set_lobby_match_settings() -> void:
+	SettingsData.is_using_lobby = using_owner_settings
+	SettingsData.match_settings
 
 
 func _send_command(command: String) -> void:

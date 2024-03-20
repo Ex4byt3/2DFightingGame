@@ -47,10 +47,13 @@ var frame : int = 0 # Frame counter for anything that happens over time
 # Variables for status in all characters
 var character_name: String
 var character_img: Texture2D
+var num_lives: int
 var health: int
 var burst: int
 var meter: int
-var num_lives: int
+var max_meter = 90000
+var meter_rate = 10
+var is_dead: bool = false
 
 
 ##################################################
@@ -98,3 +101,19 @@ func _get_local_input() -> Dictionary:
 		input["jump"] = true
 	
 	return input
+
+func increase_meter(amount: int) -> void:
+	if meter < max_meter:
+		meter += amount
+		# only ARMG will allow meter to go over max
+		if meter > max_meter:
+			meter = max_meter
+	#print("Meter increased by ", amount, ". New meter value: ", meter)
+
+func decrease_meter(amount: int) -> void:
+	if meter > 0:
+		meter -= amount
+		# you can't have negative meter
+		if meter < 0:
+			meter = 0
+	#print("Meter decreased by ", amount, ". New meter value: ", meter)
