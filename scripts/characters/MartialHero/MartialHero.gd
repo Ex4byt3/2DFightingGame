@@ -139,12 +139,6 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 		input.erase("input_vector")
 	return input
 
-func _network_preprocess(input: Dictionary):
-	# if self.name == "ServerPlayer":
-		gameManager.server_input = input
-	# else:
-	# 	gameManager.client_input = input
-
 func _game_process(input: Dictionary) -> void:
 	# Update the character's health in the status overlay
 	MenuSignalBus.emit_update_health(health, self.name)

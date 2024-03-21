@@ -57,6 +57,9 @@ var max_meter = 90000
 var meter_rate = 10
 var is_dead: bool = false
 
+var input := {} # Input dictionary
+func _network_preprocess(userInput: Dictionary) -> void:
+	input = userInput
 
 # Input functions
 # Like Input.get_vector but for SGFixedVector2
@@ -77,30 +80,30 @@ func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: 
 # Getting local input using SG Physics
 func _get_local_input() -> Dictionary:
 	input_vector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
-	var input := {}
+	var userInput := {}
 	if input_vector != SGFixed.vector2(0, 0):
-		input["input_vector_x"] = input_vector.x
-		input["input_vector_y"] = input_vector.y
+		userInput["input_vector_x"] = input_vector.x
+		userInput["input_vector_y"] = input_vector.y
 	if Input.is_action_just_pressed(input_prefix + "bomb"):
-		input["drop_bomb"] = true
+		userInput["drop_bomb"] = true
 	if Input.is_action_just_pressed(input_prefix + "light"):
-		input["attack_light"] = true
+		userInput["attack_light"] = true
 	if Input.is_action_just_pressed(input_prefix + "medium"):
-		input["attack_medium"] = true
+		userInput["attack_medium"] = true
 	if Input.is_action_just_pressed(input_prefix + "heavy"):
-		input["attack_heavy"] = true
+		userInput["attack_heavy"] = true
 	if Input.is_action_just_pressed(input_prefix + "impact"):
-		input["impact"] = true
+		userInput["impact"] = true
 	if Input.is_action_just_pressed(input_prefix + "dash"):
-		input["dash"] = true
+		userInput["dash"] = true
 	if Input.is_action_just_pressed(input_prefix + "shield"):
-		input["shield"] = true
+		userInput["shield"] = true
 	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
-		input["sprint_macro"] = true
+		userInput["sprint_macro"] = true
 	if Input.is_action_just_pressed(input_prefix + "jump"):
-		input["jump"] = true
+		userInput["jump"] = true
 	
-	return input
+	return userInput
 
 # Increase meter function
 func increase_meter(amount: int) -> void:
