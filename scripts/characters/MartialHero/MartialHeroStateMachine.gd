@@ -23,20 +23,20 @@ func _ready():
 	add_state('SHORTHOP')
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
-	add_state('NEUTRAL_LIGHT')
 	add_state('BLOCK')
 	add_state('HITSTUN')
 	add_state('KNOCKDOWN')
 	add_state('QGETUP')
 	add_state('DEAD')
-	add_state('NEUTRAL_M')
-	add_state('NEUTRAL_H')
-	add_state('FORWARD_L')
-	add_state('FORWARD_M')
-	add_state('FORWARD_H')
-	add_state('DOWN_L')
-	add_state('DOWN_M')
-	add_state('DOWN_H')
+	add_state('NEUTRAL_LIGHT')
+	add_state('NEUTRAL_MEDIUM')
+	add_state('NEUTRAL_HEAVY')
+	add_state('FORWARD_LIGHT')
+	add_state('FORWARD_MEDIUM')
+	add_state('FORWARD_HEAVY')
+	add_state('DOWN_LIGHT')
+	add_state('DOWN_MEDIUM')
+	add_state('DOWN_HEAVY')
 	set_state('IDLE')
 	
 func _on_dash_timer_timeout():
@@ -306,14 +306,14 @@ func transition_state(input):
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
 		states.NEUTRAL_LIGHT:
+			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
 			player.velocity.y = 0
-			player.frame += 1
-			var timer = 0
-			for shapeItem in player.get_node("SpawnHitbox").get_hitbox_shapes("neutral_light"):
-				timer += shapeItem["ticks"]
-			if player.frame >= timer:
-				player.frame = 0
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
 				set_state('IDLE')
 		states.BLOCK:
 			pass
@@ -321,7 +321,7 @@ func transition_state(input):
 			#set_state('KNOCKDOWN')
 			if player.frame == 0:
 				player.health -= player.damage
-				#player.apply_knockback(player.knockbackForce, player.knockbackAngle)
+				player.apply_knockback(player.knockbackForce, player.knockbackAngle)
 				player.knockbackForce = 0
 				player.knockbackAngle = 0
 				player.damage = 0
@@ -393,21 +393,21 @@ func transition_state(input):
 			MenuSignalBus.emit_life_lost(player.name)
 			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
 			print("[SYSTEM] " + player.name + "'s lives: " + str(player.num_lives))
-		states.NEUTRAL_M:
+		states.NEUTRAL_MEDIUM:
 			pass
-		states.NEUTRAL_H:
+		states.NEUTRAL_HEAVY:
 			pass
-		states.FORWARD_L:
+		states.FORWARD_LIGHT:
 			pass
-		states.FORWARD_M:
+		states.FORWARD_MEDIUM:
 			pass
-		states.FORWARD_H:
+		states.FORWARD_HEAVY:
 			pass
-		states.DOWN_L:
+		states.DOWN_LIGHT:
 			pass
-		states.DOWN_M:
+		states.DOWN_MEDIUM:
 			pass
-		states.DOWN_H:
+		states.DOWN_HEAVY:
 			pass
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
@@ -459,14 +459,11 @@ func reset_jumps():
 
 func do_attack(attack_type: String):
 	# Throw attack
-	SyncManager.spawn("Hitbox", player.get_parent(), Hitbox, {
-		fixed_position_x = player.fixed_position_x,
-		fixed_position_y = player.fixed_position_y, 
-		attacking_player = player.name,
-		damage = spawnHitBox.get_damages(attack_type),
+	SyncManager.spawn("Hitbox", player.get_node("SpawnHitbox"), Hitbox, {
+		damage = spawnHitBox.get_damage(attack_type),
 		hitboxShapes = spawnHitBox.get_hitbox_shapes(attack_type),
-		knockbackForce = spawnHitBox.get_knockbacks(attack_type)["force"],
-		knockbackAngle = spawnHitBox.get_knockbacks(attack_type)["angle"]
+		knockbackForce = spawnHitBox.get_knockback(attack_type)["force"],
+		knockbackAngle = spawnHitBox.get_knockback(attack_type)["angle"]
 	})
 	player.thrownHits += 1 # Increment number of thrown attacks
 	

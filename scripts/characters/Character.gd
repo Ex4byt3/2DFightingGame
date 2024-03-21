@@ -3,7 +3,6 @@ extends SGCharacterBody2D
 # Character class which contains variables/functions applicable to all character archetypes
 class_name Character
 
-
 # For our debug overlay
 const direction_mapping = {  # Numpad Notation:
 	[-1, -1]: "DOWN LEFT",   # 1
@@ -32,6 +31,7 @@ const directions = {
 
 # State machine
 @onready var stateMachine = $StateMachine
+@onready var gameManager = get_node("../GameManager")
 
 # Variables for every character
 var input_vector := SGFixed.vector2(0, 0)
@@ -43,6 +43,8 @@ var overlappingHurtbox := []
 var usedJump = false # will need to replace with some sort of array to cover similar cases other than jump
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
+var recovery = false # If the attack has ended
+var attack_ended = false # If the attack has ended
 
 # Variables for status in all characters
 var character_name: String

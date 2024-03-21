@@ -12,4 +12,4 @@ var used = false # If the hitbox is used
 var hitboxShapes = [] # The shapes of our hitbox over time (frames)
 var width = 0 # The current width of our hitbox
 var height = 0 # The current height of our hitbox
-var despawnAt = 1000 # When our hitbox despawns (default set to 1000 ticks)
+var despawnAt = 20 # When our hitbox despawns

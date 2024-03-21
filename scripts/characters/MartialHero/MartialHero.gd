@@ -134,13 +134,18 @@ func _setup_round() -> void:
 # Network-related function
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 	var input = previous_input.duplicate()
-	input.erase("drop_bomb")
+	# TODO: implement better input prediction
 	if ticks_since_real_input > 2:
 		input.erase("input_vector")
 	return input
 
+func _network_preprocess(input: Dictionary):
+	# if self.name == "ServerPlayer":
+		gameManager.server_input = input
+	# else:
+	# 	gameManager.client_input = input
 
-func _network_process(input: Dictionary) -> void:
+func _game_process(input: Dictionary) -> void:
 	# Update the character's health in the status overlay
 	MenuSignalBus.emit_update_health(health, self.name)
 
@@ -154,7 +159,7 @@ func _network_process(input: Dictionary) -> void:
 	move_and_slide()
 	
 	# Update is_on_floor, does not work if called before move_and_slide, works if called after though
-	isOnFloor = is_on_floor() 
+	isOnFloor = is_on_floor()
 
 func increase_meter_over_time() -> void:
 	if meter_frame_counter >= meter_frame_rate:
