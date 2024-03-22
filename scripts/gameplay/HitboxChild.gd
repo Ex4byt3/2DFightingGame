@@ -16,11 +16,16 @@ func _network_spawn(data: Dictionary) -> void:
 	else:
 		attacked_player = map.get_node("ClientPlayer")
 	
-	# Our hitbox shapes overtime and damage
+	# hitbox properties
 	hitboxShapes = data['hitboxShapes']
 	damage = data['damage']
 	knockbackForce = data['knockbackForce']
-	knockbackAngle = data['knockbackAngle']
+	if attacking_player.facingRight:
+		knockbackAngle = data['knockbackAngle']
+	else:
+		knockbackAngle = SGFixed.PI - data['knockbackAngle']
+	
+	hitstun = data['hitstun']
 
 	idx = 1
 	tick = 0
@@ -32,18 +37,6 @@ func _network_spawn(data: Dictionary) -> void:
 
 # Processing the hitbox
 func _game_process() -> void:
-	# If there is an overlapping area that means its hit (can only overlap other player)
-	if len(get_overlapping_areas()) > 0 and !used:
-		# Determine who the other player is and update variables accordingly
-		attacked_player.takeDamage = true
-		attacked_player.damage = damage
-		attacked_player.knockbackForce = knockbackForce
-		if attacking_player.facingRight == true:
-			attacked_player.knockbackAngle = knockbackAngle
-		else:
-			attacked_player.knockbackAngle = knockbackAngle + SGFixed.PI_DIV_2
-		used = true # This hitbox is now used and cannot hit the other player again
-
 	# animate the hitbox
 	if idx >= len(hitboxShapes) - 1:
 		if tick >= despawnAt:

@@ -4,7 +4,6 @@ extends StateMachine
 @onready var spawnHitBox = player.get_node("SpawnHitbox")
 var ONE = SGFixed.ONE
 
-var defaultDashDuration = 20
 var prevVelocity = 0
 
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
@@ -105,12 +104,13 @@ func transition_state(input):
 		player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 		player.isOnFloor = false
 		set_state('HITSTUN')
-	
+
 	if player.health <= 0:
 		if not player.is_dead:
 			set_state('DEAD')
-	elif player.takeDamage:
-		set_state('HITSTUN') # TODO: change to HITSTUN
+	elif player.collision.size() > 0:
+		do_hit()
+		set_state('HITSTUN')
 	elif input.get("attack_light", false) and player.thrownHits == 0:
 		do_attack("neutral_light")
 	
@@ -320,12 +320,6 @@ func transition_state(input):
 		states.HITSTUN:
 			#set_state('KNOCKDOWN')
 			if player.frame == 0:
-				player.health -= player.damage
-				player.apply_knockback(player.knockbackForce, player.knockbackAngle)
-				player.knockbackForce = 0
-				player.knockbackAngle = 0
-				player.damage = 0
-				player.takeDamage = false
 				set_state('AIRBORNE')
 			else:
 				# NOT IMPLEMENTED YET
@@ -457,13 +451,19 @@ func sprint_check() -> bool:
 func reset_jumps():
 	player.airJump = player.maxAirJump
 
+func do_hit():
+	player.take_damage(player.collision.damage)
+	player.apply_knockback(player.collision.knockbackForce, player.collision.knockbackAngle)
+	player.frame = player.collision.hitstun
+
 func do_attack(attack_type: String):
 	# Throw attack
 	SyncManager.spawn("Hitbox", player.get_node("SpawnHitbox"), Hitbox, {
 		damage = spawnHitBox.get_damage(attack_type),
 		hitboxShapes = spawnHitBox.get_hitbox_shapes(attack_type),
 		knockbackForce = spawnHitBox.get_knockback(attack_type)["force"],
-		knockbackAngle = spawnHitBox.get_knockback(attack_type)["angle"]
+		knockbackAngle = spawnHitBox.get_knockback(attack_type)["angle"],
+		hitstun = spawnHitBox.get_hitstun(attack_type)
 	})
 	player.thrownHits += 1 # Increment number of thrown attacks
 	

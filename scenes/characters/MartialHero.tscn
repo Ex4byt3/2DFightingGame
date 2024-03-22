@@ -771,6 +771,8 @@ shape = SubResource("SGRectangleShape2D_dufex")
 script = ExtResource("15_lbkyo")
 
 [node name="PushBox" type="SGArea2D" parent="."]
+collision_layer = 8
+collision_mask = 16
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="PushBox"]
 shape = SubResource("SGCapsuleShape2D_d5i1y")

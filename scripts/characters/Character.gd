@@ -45,6 +45,11 @@ var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
 var recovery = false # If the attack has ended
 var attack_ended = false # If the attack has ended
+var involnrable = false # If the character is invulnerable
+var collision = {} # Collision dictionary
+var weight_knockback_scale = 100 # The higher the number, the less knockback the character will take
+var weight = 100 # The weight of the character
+var knockback_multiplier = 1 # The higher the number, the more knockback the character will take
 
 # Variables for status in all characters
 var character_name: String
@@ -107,9 +112,9 @@ func _get_local_input() -> Dictionary:
 
 # Increase meter function
 func increase_meter(amount: int) -> void:
+	# only ARMG will allow meter to go over max
 	if meter < max_meter:
 		meter += amount
-		# only ARMG will allow meter to go over max
 		if meter > max_meter:
 			meter = max_meter
 	#print("Meter increased by ", amount, ". New meter value: ", meter)
@@ -122,3 +127,34 @@ func decrease_meter(amount: int) -> void:
 		if meter < 0:
 			meter = 0
 	#print("Meter decreased by ", amount, ". New meter value: ", meter)
+
+func check_collisions() -> void:
+	collision = {}
+	overlappingHurtbox = $HurtBox.get_overlapping_areas() # should only ever return 1 hitbox so we always use index 0
+	if len(overlappingHurtbox) > 0: 
+		if !overlappingHurtbox[0].used:
+			# TODO: other hitbox properties
+			overlappingHurtbox[0].used = true
+			collision = {
+				damage = overlappingHurtbox[0].damage,
+				hitstun = overlappingHurtbox[0].hitstun,
+				knockbackForce = overlappingHurtbox[0].knockbackForce,
+				knockbackAngle = overlappingHurtbox[0].knockbackAngle,
+			}
+
+# TODO: implement this function
+func take_damage(damage) -> void:
+	health -= damage
+	MenuSignalBus.emit_update_health(health, self.name)
+
+func apply_knockback(force: int, angle_radians: int):
+	# Assuming 'force' is scaled already
+	var knockback = SGFixed.vector2(SGFixed.ONE, 0) # RIGHT
+	var weight_scale = SGFixed.div(weight, weight_knockback_scale) # Can adjust the second number to adjust weight scaling.
+	knockback.rotate(-angle_radians) # -y is up
+	knockback.imul(SGFixed.div(force, weight_scale))
+	knockback.imul(knockback_multiplier)
+	velocity = knockback
+
+func apply_pushbox_force() -> void:
+	pass

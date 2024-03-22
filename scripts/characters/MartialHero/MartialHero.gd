@@ -28,9 +28,6 @@ var knockdownVelocity = 40 # Velocity at which the player will enter knockdown w
 var gravity = (ONE / 10) * 6 # divisor
 var maxAirJump = 1
 var airJump = 0
-var knockback_multiplier = 1
-var weight = 100
-var weight_knockback_scale = 100 # divisor. knockback = force / (weight / weight_knockback_scale)
 var quickGetUpFrames = 30
 var shortHopForce = 12
 var fullHopForce = 16
@@ -44,8 +41,8 @@ var meter_frame_rate = 60
 # TODO: other forms of meter gain
 
 # Character attack attributes
-var damage = 0
-var takeDamage = false
+# var damage = 0
+# var takeDamage = false
 var thrownHits = 0
 
 # Valid motion inputs for the character, listed in priority
@@ -140,9 +137,6 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func _game_process(input: Dictionary) -> void:
-	# Update the character's health in the status overlay
-	MenuSignalBus.emit_update_health(health, self.name)
-
 	# increase_meter_over_time() # This was currently not rollback safe, commented for rollback testing hitboxes
 	
 	# Transition state and calculate velocity off of this logic
@@ -162,29 +156,6 @@ func increase_meter_over_time() -> void:
 		#print("Meter increased over time.")
 	else:
 		meter_frame_counter += 1
-
-func check_hitbox_collision() -> void:
-	overlappingHurtbox = $HurtBox.get_overlapping_areas() # should only ever return 1 hitbox so we always use index 0
-	if len(overlappingHurtbox) > 0: 
-		if overlappingHurtbox[0].used == false and overlappingHurtbox[0].attacking_player != self.name:
-			takeDamage = true
-			damage = overlappingHurtbox[0].damage # TODO: take damage funciton
-			# TODO: other hitbox properties
-			overlappingHurtbox[0].used = true
-
-# TODO: implement this function
-func take_damage() -> void:
-	health -= damage
-	MenuSignalBus.emit_update_health(health, self.name)
-
-func apply_knockback(force: int, angle_radians: int):
-	# Assuming 'force' is scaled already
-	var knockback = SGFixed.vector2(ONE, 0) # RIGHT
-	var weight_scale = SGFixed.div(weight, weight_knockback_scale) # Can adjust the second number to adjust weight scaling.
-	knockback.rotate(-angle_radians) # -y is up
-	knockback.imul(SGFixed.div(force, weight_scale))
-	knockback.imul(knockback_multiplier)
-	velocity = knockback
 
 ##################################################
 # STATE MACHINE FUNCTIONS
@@ -210,17 +181,12 @@ func _save_state() -> Dictionary:
 		isOnFloor = isOnFloor,
 		usedJump = usedJump,
 		frame = frame,
-		damage = damage,
-		takeDamage = takeDamage, # TODO: replace with HITSTUN state
 		facingRight = facingRight,
 		thrownHits = thrownHits,
 		
 		health = health,
-		#max_health = max_health,
 		burst = burst,
 		meter = meter,
-		#character_img = character_img, # TODO: is only loaded once, does not change, remove from state
-		#character_name = character_name, # TODO: is only loaded once, does not change, remove from state
 		num_lives = num_lives
 		
 	}
@@ -246,20 +212,16 @@ func _load_state(loadState: Dictionary) -> void:
 	isOnFloor = loadState['isOnFloor']
 
 	health = loadState['health']
-	damage = loadState['damage']
-	takeDamage = loadState['takeDamage'] # TODO: replace with HITSTUN state
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	thrownHits = loadState['thrownHits']
 	
 	health = loadState['health']
-	#max_health = loadState['max_health']
 	burst = loadState['burst']
 	meter = loadState['meter']
-	#character_img = loadState['character_img'] # TODO: is only loaded once, does not change, remove from state
-	#character_name = loadState['character_name'] # TODO: is only loaded once, does not change, remove from state
 	num_lives = num_lives
 	
+	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()
 
 

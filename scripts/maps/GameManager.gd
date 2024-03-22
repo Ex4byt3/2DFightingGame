@@ -7,9 +7,13 @@ func _network_process(input: Dictionary) -> void:
 	sync_postions()
 	sync_hurtboxes()
 	sync_hitboxes()
-
+	check_collisions()
 	hitbox_game_process()
 	player_game_process()
+
+func check_collisions() -> void:
+	serverPlayer.check_collisions()
+	clientPlayer.check_collisions()
 
 func hitbox_game_process() -> void:
 	var hitboxes = null
