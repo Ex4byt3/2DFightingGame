@@ -3,8 +3,9 @@ extends Character
 # Our nodes that we use in the scene
 @onready var animation = $NetworkAnimationPlayer
 @onready var attackAnimationPlayer = $DebugAnimationPlayer
-@onready var arrowSprite = $DebugSprite/DebugArrow
-@onready var attackSprite = $DebugSprite/DebugAttack
+@onready var sprite = $Sprite
+# @onready var arrowSprite = $DebugSprite/DebugArrow
+# @onready var attackSprite = $DebugSprite/DebugAttack
 
 # SGFixed numbers
 var ONE = SGFixed.ONE

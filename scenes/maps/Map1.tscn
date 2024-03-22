@@ -58,13 +58,13 @@ script = ExtResource("1_dn0f8")
 
 [node name="ServerPlayer" parent="." instance=ExtResource("5")]
 fixed_position_x = 64749568
-fixed_position_y = 86245376
-position = Vector2(988, 1316)
+fixed_position_y = 82706432
+position = Vector2(988, 1262)
 
 [node name="ClientPlayer" parent="." instance=ExtResource("5")]
 fixed_position_x = 99287040
-fixed_position_y = 86245376
-position = Vector2(1515, 1316)
+fixed_position_y = 82706432
+position = Vector2(1515, 1262)
 
 [node name="FloorStaticBody" type="SGStaticBody2D" parent="."]
 collision_layer = 0
@@ -78,6 +78,7 @@ fixed_scale_y = 3276
 scale = Vector2(1, 0.0499878)
 
 [node name="Sprite1" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(-1054.25, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")
@@ -85,6 +86,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite2" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(-753.25, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")
@@ -92,6 +94,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite3" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(-452.25, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")
@@ -99,6 +102,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite4" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(-151.25, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")
@@ -106,6 +110,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite5" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(149.75, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")
@@ -113,6 +118,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite6" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(450.75, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")
@@ -120,6 +126,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite7" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(751.75, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")
@@ -127,6 +134,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite8" type="Sprite2D" parent="FloorStaticBody"]
+texture_filter = 1
 position = Vector2(1052.75, 115)
 scale = Vector2(4.71094, 4.50781)
 texture = ExtResource("10")

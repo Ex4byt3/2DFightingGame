@@ -84,11 +84,9 @@ func transition_state(input):
 		reset_jumps()
 		
 	if player.facingRight:
-		player.attackSprite.flip_h = false
-		player.arrowSprite.flip_h = false
+		player.sprite.flip_h = false
 	else:
-		player.attackSprite.flip_h = true
-		player.arrowSprite.flip_h = true
+		player.sprite.flip_h = true
 
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
@@ -267,18 +265,18 @@ func transition_state(input):
 				if player.input_vector.y != 1:
 					player.velocity.y = player.shortHopForce
 					player.frame = 0
-					player.animation.play("Airborne") # can have seperate animation for shothop without seperate state
+					player.animation.play("Jump") # can have seperate animation for shothop without seperate state
 					set_state('AIRBORNE')
 				# Jump has been held for more than 4 frames, fullhop
 				if player.frame > player.jumpSquatFrames:
 					player.velocity.y = player.fullHopForce
 					player.frame = 0
-					player.animation.play("Airborne")
+					player.animation.play("Jump")
 					set_state('AIRBORNE')
 			else: # air jump
 				if player.frame > player.jumpSquatFrames:
 					player.velocity.y = player.airHopForce
-					player.animation.play("Airborne") # TODO: double jump animation
+					player.animation.play("Jump") # TODO: double jump animation
 					set_state('AIRBORNE')
 		states.AIRBORNE:
 			if player.isOnFloor:
@@ -290,6 +288,8 @@ func transition_state(input):
 					if player.usedJump == false:
 						player.airJump -= 1
 						start_jump()
+				if player.velocity.y > 0:
+					player.animation.play("Airborne")
 			# If in the air and you are moving, update the velocity based on
 			# air acceleration and air speed (for air drift implementation)
 			if abs(player.velocity.x) > player.maxAirSpeed: # if you are moving faster than max air speed, you may only slow down
@@ -430,7 +430,7 @@ func start_dash(input_vector):
 		player.velocity.x = player.dashSpeed * player.dashVector.x
 		player.velocity.y = player.dashSpeed * -player.dashVector.y # up is negative in godot
 	# Transition to the DASH state
-	player.animation.play("Dash")
+	# player.animation.play("Dash")
 	set_state('DASH')
 	
 func jump_check(input) -> bool:
