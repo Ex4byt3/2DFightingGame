@@ -43,6 +43,7 @@ multirun/other_window_args="join"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 window/size/resizable=false
 window/size/window_width_override=720
 window/size/window_height_override=480
