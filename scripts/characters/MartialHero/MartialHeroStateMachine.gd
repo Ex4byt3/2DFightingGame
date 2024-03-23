@@ -119,7 +119,10 @@ func transition_state(input):
 	match states[state]:
 		states.IDLE:
 			if player.isOnFloor:
-				if player.input_vector.x != 0:
+				if player.input_vector.y == -1:
+					player.animation.play("Crouch")
+					set_state('CROUCH')
+				elif player.input_vector.x != 0:
 					# Update which direction the character is facing
 					if player.input_vector.x > 0:
 						player.facingRight = true
@@ -149,11 +152,40 @@ func transition_state(input):
 				player.animation.play("Airborne")
 				set_state('AIRBORNE')
 		states.CROUCH:
-			pass
+			if player.input_vector.y != -1:
+				player.animation.play("Idle")
+				set_state('IDLE')
+
+			if player.input_vector.x != 0:
+				if player.input_vector.x > 0:
+					player.facingRight = true
+				else:
+					player.facingRight = false
+				player.velocity.x = player.crawlSpeed * (player.input_vector.x * ONE)
+				player.animation.play("Crawl")
+				set_state('CRAWL')
+		states.CRAWL:
+			if player.input_vector.y != -1:
+
+				set_state('IDLE')
+
+			if player.input_vector.x != 0:
+				if player.input_vector.x > 0:
+					player.facingRight = true
+				else:
+					player.facingRight = false
+				player.velocity.x = player.crawlSpeed * (player.input_vector.x * ONE)
+			else:
+				player.velocity.x = 0
+				player.animation.play("Crouching")
+				set_state('CROUCH')
 		states.WALK:
 			if player.isOnFloor:
 				# If you are on the floor and moving, walk/sprint left/right if applicable
-				if player.input_vector.x != 0:
+				if player.input_vector.y == -1:
+					player.animation.play("Crouch")
+					set_state('CROUCH')
+				elif player.input_vector.x != 0:
 					# Face the direction based on where you are trying to move
 					if player.input_vector.x > 0:
 						player.facingRight = true

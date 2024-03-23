@@ -17,6 +17,7 @@ var NEG_ONE = SGFixed.NEG_ONE
 @export_range(5, 20) var dashDuration = 18
 @export_range(5, 20) var airAcceleration = 2 # divisor
 var walkSpeed = 4
+var crawlSpeed = 2
 var sprintSpeed = 8
 var slideJumpBoost = 0 # set in ready
 var dashVector = SGFixed.vector2(0, 0)
