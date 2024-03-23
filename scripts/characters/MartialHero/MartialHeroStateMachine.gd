@@ -83,6 +83,7 @@ func transition_state(input):
 	if player.isOnFloor:
 		reset_jumps()
 		
+	# Update the sprite's facing direction
 	if player.facingRight:
 		player.sprite.flip_h = false
 	else:
@@ -238,8 +239,12 @@ func transition_state(input):
 				player.velocity.y = player.keptDashSpeed * -player.dashVector.y # player is on the floor, so y velocity is 0
 				player.frame = 0
 				set_state('SLIDE')
-			if player.frame < player.dashDuration:
+			if player.frame < player.dashWindup:
 				player.frame += 1
+			elif player.frame < player.dashDuration:
+				player.frame += 1
+				player.velocity.x = player.dashSpeed * player.dashVector.x
+				player.velocity.y = player.dashSpeed * -player.dashVector.y
 			else: # once the dash duration ends
 				player.frame = 0
 				player.velocity.x = player.keptDashSpeed * player.dashVector.x
@@ -276,7 +281,7 @@ func transition_state(input):
 			else: # air jump
 				if player.frame > player.jumpSquatFrames:
 					player.velocity.y = player.airHopForce
-					player.animation.play("Jump") # TODO: double jump animation
+					player.animation.play("AirJump")
 					set_state('AIRBORNE')
 		states.AIRBORNE:
 			if player.isOnFloor:
@@ -322,33 +327,34 @@ func transition_state(input):
 			if player.frame == 0:
 				set_state('AIRBORNE')
 			else:
+				player.frame -= 1
 				# NOT IMPLEMENTED YET
 				# Expects player.frame to be set beforehand.
-				if player.isOnFloor:
-					if prevVelocity >= player.knockdownVelocity: 
-						player.frame = 0
-						player.velocity = SGFixed.vector2(0, 0)
-						set_state('KNOCKDOWN')
-					else: # Enter Hitstun slide
-						if player.velocity.x == 0 or player.frame == 0: # exit Hitstun slide
-							player.frame = 0
-							set_state('IDLE')
-						# Mimic slide during Hitstun
-						player.frame -= 1
-						if player.velocity.x > 0:
-							player.velocity.x -= player.slideDecay
-							if player.velocity.x < 0:
-								player.velocity.x = 0
-						else: # if velocity < 0
-							player.velocity.x += player.slideDecay
-							if player.velocity.x > 0:
-								player.velocity.x = 0
-				elif player.frame > 0:
-					prevVelocity = player.velocity.length() # Velocity before hitting floor
-					player.frame -= 1
-				else:
-					player.frame = 0
-					set_state('AIRBORNE')
+				# if player.isOnFloor:
+				# 	if prevVelocity >= player.knockdownVelocity: 
+				# 		player.frame = 0
+				# 		player.velocity = SGFixed.vector2(0, 0)
+				# 		set_state('KNOCKDOWN')
+				# 	else: # Enter Hitstun slide
+				# 		if player.velocity.x == 0 or player.frame == 0: # exit Hitstun slide
+				# 			player.frame = 0
+				# 			set_state('IDLE')
+				# 		# Mimic slide during Hitstun
+				# 		player.frame -= 1
+				# 		if player.velocity.x > 0:
+				# 			player.velocity.x -= player.slideDecay
+				# 			if player.velocity.x < 0:
+				# 				player.velocity.x = 0
+				# 		else: # if velocity < 0
+				# 			player.velocity.x += player.slideDecay
+				# 			if player.velocity.x > 0:
+				# 				player.velocity.x = 0
+				# elif player.frame > 0:
+				# 	prevVelocity = player.velocity.length() # Velocity before hitting floor
+				# 	player.frame -= 1
+				# else:
+				# 	player.frame = 0
+				# 	set_state('AIRBORNE')
 		states.KNOCKDOWN:
 			# TODO: add invulnerability when damage is finished
 			if player.input_vector.y > 0:
@@ -409,7 +415,19 @@ func transition_state(input):
 func start_jump():
 	if player.usedJump == false: # you must let go of the jump button to jump again
 		player.usedJump = true
-		player.animation.play("JumpSquat")
+		# update facing direction
+		if player.input_vector.x != 0:
+			if player.input_vector.x > 0:
+				player.facingRight = true
+			else:
+				player.facingRight = false
+
+		if player.isOnFloor:
+			player.animation.play("JumpSquat")
+		else:
+			pass
+			# player.animation.play("AirJumpSquat") # TODO: add air jump squat animation
+
 		set_state('JUMPSQUAT')
 
 func update_pressed(): # note: will later update any buttons that must be let go of to be pressed again, currently only jump
@@ -421,16 +439,24 @@ func start_dash(input_vector):
 	player.dashVector = input_vector.normalized()
 	if player.dashVector.x == 0 and player.dashVector.y == 0:
 		if player.facingRight:
-			player.velocity.x = player.dashSpeed * ONE
+			player.dashVector.x = ONE
 		else:
-			player.velocity.x = -player.dashSpeed * ONE
-		player.velocity.y = 0
-	else:
-		# if the input vector is not neutral, dash in the direction of the input vector
-		player.velocity.x = player.dashSpeed * player.dashVector.x
-		player.velocity.y = player.dashSpeed * -player.dashVector.y # up is negative in godot
+			player.dashVector.x = -ONE
+
+	if input_vector.x != 0:
+		# Update which direction the character is facing
+		if input_vector.x > 0:
+			player.facingRight = true
+		else:
+			player.facingRight = false
+
 	# Transition to the DASH state
-	# player.animation.play("Dash")
+	player.velocity.x = 0
+	player.velocity.y = 0
+	# print(str(input_vector.x) + " " + str(input_vector.y))
+	# var dashDirection = [input_vector.x, input_vector.y]
+	# print(str(player.dash_animaiton_map.get(dashDirection, "DashR")))
+	player.animation.play(player.dash_animaiton_map.get([input_vector.x, input_vector.y], "DashR"))
 	set_state('DASH')
 	
 func jump_check(input) -> bool:
@@ -487,6 +513,7 @@ func do_attack(attack_type: String):
 			pass
 		"down_heavy":
 			pass
+	
 
 func update_debug_label(input_vector):
 	var player_type: String = self.get_parent().name

@@ -29,6 +29,18 @@ const directions = {
 	[1, 1]:   9  # Up Forward
 }
 
+const dash_animaiton_map = {
+	[0, 0]: "DashR",
+	[1, 0]: "DashR",
+	[-1, 0]: "DashR",
+	[1, 1]: "DashUR",
+	[-1, 1]: "DashUR",
+	[1, -1]: "DashDR",
+	[-1, -1]: "DashDR",
+	[0, 1]: "DashU",
+	[0, -1]: "DashD"
+}
+
 # State machine
 @onready var stateMachine = $StateMachine
 @onready var gameManager = get_node("../GameManager")

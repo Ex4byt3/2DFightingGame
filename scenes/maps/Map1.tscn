@@ -8,12 +8,12 @@
 [ext_resource type="Texture2D" uid="uid://rgop4j6sft35" path="res://assets/gameplay/debug/gridtexture.png" id="10"]
 
 [sub_resource type="SGRectangleShape2D" id="1"]
-extents_x = 81920000
-extents_y = 38020160
+extents_x = 107348032
+extents_y = 91011456
 
 [sub_resource type="SGRectangleShape2D" id="2"]
 extents_x = 3276800
-extents_y = 44706136
+extents_y = 56363324
 
 [node name="Map1" type="Node2D"]
 
@@ -58,85 +58,88 @@ script = ExtResource("1_dn0f8")
 
 [node name="ServerPlayer" parent="." instance=ExtResource("5")]
 fixed_position_x = 64749568
-fixed_position_y = 82706432
-position = Vector2(988, 1262)
+fixed_position_y = 80084992
+position = Vector2(988, 1222)
 
 [node name="ClientPlayer" parent="." instance=ExtResource("5")]
 fixed_position_x = 99287040
-fixed_position_y = 82706432
-position = Vector2(1515, 1262)
+fixed_position_y = 80084992
+position = Vector2(1515, 1222)
 
 [node name="FloorStaticBody" type="SGStaticBody2D" parent="."]
 collision_layer = 0
 fixed_position_x = 81920000
-fixed_position_y = 92340224
-position = Vector2(1250, 1409)
+fixed_position_y = 96993280
+position = Vector2(1250, 1480)
 
 [node name="FloorCollisionShape" type="SGCollisionShape2D" parent="FloorStaticBody"]
 shape = SubResource("1")
+fixed_position_x = 18415616
+fixed_position_y = 65536
 fixed_scale_y = 3276
+position = Vector2(281, 1)
 scale = Vector2(1, 0.0499878)
 
 [node name="Sprite1" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(-1054.25, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(-1057.25, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
 
 [node name="Sprite2" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(-753.25, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(-673.25, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
 
 [node name="Sprite3" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(-452.25, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(-289.25, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
 
 [node name="Sprite4" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(-151.25, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(94.7501, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
 
 [node name="Sprite5" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(149.75, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(478.75, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
 
 [node name="Sprite6" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(450.75, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(862.75, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
 
 [node name="Sprite7" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(751.75, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(1245.75, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
 
 [node name="Sprite8" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(1052.75, 115)
-scale = Vector2(4.71094, 4.50781)
+position = Vector2(1627.75, 115)
+scale = Vector2(6, 5.741)
 texture = ExtResource("10")
 flip_h = true
 flip_v = true
@@ -149,12 +152,15 @@ position = Vector2(1250, 29)
 
 [node name="FloorCollisionShape" type="SGCollisionShape2D" parent="CeilingStaticBody"]
 shape = SubResource("1")
+fixed_position_x = 21626880
+fixed_position_y = -2621440
 fixed_scale_y = 3276
+position = Vector2(330, -40)
 scale = Vector2(1, 0.0499878)
 
 [node name="FloorSprite" type="Sprite2D" parent="CeilingStaticBody"]
-position = Vector2(2.00272e-05, 0)
-scale = Vector2(1.88679, 0.05)
+position = Vector2(296.001, 0)
+scale = Vector2(2.33358, 0.05)
 texture = ExtResource("1")
 
 [node name="WallStaticBody_L" type="SGStaticBody2D" parent="."]
@@ -175,14 +181,14 @@ texture = ExtResource("1")
 
 [node name="WallStaticBody_R" type="SGStaticBody2D" parent="."]
 collision_layer = 0
-fixed_position_x = 160563200
+fixed_position_x = 204210176
 fixed_position_y = 37879808
-position = Vector2(2450, 578)
+position = Vector2(3116, 578)
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="WallStaticBody_R"]
 shape = SubResource("2")
-fixed_position_y = 7602176
-position = Vector2(0, 116)
+fixed_position_y = 18219008
+position = Vector2(0, 278)
 
 [node name="WallSprite" type="Sprite2D" parent="WallStaticBody_R"]
 position = Vector2(2.28286e-05, 254.5)
@@ -193,8 +199,8 @@ texture = ExtResource("1")
 position = Vector2(1202, 936)
 limit_left = 0
 limit_top = 0
-limit_right = 2500
-limit_bottom = 1668
+limit_right = 3167
+limit_bottom = 1600
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0

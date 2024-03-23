@@ -4,19 +4,18 @@ extends Character
 @onready var animation = $NetworkAnimationPlayer
 @onready var attackAnimationPlayer = $DebugAnimationPlayer
 @onready var sprite = $Sprite
-# @onready var arrowSprite = $DebugSprite/DebugArrow
-# @onready var attackSprite = $DebugSprite/DebugAttack
 
 # SGFixed numbers
 var ONE = SGFixed.ONE
 var NEG_ONE = SGFixed.NEG_ONE
 
 # Character motion attributes
-@export_range(1, 10) var slideDecay = 4 # divisor
+@export_range(1, 10) var slideDecay = 2 # divisor
 @export_range(20, 50) var dashSpeed = 30
 @export_range(5, 20) var keptDashSpeed = 15
-@export_range(5, 20) var dashDuration = 6
-@export_range(5, 20) var airAcceleration = 4 # divisor
+@export_range(0, 20) var dashWindup = 4
+@export_range(5, 20) var dashDuration = 18
+@export_range(5, 20) var airAcceleration = 2 # divisor
 var walkSpeed = 4
 var sprintSpeed = 8
 var slideJumpBoost = 0 # set in ready
@@ -30,9 +29,9 @@ var gravity = (ONE / 10) * 6 # divisor
 var maxAirJump = 1
 var airJump = 0
 var quickGetUpFrames = 30
-var shortHopForce = 12
-var fullHopForce = 16
-var airHopForce = 12
+var shortHopForce = 8
+var fullHopForce = 20
+var airHopForce = 15
 var jumpSquatFrames = 3
 var maxFallSpeed = 20
 
@@ -42,8 +41,6 @@ var meter_frame_rate = 60
 # TODO: other forms of meter gain
 
 # Character attack attributes
-# var damage = 0
-# var takeDamage = false
 var thrownHits = 0
 
 # Valid motion inputs for the character, listed in priority
@@ -73,7 +70,6 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_setup_round")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
 
-
 # Scale appropriate variables to fixed point numbers
 func _scale_to_fixed() -> void:
 	maxAirSpeed *= ONE
@@ -88,7 +84,6 @@ func _scale_to_fixed() -> void:
 	weight_knockback_scale *= ONE
 	knockdownVelocity *= ONE
 
-
 # Rotate the second player
 func _rotate_client_player() -> void:
 	if self.name == "ClientPlayer":
@@ -96,7 +91,6 @@ func _rotate_client_player() -> void:
 		# also flip collision layer and mask for client player
 		$HurtBox.set_collision_mask_bit(1, false)
 		$HurtBox.set_collision_mask_bit(2, true)
-
 
 # Status manipulation function
 func _apply_match_settings(match_settings: Dictionary) -> void:
@@ -158,9 +152,10 @@ func increase_meter_over_time() -> void:
 	else:
 		meter_frame_counter += 1
 
-##################################################
-# STATE MACHINE FUNCTIONS
-##################################################
+
+######################
+# ROLLBACK FUNCTIONS #
+######################
 func _save_state() -> Dictionary:
 	var control_buffer = []
 	for item in controlBuffer:
@@ -191,7 +186,6 @@ func _save_state() -> Dictionary:
 		num_lives = num_lives
 		
 	}
-
 
 func _load_state(loadState: Dictionary) -> void:
 	stateMachine.state = loadState['playerState']
@@ -224,7 +218,6 @@ func _load_state(loadState: Dictionary) -> void:
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()
-
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, player_weight: float) -> void:
 	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], player_weight)
