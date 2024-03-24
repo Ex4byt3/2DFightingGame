@@ -102,7 +102,7 @@ func _scale_to_fixed() -> void:
 	crawlAcceleration *= ONE
 	sprintSpeed *= ONE
 	sprintAcceleration *= ONE
-	sprintInputLeinency *= ONE
+	# sprintInputLeinency = sprintInputLeinency
 
 	slideJumpBoost *= ONE
 
