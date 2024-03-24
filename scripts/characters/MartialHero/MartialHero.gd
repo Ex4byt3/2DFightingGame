@@ -10,34 +10,41 @@ var ONE = SGFixed.ONE
 var NEG_ONE = SGFixed.NEG_ONE
 
 # Character motion attributes
-@export_range(1, 10) var slideDecay = 2 # divisor
-@export_range(20, 50) var dashSpeed = 30
-@export_range(5, 20) var keptDashSpeed = 15
-@export_range(0, 20) var dashWindup = 4
-@export_range(5, 20) var dashDuration = 18
-@export_range(5, 20) var airAcceleration = 2 # divisor
+var gravity = (ONE / 10) * 6 # divisor
+
+var slideDecay = 2 # divisor
+
+var dashSpeed = 30
+var keptDashSpeed = 15
+var dashWindup = 4
+var dashDuration = 18
+var dashVector = SGFixed.vector2(0, 0)
+
 var groundDeceleration = 2
+
 var walkSpeed = 4
 var walkAcceleration = 2
 var crawlSpeed = 2
 var crawlAcceleration = 1
 var sprintSpeed = 8
 var sprintAcceleration = 4
-var slideJumpBoost = 0 # set in ready
-var dashVector = SGFixed.vector2(0, 0)
-var knockbackForce = 0
-var knockbackAngle = 0
 var sprintInputLeinency = 6
+
+var slideJumpBoost = 0 # set in ready
+
 var maxAirSpeed = 6
+var airAcceleration = 2 # divisor
+
 var knockdownVelocity = 40 # Velocity at which the player will enter knockdown when hitting the floor
-var gravity = (ONE / 10) * 6 # divisor
+var quickGetUpFrames = 30
+
+var jumpSquatFrames = 3
 var maxAirJump = 1
 var airJump = 0
-var quickGetUpFrames = 30
 var shortHopForce = 8
 var fullHopForce = 20
 var airHopForce = 15
-var jumpSquatFrames = 3
+
 var maxFallSpeed = 20
 
 # Character meter variables
@@ -77,24 +84,42 @@ func _handle_connecting_signals() -> void:
 
 # Scale appropriate variables to fixed point numbers
 func _scale_to_fixed() -> void:
-	maxAirSpeed *= ONE
-	fullHopForce *= NEG_ONE
-	shortHopForce *= NEG_ONE
-	airHopForce *= NEG_ONE
+	# gravity *= ONE
+
+	slideDecay *= ONE
+
+	# dashSpeed = dashSpeed
+	# keptDashSpeed = keptDashSpeed
+	# dashWindup = dashWindup
+	# dashDuration = dashDuration
+	# dashVector = SGFixed.vector2(0, 0)
+
 	groundDeceleration *= ONE
+
 	walkSpeed *= ONE
 	walkAcceleration *= ONE
 	crawlSpeed *= ONE
 	crawlAcceleration *= ONE
 	sprintSpeed *= ONE
 	sprintAcceleration *= ONE
+	sprintInputLeinency *= ONE
+
+	slideJumpBoost *= ONE
+
+	maxAirSpeed *= ONE
 	airAcceleration = ONE / airAcceleration
-	slideDecay = ONE / slideDecay
-	slideJumpBoost = ONE + (ONE / 2) # to maintain intiger division // 1.5
-	weight *= ONE
-	knockback_multiplier *= ONE
-	weight_knockback_scale *= ONE
+
 	knockdownVelocity *= ONE
+	quickGetUpFrames *= ONE
+
+	# jumpSquatFrames = 3
+	# maxAirJump = 1
+	# airJump = 0
+	shortHopForce *= SGFixed.NEG_ONE
+	fullHopForce *= SGFixed.NEG_ONE
+	airHopForce *= SGFixed.NEG_ONE
+
+	maxFallSpeed *= ONE
 
 # Rotate the second player
 func _rotate_client_player() -> void:
@@ -183,8 +208,6 @@ func _save_state() -> Dictionary:
 
 		dashVector_x = dashVector.x,
 		dashVector_y = dashVector.y,
-		knockbackForce = knockbackForce,
-		knockbackAngle = knockbackAngle,
 		airJump = airJump,
 		isOnFloor = isOnFloor,
 		usedJump = usedJump,
@@ -212,8 +235,6 @@ func _load_state(loadState: Dictionary) -> void:
 
 	dashVector.x = loadState['dashVector_x']
 	dashVector.y = loadState['dashVector_y']
-	knockbackForce = loadState['knockbackForce']
-	knockbackAngle = loadState['knockbackAngle']
 	airJump = loadState['airJump']
 	usedJump = loadState['usedJump']
 	isOnFloor = loadState['isOnFloor']
