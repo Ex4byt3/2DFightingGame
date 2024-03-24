@@ -16,9 +16,13 @@ var NEG_ONE = SGFixed.NEG_ONE
 @export_range(0, 20) var dashWindup = 4
 @export_range(5, 20) var dashDuration = 18
 @export_range(5, 20) var airAcceleration = 2 # divisor
+var groundDeceleration = 2
 var walkSpeed = 4
+var walkAcceleration = 2
 var crawlSpeed = 2
+var crawlAcceleration = 1
 var sprintSpeed = 8
+var sprintAcceleration = 4
 var slideJumpBoost = 0 # set in ready
 var dashVector = SGFixed.vector2(0, 0)
 var knockbackForce = 0
@@ -77,6 +81,13 @@ func _scale_to_fixed() -> void:
 	fullHopForce *= NEG_ONE
 	shortHopForce *= NEG_ONE
 	airHopForce *= NEG_ONE
+	groundDeceleration *= ONE
+	walkSpeed *= ONE
+	walkAcceleration *= ONE
+	crawlSpeed *= ONE
+	crawlAcceleration *= ONE
+	sprintSpeed *= ONE
+	sprintAcceleration *= ONE
 	airAcceleration = ONE / airAcceleration
 	slideDecay = ONE / slideDecay
 	slideJumpBoost = ONE + (ONE / 2) # to maintain intiger division // 1.5
@@ -89,7 +100,7 @@ func _scale_to_fixed() -> void:
 func _rotate_client_player() -> void:
 	if self.name == "ClientPlayer":
 		facingRight = false
-		# also flip collision layer and mask for client player
+		# also flip hurtboxCollision layer and mask for client player
 		$HurtBox.set_collision_mask_bit(1, false)
 		$HurtBox.set_collision_mask_bit(2, true)
 

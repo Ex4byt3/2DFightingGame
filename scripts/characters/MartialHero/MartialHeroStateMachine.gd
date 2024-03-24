@@ -82,6 +82,11 @@ func transition_state(input):
 
 	if player.isOnFloor:
 		reset_jumps()
+
+	if player.pushVector.x != 0 or player.pushVector.y != 0:
+		player.velocity.x += player.pushVector.x
+		player.velocity.y += player.pushVector.y
+		# player.pushvector = SGFixed.vector2(0, 0)
 		
 	# Update the sprite's facing direction
 	if player.facingRight:
@@ -107,7 +112,7 @@ func transition_state(input):
 	if player.health <= 0:
 		if not player.is_dead:
 			set_state('DEAD')
-	elif player.collision.size() > 0:
+	elif player.hurtboxCollision.size() > 0:
 		do_hit()
 		set_state('HITSTUN')
 	elif input.get("attack_light", false) and player.thrownHits == 0:
@@ -119,6 +124,7 @@ func transition_state(input):
 	match states[state]:
 		states.IDLE:
 			if player.isOnFloor:
+				do_decerlerate(player.groundDeceleration)
 				if player.input_vector.y == -1:
 					player.animation.play("Crouch")
 					set_state('CROUCH')
@@ -130,19 +136,19 @@ func transition_state(input):
 						player.facingRight = false
 					
 					# Update the direction the character is attempting to walk
-					if input.get("sprint_macro", false):
+					if sprint_check(input):
 						# If the character is using sprint_macro (default SHIFT) they sprint
-						player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+						do_walk(player.sprintSpeed, player.sprintAcceleration)
 						player.animation.play("Sprint")
 						set_state('SPRINT')
 					else:
 						# If the character isn't and they are moving in a direction, they are walking
-						player.velocity.x = player.walkSpeed * (player.input_vector.x * ONE)
+						do_walk(player.walkSpeed, player.walkAcceleration)
 						player.animation.play("Walk")
 						set_state('WALK')
 				elif player.input_vector.x == 0:
 					# If the player is not moving left/right, don't move/stop moving
-					player.velocity.x = 0
+					#player.velocity.x = 0
 					player.animation.play("Idle")
 					set_state('IDLE')
 				if jump_check(input):
@@ -161,12 +167,11 @@ func transition_state(input):
 					player.facingRight = true
 				else:
 					player.facingRight = false
-				player.velocity.x = player.crawlSpeed * (player.input_vector.x * ONE)
+				do_walk(player.crawlSpeed, player.crawlAcceleration)
 				player.animation.play("Crawl")
 				set_state('CRAWL')
 		states.CRAWL:
 			if player.input_vector.y != -1:
-
 				set_state('IDLE')
 
 			if player.input_vector.x != 0:
@@ -174,7 +179,7 @@ func transition_state(input):
 					player.facingRight = true
 				else:
 					player.facingRight = false
-				player.velocity.x = player.crawlSpeed * (player.input_vector.x * ONE)
+				do_walk(player.crawlSpeed, player.crawlAcceleration)
 			else:
 				player.velocity.x = 0
 				player.animation.play("Crouching")
@@ -192,16 +197,14 @@ func transition_state(input):
 					else:
 						player.facingRight = false
 					
-					if input.get("sprint_macro", false) or sprint_check():
+					if sprint_check(input):
 						# Sprint if you are trying to sprint
-						player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+						do_walk(player.sprintSpeed, player.sprintAcceleration)
 						player.animation.play("Sprint")
 						set_state("SPRINT")
 					else:
 						# Continue walking if you are trying to walk
-						player.velocity.x = player.walkSpeed * (player.input_vector.x * ONE)
-						# player.animation.play("Walk")
-						# set_state('WALK')
+						do_walk(player.walkSpeed, player.walkAcceleration)
 				else:
 					player.velocity.x = 0
 					player.animation.play("Idle")
@@ -224,8 +227,8 @@ func transition_state(input):
 					player.velocity.x -= player.slideDecay
 				else:
 					player.velocity.x -= player.slideDecay # TODO: same as in the previous if statement
-				if player.velocity.x < player.sprintSpeed * ONE: # when the player reaches their sprint speed, they start sprinting instead of sliding
-					player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+				if player.velocity.x < player.sprintSpeed: # when the player reaches their sprint speed, they start sprinting instead of sliding
+					player.velocity.x = player.sprintSpeed * (player.input_vector.x)
 					player.animation.play("Sprint")
 					set_state('SPRINT')
 			else: # do the same for the other direction
@@ -233,8 +236,8 @@ func transition_state(input):
 					player.velocity.x += player.slideDecay
 				else:
 					player.velocity.x += player.slideDecay
-				if player.velocity.x > -player.sprintSpeed * ONE:
-					player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+				if player.velocity.x > -player.sprintSpeed:
+					player.velocity.x = player.sprintSpeed * (player.input_vector.x)
 					player.animation.play("Sprint")
 					set_state('SPRINT')
 		states.SPRINT:
@@ -247,13 +250,12 @@ func transition_state(input):
 					else:
 						player.facingRight = false
 					
-					if input.get("sprint_macro", false) or sprint_check():
+					if sprint_check(input):
 						# Sprint if you are trying to sprint
-						player.velocity.x = player.sprintSpeed * (player.input_vector.x * ONE)
+						do_walk(player.sprintSpeed, player.sprintAcceleration)
 						player.animation.play("Sprint")
 						set_state("SPRINT")
 				else:
-					player.velocity.x = 0
 					player.animation.play("Idle")
 					set_state('IDLE')
 
@@ -332,12 +334,12 @@ func transition_state(input):
 			if abs(player.velocity.x) > player.maxAirSpeed: # if you are moving faster than max air speed, you may only slow down
 				if player.velocity.x > 0:
 					if player.input_vector.x == -1:
-						player.velocity.x -= SGFixed.mul(player.airAcceleration, (ONE))
+						player.velocity.x -= player.airAcceleration
 				else:
 					if player.input_vector.x == 1:
-						player.velocity.x += SGFixed.mul(player.airAcceleration, (ONE))
+						player.velocity.x += player.airAcceleration
 			elif player.input_vector.x != 0:
-				player.velocity.x += SGFixed.mul(player.airAcceleration, (player.input_vector.x * ONE))
+				player.velocity.x += player.input_vector.x * player.airAcceleration
 				if player.velocity.x > player.maxAirSpeed:
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
@@ -444,6 +446,28 @@ func transition_state(input):
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
 
+func do_decerlerate(deceleration):
+	if player.velocity.x > 0:
+		player.velocity.x -= deceleration
+		if player.velocity.x < 0:
+			player.velocity.x = 0
+	elif player.velocity.x < 0:
+		player.velocity.x += deceleration
+		if player.velocity.x > 0:
+			player.velocity.x = 0
+
+func do_walk(speed, acceleration):
+	if player.input_vector.x > 0:
+		if player.velocity.x < speed:
+			player.velocity.x += acceleration
+		else:
+			player.velocity.x = speed
+	elif player.input_vector.x < 0:
+		if player.velocity.x > -speed:
+			player.velocity.x -= acceleration
+		else:
+			player.velocity.x = -speed
+
 func start_jump():
 	if player.usedJump == false: # you must let go of the jump button to jump again
 		player.usedJump = true
@@ -494,9 +518,11 @@ func jump_check(input) -> bool:
 	else:
 		return false
 
-func sprint_check() -> bool:
+func sprint_check(input) -> bool:
 	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
-	if player.controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
+	if input.get("sprint_macro", false):
+		return true
+	elif player.controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
 		if player.controlBuffer[0][2] < player.sprintInputLeinency and player.controlBuffer[1][2] < player.sprintInputLeinency and player.controlBuffer[2][2] < player.sprintInputLeinency:
 			if player.controlBuffer[0][0] == player.controlBuffer[2][0] and player.controlBuffer[0][1] == player.controlBuffer[2][1] and player.controlBuffer[1][0] == 0 and player.controlBuffer[1][1] == 0:
 				return true
@@ -507,9 +533,9 @@ func reset_jumps():
 	player.airJump = player.maxAirJump
 
 func do_hit():
-	player.take_damage(player.collision.damage)
-	player.apply_knockback(player.collision.knockbackForce, player.collision.knockbackAngle)
-	player.frame = player.collision.hitstun
+	player.take_damage(player.hurtboxCollision.damage)
+	player.apply_knockback(player.hurtboxCollision.knockbackForce, player.hurtboxCollision.knockbackAngle)
+	player.frame = player.hurtboxCollision.hitstun
 
 func do_attack(attack_type: String):
 	# Throw attack

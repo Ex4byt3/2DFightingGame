@@ -184,6 +184,46 @@ tracks/2/keys = {
 "values": [0, 2]
 }
 
+[sub_resource type="Animation" id="Animation_564f4"]
+resource_name = "Crouching"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_e2khs")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Sprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a85jg"]
 load_path = "res://.godot/imported/DashR.png-27575319d36c7207db46b88372779506.ctex"
 
@@ -649,46 +689,6 @@ tracks/2/keys = {
 "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 }
 
-[sub_resource type="Animation" id="Animation_564f4"]
-resource_name = "Crouching"
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../Sprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("5_e2khs")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../Sprite:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [3]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("../Sprite:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [2]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u62wg"]
 _data = {
 "AirJump": SubResource("Animation_vix33"),
@@ -781,6 +781,7 @@ script = ExtResource("2")
 shape = SubResource("1")
 fixed_position_x = -196608
 fixed_position_y = 393216
+visible = false
 position = Vector2(-3, 6)
 
 [node name="StateMachine" type="Node" parent="."]
@@ -840,7 +841,7 @@ libraries = {
 }
 script = ExtResource("1")
 
-[node name="HurtBox" type="SGArea2D" parent="." groups=["network_sync"]]
+[node name="HurtBox" type="SGArea2D" parent="."]
 collision_layer = 0
 collision_mask = 2
 
@@ -856,16 +857,15 @@ script = ExtResource("15_lbkyo")
 
 [node name="PushBox" type="SGArea2D" parent="."]
 collision_layer = 8
-collision_mask = 16
+collision_mask = 8
 
-[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="PushBox"]
+[node name="PushBox" type="SGCollisionShape2D" parent="PushBox"]
 shape = SubResource("SGRectangleShape2D_icjxo")
 fixed_position_x = -131072
 fixed_position_y = 393216
 fixed_scale_x = 65534
 fixed_scale_y = 65534
 fixed_rotation = -161
-visible = false
 position = Vector2(-2, 6)
 rotation = -0.00248701
 scale = Vector2(0.999985, 0.999985)

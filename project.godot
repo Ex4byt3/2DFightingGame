@@ -294,8 +294,8 @@ player2_jump={
 2d_physics/layer_1="Map"
 2d_physics/layer_2="Player 1 Hurtbox"
 2d_physics/layer_3="Player 2 Hurtbox"
-2d_physics/layer_4="Player 1 Pushbox"
-2d_physics/layer_5="Player 2 Pushbox"
+2d_physics/layer_4="Pushboxes"
+2d_physics/layer_5="Layer 5"
 2d_physics/layer_9="Layer 9"
 
 [network]

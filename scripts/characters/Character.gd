@@ -52,16 +52,20 @@ var isOnFloor := false
 var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
 var overlappingHurtbox := []
+var overlappingPushbox := []
 var usedJump = false # will need to replace with some sort of array to cover similar cases other than jump
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
 var recovery = false # If the attack has ended
 var attack_ended = false # If the attack has ended
 var involnrable = false # If the character is invulnerable
-var collision = {} # Collision dictionary
+var hurtboxCollision = {} # hurtboxCollision dictionary
+var pushboxCollision = {} # pushboxCollision dictionary
 var weight_knockback_scale = 100 # The higher the number, the less knockback the character will take
 var weight = 100 # The weight of the character
 var knockback_multiplier = 1 # The higher the number, the more knockback the character will take
+var pushForce = 5 * SGFixed.ONE
+var pushVector = SGFixed.vector2(0, 0)
 
 # Variables for status in all characters
 var character_name: String
@@ -141,18 +145,30 @@ func decrease_meter(amount: int) -> void:
 	#print("Meter decreased by ", amount, ". New meter value: ", meter)
 
 func check_collisions() -> void:
-	collision = {}
+	hurtboxCollision = {}
+	pushboxCollision = {}
 	overlappingHurtbox = $HurtBox.get_overlapping_areas() # should only ever return 1 hitbox so we always use index 0
 	if len(overlappingHurtbox) > 0: 
 		if !overlappingHurtbox[0].used:
 			# TODO: other hitbox properties
 			overlappingHurtbox[0].used = true
-			collision = {
+			hurtboxCollision = {
 				damage = overlappingHurtbox[0].damage,
 				hitstun = overlappingHurtbox[0].hitstun,
 				knockbackForce = overlappingHurtbox[0].knockbackForce,
 				knockbackAngle = overlappingHurtbox[0].knockbackAngle,
 			}
+	overlappingPushbox = $PushBox.get_overlapping_areas()
+	if len(overlappingPushbox) > 0:
+		var pushDirection = (self.get_global_fixed_position().sub(overlappingPushbox[0].get_global_fixed_position())).normalized()
+		# var pushDirection = SGFixed.vector2(0, 0)
+		# pushDirection.x = self.get_global_fixed_position().x - overlappingPushbox[0].get_global_fixed_position().x
+		# pushDirection.y = self.get_global_fixed_position().y - overlappingPushbox[0].get_global_fixed_position().y
+		# pushDirection = pushDirection.normalized()
+		pushVector = pushDirection.mul(pushForce)
+		# print(str(pushDirection.x) + " " + str(pushDirection.y))
+	else:
+		pushVector = SGFixed.vector2(0, 0)
 
 # TODO: implement this function
 func take_damage(damage) -> void:

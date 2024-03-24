@@ -13,6 +13,7 @@ const attacks = {
 			],
 		"damage": 1000,
 		"knockback": {
+			"static": false,
 			"force": 40 * SGFixed.ONE,
 			"angle": SGFixed.PI_DIV_4
 		},

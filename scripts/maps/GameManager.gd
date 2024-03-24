@@ -35,6 +35,8 @@ func sync_postions() -> void:
 func sync_hurtboxes() -> void:
 	serverPlayer.get_node("HurtBox").sync_to_physics_engine()
 	clientPlayer.get_node("HurtBox").sync_to_physics_engine()
+	serverPlayer.get_node("PushBox").sync_to_physics_engine()
+	clientPlayer.get_node("PushBox").sync_to_physics_engine()
 
 func sync_hitboxes() -> void:
 	var hitboxes = null
