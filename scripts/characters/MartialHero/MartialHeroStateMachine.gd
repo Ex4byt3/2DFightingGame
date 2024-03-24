@@ -448,11 +448,11 @@ func start_jump():
 	if player.usedJump == false: # you must let go of the jump button to jump again
 		player.usedJump = true
 		# update facing direction
-		if player.input_vector.x != 0:
-			if player.input_vector.x > 0:
-				player.facingRight = true
-			else:
-				player.facingRight = false
+		# if player.input_vector.x != 0:
+		# 	if player.input_vector.x > 0:
+		# 		player.facingRight = true
+		# 	else:
+		# 		player.facingRight = false
 
 		if player.isOnFloor:
 			player.animation.play("JumpSquat")
@@ -485,9 +485,6 @@ func start_dash(input_vector):
 	# Transition to the DASH state
 	player.velocity.x = 0
 	player.velocity.y = 0
-	# print(str(input_vector.x) + " " + str(input_vector.y))
-	# var dashDirection = [input_vector.x, input_vector.y]
-	# print(str(player.dash_animaiton_map.get(dashDirection, "DashR")))
 	player.animation.play(player.dash_animaiton_map.get([input_vector.x, input_vector.y], "DashR"))
 	set_state('DASH')
 	
