@@ -4,6 +4,9 @@ extends Character
 @onready var animation = $NetworkAnimationPlayer
 @onready var attackAnimationPlayer = $DebugAnimationPlayer
 @onready var sprite = $Sprite
+@onready var wallR = get_parent().get_node("WallStaticBody_R")
+@onready var wallL = get_parent().get_node("WallStaticBody_L")
+@onready var ceiling = get_parent().get_node("CeilingStaticBody")
 
 # SGFixed numbers
 var ONE = SGFixed.ONE
@@ -21,7 +24,7 @@ var dashDuration = 18
 var dashVector = SGFixed.vector2(0, 0)
 
 var groundDeceleration = 2
-
+var wallBounceThreshold = 20
 var walkSpeed = 4
 var walkAcceleration = 2
 var crawlSpeed = 2
@@ -44,7 +47,6 @@ var airJump = 0
 var shortHopForce = 8
 var fullHopForce = 20
 var airHopForce = 15
-
 var maxFallSpeed = 20
 
 # Character meter variables
@@ -57,6 +59,9 @@ var currentGameFrame = 0
 
 # Character attack attributes
 var thrownHits = 0
+var hitstun = 0
+var lastSlideCollision = null
+var changedVelocity = false
 
 # Valid motion inputs for the character, listed in priority
 const motion_inputs = {
@@ -98,7 +103,6 @@ func _scale_to_fixed() -> void:
 	# dashVector = SGFixed.vector2(0, 0)
 
 	groundDeceleration *= ONE
-
 	walkSpeed *= ONE
 	walkAcceleration *= ONE
 	crawlSpeed *= ONE
@@ -129,8 +133,8 @@ func _rotate_client_player() -> void:
 	if self.name == "ClientPlayer":
 		facingRight = false
 		# also flip hurtboxCollision layer and mask for client player
-		$HurtBox.set_collision_mask_bit(1, false)
-		$HurtBox.set_collision_mask_bit(2, true)
+		hurtBox.set_collision_mask_bit(1, false)
+		hurtBox.set_collision_mask_bit(2, true)
 
 # Status manipulation function
 func _apply_match_settings(match_settings: Dictionary) -> void:
@@ -180,22 +184,42 @@ func _game_process(input: Dictionary) -> void:
 	stateMachine.transition_state(input)
 	
 	# Update position based off of velocity
+	wallBounceVelocity.x = velocity.x
+	wallBounceVelocity.y = velocity.y
 	move_and_slide()
+	lastSlideCollision = get_last_slide_collision()
 	
-	# Update is_on_floor, does not work if called before move_and_slide, works if called after though
+	if lastSlideCollision != null:
+		if lastSlideCollision.get_collider() == wallR:
+			isOnWallR = true
+			isOnWallL = false
+		elif lastSlideCollision.get_collider() == wallL:
+			isOnWallL = true
+			isOnWallR = false
+		else:
+			isOnWallR = false
+			isOnWallL = false
+			changedVelocity = false
+	else:
+		isOnWallR = false
+		isOnWallL = false
+		changedVelocity = false
+	
+	# Update collision booleans, does not work if called before move_and_slide, works if called after though
 	isOnFloor = is_on_floor()
+	isOnCeiling = is_on_ceiling()
 
 func increase_meter_over_time() -> void:
 	#var time_multiplier = 1.0 + (1.0 - current_time / total_game_time)
 	if meter_frame_counter >= meter_frame_rate:
 		var remainingFrames = totalGameFrames - currentGameFrame
-		print("", remainingFrames)
+		#print("", remainingFrames)
 		var elapsedFrames = currentGameFrame
 		var time_multiplier = max(1, 100 * (totalGameFrames - remainingFrames) / totalGameFrames)
 		var adjustedMeterRate = baseMeterRate + (baseMeterRate * time_multiplier) / 100
 		increase_meter(adjustedMeterRate)
 		meter_frame_counter = 0
-		print("Meter increased over time", adjustedMeterRate)
+		#print("Meter increased over time", adjustedMeterRate)
 	else:
 		meter_frame_counter += 1
 
@@ -215,15 +239,22 @@ func _save_state() -> Dictionary:
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
+		changedVelocity = changedVelocity,
 
 		dashVector_x = dashVector.x,
 		dashVector_y = dashVector.y,
 		airJump = airJump,
 		isOnFloor = isOnFloor,
+		isOnCeiling = isOnCeiling,
+		isOnWallL = isOnWallL,
+		isOnWallR = isOnWallR,
+		wallBounceVelocity_x = wallBounceVelocity.x,
+		wallBounceVelocity_y = wallBounceVelocity.y,
 		usedJump = usedJump,
 		frame = frame,
 		facingRight = facingRight,
 		thrownHits = thrownHits,
+		hitstun = hitstun,
 		
 		health = health,
 		burst = burst,
@@ -231,7 +262,8 @@ func _save_state() -> Dictionary:
 		num_lives = num_lives,
 		
 		meter_frame_counter = meter_frame_counter,
-		meter_frame_rate = meter_frame_rate		
+		meter_frame_rate = meter_frame_rate,
+		currentGameFrame = currentGameFrame
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -244,21 +276,29 @@ func _load_state(loadState: Dictionary) -> void:
 	fixed_position.y = loadState['fixed_position_y']
 	velocity.x = loadState['velocity_x']
 	velocity.y = loadState['velocity_y']
+	changedVelocity = loadState['changedVelocity']
 
 	dashVector.x = loadState['dashVector_x']
 	dashVector.y = loadState['dashVector_y']
 	airJump = loadState['airJump']
 	usedJump = loadState['usedJump']
 	isOnFloor = loadState['isOnFloor']
+	isOnCeiling = loadState['isOnCeiling']
+	isOnWallL = loadState['isOnWallL']
+	isOnWallR = loadState['isOnWallR']
+	wallBounceVelocity.x = loadState['wallBounceVelocity_x']
+	wallBounceVelocity.y = loadState['wallBounceVelocity_y']
 
 	health = loadState['health']
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	thrownHits = loadState['thrownHits']
+	hitstun = loadState['hitstun']
 	
 	health = loadState['health']
 	burst = loadState['burst']
 	meter = loadState['meter']
+	currentGameFrame = loadState['currentGameFrame']
 	meter_frame_counter = loadState.get("meter_frame_counter", meter_frame_counter) # Provides a default in case it's missing
 	meter_frame_rate = loadState.get("meter_frame_rate", meter_frame_rate)
 	num_lives = num_lives

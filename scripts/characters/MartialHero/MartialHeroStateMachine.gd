@@ -104,7 +104,8 @@ func transition_state(input):
 
 	## DEBUG for HITSTUN 
 	if input.get("shield", false): 
-		player.frame = 30
+		player.frame = 0
+		player.hitstun = 30
 		player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 		player.isOnFloor = false
 		set_state('HITSTUN')
@@ -255,6 +256,10 @@ func transition_state(input):
 						do_walk(player.sprintSpeed, player.sprintAcceleration)
 						player.animation.play("Sprint")
 						set_state("SPRINT")
+				elif player.input_vector.y == -1:
+					player.velocity.x = 0
+					player.animation.play("Crouch")
+					set_state('CROUCH')
 				else:
 					player.animation.play("Idle")
 					set_state('IDLE')
@@ -347,7 +352,6 @@ func transition_state(input):
 		states.NEUTRAL_LIGHT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			player.velocity.y = 0
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
@@ -358,10 +362,17 @@ func transition_state(input):
 			pass
 		states.HITSTUN:
 			#set_state('KNOCKDOWN')
-			if player.frame == 0:
+			if player.frame >= player.hitstun:
+				player.hitstun = 0
 				set_state('AIRBORNE')
 			else:
-				player.frame -= 1
+				player.frame += 1
+				
+				if player.isOnWallL or player.isOnWallR:
+					if player.changedVelocity == false and (abs(player.wallBounceVelocity.x/ONE) > player.wallBounceThreshold):
+						player.velocity.x = -player.wallBounceVelocity.x
+						player.changedVelocity = true
+					#print("WALL")
 				# NOT IMPLEMENTED YET
 				# Expects player.frame to be set beforehand.
 				# if player.isOnFloor:
@@ -535,7 +546,8 @@ func reset_jumps():
 func do_hit():
 	player.take_damage(player.hurtboxCollision.damage)
 	player.apply_knockback(player.hurtboxCollision.knockbackForce, player.hurtboxCollision.knockbackAngle)
-	player.frame = player.hurtboxCollision.hitstun
+	player.hitstun = player.hurtboxCollision.hitstun
+	player.frame = 0
 
 func do_attack(attack_type: String):
 	# Throw attack

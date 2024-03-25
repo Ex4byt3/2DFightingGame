@@ -43,12 +43,13 @@ const dash_animaiton_map = {
 
 # State machine
 @onready var stateMachine = $StateMachine
+@onready var hurtBox = $HurtBox
+@onready var pushBox = $PushBox
 @onready var gameManager = get_node("../GameManager")
 
 # Variables for every character
 var input_vector := SGFixed.vector2(0, 0)
 var input_prefix := "player1_"
-var isOnFloor := false
 var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
 var overlappingHurtbox := []
@@ -77,6 +78,14 @@ var meter: int
 var max_meter = 90000
 var meter_rate = 10
 var is_dead: bool = false
+
+# Collision booleans
+var isOnCeiling := false
+var isOnFloor := false
+var isOnWallL := false
+var isOnWallR := false
+var wallBounceVelocity := SGFixed.vector2(0, 0)
+
 
 var input := {} # Input dictionary
 func _network_preprocess(userInput: Dictionary) -> void:
@@ -133,7 +142,7 @@ func increase_meter(amount: int) -> void:
 		meter += amount
 		if meter > max_meter:
 			meter = max_meter
-	print("Meter increased by ", amount, ". New meter value: ", meter)
+	#print("Meter increased by ", amount, ". New meter value: ", meter)
 
 # Decrease meter function
 func decrease_meter(amount: int) -> void:
@@ -147,7 +156,7 @@ func decrease_meter(amount: int) -> void:
 func check_collisions() -> void:
 	hurtboxCollision = {}
 	pushboxCollision = {}
-	overlappingHurtbox = $HurtBox.get_overlapping_areas() # should only ever return 1 hitbox so we always use index 0
+	overlappingHurtbox = hurtBox.get_overlapping_areas() # should only ever return 1 hitbox so we always use index 0
 	if len(overlappingHurtbox) > 0: 
 		if !overlappingHurtbox[0].used:
 			# TODO: other hitbox properties
@@ -158,10 +167,11 @@ func check_collisions() -> void:
 				knockbackForce = overlappingHurtbox[0].knockbackForce,
 				knockbackAngle = overlappingHurtbox[0].knockbackAngle,
 			}
-	overlappingPushbox = $PushBox.get_overlapping_areas()
+	overlappingPushbox = pushBox.get_overlapping_areas()
 	if len(overlappingPushbox) > 0:
 		var pushDirection = (self.get_global_fixed_position().sub(overlappingPushbox[0].get_global_fixed_position())).normalized()
 		pushVector = pushDirection.mul(pushForce)
+		pushVector.y = 0
 	else:
 		pushVector = SGFixed.vector2(0, 0)
 

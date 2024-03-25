@@ -17,7 +17,7 @@ const attacks = {
 			"force": 40 * SGFixed.ONE,
 			"angle": SGFixed.PI_DIV_4
 		},
-		"hitstun": 30
+		"hitstun": 120
 	}
 }
 
