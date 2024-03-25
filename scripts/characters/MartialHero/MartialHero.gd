@@ -48,8 +48,11 @@ var airHopForce = 15
 var maxFallSpeed = 20
 
 # Character meter variables
+var baseMeterRate = 10
 var meter_frame_counter = 0 
 var meter_frame_rate = 60
+var totalGameFrames = 10800
+var currentGameFrame = 0
 # TODO: other forms of meter gain
 
 # Character attack attributes
@@ -169,7 +172,8 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func _game_process(input: Dictionary) -> void:
-	# increase_meter_over_time() # This was currently not rollback safe, commented for rollback testing hitboxes
+	currentGameFrame += 1
+	increase_meter_over_time() # This was currently not rollback safe, commented for rollback testing hitboxes
 	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
@@ -182,10 +186,16 @@ func _game_process(input: Dictionary) -> void:
 	isOnFloor = is_on_floor()
 
 func increase_meter_over_time() -> void:
+	#var time_multiplier = 1.0 + (1.0 - current_time / total_game_time)
 	if meter_frame_counter >= meter_frame_rate:
-		increase_meter(meter_rate)
+		var remainingFrames = totalGameFrames - currentGameFrame
+		print("", remainingFrames)
+		var elapsedFrames = currentGameFrame
+		var time_multiplier = max(1, 100 * (totalGameFrames - remainingFrames) / totalGameFrames)
+		var adjustedMeterRate = baseMeterRate + (baseMeterRate * time_multiplier) / 100
+		increase_meter(adjustedMeterRate)
 		meter_frame_counter = 0
-		#print("Meter increased over time.")
+		print("Meter increased over time", adjustedMeterRate)
 	else:
 		meter_frame_counter += 1
 
@@ -218,8 +228,10 @@ func _save_state() -> Dictionary:
 		health = health,
 		burst = burst,
 		meter = meter,
-		num_lives = num_lives
+		num_lives = num_lives,
 		
+		meter_frame_counter = meter_frame_counter,
+		meter_frame_rate = meter_frame_rate		
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -247,6 +259,8 @@ func _load_state(loadState: Dictionary) -> void:
 	health = loadState['health']
 	burst = loadState['burst']
 	meter = loadState['meter']
+	meter_frame_counter = loadState.get("meter_frame_counter", meter_frame_counter) # Provides a default in case it's missing
+	meter_frame_rate = loadState.get("meter_frame_rate", meter_frame_rate)
 	num_lives = num_lives
 	
 	MenuSignalBus.emit_update_health(health, self.name)

@@ -133,7 +133,7 @@ func increase_meter(amount: int) -> void:
 		meter += amount
 		if meter > max_meter:
 			meter = max_meter
-	#print("Meter increased by ", amount, ". New meter value: ", meter)
+	print("Meter increased by ", amount, ". New meter value: ", meter)
 
 # Decrease meter function
 func decrease_meter(amount: int) -> void:
