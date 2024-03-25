@@ -97,13 +97,14 @@ func transition_state(input):
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
 
-	# can currently *always* dash, this will work for now but there will later be states where you cannot
+	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
 	if input.get("dash", false) and not player.isOnFloor:
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
 
-	## DEBUG for HITSTUN 
+	## DEBUG for HITSTOP
 	if input.get("shield", false): 
+		player.apply_hitstop(0.075)
 		player.frame = 0
 		player.hitstun = 30
 		player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))

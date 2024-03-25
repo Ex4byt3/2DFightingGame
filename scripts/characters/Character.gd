@@ -189,5 +189,11 @@ func apply_knockback(force: int, angle_radians: int):
 	knockback.imul(knockbackMultiplier)
 	velocity = knockback
 
+func apply_hitstop(duration):
+	# duration is in seconds
+	get_tree().paused = true
+	await get_tree().create_timer(duration).timeout
+	get_tree().paused = false
+
 func apply_pushbox_force() -> void:
 	pass
