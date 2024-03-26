@@ -74,7 +74,7 @@ const motion_inputs = {
 # Local character data
 var martial_hero_img = preload("res://assets/menu/images/ramlethal.jpg")
 var martial_hero_name = "Martial Hero"
-const max_health = 10000
+var martial_hero_max_health = 10000
 
 # Calling all onready functions
 func _ready():
@@ -82,13 +82,14 @@ func _ready():
 	_handle_connecting_signals()
 	_scale_to_fixed()
 	_rotate_client_player()
+	_init_character_data()
 
 
-# Connecting signals to our menu
-func _handle_connecting_signals() -> void:
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_setup_round")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
+## Connecting signals to our menu
+#func _handle_connecting_signals() -> void:
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_setup_round")
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
 
 # Scale appropriate variables to fixed point numbers
 func _scale_to_fixed() -> void:
@@ -136,36 +137,18 @@ func _rotate_client_player() -> void:
 		hurtBox.set_collision_mask_bit(1, false)
 		hurtBox.set_collision_mask_bit(2, true)
 
-# Status manipulation function
-func _apply_match_settings(match_settings: Dictionary) -> void:
-	print("[SYSTEM] " + self.name + " received settings!")
-	num_lives = match_settings.character_lives
-	burst = match_settings.initial_burst
-	meter = match_settings.initial_meter
-	print("[SYSTEM] " + self.name + "'s settings have been applied!")
-	
-	MenuSignalBus.emit_update_lives(num_lives, self.name)
-	print("[SYSTEM] " + self.name + "'s lives remaining: " + str(num_lives))
-	MenuSignalBus.emit_update_burst(burst, self.name)
-	MenuSignalBus.emit_update_meter(meter, self.name)
-	
-	_init_character_data()
 
 # Initializing the character data
 func _init_character_data() -> void:
 	character_img = martial_hero_img
 	character_name = martial_hero_name
+	max_health = martial_hero_max_health
 	health = max_health
 	
 	MenuSignalBus.emit_update_character_image(character_img, self.name)
 	MenuSignalBus.emit_update_character_name(character_name, self.name)
 	MenuSignalBus.emit_update_max_health(max_health, self.name)
 
-# Settuping up the round health
-func _setup_round() -> void:
-	health = max_health
-	print("[SYSTEM] Reset " + self.name + "'s health: " + str(health))
-	MenuSignalBus.emit_update_health(health, self.name)
 
 # Network-related function
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:

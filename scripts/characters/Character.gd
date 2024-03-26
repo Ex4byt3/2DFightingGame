@@ -45,7 +45,7 @@ const dash_animaiton_map = {
 @onready var stateMachine = $StateMachine
 @onready var hurtBox = $HurtBox
 @onready var pushBox = $PushBox
-#@onready var gameManager = get_node("../GameManager")
+@onready var gameManager = get_node("../GameManager")
 
 # Variables for every character
 var input_vector := SGFixed.vector2(0, 0)
@@ -72,6 +72,7 @@ var pushVector = SGFixed.vector2(0, 0)
 var character_name: String
 var character_img: Texture2D
 var num_lives: int
+var max_health: int
 var health: int
 var burst: int
 var meter: int
@@ -86,10 +87,46 @@ var isOnWallL := false
 var isOnWallR := false
 var wallBounceVelocity := SGFixed.vector2(0, 0)
 
-
 var input := {} # Input dictionary
+
+func _ready():
+	_handle_connecting_signals()
+
+
+func _handle_connecting_signals() -> void:
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_reset_character")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
+
+
+func _apply_match_settings(match_settings: Dictionary) -> void:
+	print("[COMBAT] " + self.name + " received settings!")
+	num_lives = match_settings.character_lives
+	burst = match_settings.initial_burst
+	meter = match_settings.initial_meter
+	print("[COMBAT] " + self.name + "'s settings have been applied!")
+	
+	MenuSignalBus.emit_update_lives(num_lives, self.name)
+	MenuSignalBus.emit_update_burst(burst, self.name)
+	MenuSignalBus.emit_update_meter(meter, self.name)
+
+
+# Setting up the round health
+func _reset_character() -> void:
+	health = max_health
+	print("[COMBAT] Reset " + self.name + "'s health: " + str(health))
+	
+	MenuSignalBus.emit_update_health(health, self.name)
+	MenuSignalBus.emit_player_ready(self.name)
+
+
+func _get_lives():
+	return num_lives
+
+
 func _network_preprocess(userInput: Dictionary) -> void:
 	input = userInput
+
 
 # Input functions
 # Like Input.get_vector but for SGFixedVector2

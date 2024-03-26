@@ -436,9 +436,10 @@ func transition_state(input):
 		states.DEAD:
 			player.is_dead = true
 			player.num_lives -= 1
-			MenuSignalBus.emit_life_lost(player.name)
+			print("[COMBAT] " + str(player.name) + " has been KO'd!")
+			MenuSignalBus.emit_round_over()
 			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
-			print("[SYSTEM] " + player.name + "'s lives: " + str(player.num_lives))
+			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
 		states.NEUTRAL_MEDIUM:
 			pass
 		states.NEUTRAL_HEAVY:

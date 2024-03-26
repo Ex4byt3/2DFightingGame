@@ -12,15 +12,15 @@ extends MatchController
 @onready var stage_camera = preload("res://scenes/maps/StageCamera.tscn")
 @onready var gameplay_ui = preload("res://scenes/gui/gameplay/GameplayUI.tscn")
 
-var map
-var host_character
-var client_character
+
 var character_starting_pos_y = 80084992
 var host_starting_pos_x = 64749568
 var client_starting_pos_x = 99287040
 
 
 func _ready():
+	_handle_connecting_signals()
+	
 	# Set the map for use in combat
 	_set_map()
 	
@@ -37,6 +37,10 @@ func _ready():
 
 	map._ready() # call the _ready function of the map
 	map.set_process(true) # start the map's process function
+
+
+func _handle_connecting_signals() -> void:
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_reset_character_position")
 
 
 # The selected map is loaded, instanced then added as a child
@@ -93,6 +97,14 @@ func _add_client_character() -> void:
 	client_character.fixed_position_y = character_starting_pos_y
 	client_character.name = "ClientPlayer"
 	map.add_child(client_character)
+
+
+func _reset_character_position() -> void:
+	print("[COMBAT] Reseting character positions...")
+	host_character.fixed_position_x = host_starting_pos_x
+	host_character.fixed_position_y = character_starting_pos_y
+	client_character.fixed_position_x = client_starting_pos_x
+	client_character.fixed_position_y = character_starting_pos_y
 
 
 func _set_network_script() -> void:

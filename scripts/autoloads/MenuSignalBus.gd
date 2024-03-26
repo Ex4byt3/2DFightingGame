@@ -17,8 +17,12 @@ signal load_settings_data(settings_dict)
 # Signals for matches
 signal create_match
 signal start_match
-signal start_round
+signal setup_combat
+signal start_combat
+signal combat_over
 signal setup_round
+signal start_round
+signal round_over
 signal leave_match
 signal life_lost(player_id)
 signal player_ready(player_id)
@@ -96,11 +100,23 @@ func emit_create_match() -> void:
 func emit_start_match() -> void:
 	emit_signal("start_match")
 
+func emit_setup_round() -> void:
+	emit_signal("setup_round")
+
 func emit_start_round() -> void:
 	emit_signal("start_round")
 
-func emit_setup_round() -> void:
-	emit_signal("setup_round")
+func emit_round_over() -> void:
+	emit_signal("round_over")
+
+func emit_setup_combat() -> void:
+	emit_signal("setup_combat")
+
+func emit_start_combat() -> void:
+	emit_signal("start_combat")
+
+func emit_combat_over() -> void:
+	emit_signal("combat_over")
 
 func emit_leave_match() -> void:
 	emit_signal("leave_match")
