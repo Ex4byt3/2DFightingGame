@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://3qt6gx4c1lfs"]
+
+[node name="Messages" type="CanvasLayer"]
+
+[node name="MessageLabel" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1250.0
+offset_top = 1379.0
+offset_right = 1250.0
+offset_bottom = 1402.0
+grow_horizontal = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ResetButton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1196.0
+offset_top = 1348.0
+offset_right = 1250.0
+offset_bottom = 1379.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "RESET"
+metadata/_edit_use_anchors_ = true
+
+[node name="SyncLostLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -106.0
+offset_bottom = 14.0
+text = "Regaining sync..."

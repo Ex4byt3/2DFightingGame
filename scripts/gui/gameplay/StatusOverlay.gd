@@ -216,10 +216,6 @@ func _update_character_name(character_name: String, player_id: String) -> void:
 			print("[SYSTEM] ERROR: player does not exist")
 
 
-#func _life_lost(player_id: String) -> void:
-	#print("[SYSTEM] " + player_id + " KO'd")
-
-
 ##################################################
 # TIMER FUNCTIONS
 ##################################################

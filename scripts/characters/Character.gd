@@ -45,7 +45,7 @@ const dash_animaiton_map = {
 @onready var stateMachine = $StateMachine
 @onready var hurtBox = $HurtBox
 @onready var pushBox = $PushBox
-@onready var gameManager = get_node("../GameManager")
+#@onready var gameManager = get_node("../GameManager")
 
 # Variables for every character
 var input_vector := SGFixed.vector2(0, 0)

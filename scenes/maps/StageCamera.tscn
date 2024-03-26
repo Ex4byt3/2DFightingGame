@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://xu5lwvu5inwb"]
+
+[ext_resource type="Script" path="res://scripts/gameplay/StageCamera.gd" id="1_tg6g7"]
+
+[node name="StageCamera" type="Camera2D"]
+position = Vector2(1202, 936)
+limit_left = 0
+limit_top = 0
+limit_right = 3167
+limit_bottom = 1600
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 4.0
+editor_draw_limits = true
+script = ExtResource("1_tg6g7")
