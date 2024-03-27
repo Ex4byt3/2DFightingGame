@@ -121,11 +121,12 @@ func transition_state(input):
 			set_state('DEAD')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
-	elif input.get("attack_light", false) and player.thrownHits == 0:
+	elif input.get("light", false) and player.thrownHits == 0 and !player.pressed.has("light"):
+		player.pressed.append("light")
 		match states[state]:
-			states.IDLE:
+			states.IDLE, states.SLIDE:
 				do_attack("neutral_light")
-			states.SPRINT, states.SLIDE, states.WALK:
+			states.SPRINT, states.WALK:
 				do_attack("forward_light")
 			states.CROUCH:
 				do_attack("crouching_light")
@@ -134,11 +135,12 @@ func transition_state(input):
 			states.AIRBORNE:
 				do_attack("air_light")
 			# TO DO, attacking cancels block?
-	elif input.get("attack_medium", false) and player.thrownHits == 0:
+	elif input.get("medium", false) and player.thrownHits == 0 and !player.pressed.has("medium"):
+		player.pressed.append("medium")
 		match states[state]:
-			states.IDLE:
+			states.IDLE, states.SLIDE:
 				do_attack("neutral_medium")
-			states.SPRINT, states.SLIDE, states.WALK:
+			states.SPRINT, states.WALK:
 				do_attack("forward_medium")
 			states.CROUCH:
 				do_attack("crouching_medium")
@@ -147,11 +149,12 @@ func transition_state(input):
 			states.AIRBORNE:
 				do_attack("air_medium")
 			# TO DO, attacking cancels block?
-	elif input.get("attack_heavy", false) and player.thrownHits == 0:
+	elif input.get("heavy", false) and player.thrownHits == 0 and !player.pressed.has("heavy"):
+		player.pressed.append("heavy")
 		match states[state]:
-			states.IDLE:
+			states.IDLE, states.SLIDE:
 				do_attack("neutral_heavy")
-			states.WALK, states.SPRINT, states.SLIDE:
+			states.WALK, states.SPRINT:
 				do_attack("forward_heavy")
 			states.CROUCH:
 				do_attack("crouching_heavy")
@@ -160,7 +163,8 @@ func transition_state(input):
 			states.AIRBORNE:
 				do_attack("air_heavy")
 			# TO DO, attacking cancels block?
-	elif input.get("impact", false) and player.thrownHits == 0:
+	elif input.get("impact", false) and player.thrownHits == 0 and !player.pressed.has("impact"):
+		player.pressed.append("impact")
 		match states[state]:
 			states.IDLE, states.WALK, states.SPRINT, states.SLIDE:
 				do_attack("impact")
@@ -824,7 +828,7 @@ func do_attack(attack_type: String):
 		hitstop = spawnHitBox.get_hitstop(attack_type),
 		hitstun = spawnHitBox.get_hitstun(attack_type),
 		mask = spawnHitBox.get_mask(attack_type),
-		spawn_vector = spawnHitBox.get_spawn_vector(attack_type)
+		spawn_vector = spawnHitBox.get_spawn_vector(attack_type),
 		blockstun = spawnHitBox.get_blockstun(attack_type)
 	})
 	player.thrownHits += 1 # Increment number of thrown attacks

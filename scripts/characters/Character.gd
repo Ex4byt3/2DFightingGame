@@ -156,11 +156,11 @@ func _get_local_input() -> Dictionary:
 	if Input.is_action_pressed(input_prefix + "bomb"):
 		userInput["drop_bomb"] = true
 	if Input.is_action_pressed(input_prefix + "light"):
-		userInput["attack_light"] = true
+		userInput["light"] = true
 	if Input.is_action_pressed(input_prefix + "medium"):
-		userInput["attack_medium"] = true
+		userInput["medium"] = true
 	if Input.is_action_pressed(input_prefix + "heavy"):
-		userInput["attack_heavy"] = true
+		userInput["heavy"] = true
 	if Input.is_action_pressed(input_prefix + "impact"):
 		userInput["impact"] = true
 	if Input.is_action_pressed(input_prefix + "dash"):
