@@ -335,15 +335,6 @@ func transition_state(input):
 				player.animation.play("AirBlock")
 				player.blockMask = 7 # 111, no high/lows in the air
 				set_state("AIR_BLOCK")
-		states.NEUTRAL_LIGHT:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				set_state('IDLE')
 		states.BLOCK:
 			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.x != 0:
@@ -488,6 +479,16 @@ func transition_state(input):
 			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
 		states.NEUTRAL_MEDIUM:
 			pass
+		states.NEUTRAL_LIGHT:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Idle")
+				set_state('IDLE')
 		states.NEUTRAL_HEAVY:
 			pass
 		states.FORWARD_LIGHT:
