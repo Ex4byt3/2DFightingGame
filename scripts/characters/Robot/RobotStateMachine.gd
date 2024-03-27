@@ -21,6 +21,11 @@ func _ready():
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
 	add_state('BLOCK')
+	add_state('LOW_BLOCK')
+	add_state('AIR_BLOCK')
+	add_state('BLOCKSTUN')
+	add_state('LOW_BLOCKSTUN')
+	add_state('AIR_BLOCKSTUN')
 	add_state('HITSTOP')
 	add_state('HITSTUN')
 	add_state('KNOCKDOWN')
@@ -70,7 +75,7 @@ func parse_motion_inputs():
 
 func transition_state(input):
 	update_debug_label(player.input_vector)
-	update_pressed()
+	update_pressed(input)
 	
 	#####################
 	# Universal Changes #
@@ -88,34 +93,31 @@ func transition_state(input):
 		# player.pushvector = SGFixed.vector2(0, 0)
 		
 	# Update the sprite's facing direction
-	if player.facingRight:
-		player.sprite.flip_h = false
-	else:
-		player.sprite.flip_h = true
+	player.sprite.flip_h = !player.facingRight
 
+	# TODO: parse_motion_inputs should only get called when we need to look for a possible motion input rahter thanevery frame
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
 
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
-	if input.get("dash", false) and not player.isOnFloor:
+	if input.has("dash") and not player.isOnFloor:
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
 
-	## DEBUG for HITSTOP
-	if input.get("shield", false): 
-		#player.apply_hitstop(0.075)
-		player.frame = 0
-		player.hitstun = 30
-		player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
-		player.isOnFloor = false
-		set_state('HITSTOP')
+	# ## DEBUG for HITSTOP
+	# if input.get("shield", false): 
+	# 	#player.apply_hitstop(0.075)
+	# 	player.frame = 0
+	# 	player.stunFrames = 30
+	# 	player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
+	# 	player.isOnFloor = false
+	# 	set_state('HITSTOP')
 
 	if player.health <= 0:
 		if not player.is_dead:
 			set_state('DEAD')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
-		set_state('HITSTUN')
 	elif input.get("attack_light", false) and player.thrownHits == 0:
 		do_attack("neutral_light")
 	
@@ -124,102 +126,95 @@ func transition_state(input):
 	#################
 	match states[state]:
 		states.IDLE:
-			if player.isOnFloor:
-				do_decerlerate(player.groundDeceleration)
-				if player.input_vector.y == -1:
-					player.animation.play("Crouch")
-					set_state('CROUCH')
-				elif player.input_vector.x != 0:
-					# Update which direction the character is facing
-					if player.input_vector.x > 0:
-						player.facingRight = true
-					else:
-						player.facingRight = false
-					
-					# Update the direction the character is attempting to walk
-					if sprint_check(input):
-						# If the character is using sprint_macro (default SHIFT) they sprint
-						do_walk(player.sprintSpeed, player.sprintAcceleration)
-						player.animation.play("Sprint")
-						set_state('SPRINT')
-					else:
-						# If the character isn't and they are moving in a direction, they are walking
-						do_walk(player.walkSpeed, player.walkAcceleration)
-						player.animation.play("Walk")
-						set_state('WALK')
-				elif player.input_vector.x == 0:
-					# If the player is not moving left/right, don't move/stop moving
-					#player.velocity.x = 0
-					player.animation.play("Idle")
-					set_state('IDLE')
-				if jump_check(input):
-					# The player is attempting to jump
-					start_jump()
-			else:
-				player.animation.play("Airborne")
-				set_state('AIRBORNE')
+			do_decerlerate(player.groundDeceleration)
+			if player.input_vector.y == -1:
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+			elif input.has("shield"):
+				player.blockMask = 6 # 110
+				player.animation.play("Block")
+				set_state("BLOCK")
+			elif player.input_vector.x != 0:
+				# Update which direction the character is facing
+				player.facingRight = player.input_vector.x > 0
+				
+				# Update the direction the character is attempting to walk
+				if sprint_check(input):
+					# If the character is using sprint_macro (default SHIFT) they sprint
+					do_walk(player.sprintSpeed, player.sprintAcceleration)
+					player.animation.play("Sprint")
+					set_state('SPRINT')
+				else:
+					# If the character isn't and they are moving in a direction, they are walking
+					do_walk(player.walkSpeed, player.walkAcceleration)
+					player.animation.play("Walk")
+					set_state('WALK')
+			# elif player.input_vector.x == 0:
+			# 	player.animation.play("Idle")
+			# 	set_state('IDLE')
+			if jump_check(input):
+				# The player is attempting to jump
+				start_jump()
 		states.CROUCH:
 			if player.input_vector.y != -1:
 				player.animation.play("Idle")
 				set_state('IDLE')
+			elif input.has("shield"):
+				player.blockMask = 6 # 110
+				player.animation.play("LowBlock")
+				set_state("LOW_BLOCK")
 
 			if player.input_vector.x != 0:
-				if player.input_vector.x > 0:
-					player.facingRight = true
-				else:
-					player.facingRight = false
+				player.facingRight = player.input_vector.x > 0
 				do_walk(player.crawlSpeed, player.crawlAcceleration)
 				player.animation.play("Crawl")
 				set_state('CRAWL')
 		states.CRAWL:
-			if player.input_vector.y != -1:
+			if input.has('shield'):
+				player.blockMask = 3 # 011
+				player.animation.play("LowBlock")
+				set_state("LOW_BLOCK")
+			elif player.input_vector.y != -1:
+				player.animation.play("Idle")
 				set_state('IDLE')
-
-			if player.input_vector.x != 0:
-				if player.input_vector.x > 0:
-					player.facingRight = true
-				else:
-					player.facingRight = false
+			elif player.input_vector.x != 0:
+				player.facingRight = player.input_vector.x > 0
 				do_walk(player.crawlSpeed, player.crawlAcceleration)
 			else:
 				player.velocity.x = 0
 				player.animation.play("Crouching")
 				set_state('CROUCH')
+
+			if jump_check(input):
+				start_jump()
 		states.WALK:
-			if player.isOnFloor:
-				# If you are on the floor and moving, walk/sprint left/right if applicable
-				if player.input_vector.y == -1:
-					player.animation.play("Crouch")
-					set_state('CROUCH')
-				elif player.input_vector.x != 0:
-					# Face the direction based on where you are trying to move
-					if player.input_vector.x > 0:
-						player.facingRight = true
-					else:
-						player.facingRight = false
-					
-					if sprint_check(input):
-						# Sprint if you are trying to sprint
-						do_walk(player.sprintSpeed, player.sprintAcceleration)
-						player.animation.play("Sprint")
-						set_state("SPRINT")
-					else:
-						# Continue walking if you are trying to walk
-						do_walk(player.walkSpeed, player.walkAcceleration)
+			if player.input_vector.y == -1:
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+			elif input.has("shield"):
+				player.blockMask = 6 # 110
+				player.animation.play("Block")
+				set_state("BLOCK")
+			elif player.input_vector.x != 0:
+				# Face the direction based on where you are trying to move
+				player.facingRight = player.input_vector.x > 0
+				
+				if sprint_check(input):
+					# Sprint if you are trying to sprint
+					do_walk(player.sprintSpeed, player.sprintAcceleration)
+					player.animation.play("Sprint")
+					set_state("SPRINT")
 				else:
-					player.velocity.x = 0
-					player.animation.play("Idle")
-					set_state('IDLE')
-				if jump_check(input):
-					# The player is attempting to jump, enter jumpsquat state
-					start_jump()
+					# Continue walking if you are trying to walk
+					do_walk(player.walkSpeed, player.walkAcceleration)
 			else:
-				# Not on the ground while walking somehow, you are now airborne, goodluck!
-				player.animation.play("Airborne")
-				set_state('AIRBORNE')
+				player.velocity.x = 0
+				player.animation.play("Idle")
+				set_state('IDLE')
+			if jump_check(input):
+				start_jump()
 		states.SLIDE:
 			if jump_check(input):
-				# The player is attempting to jump
 				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
 				start_jump()
 
@@ -242,36 +237,32 @@ func transition_state(input):
 					player.animation.play("Sprint")
 					set_state('SPRINT')
 		states.SPRINT:
-			if player.isOnFloor:
-				# If you are on the floor and moving, walk/sprint left/right if applicable
-				if player.input_vector.x != 0:
-					# Face the direction based on where you are trying to move
-					if player.input_vector.x > 0:
-						player.facingRight = true
-					else:
-						player.facingRight = false
-					
-					if sprint_check(input):
-						# Sprint if you are trying to sprint
-						do_walk(player.sprintSpeed, player.sprintAcceleration)
-						player.animation.play("Sprint")
-						set_state("SPRINT")
-				elif player.input_vector.y == -1:
-					player.velocity.x = 0
-					player.animation.play("Crouch")
-					set_state('CROUCH')
-				else:
-					player.animation.play("Idle")
-					set_state('IDLE')
-
-				if jump_check(input):
-					# The player is attempting to jump, enter jumpsquat state
-					start_jump()
+			if input.has("shield"):
+				player.blockMask = 6 # 110
+				player.animation.play("Block")
+				set_state("BLOCK")
+			elif player.input_vector.y == -1:
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+			elif player.input_vector.x != 0:
+				# Face the direction based on where you are trying to move
+				player.facingRight = player.input_vector.x > 0
+				
+				if sprint_check(input):
+					# Sprint if you are trying to sprint
+					do_walk(player.sprintSpeed, player.sprintAcceleration)
+					player.animation.play("Sprint")
+					set_state("SPRINT")
+			elif player.input_vector.y == -1:
+				player.velocity.x = 0
+				player.animation.play("Crouch")
+				set_state('CROUCH')
 			else:
-				# Not on the ground while walking somehow, you are now airborne, goodluck!
-				player.animation.play("Airborne")
-				set_state('AIRBORNE')
-			pass
+				player.animation.play("Idle")
+				set_state('IDLE')
+
+			if jump_check(input):
+				start_jump()
 		states.DASH:
 			if player.isOnFloor: # if you ever hit the floor, you slide
 				player.velocity.x = player.keptDashSpeed * player.dashVector.x
@@ -306,7 +297,7 @@ func transition_state(input):
 			player.frame += 1
 			if player.isOnFloor:
 			# Stopped jumping before it would be fullhop, it turns into shorthop
-				if player.input_vector.y != 1:
+				if !jump_check(input):
 					player.velocity.y = player.shortHopForce
 					player.frame = 0
 					player.animation.play("Jump") # can have seperate animation for shothop without seperate state
@@ -329,9 +320,7 @@ func transition_state(input):
 				set_state('IDLE')
 			else:
 				if jump_check(input) and player.airJump > 0:
-					if player.usedJump == false:
-						player.airJump -= 1
-						start_jump()
+					start_jump()
 				if player.velocity.y > 0:
 					player.animation.play("Airborne")
 			# If in the air and you are moving, update the velocity based on
@@ -349,6 +338,11 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
+			
+			if input.has('shield'):
+				player.animation.play("AirBlock")
+				player.blockMask = 7 # 111, no high/lows in the air
+				set_state("AIR_BLOCK")
 		states.NEUTRAL_LIGHT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -359,6 +353,50 @@ func transition_state(input):
 				player.attack_ended = false
 				set_state('IDLE')
 		states.BLOCK:
+			do_decerlerate(player.groundDeceleration)
+			if player.input_vector.x != 0:
+				player.facingRight = player.input_vector.x > 0
+			if !input.has("shield"):
+				player.animation.play("Idle")
+				player.blockMask = 0 # 000
+				set_state("IDLE")
+			elif player.input_vector.y == -1:
+				player.animation.play("LowBlock")
+				player.blockMask = 3 # 011
+				set_state("LOW_BLOCK")
+			elif jump_check(input):
+				player.blockMask = 0 # 000
+				start_jump()
+		states.LOW_BLOCK:
+			do_decerlerate(player.groundDeceleration)
+			if player.input_vector.x != 0:
+				player.facingRight = player.input_vector.x > 0
+			if !input.has("shield"):
+				player.animation.play("Crouching")
+				player.blockMask = 0 # 000
+				set_state("CROUCH")
+			elif player.input_vector.y != -1:
+				player.animation.play("Blocking")
+				player.blockMask = 6 # 110
+				set_state("BLOCK")
+			elif jump_check(input):
+				player.blockMask = 0 # 000
+				start_jump()
+		states.AIR_BLOCK:
+			if !input.has("shield"):
+				player.animation.play("Airborne")
+				player.blockMask = 0 # 000
+				set_state("AIRBORNE")
+			elif player.isOnFloor:
+				# TODO: LANDING
+				player.animation.play("Block")
+				set_state('BLOCK')
+			elif jump_check(input) and player.airJump > 0:
+				player.blockMask = 0 # 000
+				start_jump()
+			
+		states.BLOCKSTUN:
+			# all you can do in blockstun is change between high and low blocks
 			pass
 		states.HITSTOP:
 			if player.frame >= 100: # TODO: set frame variable
@@ -379,8 +417,8 @@ func transition_state(input):
 				player.frame += 1
 		states.HITSTUN:
 			#set_state('KNOCKDOWN')
-			if player.frame >= player.hitstun:
-				player.hitstun = 0
+			if player.frame >= player.stunFrames:
+				player.stunFrames = 0
 				set_state('AIRBORNE')
 			else:
 				player.frame += 1
@@ -498,50 +536,45 @@ func do_walk(speed, acceleration):
 			player.velocity.x = -speed
 
 func start_jump():
-	if player.usedJump == false: # you must let go of the jump button to jump again
-		player.usedJump = true
-		# update facing direction
-		# if player.input_vector.x != 0:
-		# 	if player.input_vector.x > 0:
-		# 		player.facingRight = true
-		# 	else:
-		# 		player.facingRight = false
-
+	if !player.pressed.has("jump"): # you must let go of the jump button to jump again
+		player.pressed.append("jump")
 		if player.isOnFloor:
 			player.animation.play("JumpSquat")
 		else:
-			pass
-			# player.animation.play("AirJumpSquat") # TODO: add air jump squat animation
-
+			player.animation.play("AirJumpSquat")
+			player.airJump -= 1
 		set_state('JUMPSQUAT')
 
-func update_pressed(): # note: will later update any buttons that must be let go of to be pressed again, currently only jump
-	if player.input_vector.y != 1:
-		player.usedJump = false
+func update_pressed(input) -> void:
+	for button in player.pressed:
+		if !input.has(str(button)):
+			player.pressed.erase(button)
 
 func start_dash(input_vector):
-	# if the input vector is neutral, dash in the direction the player is facing
-	player.dashVector = input_vector.normalized()
-	if player.dashVector.x == 0 and player.dashVector.y == 0:
-		if player.facingRight:
-			player.dashVector.x = ONE
-		else:
-			player.dashVector.x = -ONE
+	if !player.pressed.has("dash"):
+		player.pressed.append("dash")
+		# if the input vector is neutral, dash in the direction the player is facing
+		player.dashVector = input_vector.normalized()
+		if player.dashVector.x == 0 and player.dashVector.y == 0:
+			if player.facingRight:
+				player.dashVector.x = ONE
+			else:
+				player.dashVector.x = -ONE
 
-	if input_vector.x != 0:
-		# Update which direction the character is facing
-		if input_vector.x > 0:
-			player.facingRight = true
-		else:
-			player.facingRight = false
+		if input_vector.x != 0:
+			# Update which direction the character is facing
+			if input_vector.x > 0:
+				player.facingRight = true
+			else:
+				player.facingRight = false
 
-	# Transition to the DASH state
-	player.velocity.x = 0
-	player.velocity.y = 0
-	player.animation.play(player.dash_animaiton_map.get([input_vector.x, input_vector.y], "DashR"))
-	set_state('DASH')
+		# Transition to the DASH state
+		player.velocity.x = 0
+		player.velocity.y = 0
+		player.animation.play(player.dash_animaiton_map.get([input_vector.x, input_vector.y], "DashR"))
+		set_state('DASH')
 	
-func jump_check(input) -> bool:
+func jump_check(input) -> bool: # might be redundant
 	if player.input_vector.y == 1 or input.has("jump"):
 		return true
 	else:
@@ -562,42 +595,37 @@ func reset_jumps():
 	player.airJump = player.maxAirJump
 
 func do_hit():
-	player.take_damage(player.hurtboxCollision.damage)
-	player.apply_knockback(player.hurtboxCollision.knockbackForce, player.hurtboxCollision.knockbackAngle)
-	player.hitstun = player.hurtboxCollision.hitstun
-	player.frame = 0
+	# TODO: meter gain
+	if player.blockMask & player.hurtboxCollision.mask == player.hurtboxCollision.mask: # if blocked
+		if states[state] == states.BLOCK:
+			# TODO: chip damage
+			player.animation.play("Blockstun")
+			set_state("BLOCKSTUN")
+	else:
+		# TODO: hitstun/knockback/damage scaling
+		player.take_damage(player.hurtboxCollision.damage)
+		player.apply_knockback(player.hurtboxCollision.knockbackForce, player.hurtboxCollision.knockbackAngle)
+		player.stunFrames = player.hurtboxCollision.hitstun
+		player.frame = 0
+		set_state('HITSTUN')
+
 
 func do_attack(attack_type: String):
+	# TODO: meter gain on hit
+		# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
 	# Throw attack
 	SyncManager.spawn("Hitbox", player.get_node("SpawnHitbox"), Hitbox, {
 		damage = spawnHitBox.get_damage(attack_type),
 		hitboxShapes = spawnHitBox.get_hitbox_shapes(attack_type),
 		knockbackForce = spawnHitBox.get_knockback(attack_type)["force"],
 		knockbackAngle = spawnHitBox.get_knockback(attack_type)["angle"],
-		hitstun = spawnHitBox.get_hitstun(attack_type)
+		hitstun = spawnHitBox.get_hitstun(attack_type),
+		mask = spawnHitBox.get_mask(attack_type)
 	})
 	player.thrownHits += 1 # Increment number of thrown attacks
 	
-	match attack_type:
-		"neutral_light":
-			player.attackAnimationPlayer.play("DebugAttack")
-			set_state('NEUTRAL_LIGHT')
-		"neutral_medium":
-			pass
-		"neutral_heavy":
-			pass
-		"forward_light":
-			pass
-		"forward_medium":
-			pass
-		"forward_heavy":
-			pass
-		"down_light":
-			pass
-		"down_medium":
-			pass
-		"down_heavy":
-			pass
+	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
+	set_state(attack_type.to_upper())
 	
 
 func update_debug_label(input_vector):
