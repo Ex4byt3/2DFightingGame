@@ -42,7 +42,7 @@ func get_knockback(attack_type: String):
 	return attacks[attack_type]["knockback"]
 
 func get_blockstun(attack_type: String):
-	return attacks[attack_type]["hitstun"]
+	return attacks[attack_type]["blockstun"]
 
 func get_hitstun(attack_type: String):
 	return attacks[attack_type]["hitstun"]
