@@ -25,18 +25,18 @@ var dashVector = SGFixed.vector2(0, 0)
 
 var groundDeceleration = 2
 var wallBounceThreshold = 20
-var walkSpeed = 4
+var walkSpeed = 8
 var walkAcceleration = 2
 var crawlSpeed = 2
 var crawlAcceleration = 1
-var sprintSpeed = 8
+var sprintSpeed = 20
 var sprintAcceleration = 4
 var sprintInputLeinency = 6
 
 var slideJumpBoost = 0 # set in ready
 
-var maxAirSpeed = 6
-var airAcceleration = 2 # divisor
+var maxAirSpeed = 12
+var airAcceleration = 1 # divisor
 
 var knockdownVelocity = 40 # Velocity at which the player will enter knockdown when hitting the floor
 var quickGetUpFrames = 30
