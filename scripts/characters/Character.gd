@@ -54,7 +54,7 @@ var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
 var overlappingHurtbox := []
 var overlappingPushbox := []
-var usedJump = false # will need to replace with some sort of array to cover similar cases other than jump
+var pressed = []
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
 var recovery = false # If the attack has ended
@@ -67,6 +67,7 @@ var weight = 100 # The weight of the character
 var knockbackMultiplier = 1 # The higher the number, the more knockback the character will take
 var pushForce = 5 * SGFixed.ONE
 var pushVector = SGFixed.vector2(0, 0)
+var blockMask : int = 0
 
 # Variables for status in all characters
 var character_name: String
@@ -151,23 +152,23 @@ func _get_local_input() -> Dictionary:
 	if input_vector != SGFixed.vector2(0, 0):
 		userInput["input_vector_x"] = input_vector.x
 		userInput["input_vector_y"] = input_vector.y
-	if Input.is_action_just_pressed(input_prefix + "bomb"):
+	if Input.is_action_pressed(input_prefix + "bomb"):
 		userInput["drop_bomb"] = true
-	if Input.is_action_just_pressed(input_prefix + "light"):
+	if Input.is_action_pressed(input_prefix + "light"):
 		userInput["attack_light"] = true
-	if Input.is_action_just_pressed(input_prefix + "medium"):
+	if Input.is_action_pressed(input_prefix + "medium"):
 		userInput["attack_medium"] = true
-	if Input.is_action_just_pressed(input_prefix + "heavy"):
+	if Input.is_action_pressed(input_prefix + "heavy"):
 		userInput["attack_heavy"] = true
-	if Input.is_action_just_pressed(input_prefix + "impact"):
+	if Input.is_action_pressed(input_prefix + "impact"):
 		userInput["impact"] = true
-	if Input.is_action_just_pressed(input_prefix + "dash"):
+	if Input.is_action_pressed(input_prefix + "dash"):
 		userInput["dash"] = true
-	if Input.is_action_just_pressed(input_prefix + "shield"):
+	if Input.is_action_pressed(input_prefix + "shield"):
 		userInput["shield"] = true
 	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
 		userInput["sprint_macro"] = true
-	if Input.is_action_just_pressed(input_prefix + "jump"):
+	if Input.is_action_pressed(input_prefix + "jump") or userInput["input_vector_y"] == 1: # pressing up doubles as a jump input
 		userInput["jump"] = true
 	
 	return userInput
@@ -203,6 +204,7 @@ func check_collisions() -> void:
 				hitstun = overlappingHurtbox[0].hitstun,
 				knockbackForce = overlappingHurtbox[0].knockbackForce,
 				knockbackAngle = overlappingHurtbox[0].knockbackAngle,
+				mask = overlappingHurtbox[0].mask
 			}
 	overlappingPushbox = pushBox.get_overlapping_areas()
 	if len(overlappingPushbox) > 0:
