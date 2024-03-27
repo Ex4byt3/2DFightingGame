@@ -11,6 +11,7 @@ var knockbackForce = 0 # Angle of knockback done (default none)
 var knockbackAngle = 0 # Angle of knockback done (default none)
 var staticKnockback = false # If the knockback is static (default false)
 
+var hitstop = 0 # Amount of hitstop (default none)
 var hitstun = 0 # Amount of hitstun (default none)
 
 var tick = 0 # Current tick the hitbox is on

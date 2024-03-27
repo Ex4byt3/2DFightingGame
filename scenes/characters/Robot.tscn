@@ -1532,7 +1532,6 @@ collision_mask = 2
 shape = SubResource("1")
 fixed_position_x = -131072
 fixed_position_y = 393216
-visible = false
 position = Vector2(-2, 6)
 
 [node name="SpawnHitbox" type="SGFixedNode2D" parent="."]

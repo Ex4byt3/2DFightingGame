@@ -22,11 +22,17 @@ func _network_spawn(data: Dictionary) -> void:
 	knockbackForce = data['knockbackForce']
 	if attacking_player.facingRight:
 		knockbackAngle = data['knockbackAngle']
+		fixed_position.x += (90 * SGFixed.ONE)
 	else:
 		knockbackAngle = SGFixed.PI - data['knockbackAngle']
+		fixed_position.x -= (90 * SGFixed.ONE)
 	
+	hitstop = data['hitstop']
 	hitstun = data['hitstun']
 	mask = data['mask']
+	
+	fixed_position.x += data['spawn_vector'].x
+	fixed_position.y += data['spawn_vector'].y
 
 	idx = 1
 	tick = 0

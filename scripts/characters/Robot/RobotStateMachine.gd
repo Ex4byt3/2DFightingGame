@@ -83,27 +83,27 @@ func transition_state(input):
 	if states[state] != states.DASH:
 		# If not dashing, apply gravity
 		player.velocity.y += player.gravity
-
+	
 	if player.isOnFloor:
 		reset_jumps()
-
+	
 	if player.pushVector.x != 0 or player.pushVector.y != 0:
 		player.velocity.x += player.pushVector.x
 		player.velocity.y += player.pushVector.y
 		# player.pushvector = SGFixed.vector2(0, 0)
-		
+	
 	# Update the sprite's facing direction
 	player.sprite.flip_h = !player.facingRight
-
+	
 	# TODO: parse_motion_inputs should only get called when we need to look for a possible motion input rahter thanevery frame
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
-
+	
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
 	if input.has("dash") and not player.isOnFloor:
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
-
+		
 	# ## DEBUG for HITSTOP
 	# if input.get("shield", false): 
 	# 	#player.apply_hitstop(0.075)
@@ -612,15 +612,17 @@ func do_hit():
 
 func do_attack(attack_type: String):
 	# TODO: meter gain on hit
-		# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
+	# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
 	# Throw attack
 	SyncManager.spawn("Hitbox", player.get_node("SpawnHitbox"), Hitbox, {
 		damage = spawnHitBox.get_damage(attack_type),
 		hitboxShapes = spawnHitBox.get_hitbox_shapes(attack_type),
 		knockbackForce = spawnHitBox.get_knockback(attack_type)["force"],
 		knockbackAngle = spawnHitBox.get_knockback(attack_type)["angle"],
+		hitstop = spawnHitBox.get_hitstop(attack_type),
 		hitstun = spawnHitBox.get_hitstun(attack_type),
-		mask = spawnHitBox.get_mask(attack_type)
+		mask = spawnHitBox.get_mask(attack_type),
+		spawn_vector = spawnHitBox.get_spawn_vector(attack_type)
 	})
 	player.thrownHits += 1 # Increment number of thrown attacks
 	
