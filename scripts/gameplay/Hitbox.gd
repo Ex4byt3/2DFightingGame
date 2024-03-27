@@ -12,6 +12,7 @@ var knockbackAngle = 0 # Angle of knockback done (default none)
 var staticKnockback = false # If the knockback is static (default false)
 
 var hitstun = 0 # Amount of hitstun (default none)
+var blockstun = 0 # Amount of blockstun
 
 var tick = 0 # Current tick the hitbox is on
 var used = false # If the hitbox is used

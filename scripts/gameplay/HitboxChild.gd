@@ -26,6 +26,7 @@ func _network_spawn(data: Dictionary) -> void:
 		knockbackAngle = SGFixed.PI - data['knockbackAngle']
 	
 	hitstun = data['hitstun']
+	blockstun = data['blockstun']
 	mask = data['mask']
 
 	idx = 1

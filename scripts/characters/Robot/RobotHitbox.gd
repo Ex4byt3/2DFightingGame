@@ -27,6 +27,7 @@ const attacks = {
 			"angle": SGFixed.PI_DIV_4
 		},
 		"hitstun": 120,
+		"blockstun": 30,
 		"mask": 2
 	}
 }
@@ -39,6 +40,9 @@ func get_damage(attack_type: String):
 
 func get_knockback(attack_type: String):
 	return attacks[attack_type]["knockback"]
+
+func get_blockstun(attack_type: String):
+	return attacks[attack_type]["hitstun"]
 
 func get_hitstun(attack_type: String):
 	return attacks[attack_type]["hitstun"]

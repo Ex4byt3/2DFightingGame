@@ -377,7 +377,6 @@ func transition_state(input):
 			elif jump_check(input) and player.airJump > 0:
 				player.blockMask = 0 # 000
 				start_jump()
-			
 		states.BLOCKSTUN:
 			# all you can do in blockstun is change between high and low blocks
 			pass
@@ -477,8 +476,6 @@ func transition_state(input):
 			MenuSignalBus.emit_round_over()
 			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
 			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
-		states.NEUTRAL_MEDIUM:
-			pass
 		states.NEUTRAL_LIGHT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -489,6 +486,8 @@ func transition_state(input):
 				player.attack_ended = false
 				player.animation.play("Idle")
 				set_state('IDLE')
+		states.NEUTRAL_MEDIUM:
+			pass
 		states.NEUTRAL_HEAVY:
 			pass
 		states.FORWARD_LIGHT:
@@ -613,6 +612,7 @@ func do_attack(attack_type: String):
 		knockbackForce = spawnHitBox.get_knockback(attack_type)["force"],
 		knockbackAngle = spawnHitBox.get_knockback(attack_type)["angle"],
 		hitstun = spawnHitBox.get_hitstun(attack_type),
+		blockstun = spawnHitbox.get_blockstun(attack_type),
 		mask = spawnHitBox.get_mask(attack_type)
 	})
 	player.thrownHits += 1 # Increment number of thrown attacks
