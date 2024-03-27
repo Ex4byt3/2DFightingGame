@@ -149,13 +149,11 @@ func transition_state(input):
 					do_walk(player.walkSpeed, player.walkAcceleration)
 					player.animation.play("Walk")
 					set_state('WALK')
-			# elif player.input_vector.x == 0:
-			# 	player.animation.play("Idle")
-			# 	set_state('IDLE')
 			if jump_check(input):
 				# The player is attempting to jump
 				start_jump()
 		states.CROUCH:
+			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.y != -1:
 				player.animation.play("Idle")
 				set_state('IDLE')
@@ -245,18 +243,12 @@ func transition_state(input):
 				player.animation.play("Crouch")
 				set_state('CROUCH')
 			elif player.input_vector.x != 0:
-				# Face the direction based on where you are trying to move
 				player.facingRight = player.input_vector.x > 0
-				
-				if sprint_check(input):
-					# Sprint if you are trying to sprint
-					do_walk(player.sprintSpeed, player.sprintAcceleration)
-					player.animation.play("Sprint")
-					set_state("SPRINT")
+				do_walk(player.sprintSpeed, player.sprintAcceleration)
 			elif player.input_vector.y == -1:
 				player.velocity.x = 0
-				player.animation.play("Crouch")
-				set_state('CROUCH')
+				player.animation.play("Crawl")
+				set_state('CRAWL')
 			else:
 				player.animation.play("Idle")
 				set_state('IDLE')
