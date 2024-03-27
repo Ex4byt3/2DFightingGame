@@ -13,9 +13,9 @@ extends MatchController
 @onready var gameplay_ui = preload("res://scenes/gui/gameplay/GameplayUI.tscn")
 
 
-var character_starting_pos_y = 80084992
-var host_starting_pos_x = 64749568
-var client_starting_pos_x = 99287040
+const character_starting_pos_y = 1299 * SGFixed.ONE
+const host_starting_pos_x = 64749568
+const client_starting_pos_x = 99287040
 
 
 func _ready():
