@@ -1236,7 +1236,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [11]
+"values": [1]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1248,7 +1248,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2i(0, 0)]
+"values": [Vector2i(2, 0)]
 }
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pqgb6"]
@@ -1474,7 +1474,7 @@ texture_filter = 1
 scale = Vector2(4, 4)
 texture = SubResource("CompressedTexture2D_g508m")
 hframes = 42
-vframes = 11
+frame = 2
 script = ExtResource("3_dhru8")
 
 [node name="NetworkAnimationPlayer" type="AnimationPlayer" parent="."]
