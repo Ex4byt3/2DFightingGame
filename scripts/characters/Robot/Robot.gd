@@ -61,7 +61,7 @@ var currentGameFrame = 0
 
 # Character attack attributes
 var thrownHits = 0
-var hitstun = 0
+var stunFrames = 0
 var lastSlideCollision = null
 var changedVelocity = false
 
@@ -80,6 +80,7 @@ var martial_hero_max_health = 10000
 
 # Calling all onready functions
 func _ready():
+	animation.play("Idle")
 	set_up_direction(SGFixed.vector2(0, -ONE))
 	_handle_connecting_signals()
 	_scale_to_fixed()
@@ -216,15 +217,21 @@ func _save_state() -> Dictionary:
 	var control_buffer = []
 	for item in controlBuffer:
 		control_buffer.append(item.duplicate())
+	var pressed_ = []
+	for item in pressed:
+		pressed_.append(item)
 	return {
 		playerState = stateMachine.state,
-		control_buffer = control_buffer,
+		controlBuffer = control_buffer,
+		pressed = pressed_,
 		
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
 		changedVelocity = changedVelocity,
+
+		blockMask = blockMask,
 
 		dashVector_x = dashVector.x,
 		dashVector_y = dashVector.y,
@@ -235,11 +242,10 @@ func _save_state() -> Dictionary:
 		isOnWallR = isOnWallR,
 		wallBounceVelocity_x = wallBounceVelocity.x,
 		wallBounceVelocity_y = wallBounceVelocity.y,
-		usedJump = usedJump,
 		frame = frame,
 		facingRight = facingRight,
 		thrownHits = thrownHits,
-		hitstun = hitstun,
+		stunFrames = stunFrames,
 		prevVelocity_x = prevVelocity.x,
 		prevVelocity_y = prevVelocity.y,
 		
@@ -256,8 +262,11 @@ func _save_state() -> Dictionary:
 func _load_state(loadState: Dictionary) -> void:
 	stateMachine.state = loadState['playerState']
 	controlBuffer = []
-	for item in loadState['control_buffer']:
+	for item in loadState['controlBuffer']:
 		controlBuffer.append(item.duplicate())
+	pressed = []
+	for item in loadState['pressed']:
+		pressed.append(item)
 	
 	fixed_position.x = loadState['fixed_position_x']
 	fixed_position.y = loadState['fixed_position_y']
@@ -265,10 +274,11 @@ func _load_state(loadState: Dictionary) -> void:
 	velocity.y = loadState['velocity_y']
 	changedVelocity = loadState['changedVelocity']
 
+	blockMask = loadState['blockMask']
+
 	dashVector.x = loadState['dashVector_x']
 	dashVector.y = loadState['dashVector_y']
 	airJump = loadState['airJump']
-	usedJump = loadState['usedJump']
 	isOnFloor = loadState['isOnFloor']
 	isOnCeiling = loadState['isOnCeiling']
 	isOnWallL = loadState['isOnWallL']
@@ -280,7 +290,7 @@ func _load_state(loadState: Dictionary) -> void:
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	thrownHits = loadState['thrownHits']
-	hitstun = loadState['hitstun']
+	stunFrames = loadState['stunFrames']
 	prevVelocity.x = loadState['prevVelocity_x']
 	prevVelocity.y = loadState['prevVelocity_y']
 	
