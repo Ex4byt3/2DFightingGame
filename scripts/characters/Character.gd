@@ -203,6 +203,7 @@ func check_collisions() -> void:
 			hurtboxCollision = {
 				damage = overlappingHurtbox[0].damage,
 				hitstun = overlappingHurtbox[0].hitstun,
+				blockstun = overlappingHurtbox[0].blockstun,
 				knockbackForce = overlappingHurtbox[0].knockbackForce,
 				knockbackAngle = overlappingHurtbox[0].knockbackAngle,
 				mask = overlappingHurtbox[0].mask

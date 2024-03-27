@@ -48,9 +48,6 @@ func _ready():
 	add_state('AIR_IMPACT')
 	set_state('IDLE')
 
-func _on_dash_timer_timeout():
-	set_state('IDLE')
-
 func convert_inputs_to_string(inputs):
 	var inputString = ""
 	for input in inputs:
@@ -114,7 +111,7 @@ func transition_state(input):
 	# if input.get("shield", false): 
 	# 	#player.apply_hitstop(0.075)
 	# 	player.frame = 0
-	# 	player.stunFrames = 30
+	# 	player.hitstunFrames = 30
 	# 	player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 	# 	player.isOnFloor = false
 	# 	set_state('HITSTOP')
@@ -423,8 +420,19 @@ func transition_state(input):
 				player.blockMask = 0 # 000
 				start_jump()
 		states.BLOCKSTUN:
-			# all you can do in blockstun is change between high and low blocks
-			pass
+			do_decerlerate(player.groundDeceleration)
+			if player.frame >= player.blockstunFrames:
+				player.blockstunFrames = 0
+				player.frame = 0
+				player.animation.play("Blocking")
+				set_state('BLOCK')
+			else:
+				if !player.animation.is_playing():
+					if player.frame >= player.blockstunFrames - 12:
+						player.animation.play("BlockstunEnd")
+					else:
+						player.animation.play("Blockstun")
+				player.frame += 1
 		states.HITSTOP:
 			if player.frame >= 100: # TODO: set frame variable
 				player.frame = 0
@@ -444,8 +452,8 @@ func transition_state(input):
 				player.frame += 1
 		states.HITSTUN:
 			#set_state('KNOCKDOWN')
-			if player.frame >= player.stunFrames:
-				player.stunFrames = 0
+			if player.frame >= player.hitstunFrames:
+				player.hitstunFrames = 0
 				set_state('AIRBORNE')
 			else:
 				player.frame += 1
@@ -546,6 +554,8 @@ func transition_state(input):
 				player.attack_ended = false
 				player.animation.play("Idle")
 				set_state('IDLE')
+		states.NEUTRAL_MEDIUM:
+			pass
 		states.NEUTRAL_HEAVY:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -789,13 +799,15 @@ func do_hit():
 	if player.blockMask & player.hurtboxCollision.mask == player.hurtboxCollision.mask: # if blocked
 		if states[state] == states.BLOCK:
 			# TODO: chip damage
+			player.frame = 0 # might be redundant
+			player.blockstunFrames = player.hurtboxCollision.blockstun
 			player.animation.play("Blockstun")
 			set_state("BLOCKSTUN")
 	else:
 		# TODO: hitstun/knockback/damage scaling
 		player.take_damage(player.hurtboxCollision.damage)
 		player.apply_knockback(player.hurtboxCollision.knockbackForce, player.hurtboxCollision.knockbackAngle)
-		player.stunFrames = player.hurtboxCollision.hitstun
+		player.hitstunFrames = player.hurtboxCollision.hitstun
 		player.frame = 0
 		set_state('HITSTUN')
 
@@ -813,6 +825,7 @@ func do_attack(attack_type: String):
 		hitstun = spawnHitBox.get_hitstun(attack_type),
 		mask = spawnHitBox.get_mask(attack_type),
 		spawn_vector = spawnHitBox.get_spawn_vector(attack_type)
+		blockstun = spawnHitBox.get_blockstun(attack_type)
 	})
 	player.thrownHits += 1 # Increment number of thrown attacks
 	

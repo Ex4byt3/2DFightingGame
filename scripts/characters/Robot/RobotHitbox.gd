@@ -31,6 +31,7 @@ const attacks = {
 		},
 		"hitstop": 11,
 		"hitstun": 12,
+		"blockstun": 30,
 		"mask": 2,
 		"spawn_x": 0,
 		"spawn_y": -50 * SGFixed.ONE,
@@ -319,6 +320,8 @@ func get_knockback(attack_type: String):
 
 func get_hitstop(attack_type: String):
 	return attacks[attack_type]["hitstop"]
+func get_blockstun(attack_type: String):
+	return attacks[attack_type]["blockstun"]
 
 func get_hitstun(attack_type: String):
 	return attacks[attack_type]["hitstun"]

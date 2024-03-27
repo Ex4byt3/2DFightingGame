@@ -29,6 +29,7 @@ func _network_spawn(data: Dictionary) -> void:
 	
 	hitstop = data['hitstop']
 	hitstun = data['hitstun']
+	blockstun = data['blockstun']
 	mask = data['mask']
 	
 	fixed_position.x += data['spawn_vector'].x

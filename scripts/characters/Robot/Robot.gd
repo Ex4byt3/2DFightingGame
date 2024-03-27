@@ -61,7 +61,8 @@ var currentGameFrame = 0
 
 # Character attack attributes
 var thrownHits = 0
-var stunFrames = 0
+var hitstunFrames = 0
+var blockstunFrames = 0
 var lastSlideCollision = null
 var changedVelocity = false
 
@@ -245,7 +246,8 @@ func _save_state() -> Dictionary:
 		frame = frame,
 		facingRight = facingRight,
 		thrownHits = thrownHits,
-		stunFrames = stunFrames,
+		hitstunFrames = hitstunFrames,
+		blockstunFrames = blockstunFrames,
 		prevVelocity_x = prevVelocity.x,
 		prevVelocity_y = prevVelocity.y,
 		
@@ -290,7 +292,8 @@ func _load_state(loadState: Dictionary) -> void:
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	thrownHits = loadState['thrownHits']
-	stunFrames = loadState['stunFrames']
+	hitstunFrames = loadState['hitstunFrames']
+	blockstunFrames = loadState['blockstunFrames']
 	prevVelocity.x = loadState['prevVelocity_x']
 	prevVelocity.y = loadState['prevVelocity_y']
 	
