@@ -5,8 +5,8 @@ class_name MatchController
 @onready var map_holder = preload("res://scenes/maps/MapHolder.tscn")
 
 var map
-var host_character_id: String = "MartialHero"
-var client_character_id: String = "MartialHero"
+var host_character_id: String = "Robot"
+var client_character_id: String = "Robot"
 var host_character
 var client_character
 
