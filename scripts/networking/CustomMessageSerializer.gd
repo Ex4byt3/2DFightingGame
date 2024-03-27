@@ -12,14 +12,14 @@ const input_path_mapping_reverse = {
 enum HeaderFlags {
 	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
 	DROP_BOMB        = 1 << 1, # Bit 1
-	ATTACK_LIGHT     = 1 << 2, # Bit 2
-	ATTACK_MEDIUM    = 1 << 3, # Bit 3
-	ATTACK_HEAVY     = 1 << 4, # Bit 4
+	LIGHT            = 1 << 2, # Bit 2
+	MEDIUM           = 1 << 3, # Bit 3
+	HEAVY            = 1 << 4, # Bit 4
 	IMPACT           = 1 << 5, # Bit 5
 	DASH             = 1 << 6, # Bit 6
 	SHIELD           = 1 << 7, # Bit 7
 	SPRINT_MACRO     = 1 << 8, # Bit 8
-	JUMP			 = 1 << 9, # Bit 9
+	JUMP             = 1 << 9, # Bit 9
 }
 
 #func _init():
@@ -44,12 +44,12 @@ func serialize_input(all_input: Dictionary) -> PackedByteArray:
 			header |= HeaderFlags.HAS_INPUT_VECTOR
 		if input.get('drop_bomb', false):
 			header |= HeaderFlags.DROP_BOMB
-		if input.get('attack_light', false):
-			header |= HeaderFlags.ATTACK_LIGHT
-		if input.get('attack_medium', false):
-			header |= HeaderFlags.ATTACK_MEDIUM
-		if input.get('attack_heavy', false):
-			header |= HeaderFlags.ATTACK_HEAVY
+		if input.get('light', false):
+			header |= HeaderFlags.LIGHT
+		if input.get('medium', false):
+			header |= HeaderFlags.MEDIUM
+		if input.get('heavy', false):
+			header |= HeaderFlags.HEAVY
 		if input.get('impact', false):
 			header |= HeaderFlags.IMPACT
 		if input.get('dash', false):
@@ -92,12 +92,12 @@ func unserialize_input(serialized: PackedByteArray) -> Dictionary:
 		input["input_vector_y"] = buffer.get_64()
 	if header & HeaderFlags.DROP_BOMB:
 		input["drop_bomb"] = true
-	if header & HeaderFlags.ATTACK_LIGHT:
-		input["attack_light"] = true
-	if header & HeaderFlags.ATTACK_MEDIUM:
-		input["attack_medium"] = true
-	if header & HeaderFlags.ATTACK_HEAVY:
-		input["attack_heavy"] = true
+	if header & HeaderFlags.LIGHT:
+		input["light"] = true
+	if header & HeaderFlags.MEDIUM:
+		input["medium"] = true
+	if header & HeaderFlags.HEAVY:
+		input["heavy"] = true
 	if header & HeaderFlags.IMPACT:
 		input["impact"] = true
 	if header & HeaderFlags.DASH:
