@@ -49,6 +49,8 @@ var fullHopForce = 20
 var airHopForce = 15
 var maxFallSpeed = 20
 
+var prevVelocity = SGFixed.vector2(0, 0)
+
 # Character meter variables
 var baseMeterRate = 10
 var meter_frame_counter = 0 
@@ -238,6 +240,8 @@ func _save_state() -> Dictionary:
 		facingRight = facingRight,
 		thrownHits = thrownHits,
 		hitstun = hitstun,
+		prevVelocity_x = prevVelocity.x,
+		prevVelocity_y = prevVelocity.y,
 		
 		health = health,
 		burst = burst,
@@ -277,6 +281,8 @@ func _load_state(loadState: Dictionary) -> void:
 	frame = loadState['frame']
 	thrownHits = loadState['thrownHits']
 	hitstun = loadState['hitstun']
+	prevVelocity.x = loadState['prevVelocity_x']
+	prevVelocity.y = loadState['prevVelocity_y']
 	
 	health = loadState['health']
 	burst = loadState['burst']

@@ -4,8 +4,6 @@ extends StateMachine
 @onready var spawnHitBox = player.get_node("SpawnHitbox")
 var ONE = SGFixed.ONE
 
-var prevVelocity = 0
-
 const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const Hitbox = preload("res://scenes//gameplay//Hitbox.tscn")
 
@@ -23,6 +21,7 @@ func _ready():
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
 	add_state('BLOCK')
+	add_state('HITSTOP')
 	add_state('HITSTUN')
 	add_state('KNOCKDOWN')
 	add_state('QGETUP')
@@ -104,12 +103,12 @@ func transition_state(input):
 
 	## DEBUG for HITSTOP
 	if input.get("shield", false): 
-		player.apply_hitstop(0.075)
+		#player.apply_hitstop(0.075)
 		player.frame = 0
 		player.hitstun = 30
 		player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 		player.isOnFloor = false
-		set_state('HITSTUN')
+		set_state('HITSTOP')
 
 	if player.health <= 0:
 		if not player.is_dead:
@@ -361,6 +360,23 @@ func transition_state(input):
 				set_state('IDLE')
 		states.BLOCK:
 			pass
+		states.HITSTOP:
+			if player.frame >= 100: # TODO: set frame variable
+				player.frame = 0
+				player.animation.play()
+				player.velocity.x = player.prevVelocity.x
+				player.velocity.y = player.prevVelocity.y
+				set_state('HITSTUN')
+			elif player.frame == 0:
+				player.frame += 1
+				player.prevVelocity.x = player.velocity.x
+				player.prevVelocity.y = player.velocity.y
+				player.velocity = SGFixed.vector2(0, 0)
+				player.animation.pause()
+				# TODO: pause and unpause stage timer
+			else:
+				player.velocity = SGFixed.vector2(0, 0)
+				player.frame += 1
 		states.HITSTUN:
 			#set_state('KNOCKDOWN')
 			if player.frame >= player.hitstun:
