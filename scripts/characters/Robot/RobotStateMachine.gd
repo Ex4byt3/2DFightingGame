@@ -16,7 +16,6 @@ func _ready():
 	add_state('SLIDE')
 	add_state('DASH')
 	add_state('JUMPSQUAT')
-	add_state('JUMP')
 	add_state('SHORTHOP')
 	add_state('FULLHOP')
 	add_state('AIRBORNE')
@@ -37,11 +36,18 @@ func _ready():
 	add_state('FORWARD_LIGHT')
 	add_state('FORWARD_MEDIUM')
 	add_state('FORWARD_HEAVY')
-	add_state('DOWN_LIGHT')
-	add_state('DOWN_MEDIUM')
-	add_state('DOWN_HEAVY')
+	add_state('CROUCHING_LIGHT')
+	add_state('CROUCHING_MEDIUM')
+	add_state('CROUCHING_HEAVY')
+	add_state('CROUCHING_FORWARD')
+	add_state('CROUCHING_IMPACT')
+	add_state('IMPACT')
+	add_state('AIR_LIGHT')
+	add_state('AIR_MEDIUM')
+	add_state('AIR_HEAVY')
+	add_state('AIR_IMPACT')
 	set_state('IDLE')
-	
+
 func _on_dash_timer_timeout():
 	set_state('IDLE')
 
@@ -119,7 +125,53 @@ func transition_state(input):
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
 	elif input.get("attack_light", false) and player.thrownHits == 0:
-		do_attack("neutral_light")
+		match states[state]:
+			states.IDLE:
+				do_attack("neutral_light")
+			states.SPRINT, states.SLIDE, states.WALK:
+				do_attack("forward_light")
+			states.CROUCH:
+				do_attack("crouching_light")
+			states.CRAWL:
+				do_attack("crouching_forward")
+			states.AIRBORNE:
+				do_attack("air_light")
+			# TO DO, attacking cancels block?
+	elif input.get("attack_medium", false) and player.thrownHits == 0:
+		match states[state]:
+			states.IDLE:
+				do_attack("neutral_medium")
+			states.SPRINT, states.SLIDE, states.WALK:
+				do_attack("forward_medium")
+			states.CROUCH:
+				do_attack("crouching_medium")
+			states.CRAWL:
+				do_attack("crouching_forward")
+			states.AIRBORNE:
+				do_attack("air_medium")
+			# TO DO, attacking cancels block?
+	elif input.get("attack_heavy", false) and player.thrownHits == 0:
+		match states[state]:
+			states.IDLE:
+				do_attack("neutral_heavy")
+			states.WALK, states.SPRINT, states.SLIDE:
+				do_attack("forward_heavy")
+			states.CROUCH:
+				do_attack("crouching_heavy")
+			states.CRAWL:
+				do_attack("crouching_forward")
+			states.AIRBORNE:
+				do_attack("air_heavy")
+			# TO DO, attacking cancels block?
+	elif input.get("impact", false) and player.thrownHits == 0:
+		match states[state]:
+			states.IDLE, states.WALK, states.SPRINT, states.SLIDE:
+				do_attack("impact")
+			states.CROUCH, states.CRAWL:
+				do_attack("crouching_impact")
+			states.AIRBORNE:
+				do_attack("air_impact")
+			# TO DO, attacking cancels block?
 	
 	#################
 	# State Changes #
@@ -128,6 +180,7 @@ func transition_state(input):
 		states.IDLE:
 			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.y == -1:
+				#change_hurtbox("crouch")
 				player.animation.play("Crouch")
 				set_state('CROUCH')
 			elif input.has("shield"):
@@ -276,14 +329,6 @@ func transition_state(input):
 				else:
 					player.animation.play("Airborne")
 					set_state('AIRBORNE')
-		states.JUMP:
-			if player.isOnFloor:
-				player.animation.play("Idle")
-				set_state('IDLE')
-			else:
-				if player.velocity.y >= 0:
-					player.animation.play("Airborne")
-					set_state('AIRBORNE')
 		states.JUMPSQUAT:
 			# Increment timer for the frames
 			player.frame += 1
@@ -377,7 +422,6 @@ func transition_state(input):
 			elif jump_check(input) and player.airJump > 0:
 				player.blockMask = 0 # 000
 				start_jump()
-			
 		states.BLOCKSTUN:
 			# all you can do in blockstun is change between high and low blocks
 			pass
@@ -477,11 +521,24 @@ func transition_state(input):
 			MenuSignalBus.emit_round_over()
 			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
 			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
-		states.NEUTRAL_MEDIUM:
-			pass
 		states.NEUTRAL_LIGHT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
+			# play neutral light animation
+			if player.recovery:
+				
+				# TODO: add recovery frames/cancel logic
+				print("RECOVERY")
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.recovery = false
+				player.animation.play("Idle")
+				set_state('IDLE')
+		states.NEUTRAL_MEDIUM:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play neutral medium animation
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
@@ -490,19 +547,159 @@ func transition_state(input):
 				player.animation.play("Idle")
 				set_state('IDLE')
 		states.NEUTRAL_HEAVY:
-			pass
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play neutral heavy animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Idle")
+				set_state('IDLE')
 		states.FORWARD_LIGHT:
-			pass
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play forward light animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Walk")
+				set_state('WALK')
 		states.FORWARD_MEDIUM:
-			pass
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play forward medium animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Walk")
+				set_state('WALK')
 		states.FORWARD_HEAVY:
-			pass
-		states.DOWN_LIGHT:
-			pass
-		states.DOWN_MEDIUM:
-			pass
-		states.DOWN_HEAVY:
-			pass
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play forward heavy animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Walk")
+				set_state('WALK')
+		states.CROUCHING_LIGHT:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play crouching light animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+		states.CROUCHING_MEDIUM:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play crouching medium animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+		states.CROUCHING_HEAVY:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play crouching heavy animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+		states.CROUCHING_FORWARD:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play crouching forward animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+		states.CROUCHING_IMPACT:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play crouching impact animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Crouch")
+				set_state('CROUCH')
+		states.IMPACT:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play impact animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Idle")
+				set_state('IDLE')
+		states.AIR_LIGHT:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play air light animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Airborne")
+				set_state('AIRBORNE')
+		states.AIR_MEDIUM:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play air medium animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Airborne")
+				set_state('AIRBORNE')
+		states.AIR_HEAVY:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play air heavy animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Airborne")
+				set_state('AIRBORNE')
+		states.AIR_IMPACT:
+			# currently stops all movement while the attack is happening
+			player.velocity.x = 0
+			# play air impact animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Airborne")
+				set_state('AIRBORNE')
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
 
@@ -621,7 +818,17 @@ func do_attack(attack_type: String):
 	
 	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
 	set_state(attack_type.to_upper())
-	
+
+func change_hurtbox(state_type: String):
+	match state_type:
+		"idle":
+			player.hurtBoxShape.shape._set_extents_x(137 * SGFixed.HALF)
+			player.hurtBoxShape.shape._set_extents_y(212 * SGFixed.HALF)
+			player.hurtBox.fixed_position.x = 0
+			player.hurtBox.fixed_position.y = 0
+		"crouch":
+			pass
+			#player.hurtBoxShape.shape._set_extents_y(106 * SGFixed.HALF)
 
 func update_debug_label(input_vector):
 	var player_type: String = self.get_parent().name

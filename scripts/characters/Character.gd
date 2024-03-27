@@ -44,6 +44,7 @@ const dash_animaiton_map = {
 # State machine
 @onready var stateMachine = $StateMachine
 @onready var hurtBox = $HurtBox
+@onready var hurtBoxShape = $HurtBox/HurtBox
 @onready var pushBox = $PushBox
 @onready var gameManager = get_node("../GameManager")
 

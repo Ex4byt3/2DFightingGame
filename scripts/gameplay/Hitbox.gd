@@ -22,4 +22,4 @@ var height = 0 # The current height of our hitbox
 
 var mask = 2 # where the attack hits/where it can be blocked (high, low, mid)/(4, 2, 1) [bit mask]
 
-var despawnAt = 20 # When our hitbox despawns
+var despawnAt = 0 # When our hitbox despawns
