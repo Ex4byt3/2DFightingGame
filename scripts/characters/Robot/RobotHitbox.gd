@@ -146,7 +146,7 @@ const attacks = {
 		"hitstop": 11,
 		"hitstun": 13,
 		"blockstun": 30,
-		"mask": 4,
+		"mask": 2,
 		"spawn_x": 0,
 		"spawn_y": 50 * SGFixed.ONE,
 	},
