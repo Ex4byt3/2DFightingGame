@@ -4,7 +4,6 @@ extends StateMachine
 @onready var spawnHitBox = player.get_node("SpawnHitbox")
 var ONE = SGFixed.ONE
 
-const Bomb = preload("res://scenes//gameplay//Bomb.tscn")
 const Hitbox = preload("res://scenes//gameplay//Hitbox.tscn")
 
 func _ready():
@@ -424,6 +423,7 @@ func transition_state(input):
 				player.blockMask = 0 # 000
 				start_jump()
 		states.BLOCKSTUN:
+			print(str(player.frame))
 			do_decerlerate(player.groundDeceleration)
 			if player.frame >= player.blockstunFrames:
 				player.blockstunFrames = 0
@@ -540,7 +540,7 @@ func transition_state(input):
 			if player.recovery:
 				
 				# TODO: add recovery frames/cancel logic
-				print("RECOVERY")
+				#print("RECOVERY")
 				pass
 			elif player.attack_ended:
 				player.attack_ended = false
@@ -801,9 +801,9 @@ func reset_jumps():
 func do_hit():
 	# TODO: meter gain
 	if player.blockMask & player.hurtboxCollision.mask == player.hurtboxCollision.mask: # if blocked
-		if states[state] == states.BLOCK:
+		# if states[state] == states.BLOCK:
 			# TODO: chip damage
-			player.frame = 0 # might be redundant
+			player.frame = 0
 			player.blockstunFrames = player.hurtboxCollision.blockstun
 			player.animation.play("Blockstun")
 			set_state("BLOCKSTUN")
