@@ -423,7 +423,6 @@ func transition_state(input):
 				player.blockMask = 0 # 000
 				start_jump()
 		states.BLOCKSTUN:
-			print(str(player.frame))
 			do_decerlerate(player.groundDeceleration)
 			if player.frame >= player.blockstunFrames:
 				player.blockstunFrames = 0
