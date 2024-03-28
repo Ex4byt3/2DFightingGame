@@ -14,6 +14,9 @@ signal resolution_selected(index)
 signal set_settings_dict(settings_dict)
 signal load_settings_data(settings_dict)
 
+# Signals for the character selection menu
+signal character_selected(character_id, steam_id)
+
 # Signals for matches
 signal create_match
 signal start_match
@@ -89,6 +92,13 @@ func emit_set_settings_dict(settings_dict: Dictionary) -> void:
 
 func emit_load_settings_data(settings_dict: Dictionary) -> void:
 	emit_signal("load_settings_data", settings_dict)
+
+
+##################################################
+# EMIT FUNCTIONS FOR CHARACTER SELECTION
+##################################################
+func emit_character_selected(character_id: String, steam_id: int) -> void:
+	emit_signal("character_selected", character_id, steam_id)
 
 
 ##################################################

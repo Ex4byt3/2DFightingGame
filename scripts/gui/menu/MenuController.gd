@@ -9,7 +9,8 @@ const menu_preloads: Dictionary = {
 	"SettingsOverlay": preload("res://scenes/gui/menu/settings/SettingsOverlay.tscn"),
 	"MainMenu": preload("res://scenes/gui//menu/main/MainMenu.tscn"),
 	"OnlineMenu": preload("res://scenes/gui/menu/online/OnlineMenu.tscn"),
-	"LobbyMenu": preload("res://scenes/gui/menu/lobby/LobbyMenu.tscn")
+	"LobbyMenu": preload("res://scenes/gui/menu/lobby/LobbyMenu.tscn"),
+	"CharacterSelect": preload("res://scenes/gui/menu/character_select/CharacterSelect.tscn")
 }
 
 var menu_tree: Array = ["TitleScreen"]
