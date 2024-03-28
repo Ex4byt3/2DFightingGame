@@ -295,7 +295,7 @@ load_path = "res://.godot/imported/Airborne.png-664c84f1a10fd7c8b413f6d8262155d6
 
 [sub_resource type="Animation" id="Animation_egh7s"]
 resource_name = "Airborne"
-length = 0.3
+length = 10.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1203,7 +1203,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_pw4n7"]
 resource_name = "JumpSquat"
-length = 0.1
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
