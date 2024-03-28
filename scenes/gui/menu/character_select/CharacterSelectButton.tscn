@@ -5,7 +5,6 @@
 
 [node name="CharacterSelectButton" type="PanelContainer"]
 script = ExtResource("1_korrb")
-character_id = null
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

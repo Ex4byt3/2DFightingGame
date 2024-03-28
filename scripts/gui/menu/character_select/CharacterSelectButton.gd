@@ -22,7 +22,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and is_hovered:
 		if is_host:
 			selected_by.Host = not selected_by.Host
@@ -37,8 +37,8 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "character_selected", "_on_character_selected")
 
 
-func _set_icon(icon: Texture) -> void:
-	character_icon.set_texture(icon)
+func _set_icon(new_icon: Texture) -> void:
+	character_icon.set_texture(new_icon)
 
 
 func _on_mouse_entered() -> void:
@@ -58,5 +58,3 @@ func _on_character_selected(new_id: String, new_selection: Dictionary) -> void:
 			is_pressed = false
 	else:
 		is_pressed = true
-
-

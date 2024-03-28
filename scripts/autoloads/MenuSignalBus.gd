@@ -5,9 +5,10 @@ extends Node
 signal setup_menu
 signal goto_previous_menu(menu)
 signal change_screen(current_screen, new_screen, is_backout)
-signal toggle_settings_visibility
+signal exit_lobby
 
 # Signals for the settings menu
+signal toggle_settings_visibility
 signal update_section_visibility(section_title, is_pressed)
 signal window_mode_selected(index)
 signal resolution_selected(index)
@@ -70,6 +71,9 @@ func emit_goto_previous_menu(menu: String) -> void:
 
 func emit_change_screen(current_screen, new_screen, is_backout: bool) -> void:
 	emit_signal("change_screen", current_screen, new_screen, is_backout)
+
+func emit_exit_lobby() -> void:
+	emit_signal("exit_lobby")
 
 
 ##################################################

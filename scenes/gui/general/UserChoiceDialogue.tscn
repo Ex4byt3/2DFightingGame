@@ -41,7 +41,7 @@ theme_override_styles/panel = SubResource("2")
 [node name="CenterContainer" type="CenterContainer" parent="MainPane/TitlePanel"]
 layout_mode = 2
 
-[node name="ChoiceTitle" type="Label" parent="MainPane/TitlePanel/CenterContainer"]
+[node name="ChoiceTitleLabel" type="Label" parent="MainPane/TitlePanel/CenterContainer"]
 layout_mode = 2
 theme_override_fonts/font = SubResource("1")
 text = "ERR: NO TITLE"
@@ -54,7 +54,7 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="ChoiceContext" type="Label" parent="MainPane/ContextPanel"]
+[node name="ChoiceContextLabel" type="Label" parent="MainPane/ContextPanel"]
 layout_mode = 2
 size_flags_vertical = 7
 text = "ERR: NO TEXT"
@@ -63,12 +63,12 @@ text = "ERR: NO TEXT"
 layout_mode = 2
 alignment = 1
 
-[node name="Accept" type="Button" parent="MainPane/Choices"]
+[node name="AcceptButton" type="Button" parent="MainPane/Choices"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Accept"
+text = "Yes"
 
-[node name="Reject" type="Button" parent="MainPane/Choices"]
+[node name="RejectButton" type="Button" parent="MainPane/Choices"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Reject"
+text = "No"

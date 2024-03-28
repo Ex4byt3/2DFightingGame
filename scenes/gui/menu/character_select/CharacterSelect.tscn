@@ -15,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gqwjy")
 
-[node name="CenterDisplay" type="HBoxContainer" parent="."]
+[node name="MainDisplay" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,12 +23,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HostPane" type="Control" parent="CenterDisplay"]
+[node name="HostPane" type="Control" parent="MainDisplay"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="CharacterImage" type="TextureRect" parent="CenterDisplay/HostPane"]
+[node name="CharacterImage" type="TextureRect" parent="MainDisplay/HostPane"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -38,52 +38,52 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="InfoPane" type="PanelContainer" parent="CenterDisplay/HostPane"]
+[node name="InfoPane" type="PanelContainer" parent="MainDisplay/HostPane"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterDisplay/HostPane/InfoPane"]
+[node name="MarginContainer" type="MarginContainer" parent="MainDisplay/HostPane/InfoPane"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PlayerNameLabel" type="Label" parent="CenterDisplay/HostPane/InfoPane/MarginContainer"]
+[node name="PlayerNameLabel" type="Label" parent="MainDisplay/HostPane/InfoPane/MarginContainer"]
 layout_mode = 2
 text = "ERR: PLAYER_NAME"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="PlayerVsDisplay" type="VBoxContainer" parent="CenterDisplay"]
+[node name="PlayerVsDisplay" type="VBoxContainer" parent="MainDisplay"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="HostCharacterLabel" type="Label" parent="CenterDisplay/PlayerVsDisplay"]
+[node name="HostCharacterLabel" type="Label" parent="MainDisplay/PlayerVsDisplay"]
 layout_mode = 2
 text = "ERR: CHARACTER_NAME"
 vertical_alignment = 1
 
-[node name="VsLabel" type="Label" parent="CenterDisplay/PlayerVsDisplay"]
+[node name="VsLabel" type="Label" parent="MainDisplay/PlayerVsDisplay"]
 layout_mode = 2
 text = "VS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ClientCharacterLabel" type="Label" parent="CenterDisplay/PlayerVsDisplay"]
+[node name="ClientCharacterLabel" type="Label" parent="MainDisplay/PlayerVsDisplay"]
 layout_mode = 2
 text = "ERR: CHARACTER_NAME"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ClientPane" type="Control" parent="CenterDisplay"]
+[node name="ClientPane" type="Control" parent="MainDisplay"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="CharacterImage" type="TextureRect" parent="CenterDisplay/ClientPane"]
+[node name="CharacterImage" type="TextureRect" parent="MainDisplay/ClientPane"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -95,19 +95,19 @@ offset_right = -1282.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="InfoPane" type="PanelContainer" parent="CenterDisplay/ClientPane"]
+[node name="InfoPane" type="PanelContainer" parent="MainDisplay/ClientPane"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterDisplay/ClientPane/InfoPane"]
+[node name="MarginContainer" type="MarginContainer" parent="MainDisplay/ClientPane/InfoPane"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="PlayerNameLabel" type="Label" parent="CenterDisplay/ClientPane/InfoPane/MarginContainer"]
+[node name="PlayerNameLabel" type="Label" parent="MainDisplay/ClientPane/InfoPane/MarginContainer"]
 layout_mode = 2
 text = "ERR: PLAYER_NAME"
 vertical_alignment = 1
