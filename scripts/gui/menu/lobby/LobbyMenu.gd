@@ -48,6 +48,7 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(Steam, self, "lobby_message", "_on_Lobby_Message")
 	MenuSignalBus._connect_Signals(Steam, self, "persona_state_change", "_on_Persona_Changed")
 	
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "exit_lobby", "_exit_lobby")
 	MenuSignalBus._connect_Signals(exit_button, self, "button_up", "_exit_lobby")
 	MenuSignalBus._connect_Signals(send_button, self, "button_up", "_send_message")
 

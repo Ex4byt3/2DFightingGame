@@ -35,6 +35,7 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_match_settings", "_update_match_settings")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "round_over", "_round_over")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "player_ready", "_player_ready")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "character_selected", "_on_character_selected")
 
 
 ##################################################
@@ -45,7 +46,20 @@ func _create_match() -> void:
 
 
 func _leave_match() -> void:
+	match NetworkGlobal.NETWORK_TYPE:
+		NetworkGlobal.NetworkType.ENET:
+			var peer = multiplayer.multiplayer_peer
+			if peer:
+				peer.close()
+		NetworkGlobal.NetworkType.STEAM:
+			Steam.closeSessionWithUser("STEAM_OPP_ID")
+		_:
+			print("Sync error, but not in a networked game")
+			
 	SyncManager.stop()
+	SyncManager.clear_peers()
+	SyncManager.reset_network_adaptor()
+	
 	for child in get_children():
 		child.queue_free()
 
@@ -64,6 +78,13 @@ func _player_ready(player_id: String) -> void:
 	
 	if host_ready and client_ready:
 		MenuSignalBus.emit_start_match()
+
+
+func _on_character_selected(character_id: String, selected_by: Dictionary) -> void:
+	if selected_by.Host == true:
+		host_character_id = character_id
+	if selected_by.Client == true:
+		client_character_id = character_id
 
 
 ##################################################

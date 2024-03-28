@@ -11,7 +11,7 @@ func _ready():
 
 
 func _unhandled_key_input(event):
-	if event.is_pressed() and count == 0:
+	if event.is_pressed() and not event.is_action("ui_cancel") and count == 0:
 		get_parent().menu_tree.append(initial_menu)
 		MenuSignalBus.emit_setup_menu()
 		count += 1

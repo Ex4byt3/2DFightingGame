@@ -5,14 +5,18 @@ extends Node
 signal setup_menu
 signal goto_previous_menu(menu)
 signal change_screen(current_screen, new_screen, is_backout)
-signal toggle_settings_visibility
+signal exit_lobby
 
 # Signals for the settings menu
+signal toggle_settings_visibility
 signal update_section_visibility(section_title, is_pressed)
 signal window_mode_selected(index)
 signal resolution_selected(index)
 signal set_settings_dict(settings_dict)
 signal load_settings_data(settings_dict)
+
+# Signals for the character selection menu
+signal character_selected(character_id, steam_id)
 
 # Signals for matches
 signal create_match
@@ -68,6 +72,9 @@ func emit_goto_previous_menu(menu: String) -> void:
 func emit_change_screen(current_screen, new_screen, is_backout: bool) -> void:
 	emit_signal("change_screen", current_screen, new_screen, is_backout)
 
+func emit_exit_lobby() -> void:
+	emit_signal("exit_lobby")
+
 
 ##################################################
 # EMIT FUNCTIONS FOR SETTINGS
@@ -89,6 +96,13 @@ func emit_set_settings_dict(settings_dict: Dictionary) -> void:
 
 func emit_load_settings_data(settings_dict: Dictionary) -> void:
 	emit_signal("load_settings_data", settings_dict)
+
+
+##################################################
+# EMIT FUNCTIONS FOR CHARACTER SELECTION
+##################################################
+func emit_character_selected(character_id: String, steam_id: int) -> void:
+	emit_signal("character_selected", character_id, steam_id)
 
 
 ##################################################
