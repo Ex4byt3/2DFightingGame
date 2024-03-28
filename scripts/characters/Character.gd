@@ -101,6 +101,18 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
 
 
+func _init_character_data(this_img, this_name, this_max_health) -> void:
+	character_img = this_img
+	character_name = this_name
+	max_health = this_max_health
+	
+	health = max_health
+
+	MenuSignalBus.emit_update_character_image(character_img, self.name)
+	MenuSignalBus.emit_update_character_name(character_name, self.name)
+	MenuSignalBus.emit_update_max_health(max_health, self.name)
+
+
 func _apply_match_settings(match_settings: Dictionary) -> void:
 	print("[COMBAT] " + self.name + " received settings!")
 	num_lives = match_settings.character_lives
@@ -120,10 +132,6 @@ func _reset_character() -> void:
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	MenuSignalBus.emit_player_ready(self.name)
-
-
-func _get_lives():
-	return num_lives
 
 
 func _network_preprocess(userInput: Dictionary) -> void:

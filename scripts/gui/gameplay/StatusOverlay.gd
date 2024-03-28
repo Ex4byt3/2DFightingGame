@@ -25,14 +25,14 @@ extends VBoxContainer
 # The character's name should be shown on the health bar.
 
 # Player variables
-var p1_steam_persona: String # TODO: Get from lobby
-var p2_steam_persona: String # ^ Same
-var p1_health_max: int = 100 # TODO: Grab from character specific script
-var p2_health_max: int = 100 # ^ Same
+var p1_persona: String # TODO: Get from lobby
+var p2_persona: String # ^ Same
+var p1_health_max: int = 10000
+var p2_health_max: int = 10000
 
 # Variables updated on process
-var p1_health_val: int = 0
-var p2_health_val: int = 0
+var p1_health_val: int = 10000
+var p2_health_val: int = 10000
 var p1_burst_val: int = 0
 var p2_burst_val: int = 0
 var p1_meter_val: int = 0
@@ -53,10 +53,9 @@ func _ready():
 	#_init_ui()
 
 
-func _process(delta):
+func _process(_delta):
 	_update_ui()
-	p1_current_health.set_text(str(p1_health_val) + "/" + str(p1_health_max))
-	p2_current_health.set_text(str(p2_health_val) + "/" + str(p2_health_max))
+	
 
 
 ##################################################
@@ -106,6 +105,11 @@ func _update_ui() -> void:
 ##################################################
 # PLAYER STATUS FUNCTIONS
 ##################################################
+func _update_health_diplay() -> void:
+	p1_current_health.set_text(str(p1_health_val) + "/" + str(p1_health_max))
+	p2_current_health.set_text(str(p2_health_val) + "/" + str(p2_health_max))
+
+
 func _set_player_health() -> void:
 	p1_health_bar.value = p1_health_val
 	p2_health_bar.value = p2_health_val
@@ -130,6 +134,7 @@ func _update_health(health_val: int, player_id: String) -> void:
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
 	_set_player_health()
+	_update_health_diplay()
 
 
 func _update_burst(burst_val: int, player_id: String) -> void:
@@ -194,6 +199,7 @@ func _update_max_health(health_val: int, player_id: String) -> void:
 			p2_health_bar.value = p2_health_val
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
+	_update_health_diplay()
 
 
 func _update_character_image(character_image: Texture2D, player_id: String) -> void:

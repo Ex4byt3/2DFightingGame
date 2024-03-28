@@ -36,6 +36,7 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "round_over", "_round_over")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "player_ready", "_player_ready")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "character_selected", "_on_character_selected")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "debug_name", "_debug_name")
 
 
 ##################################################
@@ -45,7 +46,7 @@ func _create_match() -> void:
 	_setup_combat()
 
 
-func _leave_match() -> void:
+func _leave_match() -> void: ## TODO: Get randy to fix this
 	match NetworkGlobal.NETWORK_TYPE:
 		NetworkGlobal.NetworkType.ENET:
 			var peer = multiplayer.multiplayer_peer
@@ -55,7 +56,7 @@ func _leave_match() -> void:
 			Steam.closeSessionWithUser("STEAM_OPP_ID")
 		_:
 			print("Sync error, but not in a networked game")
-			
+	
 	SyncManager.stop()
 	SyncManager.clear_peers()
 	SyncManager.reset_network_adaptor()
@@ -119,4 +120,5 @@ func _round_over() -> void:
 		MenuSignalBus.emit_combat_over()
 
 
-
+func _debug_name(player_id: String) -> void:
+	print("[DEBUG] player id: " + player_id)

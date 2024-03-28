@@ -25,11 +25,11 @@ func _ready():
 	_set_map()
 	
 	# Set up the map
+	_add_combat_messages()
+	_add_match_ui()
 	_add_host_character()
 	_add_client_character()
-	_add_combat_messages()
 	_add_stage_camera()
-	_add_match_ui()
 	_add_game_manager()
 	
 	# Set the network script to be used for combat
@@ -88,6 +88,7 @@ func _add_host_character() -> void:
 	host_character.fixed_position_y = character_starting_pos_y
 	host_character.name = "ServerPlayer"
 	map.add_child(host_character)
+	map.move_child(host_character, 1)
 
 
 func _add_client_character() -> void:
@@ -97,6 +98,7 @@ func _add_client_character() -> void:
 	client_character.fixed_position_y = character_starting_pos_y
 	client_character.name = "ClientPlayer"
 	map.add_child(client_character)
+	map.move_child(client_character, 1)
 
 
 func _reset_character_position() -> void:
