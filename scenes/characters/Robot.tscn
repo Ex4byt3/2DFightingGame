@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=73 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://48g7evie7mby" path="res://assets/characters/Robot/Block/LowBlockstun.png" id="10_4byis"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotHitbox.gd" id="10_ip80b"]
 [ext_resource type="Texture2D" uid="uid://bkkfybirh7xxk" path="res://assets/characters/Robot/Block/LowParry.png" id="11_63a13"]
+[ext_resource type="Texture2D" uid="uid://cyxajp4jf265q" path="res://assets/characters/Robot/Block/LowBlock.png" id="11_c3xxe"]
 [ext_resource type="Texture2D" uid="uid://b6o3ba2aoejs6" path="res://assets/characters/Robot/Block/Parry.png" id="12_wmup4"]
 [ext_resource type="Texture2D" uid="uid://ckdmnffc6djw1" path="res://assets/characters/Robot/Block/BlockCrouch.png" id="13_cxji0"]
 
@@ -27,7 +28,7 @@ load_path = "res://.godot/imported/Idle.png-89e9e0b08cda339c752b932d861bc737.cte
 
 [sub_resource type="Animation" id="Animation_bkyaf"]
 resource_name = "AirBlock"
-length = 0.001
+length = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -50,7 +51,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [2]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -71,10 +72,10 @@ tracks/3/path = NodePath("../Sprite:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [0]
+"values": [0, 1]
 }
 
 [sub_resource type="Animation" id="Animation_a160j"]
@@ -1255,7 +1256,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_0sypj"]
 resource_name = "LowBlock"
-length = 0.1
+length = 0.05
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1267,7 +1268,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("13_cxji0")]
+"values": [ExtResource("11_c3xxe")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1279,7 +1280,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [3]
+"values": [2]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1300,10 +1301,10 @@ tracks/3/path = NodePath("../Sprite:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [0, 1, 2]
+"values": [0, 1]
 }
 
 [sub_resource type="Animation" id="Animation_yfgcl"]
@@ -1846,6 +1847,111 @@ tracks/3/keys = {
 "values": [1]
 }
 
+[sub_resource type="Animation" id="Animation_4xb3e"]
+resource_name = "LowUnblock"
+length = 0.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("11_c3xxe")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Sprite:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Sprite:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
+}
+
+[sub_resource type="Animation" id="Animation_4yxbw"]
+resource_name = "AirUnblock"
+length = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_bdfgl")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Sprite:vframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Sprite:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u62wg"]
 _data = {
 "AirBlock": SubResource("Animation_bkyaf"),
@@ -1853,6 +1959,7 @@ _data = {
 "AirBlockstunEnd": SubResource("Animation_g7axc"),
 "AirJump": SubResource("Animation_vix33"),
 "AirParry": SubResource("Animation_bil47"),
+"AirUnblock": SubResource("Animation_4yxbw"),
 "Airborne": SubResource("Animation_egh7s"),
 "Block": SubResource("Animation_465if"),
 "BlockCrouch": SubResource("Animation_jmol8"),
@@ -1876,6 +1983,7 @@ _data = {
 "LowBlockstun": SubResource("Animation_i2w2t"),
 "LowBlockstunEnd": SubResource("Animation_61jk4"),
 "LowParry": SubResource("Animation_2fxgy"),
+"LowUnblock": SubResource("Animation_4xb3e"),
 "Parry": SubResource("Animation_frn8q"),
 "RESET": SubResource("Animation_gk4tf"),
 "Sprint": SubResource("Animation_ch8l6"),

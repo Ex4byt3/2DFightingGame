@@ -208,6 +208,8 @@ func transition_state(input):
 				# The player is attempting to jump
 				start_jump()
 		states.CROUCH:
+			if !player.animation.is_playing():
+				player.animation.play("Chrouching")
 			do_decerlerate(player.groundDeceleration)
 			if !player.animation.is_playing():
 				player.animation.play("Crouching")
@@ -357,6 +359,8 @@ func transition_state(input):
 					player.animation.play("AirJump")
 					set_state('AIRBORNE')
 		states.AIRBORNE:
+			if !player.animation.is_playing():
+				player.animation.play("Airborne")
 			if player.isOnFloor:
 				# TODO: LANDING
 				player.animation.play("Idle")
@@ -392,7 +396,6 @@ func transition_state(input):
 				player.facingRight = player.input_vector.x > 0
 			if !input.has("shield"):
 				player.animation.play("Unblock")
-				# player.animation.queue("Idle") idk why no work
 				player.blockMask = 0 # 000
 				set_state("IDLE")
 			elif player.input_vector.y == -1:
@@ -407,7 +410,7 @@ func transition_state(input):
 			if player.input_vector.x != 0:
 				player.facingRight = player.input_vector.x > 0
 			if !input.has("shield"):
-				# player.animation.play("LowUnblock") # TODO: add low unblock animation
+				player.animation.play("LowUnblock")
 				player.blockMask = 0 # 000
 				set_state("CROUCH")
 			elif player.input_vector.y != -1:
@@ -419,7 +422,7 @@ func transition_state(input):
 				start_jump()
 		states.AIR_BLOCK:
 			if !input.has("shield"):
-				player.animation.play("Airborne")
+				player.animation.play("AirUnblock")
 				player.blockMask = 0 # 000
 				set_state("AIRBORNE")
 			elif player.isOnFloor:
@@ -451,11 +454,10 @@ func transition_state(input):
 				player.animation.play("LowBlocking")
 				set_state('LOW_BLOCK')
 			else:
-				if !player.animation.is_playing():
-					if player.frame >= player.blockstunFrames - 12:
-						player.animation.play("LowBlockstunEnd")
-					else:
-						player.animation.play("LowBlockstun")
+				if player.frame >= player.blockstunFrames - 12:
+					player.animation.play("LowBlockstunEnd")
+				else:
+					player.animation.play("LowBlockstun")
 				player.frame += 1
 		states.AIR_BLOCKSTUN:
 			if player.frame >= player.blockstunFrames:
@@ -464,11 +466,10 @@ func transition_state(input):
 				player.animation.play("AirBlock")
 				set_state('AIR_BLOCK')
 			else:
-				if !player.animation.is_playing():
-					if player.frame >= player.blockstunFrames - 12:
-						player.animation.play("AirBlockstunEnd")
-					else:
-						player.animation.play("AirBlockstun")
+				if player.frame >= player.blockstunFrames - 12:
+					player.animation.play("AirBlockstunEnd")
+				else:
+					player.animation.play("AirBlockstun")
 				player.frame += 1
 		states.HITSTOP:
 			if player.frame >= 100: # TODO: set frame variable
