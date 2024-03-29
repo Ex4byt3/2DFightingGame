@@ -10,6 +10,11 @@ func _network_process(input: Dictionary) -> void:
 	check_collisions()
 	hitbox_game_process()
 	player_game_process()
+	animate_process()
+
+func animate_process() -> void:
+	serverPlayer.get_node("FixedAnimationPlayer")._game_process()
+	clientPlayer.get_node("FixedAnimationPlayer")._game_process()
 
 func check_collisions() -> void:
 	serverPlayer.check_collisions()

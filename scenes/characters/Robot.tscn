@@ -1,8 +1,7 @@
-[gd_scene load_steps=73 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=74 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
-[ext_resource type="Script" path="res://scripts/characters/SpriteAnimator.gd" id="3_dhru8"]
 [ext_resource type="Texture2D" uid="uid://oer1t7eljjhm" path="res://assets/characters/Robot/Movement/Crawl.png" id="4_37ksk"]
 [ext_resource type="Texture2D" uid="uid://baq1ljugdaprs" path="res://assets/characters/Robot/Block/AirBlock.png" id="4_bdfgl"]
 [ext_resource type="Texture2D" uid="uid://d34ogjm4ybrer" path="res://assets/characters/Robot/Block/AirBlockstun.png" id="5_gqwq6"]
@@ -18,8 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://cyxajp4jf265q" path="res://assets/characters/Robot/Block/LowBlock.png" id="11_c3xxe"]
 [ext_resource type="Texture2D" uid="uid://b6o3ba2aoejs6" path="res://assets/characters/Robot/Block/Parry.png" id="12_wmup4"]
 [ext_resource type="Texture2D" uid="uid://ckdmnffc6djw1" path="res://assets/characters/Robot/Block/BlockCrouch.png" id="13_cxji0"]
+[ext_resource type="Script" path="res://scripts/characters/Robot/RobotFixedAnimator.gd" id="19_ylxlh"]
 
-[sub_resource type="SGRectangleShape2D" id="1"]
+[sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_flqoq"]
 extents_x = 4487128
 extents_y = 6939319
 
@@ -2052,7 +2052,11 @@ _data = {
 "RESET": SubResource("Animation_1teet")
 }
 
-[sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_icjxo"]
+[sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_cg7df"]
+extents_x = 4487128
+extents_y = 6939319
+
+[sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_ssxrj"]
 extents_x = 4487128
 extents_y = 6939319
 
@@ -2061,7 +2065,7 @@ collision_mask = 0
 script = ExtResource("1_jnbqb")
 
 [node name="MapCollider" type="SGCollisionShape2D" parent="."]
-shape = SubResource("1")
+shape = SubResource("SGRectangleShape2D_flqoq")
 fixed_position_x = -196608
 fixed_position_y = 393216
 visible = false
@@ -2070,13 +2074,15 @@ position = Vector2(-3, 6)
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_y2o11")
 
+[node name="FixedAnimationPlayer" type="Node" parent="." groups=["network_sync"]]
+script = ExtResource("19_ylxlh")
+
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
 scale = Vector2(4, 4)
 texture = SubResource("CompressedTexture2D_g508m")
 hframes = 42
 frame = 2
-script = ExtResource("3_dhru8")
 
 [node name="NetworkAnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MapCollider")
@@ -2130,7 +2136,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="HurtBox" type="SGCollisionShape2D" parent="HurtBox"]
-shape = SubResource("1")
+shape = SubResource("SGRectangleShape2D_cg7df")
 fixed_position_x = -131072
 fixed_position_y = 393216
 position = Vector2(-2, 6)
@@ -2143,7 +2149,7 @@ collision_layer = 8
 collision_mask = 8
 
 [node name="PushBox" type="SGCollisionShape2D" parent="PushBox"]
-shape = SubResource("SGRectangleShape2D_icjxo")
+shape = SubResource("SGRectangleShape2D_ssxrj")
 fixed_position_x = -131072
 fixed_position_y = 393216
 fixed_scale_x = 65534

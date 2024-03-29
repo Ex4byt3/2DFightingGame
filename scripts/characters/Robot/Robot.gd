@@ -1,7 +1,7 @@
 extends Character
 
 # Our nodes that we use in the scene
-@onready var animation = $NetworkAnimationPlayer
+@onready var animation = $FixedAnimationPlayer
 @onready var attackAnimationPlayer = $DebugAnimationPlayer
 @onready var sprite = $Sprite
 @onready var wallR = get_parent().get_node("WallStaticBody_R")
@@ -259,7 +259,7 @@ func _save_state() -> Dictionary:
 		
 		meter_frame_counter = meter_frame_counter,
 		meter_frame_rate = meter_frame_rate,
-		currentGameFrame = currentGameFrame
+		currentGameFrame = currentGameFrame,
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -301,10 +301,11 @@ func _load_state(loadState: Dictionary) -> void:
 	health = loadState['health']
 	burst = loadState['burst']
 	meter = loadState['meter']
-	currentGameFrame = loadState['currentGameFrame']
+	num_lives = num_lives
+
 	meter_frame_counter = loadState.get("meter_frame_counter", meter_frame_counter) # Provides a default in case it's missing
 	meter_frame_rate = loadState.get("meter_frame_rate", meter_frame_rate)
-	num_lives = num_lives
+	currentGameFrame = loadState['currentGameFrame']
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()

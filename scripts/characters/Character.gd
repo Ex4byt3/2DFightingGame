@@ -48,6 +48,8 @@ const dash_animaiton_map = {
 @onready var pushBox = $PushBox
 @onready var gameManager = get_node("../GameManager")
 
+@onready var FixedAnimator = $FixedAnimationPlayer
+
 # Variables for every character
 var input_vector := SGFixed.vector2(0, 0)
 var input_prefix := "player1_"
@@ -69,6 +71,7 @@ var knockbackMultiplier = 1 # The higher the number, the more knockback the char
 var pushForce = 5 * SGFixed.ONE
 var pushVector = SGFixed.vector2(0, 0)
 var blockMask : int = 0
+var animationIsPlaying = false
 
 # Variables for status in all characters
 var character_name: String

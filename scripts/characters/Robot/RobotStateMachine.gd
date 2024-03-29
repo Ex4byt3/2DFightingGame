@@ -178,8 +178,6 @@ func transition_state(input):
 	#################
 	match states[state]:
 		states.IDLE:
-			if !player.animation.is_playing():
-				player.animation.play("Idle")
 			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.y == -1:
 				#change_hurtbox("crouch")
@@ -208,11 +206,7 @@ func transition_state(input):
 				# The player is attempting to jump
 				start_jump()
 		states.CROUCH:
-			if !player.animation.is_playing():
-				player.animation.play("Chrouching")
 			do_decerlerate(player.groundDeceleration)
-			if !player.animation.is_playing():
-				player.animation.play("Crouching")
 			if player.input_vector.y != -1:
 				player.animation.play("Stand")
 				set_state('IDLE')
@@ -359,8 +353,6 @@ func transition_state(input):
 					player.animation.play("AirJump")
 					set_state('AIRBORNE')
 		states.AIRBORNE:
-			if !player.animation.is_playing():
-				player.animation.play("Airborne")
 			if player.isOnFloor:
 				# TODO: LANDING
 				player.animation.play("Idle")
@@ -396,6 +388,7 @@ func transition_state(input):
 				player.facingRight = player.input_vector.x > 0
 			if !input.has("shield"):
 				player.animation.play("Unblock")
+				player.animation.queue("Idle")
 				player.blockMask = 0 # 000
 				set_state("IDLE")
 			elif player.input_vector.y == -1:
@@ -411,6 +404,7 @@ func transition_state(input):
 				player.facingRight = player.input_vector.x > 0
 			if !input.has("shield"):
 				player.animation.play("LowUnblock")
+				player.animation.queue("Crouch")
 				player.blockMask = 0 # 000
 				set_state("CROUCH")
 			elif player.input_vector.y != -1:
@@ -423,6 +417,7 @@ func transition_state(input):
 		states.AIR_BLOCK:
 			if !input.has("shield"):
 				player.animation.play("AirUnblock")
+				player.animation.queue("Airborne")
 				player.blockMask = 0 # 000
 				set_state("AIRBORNE")
 			elif player.isOnFloor:
@@ -572,7 +567,6 @@ func transition_state(input):
 			player.velocity.x = 0
 			# play neutral light animation
 			if player.recovery:
-				
 				# TODO: add recovery frames/cancel logic
 				#print("RECOVERY")
 				pass
@@ -775,9 +769,9 @@ func start_jump():
 	if !player.pressed.has("jump"): # you must let go of the jump button to jump again
 		player.pressed.append("jump")
 		if player.isOnFloor:
-			player.animation.play("JumpSquat")
+			player.animation.play("Jumpsquat")
 		else:
-			player.animation.play("AirJumpSquat")
+			player.animation.play("AirJumpsquat")
 			player.airJump -= 1
 		set_state('JUMPSQUAT')
 
