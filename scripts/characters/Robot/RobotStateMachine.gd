@@ -24,7 +24,7 @@ func _ready():
 	add_state('BLOCKSTUN')
 	add_state('LOW_BLOCKSTUN')
 	add_state('AIR_BLOCKSTUN')
-	add_state('HITSTOP')
+	# add_state('HITSTOP')
 	add_state('HITSTUN')
 	add_state('KNOCKDOWN')
 	add_state('QGETUP')
@@ -63,12 +63,12 @@ func parse_motion_inputs():
 		remainingLeinency -= control[2] # subtract frames the input was held
 		if remainingLeinency <= 0:
 			break
-	
+
 	var inputString = convert_inputs_to_string(validMotions)
 	# print(inputString) # all currently valid inputs
 
 	# // can use custom search to maybe be faster than regex
-	var regex = RegEx.new() 
+	var regex = RegEx.new()
 	for motion in player.motion_inputs:
 		regex.compile(str(motion)) # compile the regex for the current motion
 		if regex.search(inputString) != null: # if any match is found
@@ -78,36 +78,36 @@ func parse_motion_inputs():
 func transition_state(input):
 	update_debug_label(player.input_vector)
 	update_pressed(input)
-	
+
 	#####################
 	# Universal Changes #
 	#####################
 	if states[state] != states.DASH:
 		# If not dashing, apply gravity
 		player.velocity.y += player.gravity
-	
+
 	if player.isOnFloor:
 		reset_jumps()
-	
+
 	if player.pushVector.x != 0 or player.pushVector.y != 0:
 		player.velocity.x += player.pushVector.x
 		player.velocity.y += player.pushVector.y
 		# player.pushvector = SGFixed.vector2(0, 0)
-	
+
 	# Update the sprite's facing direction
 	player.sprite.flip_h = !player.facingRight
-	
+
 	# TODO: parse_motion_inputs should only get called when we need to look for a possible motion input rahter thanevery frame
 	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
-	
+
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
 	if input.has("dash") and not player.isOnFloor:
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
-		
+
 	# ## DEBUG for HITSTOP
-	# if input.get("shield", false): 
+	# if input.get("shield", false):
 	# 	#player.apply_hitstop(0.075)
 	# 	player.frame = 0
 	# 	player.hitstunFrames = 30
@@ -120,6 +120,7 @@ func transition_state(input):
 			set_state('DEAD')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
+		player.hitstop = 10
 	elif input.get("light", false) and player.thrownHits == 0 and !player.pressed.has("light"):
 		player.pressed.append("light")
 		match states[state]:
@@ -172,7 +173,7 @@ func transition_state(input):
 			states.AIRBORNE:
 				do_attack("air_impact")
 			# TO DO, attacking cancels block?
-	
+
 	#################
 	# State Changes #
 	#################
@@ -190,7 +191,7 @@ func transition_state(input):
 			elif player.input_vector.x != 0:
 				# Update which direction the character is facing
 				player.facingRight = player.input_vector.x > 0
-				
+
 				# Update the direction the character is attempting to walk
 				if sprint_check(input):
 					# If the character is using sprint_macro (default SHIFT) they sprint
@@ -251,7 +252,7 @@ func transition_state(input):
 			elif player.input_vector.x != 0:
 				# Face the direction based on where you are trying to move
 				player.facingRight = player.input_vector.x > 0
-				
+
 				if sprint_check(input):
 					# Sprint if you are trying to sprint
 					do_walk(player.sprintSpeed, player.sprintAcceleration)
@@ -326,7 +327,7 @@ func transition_state(input):
 				player.frame = 0
 				player.velocity.x = player.keptDashSpeed * player.dashVector.x
 				player.velocity.y = player.keptDashSpeed * -player.dashVector.y
-				if player.isOnFloor: 
+				if player.isOnFloor:
 					set_state('SLIDE')
 				else:
 					player.animation.play("Airborne")
@@ -377,7 +378,7 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
-			
+
 			if input.has('shield'):
 				player.animation.play("AirBlock")
 				player.blockMask = 7 # 111, no high/lows in the air
@@ -466,23 +467,23 @@ func transition_state(input):
 				else:
 					player.animation.play("AirBlockstun")
 				player.frame += 1
-		states.HITSTOP:
-			if player.frame >= 100: # TODO: set frame variable
-				player.frame = 0
-				player.animation.play()
-				player.velocity.x = player.prevVelocity.x
-				player.velocity.y = player.prevVelocity.y
-				set_state('HITSTUN')
-			elif player.frame == 0:
-				player.frame += 1
-				player.prevVelocity.x = player.velocity.x
-				player.prevVelocity.y = player.velocity.y
-				player.velocity = SGFixed.vector2(0, 0)
-				player.animation.pause()
-				# TODO: pause and unpause stage timer
-			else:
-				player.velocity = SGFixed.vector2(0, 0)
-				player.frame += 1
+		# states.HITSTOP:
+		# 	if player.frame >= 100: # TODO: set frame variable
+		# 		player.frame = 0
+		# 		player.animation.play()
+		# 		player.velocity.x = player.prevVelocity.x
+		# 		player.velocity.y = player.prevVelocity.y
+		# 		set_state('HITSTUN')
+		# 	elif player.frame == 0:
+		# 		player.frame += 1
+		# 		player.prevVelocity.x = player.velocity.x
+		# 		player.prevVelocity.y = player.velocity.y
+		# 		player.velocity = SGFixed.vector2(0, 0)
+		# 		player.animation.pause()
+		# 		# TODO: pause and unpause stage timer
+		# 	else:
+		# 		player.velocity = SGFixed.vector2(0, 0)
+		# 		player.frame += 1
 		states.HITSTUN:
 			#set_state('KNOCKDOWN')
 			if player.frame >= player.hitstunFrames:
@@ -490,7 +491,7 @@ func transition_state(input):
 				set_state('AIRBORNE')
 			else:
 				player.frame += 1
-				
+
 				if player.isOnWallL or player.isOnWallR:
 					if player.changedVelocity == false and (abs(player.wallBounceVelocity.x/ONE) > player.wallBounceThreshold):
 						player.velocity.x = -player.wallBounceVelocity.x
@@ -499,7 +500,7 @@ func transition_state(input):
 				# NOT IMPLEMENTED YET
 				# Expects player.frame to be set beforehand.
 				# if player.isOnFloor:
-				# 	if prevVelocity >= player.knockdownVelocity: 
+				# 	if prevVelocity >= player.knockdownVelocity:
 				# 		player.frame = 0
 				# 		player.velocity = SGFixed.vector2(0, 0)
 				# 		set_state('KNOCKDOWN')
@@ -803,7 +804,7 @@ func start_dash(input_vector):
 		player.velocity.y = 0
 		player.animation.play(player.dash_animaiton_map.get([input_vector.x, input_vector.y], "DashR"))
 		set_state('DASH')
-	
+
 func jump_check(input) -> bool: # might be redundant
 	if player.input_vector.y == 1 or input.has("jump"):
 		return true
@@ -824,12 +825,20 @@ func sprint_check(input) -> bool:
 func reset_jumps():
 	player.airJump = player.maxAirJump
 
+func get_stun_frames(hitboxes: Array, advantage: int) -> int:
+	var moveFrames = 0
+	for i in range(hitboxes.size()):
+		if i == 0:
+			continue
+		moveFrames += hitboxes[i]["ticks"]
+	return moveFrames + advantage
+
 func do_hit():
 	# TODO: meter gain
-	if player.blockMask & player.hurtboxCollision.mask == player.hurtboxCollision.mask: # if blocked
+	if player.blockMask & player.hurtboxCollision["properties"]["mask"] == player.hurtboxCollision["properties"]["mask"]: # if blocked
 			# TODO: chip damage
 		player.frame = 0
-		player.blockstunFrames = player.hurtboxCollision.blockstun
+		player.blockstunFrames = get_stun_frames(player.hurtboxCollision["properties"]["hitboxes"], player.hurtboxCollision["properties"]["blockstun"])
 		match player.blockMask:
 			6:
 				set_state("BLOCKSTUN")
@@ -839,32 +848,27 @@ func do_hit():
 				set_state("AIR_BLOCKSTUN")
 	else:
 		# TODO: hitstun/knockback/damage scaling
-		player.take_damage(player.hurtboxCollision.damage)
-		player.apply_knockback(player.hurtboxCollision.knockbackForce, player.hurtboxCollision.knockbackAngle)
-		player.hitstunFrames = player.hurtboxCollision.hitstun
+		player.take_damage(player.hurtboxCollision["properties"]["damage"])
+		var kb_angle : int = 0
+		if player.hurtboxCollision["facingRight"]:
+			kb_angle = player.hurtboxCollision["properties"]["knockback"]["angle"]
+		else:
+			kb_angle = SGFixed.PI - player.hurtboxCollision["properties"]["knockback"]["angle"]
+		player.apply_knockback(player.hurtboxCollision["properties"]["knockback"]["force"], kb_angle)
+		player.hitstunFrames = get_stun_frames(player.hurtboxCollision["properties"]["hitboxes"], player.hurtboxCollision["properties"]["hitstun"])
 		player.frame = 0
 		# player.animation.play("Hitstun")
 		set_state("HITSTUN")
 
-func do_attack(attack_type: String):
+func do_attack(attack_name: String):
 	# TODO: meter gain on hit
 	# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
 	# Throw attack
-	SyncManager.spawn("Hitbox", player.get_node("SpawnHitbox"), Hitbox, {
-		damage = spawnHitBox.get_damage(attack_type),
-		hitboxShapes = spawnHitBox.get_hitbox_shapes(attack_type),
-		knockbackForce = spawnHitBox.get_knockback(attack_type)["force"],
-		knockbackAngle = spawnHitBox.get_knockback(attack_type)["angle"],
-		hitstop = spawnHitBox.get_hitstop(attack_type),
-		hitstun = spawnHitBox.get_hitstun(attack_type),
-		mask = spawnHitBox.get_mask(attack_type),
-		spawn_vector = spawnHitBox.get_spawn_vector(attack_type),
-		blockstun = spawnHitBox.get_blockstun(attack_type)
-	})
 	player.thrownHits += 1 # Increment number of thrown attacks
-	
+	SyncManager.spawn("Hitbox", player.get_node("SpawnHitbox"), Hitbox, spawnHitBox.attacks[attack_name])
+
 	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
-	set_state(attack_type.to_upper())
+	set_state(attack_name.to_upper())
 
 func change_hurtbox(state_type: String):
 	match state_type:
@@ -879,7 +883,7 @@ func change_hurtbox(state_type: String):
 
 func update_debug_label(input_vector):
 	var player_type: String = self.get_parent().name
-	
+
 	var debug_data: Dictionary = {
 		"player_type": player_type,
 		"pos_x": str(player.fixed_position.x / ONE),
@@ -890,7 +894,7 @@ func update_debug_label(input_vector):
 		"input_vector_y": str(input_vector.y),
 		"state": str(state)
 	}
-	
+
 	MenuSignalBus.emit_update_debug(debug_data)
 
 # input buffer has [x, y, ticks] for each input
@@ -900,14 +904,14 @@ func update_input_buffer(input_vector):
 
 	if player.controlBuffer.size() > 20:
 		player.controlBuffer.pop_back()
-	
+
 	if player.controlBuffer.front()[0] == input_vector.x and player.controlBuffer.front()[1] == input_vector.y:
 		var ticks = player.controlBuffer.front()[2]
 		player.controlBuffer.pop_front()
 		player.controlBuffer.push_front([input_vector.x, input_vector.y, ticks+1])
 	else:
 		player.controlBuffer.push_front([input_vector.x, input_vector.y, 1])
-	
+
 	for item in player.controlBuffer:
 		var new_input: Array = []
 		new_input.append(str(player.direction_mapping.get([item[0], item[1]], "NEUTRAL")))
@@ -918,5 +922,5 @@ func update_input_buffer(input_vector):
 		"player_type": player_type,
 		"inputs": inputs,
 	}
-	
+
 	MenuSignalBus.emit_update_input_buffer(input_data)

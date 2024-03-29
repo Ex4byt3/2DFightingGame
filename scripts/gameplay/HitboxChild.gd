@@ -16,48 +16,30 @@ func _network_spawn(data: Dictionary) -> void:
 	else:
 		attacked_player = map.get_node("ClientPlayer")
 	
-	# hitbox properties
-	hitboxShapes = data['hitboxShapes']
-	damage = data['damage']
-	knockbackForce = data['knockbackForce']
-	if attacking_player.facingRight:
-		knockbackAngle = data['knockbackAngle']
-		fixed_position.x += (90 * SGFixed.ONE)
-	else:
-		knockbackAngle = SGFixed.PI - data['knockbackAngle']
-		fixed_position.x -= (90 * SGFixed.ONE)
-	
-	hitstop = data['hitstop']
-	hitstun = data['hitstun']
-	blockstun = data['blockstun']
-	mask = data['mask']
-	
-	fixed_position.x += data['spawn_vector'].x
-	fixed_position.y += data['spawn_vector'].y
+	properties = data
 
-	idx = 1
-	tick = 0
-	used = false
 	attacking_player.attack_ended = false
-
 	# set the first shape
-	set_shape(hitboxShapes[0]["width"], hitboxShapes[0]["height"])
+	hitboxes = properties['hitboxes']
+	set_shape(hitboxes[0]["width"], hitboxes[0]["height"])
+	set_pos(hitboxes[0]["x"], hitboxes[0]["y"])
 
 # Processing the hitbox
 func _game_process() -> void:
 	# animate the hitbox
-	if idx >= len(hitboxShapes) - 1:
+	if idx >= len(hitboxes) - 1:
 		if tick >= despawnAt:
 			set_shape(0, 0)
 			attacking_player.thrownHits -= 1
 			attacking_player.attack_ended = true
 			attacking_player.recovery = false
 			SyncManager.despawn(self)
-	elif tick >= hitboxShapes[idx]["ticks"]:
-		set_shape(hitboxShapes[idx]["width"], hitboxShapes[idx]["height"])
+	elif tick >= hitboxes[idx]["ticks"]:
+		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
+		set_pos(hitboxes[idx]["x"], hitboxes[idx]["y"])
 		idx += 1
 		tick = 0
-		if idx == len(hitboxShapes) - 1:
+		if idx == len(hitboxes) - 1:
 			attacking_player.recovery = true
 	tick += 1
 
@@ -65,8 +47,16 @@ func set_shape(w: int, h: int) -> void:
 	collision_shape.shape._set_extents_x(w * SGFixed.HALF)
 	collision_shape.shape._set_extents_y(h * SGFixed.HALF)
 
+func set_pos(x: int, y: int) -> void: # set_position was taken
+	if attacking_player.facingRight:
+		fixed_position_x = x * SGFixed.ONE
+	else:
+		fixed_position_x = -x * SGFixed.ONE
+	fixed_position_y = y * SGFixed.NEG_ONE
+
 func _save_state() -> Dictionary:
 	return {
+		properties = properties,
 		fixed_position_x = fixed_position_x,
 		fixed_position_y = fixed_position_y,
 		width = collision_shape.shape._get_extents_x(),
@@ -77,6 +67,7 @@ func _save_state() -> Dictionary:
 	}
 
 func _load_state(loadState: Dictionary) -> void:
+	properties = loadState['properties']
 	fixed_position_x = loadState['fixed_position_x']
 	fixed_position_y = loadState['fixed_position_y']
 	collision_shape.shape._set_extents_x(loadState['width'])

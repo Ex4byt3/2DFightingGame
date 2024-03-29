@@ -71,7 +71,7 @@ var knockbackMultiplier = 1 # The higher the number, the more knockback the char
 var pushForce = 5 * SGFixed.ONE
 var pushVector = SGFixed.vector2(0, 0)
 var blockMask : int = 0
-var animationIsPlaying = false
+var hitstop = 0
 
 # Variables for status in all characters
 var character_name: String
@@ -211,14 +211,8 @@ func check_collisions() -> void:
 		if !overlappingHurtbox[0].used:
 			# TODO: other hitbox properties
 			overlappingHurtbox[0].used = true
-			hurtboxCollision = {
-				damage = overlappingHurtbox[0].damage,
-				hitstun = overlappingHurtbox[0].hitstun,
-				blockstun = overlappingHurtbox[0].blockstun,
-				knockbackForce = overlappingHurtbox[0].knockbackForce,
-				knockbackAngle = overlappingHurtbox[0].knockbackAngle,
-				mask = overlappingHurtbox[0].mask
-			}
+			hurtboxCollision["properties"] = overlappingHurtbox[0].properties
+			hurtboxCollision["facingRight"] = overlappingHurtbox[0].attacking_player.facingRight
 	overlappingPushbox = pushBox.get_overlapping_areas()
 	if len(overlappingPushbox) > 0:
 		var pushDirection = (self.get_global_fixed_position().sub(overlappingPushbox[0].get_global_fixed_position())).normalized()

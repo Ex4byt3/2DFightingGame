@@ -163,7 +163,7 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 		input.erase("input_vector")
 	return input
 
-func _game_process(input: Dictionary) -> void:
+func _game_process(input: Dictionary) -> int:
 	currentGameFrame += 1
 	increase_meter_over_time() # This was currently not rollback safe, commented for rollback testing hitboxes
 	
@@ -196,6 +196,8 @@ func _game_process(input: Dictionary) -> void:
 	# Update collision booleans, does not work if called before move_and_slide, works if called after though
 	isOnFloor = is_on_floor()
 	isOnCeiling = is_on_ceiling()
+
+	return hitstop
 
 func increase_meter_over_time() -> void:
 	#var time_multiplier = 1.0 + (1.0 - current_time / total_game_time)
@@ -260,6 +262,8 @@ func _save_state() -> Dictionary:
 		meter_frame_counter = meter_frame_counter,
 		meter_frame_rate = meter_frame_rate,
 		currentGameFrame = currentGameFrame,
+
+		hitstop = hitstop
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -306,6 +310,8 @@ func _load_state(loadState: Dictionary) -> void:
 	meter_frame_counter = loadState.get("meter_frame_counter", meter_frame_counter) # Provides a default in case it's missing
 	meter_frame_rate = loadState.get("meter_frame_rate", meter_frame_rate)
 	currentGameFrame = loadState['currentGameFrame']
+
+	hitstop = loadState['hitstop']
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()
