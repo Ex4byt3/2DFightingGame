@@ -69,7 +69,7 @@ extends FixedAnimator
 				"fixed_position_y": 2949095
 		},
 		"animation": {
-			"frameRate": 4,
+			"frameRate": 2,
 			"loop": false,
 			"reverse": false,
 			"startFrame": 0,
@@ -106,6 +106,14 @@ extends FixedAnimator
 			"hframes": 16,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
+		},
 		"animation": {
 			"frameRate": 4,
 			"loop": true,
@@ -121,8 +129,16 @@ extends FixedAnimator
 			"hframes": 3,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
-			"frameRate": 4,
+			"frameRate": 2,
 			"loop": false,
 			"reverse": true,
 			"startFrame": 2,
@@ -450,6 +466,14 @@ extends FixedAnimator
 			"hframes": 2,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"frameRate": 2,
 			"loop": false,
@@ -464,6 +488,14 @@ extends FixedAnimator
 			"texture": load("res://assets/characters/Robot/Block/Block.png"),
 			"hframes": 2,
 			"frame": 1,
+		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
 		},
 		"animation": {
 			"frameRate": 2,
@@ -480,6 +512,14 @@ extends FixedAnimator
 			"hframes": 2,
 			"frame": 1,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"frameRate": 0,
 			"loop": false,
@@ -494,6 +534,14 @@ extends FixedAnimator
 			"texture": load("res://assets/characters/Robot/Block/Blockstun.png"),
 			"hframes": 3,
 			"frame": 0,
+		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
 		},
 		"animation": {
 			"frameRate": 0,
@@ -510,6 +558,14 @@ extends FixedAnimator
 			"hframes": 3,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"frameRate": 1,
 			"loop": false,
@@ -525,6 +581,14 @@ extends FixedAnimator
 			"hframes": 3,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"frameRate": 2,
 			"loop": false,
@@ -539,6 +603,14 @@ extends FixedAnimator
 			"texture": load("res://assets/characters/Robot/Block/BlockCrouch.png"),
 			"hframes": 3,
 			"frame": 0,
+		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
 		},
 		"animation": {
 			"frameRate": 2,
@@ -570,6 +642,14 @@ extends FixedAnimator
 			"hframes": 2,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
+		},
 		"animation": {
 			"frameRate": 2,
 			"loop": false,
@@ -584,6 +664,14 @@ extends FixedAnimator
 			"texture": load("res://assets/characters/Robot/Block/LowBlock.png"),
 			"hframes": 2,
 			"frame": 1,
+		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
 		},
 		"animation": {
 			"frameRate": 2,
@@ -600,6 +688,14 @@ extends FixedAnimator
 			"hframes": 2,
 			"frame": 1,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
+		},
 		"animation": {
 			"frameRate": 0,
 			"loop": false,
@@ -614,6 +710,14 @@ extends FixedAnimator
 			"texture": load("res://assets/characters/Robot/Block/LowBlockstun.png"),
 			"hframes": 3,
 			"frame": 0,
+		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
 		},
 		"animation": {
 			"frameRate": 0,
@@ -630,6 +734,14 @@ extends FixedAnimator
 			"hframes": 3,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
+		},
 		"animation": {
 			"frameRate": 1,
 			"loop": false,
@@ -644,6 +756,14 @@ extends FixedAnimator
 			"texture": load("res://assets/characters/Robot/Block/LowParry.png"),
 			"hframes": 3,
 			"frame": 0,
+		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
 		},
 		"animation": {
 			"frameRate": 2,

@@ -406,6 +406,7 @@ func transition_state(input):
 				set_state("CROUCH")
 			elif player.input_vector.y != -1:
 				player.animation.play("BlockStand")
+				player.animation.queue("Blocking")
 				player.blockMask = 6 # 110
 				set_state("BLOCK")
 			elif jump_check(input):

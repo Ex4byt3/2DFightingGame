@@ -20,7 +20,7 @@ func _network_process(input: Dictionary) -> void:
 	elif frame > 0:
 		if serverPlayer.input.size() > 2:
 			serverHitstopBuffer = serverPlayer.hitstopBuffer
-			print(str(serverHitstopBuffer))
+			# print(str(serverHitstopBuffer))
 		if clientPlayer.input.size() > 2:
 			clientHitstopBuffer = clientPlayer.hitstopBuffer
 		frame -= 1
