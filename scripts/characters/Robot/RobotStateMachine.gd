@@ -38,9 +38,9 @@ func _ready():
 	add_state('CROUCHING_LIGHT')
 	add_state('CROUCHING_MEDIUM')
 	add_state('CROUCHING_HEAVY')
-	add_state('CROUCHING_FORWARD')
+	add_state('CROUCHING_FORWARD_MEDIUM')
 	add_state('CROUCHING_IMPACT')
-	add_state('IMPACT')
+	add_state('NEUTRAL_IMPACT')
 	add_state('AIR_LIGHT')
 	add_state('AIR_MEDIUM')
 	add_state('AIR_HEAVY')
@@ -120,18 +120,15 @@ func transition_state(input):
 			set_state('DEAD')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
-		player.hitstop = 10
 	elif input.get("light", false) and player.thrownHits == 0 and !player.pressed.has("light"):
 		player.pressed.append("light")
 		match states[state]:
 			states.IDLE, states.SLIDE:
 				do_attack("neutral_light")
 			states.SPRINT, states.WALK:
-				do_attack("forward_light")
+				do_attack("neutral_light")
 			states.CROUCH:
 				do_attack("crouching_light")
-			states.CRAWL:
-				do_attack("crouching_forward")
 			states.AIRBORNE:
 				do_attack("air_light")
 			# TO DO, attacking cancels block?
@@ -141,11 +138,11 @@ func transition_state(input):
 			states.IDLE, states.SLIDE:
 				do_attack("neutral_medium")
 			states.SPRINT, states.WALK:
-				do_attack("forward_medium")
+				do_attack("neutral_medium")
 			states.CROUCH:
 				do_attack("crouching_medium")
 			states.CRAWL:
-				do_attack("crouching_forward")
+				do_attack("crouching_forward_medium")
 			states.AIRBORNE:
 				do_attack("air_medium")
 			# TO DO, attacking cancels block?
@@ -158,8 +155,6 @@ func transition_state(input):
 				do_attack("forward_heavy")
 			states.CROUCH:
 				do_attack("crouching_heavy")
-			states.CRAWL:
-				do_attack("crouching_forward")
 			states.AIRBORNE:
 				do_attack("air_heavy")
 			# TO DO, attacking cancels block?
@@ -167,7 +162,7 @@ func transition_state(input):
 		player.pressed.append("impact")
 		match states[state]:
 			states.IDLE, states.WALK, states.SPRINT, states.SLIDE:
-				do_attack("impact")
+				do_attack("neutral_impact")
 			states.CROUCH, states.CRAWL:
 				do_attack("crouching_impact")
 			states.AIRBORNE:
@@ -210,6 +205,7 @@ func transition_state(input):
 			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.y != -1:
 				player.animation.play("Stand")
+				player.animation.queue("Idle")
 				set_state('IDLE')
 			elif input.has("shield"):
 				player.blockMask = 6 # 110
@@ -389,8 +385,8 @@ func transition_state(input):
 				player.facingRight = player.input_vector.x > 0
 			if !input.has("shield"):
 				player.animation.play("Unblock")
-				player.animation.queue("Idle")
 				player.blockMask = 0 # 000
+				player.animation.queue("Idle")
 				set_state("IDLE")
 			elif player.input_vector.y == -1:
 				player.animation.play("BlockCrouch")
@@ -401,6 +397,7 @@ func transition_state(input):
 				start_jump()
 		states.LOW_BLOCK:
 			do_decerlerate(player.groundDeceleration)
+			player.animation.play("LowBlocking")
 			if player.input_vector.x != 0:
 				player.facingRight = player.input_vector.x > 0
 			if !input.has("shield"):
@@ -437,7 +434,7 @@ func transition_state(input):
 				player.animation.play("Blocking")
 				set_state('BLOCK')
 			else:
-				if player.frame >= player.blockstunFrames - 12:
+				if player.frame >= player.blockstunFrames - 3:
 					player.animation.play("BlockstunEnd")
 				else:
 					player.animation.play("Blockstun")
@@ -450,7 +447,7 @@ func transition_state(input):
 				player.animation.play("LowBlocking")
 				set_state('LOW_BLOCK')
 			else:
-				if player.frame >= player.blockstunFrames - 12:
+				if player.frame >= player.blockstunFrames - 3:
 					player.animation.play("LowBlockstunEnd")
 				else:
 					player.animation.play("LowBlockstun")
@@ -462,7 +459,7 @@ func transition_state(input):
 				player.animation.play("AirBlock")
 				set_state('AIR_BLOCK')
 			else:
-				if player.frame >= player.blockstunFrames - 12:
+				if player.frame >= player.blockstunFrames - 3:
 					player.animation.play("AirBlockstunEnd")
 				else:
 					player.animation.play("AirBlockstun")
@@ -664,7 +661,7 @@ func transition_state(input):
 				player.attack_ended = false
 				player.animation.play("Crouch")
 				set_state('CROUCH')
-		states.CROUCHING_FORWARD:
+		states.CROUCHING_FORWARD_MEDIUM:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
 			# play crouching forward animation
@@ -686,7 +683,7 @@ func transition_state(input):
 				player.attack_ended = false
 				player.animation.play("Crouch")
 				set_state('CROUCH')
-		states.IMPACT:
+		states.NEUTRAL_IMPACT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
 			# play impact animation
@@ -835,30 +832,43 @@ func get_stun_frames(hitboxes: Array, advantage: int) -> int:
 
 func do_hit():
 	# TODO: meter gain
-	if player.blockMask & player.hurtboxCollision["properties"]["mask"] == player.hurtboxCollision["properties"]["mask"]: # if blocked
-			# TODO: chip damage
+	if player.blockMask & player.hurtboxCollision["onBlock"]["mask"] == player.hurtboxCollision["onBlock"]["mask"]: # if blocked
+		# TODO: chip damage
+		var onBlock = player.hurtboxCollision["onBlock"]
 		player.frame = 0
-		player.blockstunFrames = get_stun_frames(player.hurtboxCollision["properties"]["hitboxes"], player.hurtboxCollision["properties"]["blockstun"])
+		player.blockstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onBlock["adv"])
+		player.apply_knockback(onBlock["knockback"]["force"], onBlock["knockback"]["angle"])
+		player.hitstop = onBlock["blockstop"]
+		if player.isOnFloor and player.velocity.y < 0: # if blocked on the floor you can't be hit airborne
+			player.velocity.y = 0
 		match player.blockMask:
 			6:
+				player.animation.play("Blockstun")
 				set_state("BLOCKSTUN")
 			3:
+				player.animation.play("LowBlockstun")
 				set_state("LOW_BLOCKSTUN")
 			7:
+				player.animation.play("AirBlockstun")
 				set_state("AIR_BLOCKSTUN")
 	else:
 		# TODO: hitstun/knockback/damage scaling
-		player.take_damage(player.hurtboxCollision["properties"]["damage"])
-		var kb_angle : int = 0
-		if player.hurtboxCollision["facingRight"]:
-			kb_angle = player.hurtboxCollision["properties"]["knockback"]["angle"]
-		else:
-			kb_angle = SGFixed.PI - player.hurtboxCollision["properties"]["knockback"]["angle"]
-		player.apply_knockback(player.hurtboxCollision["properties"]["knockback"]["force"], kb_angle)
-		player.hitstunFrames = get_stun_frames(player.hurtboxCollision["properties"]["hitboxes"], player.hurtboxCollision["properties"]["hitstun"])
+		var onHit = player.hurtboxCollision["onHit"]
+		player.take_damage(onHit["damage"])
+		do_knockback(onHit["knockback"])
+		player.hitstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onHit["adv"])
 		player.frame = 0
-		# player.animation.play("Hitstun")
+		player.hitstop = onHit["hitstop"]
+		player.animation.play("Hitstun")
 		set_state("HITSTUN")
+
+func do_knockback(knockback: Dictionary):
+	#player.knockbackMultiplier += knockback["gain"]
+	if knockback["static"]:
+		player.apply_knockback(knockback["force"], knockback["angle"])
+	else:
+		player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), knockback["angle"])
+
 
 func do_attack(attack_name: String):
 	# TODO: meter gain on hit

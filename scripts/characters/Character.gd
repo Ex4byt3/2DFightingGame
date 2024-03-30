@@ -67,7 +67,8 @@ var hurtboxCollision = {} # hurtboxCollision dictionary
 var pushboxCollision = {} # pushboxCollision dictionary
 var weightKnockbackScale = 100 * SGFixed.ONE # The higher the number, the less knockback the character will take
 var weight = 100 # The weight of the character
-var knockbackMultiplier = 1 # The higher the number, the more knockback the character will take
+var knockbackMultiplier = SGFixed.ONE # The higher the number, the more knockback the character will take
+var hitstunMultiplier = SGFixed.ONE # The higher the number, the more hitstun the character will take
 var pushForce = 5 * SGFixed.ONE
 var pushVector = SGFixed.vector2(0, 0)
 var blockMask : int = 0
@@ -211,8 +212,7 @@ func check_collisions() -> void:
 		if !overlappingHurtbox[0].used:
 			# TODO: other hitbox properties
 			overlappingHurtbox[0].used = true
-			hurtboxCollision["properties"] = overlappingHurtbox[0].properties
-			hurtboxCollision["facingRight"] = overlappingHurtbox[0].attacking_player.facingRight
+			hurtboxCollision = overlappingHurtbox[0].properties
 	overlappingPushbox = pushBox.get_overlapping_areas()
 	if len(overlappingPushbox) > 0:
 		var pushDirection = (self.get_global_fixed_position().sub(overlappingPushbox[0].get_global_fixed_position())).normalized()
@@ -229,10 +229,9 @@ func take_damage(damage) -> void:
 func apply_knockback(force: int, angle_radians: int):
 	# Assuming 'force' is scaled already
 	var knockback = SGFixed.vector2(SGFixed.ONE, 0) # RIGHT
-	var weight_scale = SGFixed.div(weight, weightKnockbackScale) # Can adjust the second number to adjust weight scaling.
+	# var weight_scale = SGFixed.div(weight, weightKnockbackScale) # Can adjust the second number to adjust weight scaling.
 	knockback.rotate(-angle_radians) # -y is up
-	knockback.imul(SGFixed.div(force, weight_scale))
-	knockback.imul(knockbackMultiplier)
+	# knockback.imul(SGFixed.div(force, weight_scale))
 	velocity = knockback
 
 func apply_pushbox_force() -> void:

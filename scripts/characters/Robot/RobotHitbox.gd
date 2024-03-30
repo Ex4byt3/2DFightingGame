@@ -22,14 +22,14 @@ const attacks = {
 	"neutral_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4}, # START UP FRAMES
-				{"x": 70, "y": 40, "width": 80, "height": 30, "ticks": 4}, # ACTIVE FRAMES
+				{"x": 0, "y": 0, "width": 100, "height": 100, "ticks": 20}, # ACTIVE FRAMES
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7} # RECOVERY FRAMES, the last hitbox is always treated as recovery
 			],
 		"damage": 620,
 		"knockback": {
 			"static": false,
 			"mult": false,
-			"force": 1 * SGFixed.ONE,
+			"force": 5 * SGFixed.ONE,
 			"angle": 0
 		},
 		"hitstop": 8,
@@ -41,14 +41,14 @@ const attacks = {
 	"neutral_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6}, # START UP FRAMES
-				{"x": 80, "y": -50, "width": 120, "height": 100, "ticks": 8}, # ACTIVE FRAMES
+				{"x": 100, "y": 0, "width": 100, "height": 100, "ticks": 20}, # ACTIVE FRAMES
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6} # RECOVERY FRAMES
 			],
 		"damage": 715,
 		"knockback": {
 			"static": false,
 			"mult": false,
-			"force": 3 * SGFixed.ONE,
+			"force": 10 * SGFixed.ONE,
 			"angle": 0
 		},
 		"hitstop": 8,
@@ -60,14 +60,14 @@ const attacks = {
 	"neutral_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11}, # START UP FRAMES
-				{"x": 90, "y": 20, "width": 100, "height": 50, "ticks": 6}, # ACTIVE FRAMES
+				{"x": 100, "y": 0, "width": 200, "height": 100, "ticks": 6}, # ACTIVE FRAMES
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 21} # RECOVERY FRAMES, the last hitbox is always treated as recovery
 			],
 		"damage": 1143,
 		"knockback": {
 			"static": false,
 			"mult": false,
-			"force": 8 * SGFixed.ONE,
+			"force": 30 * SGFixed.ONE,
 			"angle": SGFixed.PI_DIV_4 / 2
 		},
 		"hitstop": 15,
@@ -86,7 +86,7 @@ const attacks = {
 		"knockback": {
 			"static": false,
 			"mult": false,
-			"force": 6 * SGFixed.ONE,
+			"force": 80 * SGFixed.ONE,
 			"angle": SGFixed.PI_DIV_4
 		},
 		"hitstop": 13,
@@ -105,7 +105,7 @@ const attacks = {
 		"knockback": {
 			"static": false,
 			"mult": false,
-			"force": 8 * SGFixed.ONE,
+			"force": 150 * SGFixed.ONE,
 			"angle": 0
 		},
 		"hitstop": 14,
@@ -124,7 +124,7 @@ const attacks = {
 		"knockback": {
 			"static": false,
 			"mult": false,
-			"force": 12 * SGFixed.ONE,
+			"force": 280 * SGFixed.ONE,
 			"angle": SGFixed.PI_DIV_4
 		},
 		#"knockdown": 1 # uncertain if we will have attacks with knockdown

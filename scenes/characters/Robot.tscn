@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
+[ext_resource type="Script" path="res://scripts/characters/Robot/RobotAnimations.gd" id="3_4ojck"]
 [ext_resource type="Texture2D" uid="uid://oer1t7eljjhm" path="res://assets/characters/Robot/Movement/Crawl.png" id="4_37ksk"]
 [ext_resource type="Texture2D" uid="uid://baq1ljugdaprs" path="res://assets/characters/Robot/Block/AirBlock.png" id="4_bdfgl"]
 [ext_resource type="Texture2D" uid="uid://d34ogjm4ybrer" path="res://assets/characters/Robot/Block/AirBlockstun.png" id="5_gqwq6"]
@@ -12,12 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://cwji0bj8ykdyu" path="res://assets/characters/debug/placeholders.png" id="8_4pkd0"]
 [ext_resource type="Texture2D" uid="uid://bvbewoff44m7k" path="res://assets/characters/debug/placeholderAttack.png" id="9_pr7w0"]
 [ext_resource type="Texture2D" uid="uid://48g7evie7mby" path="res://assets/characters/Robot/Block/LowBlockstun.png" id="10_4byis"]
-[ext_resource type="Script" path="res://scripts/characters/Robot/RobotHitbox.gd" id="10_ip80b"]
 [ext_resource type="Texture2D" uid="uid://bkkfybirh7xxk" path="res://assets/characters/Robot/Block/LowParry.png" id="11_63a13"]
 [ext_resource type="Texture2D" uid="uid://cyxajp4jf265q" path="res://assets/characters/Robot/Block/LowBlock.png" id="11_c3xxe"]
 [ext_resource type="Texture2D" uid="uid://b6o3ba2aoejs6" path="res://assets/characters/Robot/Block/Parry.png" id="12_wmup4"]
 [ext_resource type="Texture2D" uid="uid://ckdmnffc6djw1" path="res://assets/characters/Robot/Block/BlockCrouch.png" id="13_cxji0"]
-[ext_resource type="Script" path="res://scripts/characters/Robot/RobotFixedAnimator.gd" id="19_ylxlh"]
+[ext_resource type="Script" path="res://scripts/characters/Robot/RobotAttackData.gd" id="18_7wveu"]
 
 [sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_flqoq"]
 extents_x = 4487128
@@ -2075,7 +2075,7 @@ position = Vector2(-3, 6)
 script = ExtResource("2_y2o11")
 
 [node name="FixedAnimationPlayer" type="Node" parent="." groups=["network_sync"]]
-script = ExtResource("19_ylxlh")
+script = ExtResource("3_4ojck")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -2142,7 +2142,7 @@ fixed_position_y = 393216
 position = Vector2(-2, 6)
 
 [node name="SpawnHitbox" type="SGFixedNode2D" parent="."]
-script = ExtResource("10_ip80b")
+script = ExtResource("18_7wveu")
 
 [node name="PushBox" type="SGArea2D" parent="."]
 collision_layer = 8

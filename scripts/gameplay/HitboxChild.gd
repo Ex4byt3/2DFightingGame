@@ -16,7 +16,12 @@ func _network_spawn(data: Dictionary) -> void:
 	else:
 		attacked_player = map.get_node("ClientPlayer")
 	
-	properties = data
+	properties = data.duplicate()
+
+	# flipping the angle currently is not rollback safe
+	# if !attacking_player.facingRight:
+	# 	properties["onHit"]["knockback"]["angle"] = SGFixed.PI - properties["onHit"]["knockback"]["angle"]
+	# 	properties["onBlock"]["knockback"]["angle"] = SGFixed.PI - properties["onBlock"]["knockback"]["angle"]
 
 	attacking_player.attack_ended = false
 	# set the first shape
@@ -57,6 +62,8 @@ func set_pos(x: int, y: int) -> void: # set_position was taken
 func _save_state() -> Dictionary:
 	return {
 		properties = properties,
+		# onHitKnockbackAngle = properties["onHit"]["knockback"]["angle"],
+		# onBlockKnockbackAngle = properties["onBlock"]["knockback"]["angle"],
 		fixed_position_x = fixed_position_x,
 		fixed_position_y = fixed_position_y,
 		width = collision_shape.shape._get_extents_x(),
@@ -68,6 +75,8 @@ func _save_state() -> Dictionary:
 
 func _load_state(loadState: Dictionary) -> void:
 	properties = loadState['properties']
+	# properties["onHit"]["knockback"]["angle"] = loadState['onHitKnockbackAngle']
+	# properties["onBlock"]["knockback"]["angle"] = loadState['onBlockKnockbackAngle']
 	fixed_position_x = loadState['fixed_position_x']
 	fixed_position_y = loadState['fixed_position_y']
 	collision_shape.shape._set_extents_x(loadState['width'])

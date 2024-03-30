@@ -263,7 +263,9 @@ func _save_state() -> Dictionary:
 		meter_frame_rate = meter_frame_rate,
 		currentGameFrame = currentGameFrame,
 
-		hitstop = hitstop
+		hitstop = hitstop,
+		knockbackMultiplier = knockbackMultiplier,
+		hitstunMultiplier = hitstunMultiplier
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -312,6 +314,8 @@ func _load_state(loadState: Dictionary) -> void:
 	currentGameFrame = loadState['currentGameFrame']
 
 	hitstop = loadState['hitstop']
+	knockbackMultiplier = loadState['knockbackMultiplier']
+	hitstunMultiplier = loadState['hitstunMultiplier']
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()
