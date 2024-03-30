@@ -175,7 +175,6 @@ func transition_state(input):
 		states.IDLE:
 			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.y == -1:
-				#change_hurtbox("crouch")
 				player.animation.play("Crouch")
 				set_state('CROUCH')
 			elif input.has("shield"):
@@ -879,17 +878,6 @@ func do_attack(attack_name: String):
 
 	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
 	set_state(attack_name.to_upper())
-
-func change_hurtbox(state_type: String):
-	match state_type:
-		"idle":
-			player.hurtBoxShape.shape._set_extents_x(137 * SGFixed.HALF)
-			player.hurtBoxShape.shape._set_extents_y(212 * SGFixed.HALF)
-			player.hurtBox.fixed_position.x = 0
-			player.hurtBox.fixed_position.y = 0
-		"crouch":
-			pass
-			# player.hurtBoxShape.shape._set_extents_y(106 * SGFixed.HALF)
 
 func update_debug_label(input_vector):
 	var player_type: String = self.get_parent().name
