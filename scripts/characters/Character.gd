@@ -234,6 +234,7 @@ func apply_knockback(force: int, angle_radians: int):
 	# var weight_scale = SGFixed.div(weight, weightKnockbackScale) # Can adjust the second number to adjust weight scaling.
 	knockback.rotate(-angle_radians) # -y is up
 	# knockback.imul(SGFixed.div(force, weight_scale))
+	knockback.imul(force)
 	velocity = knockback
 
 func apply_pushbox_force() -> void:

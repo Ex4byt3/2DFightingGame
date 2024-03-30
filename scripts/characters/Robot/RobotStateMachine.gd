@@ -28,22 +28,29 @@ func _ready():
 	add_state('KNOCKDOWN')
 	add_state('QGETUP')
 	add_state('DEAD')
+
+	# Normals
 	add_state('NEUTRAL_LIGHT')
 	add_state('NEUTRAL_MEDIUM')
 	add_state('NEUTRAL_HEAVY')
-	add_state('FORWARD_LIGHT')
-	add_state('FORWARD_MEDIUM')
+	add_state('NEUTRAL_IMPACT')
 	add_state('FORWARD_HEAVY')
 	add_state('CROUCHING_LIGHT')
 	add_state('CROUCHING_MEDIUM')
 	add_state('CROUCHING_HEAVY')
-	add_state('CROUCHING_FORWARD_MEDIUM')
 	add_state('CROUCHING_IMPACT')
-	add_state('NEUTRAL_IMPACT')
+	add_state('CROUCHING_FORWARD_MEDIUM')
 	add_state('AIR_LIGHT')
+	add_state('BACK_AIR_LIGHT')
 	add_state('AIR_MEDIUM')
+	add_state('BACK_AIR_MEDIUM')
 	add_state('AIR_HEAVY')
+	add_state('BACK_AIR_HEAVY')
 	add_state('AIR_IMPACT')
+	add_state('BACK_AIR_IMPACT')
+	add_state('QCF_LIGHT')
+
+	# Initial State
 	set_state('IDLE')
 
 func convert_inputs_to_string(inputs):
@@ -594,28 +601,6 @@ func transition_state(input):
 				player.attack_ended = false
 				player.animation.play("Idle")
 				set_state('IDLE')
-		states.FORWARD_LIGHT:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play forward light animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Walk")
-				set_state('WALK')
-		states.FORWARD_MEDIUM:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play forward medium animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Walk")
-				set_state('WALK')
 		states.FORWARD_HEAVY:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -857,16 +842,22 @@ func do_hit():
 		do_knockback(onHit["knockback"])
 		player.hitstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onHit["adv"])
 		player.frame = 0
+		player.hitstunMultiplier += onHit["gain"]
 		player.hitstop = onHit["hitstop"]
 		player.animation.play("Hitstun")
 		set_state("HITSTUN")
 
 func do_knockback(knockback: Dictionary):
-	#player.knockbackMultiplier += knockback["gain"]
+	if knockback["mult"]:
+		player.knockbackMultiplier = SGFixed.mul(player.knockbackMultiplier, knockback["gain"])
+	else:
+		player.knockbackMultiplier = player.knockbackMultiplier + knockback["gain"]
 	if knockback["static"]:
 		player.apply_knockback(knockback["force"], knockback["angle"])
 	else:
 		player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), knockback["angle"])
+	print(player.knockbackMultiplier)
+
 
 
 func do_attack(attack_name: String):
@@ -890,7 +881,9 @@ func update_debug_label(input_vector):
 		"velocity_y": str(player.velocity.y / ONE),
 		"input_vector_x": str(input_vector.x),
 		"input_vector_y": str(input_vector.y),
-		"state": str(state)
+		"state": str(state),
+		"knockback_multiplier": "%.3f" % (player.knockbackMultiplier / 65536.0),
+		"hitstun_multiplier": "%.3f" % (player.hitstunMultiplier / 65536.0),
 	}
 
 	MenuSignalBus.emit_update_debug(debug_data)
