@@ -400,7 +400,7 @@ func transition_state(input):
 				player.facingRight = player.input_vector.x > 0
 			if !input.has("shield"):
 				player.animation.play("LowUnblock")
-				player.animation.queue("Crouch")
+				player.animation.queue("Crouching")
 				player.blockMask = 0 # 000
 				set_state("CROUCH")
 			elif player.input_vector.y != -1:

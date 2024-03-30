@@ -6,7 +6,7 @@ const attacks = {
 	"neutral_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
-				{"x": 40, "y": 40, "width": 80, "height": 75, "ticks": 3},
+				{"x": 60, "y": 40, "width": 80, "height": 75, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
 		"cancelable": {
@@ -50,7 +50,7 @@ const attacks = {
 	"neutral_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7},
-				{"x": 40, "y": 10, "width": 125, "height": 85, "ticks": 5},
+				{"x": 60, "y": 10, "width": 125, "height": 85, "ticks": 5},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
 		"cancelable": {
@@ -92,7 +92,7 @@ const attacks = {
 	"neutral_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
-				{"x": 50, "y": 0, "width": 180, "height": 90, "ticks": 6},
+				{"x": 70, "y": 0, "width": 180, "height": 90, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
 			],
 		"cancelable": {
@@ -133,7 +133,7 @@ const attacks = {
 	"neutral_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20},
-				{"x": 50, "y": 0, "width": 80, "height": 180, "ticks": 4},
+				{"x": 70, "y": 0, "width": 80, "height": 180, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 24}
 			],
 		"cancelable": {
@@ -171,7 +171,7 @@ const attacks = {
 	"crouching_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4},
-				{"x": 40, "y": 30, "width": 70, "height": 70, "ticks": 3},
+				{"x": 60, "y": 30, "width": 70, "height": 70, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
 		"cancelable": {
@@ -215,7 +215,7 @@ const attacks = {
 	"crouching_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
-				{"x": 30, "y": - 35, "width": 125, "height": 50, "ticks": 4},
+				{"x": 50, "y": - 35, "width": 125, "height": 50, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
 		"cancelable": {
@@ -255,7 +255,7 @@ const attacks = {
 	"crouching_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
-				{"x": 40, "y": 0, "width": 80, "height": 60, "ticks": 3},
+				{"x": 60, "y": 0, "width": 80, "height": 60, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 25}
 			],
 		"cancelable": {
@@ -294,7 +294,7 @@ const attacks = {
 	"crouching_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 12},
-				{"x": 30, "y": - 35, "width": 135, "height": 50, "ticks": 6},
+				{"x": 50, "y": - 35, "width": 135, "height": 50, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
 		"cancelable": {
@@ -332,7 +332,7 @@ const attacks = {
 	"forward_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
-				{"x": 50, "y": 0, "width": 190, "height": 110, "ticks": 4},
+				{"x": 70, "y": 0, "width": 190, "height": 110, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 22}
 			],
 		"cancelable": {
@@ -370,7 +370,7 @@ const attacks = {
 	"crouching_forward_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
-				{"x": 30, "y": - 10, "width": 100, "height": 30, "ticks": 20},
+				{"x": 50, "y": - 10, "width": 100, "height": 30, "ticks": 20},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3}
 			],
 		"cancelable": {
@@ -408,7 +408,7 @@ const attacks = {
 	"air_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6},
-				{"x": 40, "y": - 40, "width": 70, "height": 70, "ticks": 3},
+				{"x": 60, "y": - 40, "width": 70, "height": 70, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
 		"cancelable": {
@@ -454,7 +454,7 @@ const attacks = {
 	"back_air_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
-				{"x": - 50, "y": - 20, "width": 75, "height": 65, "ticks": 3},
+				{"x": - 70, "y": - 20, "width": 75, "height": 65, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11}
 			],
 		"cancelable": {
@@ -500,7 +500,7 @@ const attacks = {
 	"air_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 13},
-				{"x": 40, "y": 10, "width": 115, "height": 60, "ticks": 4},
+				{"x": 60, "y": 10, "width": 115, "height": 60, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 17}
 			],
 		"cancelable": {
@@ -542,7 +542,7 @@ const attacks = {
 	"back_air_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 13},
-				{"x": - 50, "y": 20, "width": 110, "height": 60, "ticks": 5},
+				{"x": - 70, "y": 20, "width": 110, "height": 60, "ticks": 5},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
 			],
 		"cancelable": {
@@ -584,7 +584,7 @@ const attacks = {
 	"air_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
-				{"x": 40, "y": - 10, "width": 100, "height": 140, "ticks": 4},
+				{"x": 60, "y": - 10, "width": 100, "height": 140, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
 		"cancelable": {
@@ -624,7 +624,7 @@ const attacks = {
 	"back_air_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
-				{"x": - 40, "y": - 20, "width": 100, "height": 140, "ticks": 4},
+				{"x": - 60, "y": - 20, "width": 100, "height": 140, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 19}
 			],
 		"cancelable": {
@@ -664,7 +664,7 @@ const attacks = {
 	"air_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18},
-				{"x": 40, "y": - 35, "width": 120, "height": 90, "ticks": 4},
+				{"x": 60, "y": - 35, "width": 120, "height": 90, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 26}
 			],
 		"cancelable": {
@@ -702,7 +702,7 @@ const attacks = {
 	"back_air_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18},
-				{"x": - 50, "y": - 45, "width": 120, "height": 80, "ticks": 4},
+				{"x": - 70, "y": - 45, "width": 120, "height": 80, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 27}
 			],
 		"cancelable": {
