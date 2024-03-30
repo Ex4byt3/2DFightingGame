@@ -7,6 +7,14 @@ extends FixedAnimator
 			"hframes": 42,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"frameRate": 4,
 			"loop": true,
@@ -52,6 +60,14 @@ extends FixedAnimator
 			"hframes": 3,
 			"frame": 0,
 		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
+		},
 		"animation": {
 			"frameRate": 4,
 			"loop": false,
@@ -66,6 +82,14 @@ extends FixedAnimator
 			"texture": load("res://assets/characters/Robot/Crouch.png"),
 			"hframes": 3,
 			"frame": 2,
+		},
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 4379738
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 2949095
 		},
 		"animation": {
 			"frameRate": 0,

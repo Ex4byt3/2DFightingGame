@@ -18,12 +18,16 @@ func _network_process(input: Dictionary) -> void:
 		frame = player_game_process()
 		animate_process()
 	elif frame > 0:
-		if serverPlayer.input.size() > 1:
-			serverHitstopBuffer = serverPlayer.input
-		if clientPlayer.input.size() > 1:
-			clientHitstopBuffer = clientPlayer.input
+		if serverPlayer.input.size() > 2:
+			serverHitstopBuffer = serverPlayer.hitstopBuffer
+			print(str(serverHitstopBuffer))
+		if clientPlayer.input.size() > 2:
+			clientHitstopBuffer = clientPlayer.hitstopBuffer
 		frame -= 1
 
+# func sound_process() -> void:
+# 	serverPlayer.get_node("SoundPlayer")._game_process()
+# 	clientPlayer.get_node("SoundPlayer")._game_process()
 
 func animate_process() -> void:
 	serverPlayer.get_node("FixedAnimationPlayer")._game_process()

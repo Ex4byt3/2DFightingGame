@@ -3,6 +3,7 @@ class_name FixedAnimator
 
 # nodes to animate
 @onready var sprite = get_parent().get_node("Sprite")
+@onready var hurtBox = get_parent().get_node("HurtBox").get_node("SGCollisionShape2D")
 
 # animation data
 var frame : int = 0
@@ -46,11 +47,21 @@ func _game_process() -> void:
 			frame = 0
 		else:
 			frame += 1
+	
+		update_hurtbox()
+
+func update_hurtbox() -> void:
+	if current.has("hurtbox"):
+		hurtBox.shape.extents.x = current["hurtbox"]["shape"]["extents_x"]
+		hurtBox.shape.extents.y = current["hurtbox"]["shape"]["extents_y"]
+		hurtBox.fixed_position.x = current["hurtbox"]["fixed_position_x"]
+		hurtBox.fixed_position.y = current["hurtbox"]["fixed_position_y"]
 
 func stop() -> void:
 	playing = false	
 
 func play(animationName: String) -> void:
+	animationsQueue = []
 	if animationName in animations:
 		if current != animations[animationName]:
 			current = animations[animationName]
@@ -79,9 +90,20 @@ func _save_state() -> Dictionary:
 		"counter": counter,
 		"animationsQueue": animations_queue,
 
-		"spritetexture": sprite.texture,
-		"spriteFrame": sprite.frame,
-		"spriteHFrames": sprite.hframes,
+		"sprite": {
+			"texture": sprite.texture,
+			"frame": sprite.frame,
+			"hframes": sprite.hframes
+		},
+
+		"hurtbox": {
+			"shape": {
+				"extents_x": hurtBox.shape.extents.x,
+				"extents_y": hurtBox.shape.extents.y
+			},
+				"fixed_position_x": hurtBox.fixed_position.x,
+				"fixed_position_y": hurtBox.fixed_position.y
+		},
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -93,6 +115,12 @@ func _load_state(loadState: Dictionary) -> void:
 	for animation in loadState["animationsQueue"]:
 		animationsQueue.append(animation)
 
-	sprite.texture = loadState["spritetexture"]
-	sprite.frame = loadState["spriteFrame"]
-	sprite.hframes = loadState["spriteHFrames"]
+	sprite.texture = loadState["sprite"]["texture"]
+	sprite.frame = loadState["sprite"]["frame"]
+	sprite.hframes = loadState["sprite"]["hframes"]
+
+	hurtBox.shape.extents.x = loadState["hurtbox"]["shape"]["extents_x"]
+	hurtBox.shape.extents.y = loadState["hurtbox"]["shape"]["extents_y"]
+	hurtBox.fixed_position.x = loadState["hurtbox"]["fixed_position_x"]
+	hurtBox.fixed_position.y = loadState["hurtbox"]["fixed_position_y"]
+

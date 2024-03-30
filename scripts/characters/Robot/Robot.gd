@@ -87,6 +87,8 @@ func _ready():
 	_scale_to_fixed()
 	_rotate_client_player()
 	_init_character_data(martial_hero_img, martial_hero_name, martial_hero_max_health)
+	$HurtBox.get_node("SGCollisionShape2D").shape = SGRectangleShape2D.new()
+
 
 
 ## Connecting signals to our menu
@@ -141,7 +143,6 @@ func _rotate_client_player() -> void:
 		# also flip hurtboxCollision layer and mask for client player
 		hurtBox.set_collision_mask_bit(1, false)
 		hurtBox.set_collision_mask_bit(2, true)
-
 
 ## Initializing the character data
 #func _init_character_data() -> void:

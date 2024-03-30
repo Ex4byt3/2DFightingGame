@@ -2,7 +2,7 @@ extends SGFixedNode2D
 
 const ONE = SGFixed.ONE
 
-var attacks = {
+const attacks = {
 	"neutral_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},

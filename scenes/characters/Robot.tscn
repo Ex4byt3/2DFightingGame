@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=73 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -2052,10 +2052,6 @@ _data = {
 "RESET": SubResource("Animation_1teet")
 }
 
-[sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_cg7df"]
-extents_x = 4487128
-extents_y = 6939319
-
 [sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_ssxrj"]
 extents_x = 4487128
 extents_y = 6939319
@@ -2135,11 +2131,7 @@ script = ExtResource("7_mrvkx")
 collision_layer = 0
 collision_mask = 2
 
-[node name="HurtBox" type="SGCollisionShape2D" parent="HurtBox"]
-shape = SubResource("SGRectangleShape2D_cg7df")
-fixed_position_x = -131072
-fixed_position_y = 393216
-position = Vector2(-2, 6)
+[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="HurtBox"]
 
 [node name="SpawnHitbox" type="SGFixedNode2D" parent="."]
 script = ExtResource("18_7wveu")

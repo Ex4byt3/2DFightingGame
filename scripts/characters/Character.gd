@@ -94,6 +94,8 @@ var isOnWallR := false
 var wallBounceVelocity := SGFixed.vector2(0, 0)
 
 var input := {} # Input dictionary
+var hitstopBuffer := {} # Hitstop dictionary
+var usedBuffer := false
 
 func _ready():
 	_handle_connecting_signals()

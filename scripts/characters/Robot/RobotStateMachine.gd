@@ -24,7 +24,6 @@ func _ready():
 	add_state('BLOCKSTUN')
 	add_state('LOW_BLOCKSTUN')
 	add_state('AIR_BLOCKSTUN')
-	# add_state('HITSTOP')
 	add_state('HITSTUN')
 	add_state('KNOCKDOWN')
 	add_state('QGETUP')
@@ -875,7 +874,7 @@ func do_attack(attack_name: String):
 	# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
 	# Throw attack
 	player.thrownHits += 1 # Increment number of thrown attacks
-	SyncManager.spawn("Hitbox", player.get_node("SpawnHitbox"), Hitbox, spawnHitBox.attacks[attack_name])
+	SyncManager.spawn("Hitbox", spawnHitBox, Hitbox, spawnHitBox.attacks[attack_name])
 
 	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
 	set_state(attack_name.to_upper())
@@ -889,7 +888,7 @@ func change_hurtbox(state_type: String):
 			player.hurtBox.fixed_position.y = 0
 		"crouch":
 			pass
-			#player.hurtBoxShape.shape._set_extents_y(106 * SGFixed.HALF)
+			# player.hurtBoxShape.shape._set_extents_y(106 * SGFixed.HALF)
 
 func update_debug_label(input_vector):
 	var player_type: String = self.get_parent().name
