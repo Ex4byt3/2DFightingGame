@@ -42,19 +42,20 @@ func _network_spawn(data: Dictionary) -> void:
 
 # Processing the hitbox
 func _game_process() -> void:
-	if idx > len(hitboxes) - 1:
-		set_shape(0, 0)
-		attacking_player.thrownHits -= 1
-		attacking_player.recovery = false
-		attacking_player.attack_ended = true
-		SyncManager.despawn(self)
-	elif tick >= hitboxes[idx]["ticks"]:
+	if tick >= hitboxes[idx]["ticks"]:
+		idx += 1
+		if idx > len(hitboxes) - 1:
+			set_shape(0, 0)
+			attacking_player.thrownHits -= 1
+			attacking_player.recovery = false
+			attacking_player.attack_ended = true
+			SyncManager.despawn(self)
+			return
 		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
 		set_pos(hitboxes[idx]["x"], hitboxes[idx]["y"])
-		idx += 1
-		tick = 0
 		if idx == len(hitboxes) - 1:
 			attacking_player.recovery = true
+		tick = 0
 	tick += 1
 
 func set_shape(w: int, h: int) -> void:
