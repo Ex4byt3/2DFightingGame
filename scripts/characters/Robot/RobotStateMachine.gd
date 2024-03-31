@@ -501,12 +501,12 @@ func transition_state(input):
 				if player.frame >= player.hitstunFrames - 3:
 					if player.isOnFloor:
 						player.animation.play("HitstunEnd")
-					else:
+					elif player.velocity.y < 0:
 						player.animation.play("AirHitstunEnd")
 				else:
 					if player.isOnFloor:
 						player.animation.play("Hitstun")
-					else:
+					elif player.velocity.y < 0:
 						player.animation.play("AirHitstun")
 
 					#print("WALL")
@@ -854,7 +854,7 @@ func do_hit():
 		player.frame = 0
 		player.hitstunMultiplier += onHit["gain"]
 		player.hitstop = onHit["hitstop"]
-		if player.velocity.y > 0:
+		if player.velocity.y < 0:
 			player.animation.play("AirHitstun")
 		else:
 			player.animation.play("Hitstun")
