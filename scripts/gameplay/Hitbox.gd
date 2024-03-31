@@ -44,12 +44,11 @@ func _network_spawn(data: Dictionary) -> void:
 func _game_process() -> void:
 	if idx > len(hitboxes) - 1:
 		set_shape(0, 0)
-		if tick >= despawnAt:
-			attacking_player.thrownHits -= 1
-			attacking_player.attack_ended = true
-			attacking_player.recovery = false
-			SyncManager.despawn(self)
-	else:
+		attacking_player.thrownHits -= 1
+		attacking_player.recovery = false
+		attacking_player.attack_ended = true
+		SyncManager.despawn(self)
+	elif tick >= hitboxes[idx]["ticks"]:
 		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
 		set_pos(hitboxes[idx]["x"], hitboxes[idx]["y"])
 		idx += 1
