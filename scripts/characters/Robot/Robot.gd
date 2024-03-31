@@ -164,7 +164,13 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 		input.erase("input_vector")
 	return input
 
+func update_input_buffer(input: Dictionary) -> void:
+	inputBuffer.append(input)
+	if inputBuffer.size() > 4:
+		inputBuffer.remove_at(0)
+
 func _game_process(input: Dictionary) -> int:
+	update_input_buffer(input)
 	currentGameFrame += 1
 	increase_meter_over_time() # This was currently not rollback safe, commented for rollback testing hitboxes
 	

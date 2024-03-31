@@ -95,7 +95,7 @@ var wallBounceVelocity := SGFixed.vector2(0, 0)
 
 var input := {} # Input dictionary
 var hitstopBuffer := {} # Hitstop dictionary
-var usedBuffer := false
+var inputBuffer := [] # Input buffer array, holds the last 4 frames of input
 
 func _ready():
 	_handle_connecting_signals()

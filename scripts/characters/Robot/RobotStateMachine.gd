@@ -84,17 +84,23 @@ func parse_motion_inputs():
 			# print(player.motion_inputs[motion])
 			return motion
 
+func buffer_has(btn: String) -> bool:
+	var result = false
+	for i in range(player.inputBuffer.size()):
+		result = result or player.inputBuffer[i].has(btn)
+	return result
+
 func check_for_attacks(input) -> String:
 	var inputs = ["light", "medium", "heavy", "impact"] # in order of priority
 	for i in inputs:
-		if input.has(i):
+		if buffer_has(i):
 			return i
 	return ""
 	
 func neutral_attack(attack: String) -> bool:
 	# TODO: motion input for qcf_light
 	if attack != "":
-		if player.input.has(attack) and not player.pressed.has(attack):
+		if buffer_has(attack) and not player.pressed.has(attack):
 			player.pressed.append(attack)
 			player.animation.play("Neutral" + attack.capitalize())
 			do_attack("neutral_" + attack)
@@ -111,7 +117,7 @@ func crouching_attack(attack: String) -> bool:
 				do_attack("crouching_forward_medium")
 				set_state('NORMAL')
 				return true
-		elif player.input.has(attack):
+		elif buffer_has(attack):
 			player.pressed.append(attack)
 			player.animation.play("Crouching" + attack.capitalize())
 			do_attack("crouching_" + attack)
@@ -121,7 +127,7 @@ func crouching_attack(attack: String) -> bool:
 
 func forward_attack(attack: String) -> bool:
 	if attack == "heavy": # forward heavy is the only forward attack
-		if player.input.has(attack) and not player.pressed.has(attack):
+		if buffer_has(attack) and not player.pressed.has(attack):
 			player.pressed.append(attack)
 			player.animation.play("Forward" + attack.capitalize())
 			do_attack("forward_" + attack)
@@ -183,11 +189,11 @@ func transition_state(input):
 	player.sprite.flip_h = !player.facingRight
 
 	# TODO: parse_motion_inputs should only get called when we need to look for a possible motion input rahter thanevery frame
-	# if input.has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
+	# if buffer_has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
 
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
-	if input.has("dash") and not player.isOnFloor:
+	if buffer_has("dash") and not player.isOnFloor:
 		# TODO: scaling meter cost
 		start_dash(player.input_vector)
 
@@ -217,7 +223,7 @@ func transition_state(input):
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
 				set_state('CROUCH')
-			elif input.has("shield"):
+			elif buffer_has("shield"):
 				player.blockMask = 6 # 110
 				player.animation.play("Block")
 				set_state("BLOCK")
@@ -247,7 +253,7 @@ func transition_state(input):
 				player.animation.play("Stand")
 				player.animation.queue("Idle")
 				set_state('IDLE')
-			elif input.has("shield"):
+			elif buffer_has("shield"):
 				player.blockMask = 6 # 110
 				# player.animation.play("LowBlock") # TODO: add low block animation
 				player.animation.play("LowBlocking")
@@ -261,7 +267,7 @@ func transition_state(input):
 		states.CRAWL:
 			if crouching_attack(check_for_attacks(player.input)):
 				pass
-			elif input.has('shield'):
+			elif buffer_has('shield'):
 				player.blockMask = 3 # 011
 				# player.animation.play("LowBlock") # TODO: add low block animation
 				player.animation.play("LowBlocking")
@@ -285,7 +291,7 @@ func transition_state(input):
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
 				set_state('CROUCH')
-			elif input.has("shield"):
+			elif buffer_has("shield"):
 				player.blockMask = 6 # 110
 				player.animation.play("Block")
 				set_state("BLOCK")
@@ -334,7 +340,7 @@ func transition_state(input):
 		states.SPRINT:
 			if forward_attack(check_for_attacks(player.input)):
 				pass
-			if input.has("shield"):
+			if buffer_has("shield"):
 				player.blockMask = 6 # 110
 				player.animation.play("Block")
 				set_state("BLOCK")
@@ -423,7 +429,7 @@ func transition_state(input):
 					player.velocity.x = -player.maxAirSpeed
 			if air_attack(check_for_attacks(player.input)):
 				pass
-			elif input.has('shield'):
+			elif buffer_has('shield'):
 				player.animation.play("AirBlock")
 				player.blockMask = 7 # 111, no high/lows in the air
 				set_state("AIR_BLOCK")
@@ -431,7 +437,7 @@ func transition_state(input):
 			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.x != 0:
 				player.facingRight = player.input_vector.x > 0
-			if !input.has("shield"):
+			if !buffer_has("shield"):
 				player.animation.play("Unblock")
 				player.blockMask = 0 # 000
 				player.animation.queue("Idle")
@@ -448,7 +454,7 @@ func transition_state(input):
 			player.animation.play("LowBlocking")
 			if player.input_vector.x != 0:
 				player.facingRight = player.input_vector.x > 0
-			if !input.has("shield"):
+			if !buffer_has("shield"):
 				player.animation.play("LowUnblock")
 				player.animation.queue("Crouching")
 				player.blockMask = 0 # 000
@@ -462,7 +468,7 @@ func transition_state(input):
 				player.blockMask = 0 # 000
 				start_jump()
 		states.AIR_BLOCK:
-			if !input.has("shield"):
+			if !buffer_has("shield"):
 				player.animation.play("AirUnblock")
 				player.animation.queue("Airborne")
 				player.blockMask = 0 # 000
@@ -854,7 +860,7 @@ func start_dash(input_vector):
 		set_state('DASH')
 
 func jump_check(input) -> bool: # might be redundant
-	if player.input_vector.y == 1 or input.has("jump"):
+	if player.input_vector.y == 1 or buffer_has("jump"):
 		return true
 	else:
 		return false
