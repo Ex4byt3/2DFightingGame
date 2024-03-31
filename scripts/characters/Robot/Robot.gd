@@ -166,7 +166,7 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 
 func update_input_buffer(input: Dictionary) -> void:
 	inputBuffer.append(input)
-	if inputBuffer.size() > 4:
+	if inputBuffer.size() > 4: # 4 frames of input buffer
 		inputBuffer.remove_at(0)
 
 func _game_process(input: Dictionary) -> int:
@@ -234,6 +234,9 @@ func _save_state() -> Dictionary:
 	var hitstop_buffer = {}
 	for item in hitstopBuffer:
 		hitstop_buffer[item] = hitstopBuffer[item]
+	var input_buffer = []
+	for item in inputBuffer:
+		input_buffer.append(item.duplicate())
 	return {
 		playerState = stateMachine.state,
 		controlBuffer = control_buffer,
@@ -277,7 +280,8 @@ func _save_state() -> Dictionary:
 		knockbackMultiplier = knockbackMultiplier,
 		hitstunMultiplier = hitstunMultiplier,
 
-		hitstopBuffer = hitstop_buffer
+		hitstopBuffer = hitstop_buffer,
+		inputBuffer = input_buffer
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -288,6 +292,10 @@ func _load_state(loadState: Dictionary) -> void:
 	pressed = []
 	for item in loadState['pressed']:
 		pressed.append(item)
+	inputBuffer = []
+	for item in loadState['inputBuffer']:
+		inputBuffer.append(item.duplicate())
+	
 	
 	fixed_position.x = loadState['fixed_position_x']
 	fixed_position.y = loadState['fixed_position_y']

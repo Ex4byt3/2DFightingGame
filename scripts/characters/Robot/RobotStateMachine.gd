@@ -168,7 +168,7 @@ func any_attack(attack: String) -> bool:
 
 func transition_state(input):
 	update_debug_label(player.input_vector)
-	update_pressed(input)
+	update_pressed()
 
 	#####################
 	# Universal Changes #
@@ -830,10 +830,15 @@ func start_jump():
 			player.airJump -= 1
 		set_state('JUMPSQUAT')
 
-func update_pressed(input) -> void:
-	for button in player.pressed:
-		if !input.has(str(button)):
-			player.pressed.erase(button)
+func update_pressed(input = {}) -> void:
+	if input != {}:
+		for button in player.pressed:
+			if !input.has(str(button)):
+				player.pressed.erase(button)
+	else:
+		for button in player.pressed:
+			if !buffer_has(str(button)):
+				player.pressed.erase(button)
 
 func start_dash(input_vector):
 	if !player.pressed.has("dash"):
