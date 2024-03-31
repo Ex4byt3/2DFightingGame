@@ -13,8 +13,8 @@ var tick = 0 # Current tick the hitbox is on
 var used = false # If the hitbox is used
 var hitboxes = [] # The shapes of our hitbox over time (frames)
 
-var despawnAt = 30 # Max recovery frames before despawning
 var idx : int = 0
+var disabled = false
 
 # Spawns in the hitbox with all the data passed to it
 func _network_spawn(data: Dictionary) -> void:
@@ -37,12 +37,20 @@ func _network_spawn(data: Dictionary) -> void:
 	attacking_player.attack_ended = false
 	# set the first shape
 	hitboxes = properties['hitboxes']
+	$Hitbox_Shape.shape = SGRectangleShape2D.new()
 	set_shape(hitboxes[0]["width"], hitboxes[0]["height"])
 	set_pos(hitboxes[0]["x"], hitboxes[0]["y"])
 
 # Processing the hitbox
 func _game_process() -> void:
-	if tick >= hitboxes[idx]["ticks"]:
+	if disabled:
+		set_shape(0, 0)
+		attacking_player.thrownHits -= 1
+		attacking_player.recovery = false
+		attacking_player.attack_ended = true
+		SyncManager.despawn(self)
+		return
+	elif tick >= hitboxes[idx]["ticks"]:
 		idx += 1
 		if idx > len(hitboxes) - 1:
 			set_shape(0, 0)

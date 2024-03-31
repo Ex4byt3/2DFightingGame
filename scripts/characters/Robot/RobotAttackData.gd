@@ -3,6 +3,51 @@ extends SGFixedNode2D
 const ONE = SGFixed.ONE
 
 const attacks = {
+	# dubug attack
+	"_neutral_light": {
+		"hitboxes": [
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
+				{"x": 60, "y": 40, "width": 120, "height": 75, "ticks": 3},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 60}
+			],
+		"cancelable": {
+			"jump": true,
+			"type": 1,
+			"moves": [
+				"neutral_light",
+				"crouching_light",
+				"neutral_medium",
+				"crouching_medium",
+				"neutral_heavy",
+				"crouching_heavy"
+			],
+		},
+		"onHit": {
+			"damage": 120,
+			"adv": 0,
+			"gain": 0,
+			"hitstop": 30,
+			"knockdown": 0,
+			"knockback": {
+				"gain": 1966,
+				"static": false,
+				"mult": false,
+				"force": 2 * ONE,
+				"angle": 0
+			},
+		},
+		"onBlock": {
+			"damage": 0,
+			"blockstop": 8,
+			"adv": - 1,
+			"mask": 2, # mid
+			"knockback": {
+				"force": 1 * ONE,
+				"angle": 0
+			}
+		}
+	},
+
 	"neutral_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
@@ -10,7 +55,7 @@ const attacks = {
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
 		"cancelable": {
-		"jump": true,
+			"jump": true,
 			"type": 1,
 			"moves": [
 				"neutral_light",

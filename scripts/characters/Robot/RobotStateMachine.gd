@@ -30,6 +30,9 @@ func _ready():
 	add_state('DEAD')
 
 	# Normals
+	add_state('NORMAL')
+	# add_state('NEUTRAL_NORMAL')
+
 	add_state('NEUTRAL_LIGHT')
 	add_state('NEUTRAL_MEDIUM')
 	add_state('NEUTRAL_HEAVY')
@@ -81,6 +84,82 @@ func parse_motion_inputs():
 			# print(player.motion_inputs[motion])
 			return motion
 
+func check_for_attacks(input) -> String:
+	var inputs = ["light", "medium", "heavy", "impact"] # in order of priority
+	for i in inputs:
+		if input.has(i):
+			return i
+	return ""
+	
+func neutral_attack(attack: String) -> bool:
+	# TODO: motion input for qcf_light
+	if attack != "":
+		if player.input.has(attack) and not player.pressed.has(attack):
+			player.pressed.append(attack)
+			player.animation.play("Neutral" + attack.capitalize())
+			do_attack("neutral_" + attack)
+			set_state('NORMAL')
+			return true
+	return false
+
+func crouching_attack(attack: String) -> bool:
+	if attack != "" and !player.pressed.has(attack):
+		if player.input_vector.x != 0:
+			player.facingRight = player.input_vector.x > 0
+			if attack == "medium":
+				player.animation.play("CrouchingForwardMedium")
+				do_attack("crouching_forward_medium")
+				set_state('NORMAL')
+				return true
+		elif player.input.has(attack):
+			player.pressed.append(attack)
+			player.animation.play("Crouching" + attack.capitalize())
+			do_attack("crouching_" + attack)
+			set_state('NORMAL')
+			return true
+	return false
+
+func forward_attack(attack: String) -> bool:
+	if attack == "heavy": # forward heavy is the only forward attack
+		if player.input.has(attack) and not player.pressed.has(attack):
+			player.pressed.append(attack)
+			player.animation.play("Forward" + attack.capitalize())
+			do_attack("forward_" + attack)
+			set_state('NORMAL')
+			return true
+	else: # forward light and medium are the same as neutral light and medium
+		return neutral_attack(attack)
+	return false
+
+func air_attack(attack: String) -> bool:
+	if attack != "" and !player.pressed.has(attack):
+		if player.input_vector.x > 0 == player.facingRight:
+			player.pressed.append(attack)
+			player.animation.play("BackAir" + attack.capitalize())
+			do_attack("back_air_" + attack)
+			set_state('NORMAL')
+			return true
+		else:
+			player.pressed.append(attack)
+			player.animation.play("Air" + attack.capitalize())
+			do_attack("air_" + attack)
+			set_state('NORMAL')
+			return true
+	return false
+
+func any_attack(attack: String) -> bool:
+	if attack != "":
+		if player.isOnFloor:
+			if player.input_vector.y == -1:
+				return crouching_attack(attack)
+			elif player.input_vector.x != 0:
+				return forward_attack(attack)
+			else:
+				return neutral_attack(attack)
+		else:
+			return air_attack(attack)
+	return false
+
 func transition_state(input):
 	update_debug_label(player.input_vector)
 	update_pressed(input)
@@ -126,54 +205,6 @@ func transition_state(input):
 			set_state('DEAD')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
-	elif input.get("light", false) and player.thrownHits == 0 and !player.pressed.has("light"):
-		player.pressed.append("light")
-		match states[state]:
-			states.IDLE, states.SLIDE:
-				do_attack("neutral_light")
-			states.SPRINT, states.WALK:
-				do_attack("neutral_light")
-			states.CROUCH:
-				do_attack("crouching_light")
-			states.AIRBORNE:
-				do_attack("air_light")
-			# TO DO, attacking cancels block?
-	elif input.get("medium", false) and player.thrownHits == 0 and !player.pressed.has("medium"):
-		player.pressed.append("medium")
-		match states[state]:
-			states.IDLE, states.SLIDE:
-				do_attack("neutral_medium")
-			states.SPRINT, states.WALK:
-				do_attack("neutral_medium")
-			states.CROUCH:
-				do_attack("crouching_medium")
-			states.CRAWL:
-				do_attack("crouching_forward_medium")
-			states.AIRBORNE:
-				do_attack("air_medium")
-			# TO DO, attacking cancels block?
-	elif input.get("heavy", false) and player.thrownHits == 0 and !player.pressed.has("heavy"):
-		player.pressed.append("heavy")
-		match states[state]:
-			states.IDLE, states.SLIDE:
-				do_attack("neutral_heavy")
-			states.WALK, states.SPRINT:
-				do_attack("forward_heavy")
-			states.CROUCH:
-				do_attack("crouching_heavy")
-			states.AIRBORNE:
-				do_attack("air_heavy")
-			# TO DO, attacking cancels block?
-	elif input.get("impact", false) and player.thrownHits == 0 and !player.pressed.has("impact"):
-		player.pressed.append("impact")
-		match states[state]:
-			states.IDLE, states.WALK, states.SPRINT, states.SLIDE:
-				do_attack("neutral_impact")
-			states.CROUCH, states.CRAWL:
-				do_attack("crouching_impact")
-			states.AIRBORNE:
-				do_attack("air_impact")
-			# TO DO, attacking cancels block?
 
 	#################
 	# State Changes #
@@ -181,7 +212,9 @@ func transition_state(input):
 	match states[state]:
 		states.IDLE:
 			do_decerlerate(player.groundDeceleration)
-			if player.input_vector.y == -1:
+			if neutral_attack(check_for_attacks(player.input)):
+				pass
+			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
 				set_state('CROUCH')
 			elif input.has("shield"):
@@ -208,7 +241,9 @@ func transition_state(input):
 				start_jump()
 		states.CROUCH:
 			do_decerlerate(player.groundDeceleration)
-			if player.input_vector.y != -1:
+			if crouching_attack(check_for_attacks(player.input)):
+				pass
+			elif player.input_vector.y != -1:
 				player.animation.play("Stand")
 				player.animation.queue("Idle")
 				set_state('IDLE')
@@ -224,7 +259,9 @@ func transition_state(input):
 				player.animation.play("Crawl")
 				set_state('CRAWL')
 		states.CRAWL:
-			if input.has('shield'):
+			if crouching_attack(check_for_attacks(player.input)):
+				pass
+			elif input.has('shield'):
 				player.blockMask = 3 # 011
 				# player.animation.play("LowBlock") # TODO: add low block animation
 				player.animation.play("LowBlocking")
@@ -243,7 +280,9 @@ func transition_state(input):
 			if jump_check(input):
 				start_jump()
 		states.WALK:
-			if player.input_vector.y == -1:
+			if forward_attack(check_for_attacks(player.input)):
+				pass
+			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
 				set_state('CROUCH')
 			elif input.has("shield"):
@@ -269,10 +308,11 @@ func transition_state(input):
 			if jump_check(input):
 				start_jump()
 		states.SLIDE:
+			if any_attack(check_for_attacks(player.input)):
+				pass
 			if jump_check(input):
 				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
 				start_jump()
-
 			if player.velocity.x > 0:
 				if player.input_vector.x == 1: # if the player is moving with the slide it decays slower, else it dwcays quickly
 					player.velocity.x -= player.slideDecay
@@ -292,6 +332,8 @@ func transition_state(input):
 					player.animation.play("Sprint")
 					set_state('SPRINT')
 		states.SPRINT:
+			if forward_attack(check_for_attacks(player.input)):
+				pass
 			if input.has("shield"):
 				player.blockMask = 6 # 110
 				player.animation.play("Block")
@@ -379,8 +421,9 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
-
-			if input.has('shield'):
+			if air_attack(check_for_attacks(player.input)):
+				pass
+			elif input.has('shield'):
 				player.animation.play("AirBlock")
 				player.blockMask = 7 # 111, no high/lows in the air
 				set_state("AIR_BLOCK")
@@ -569,6 +612,20 @@ func transition_state(input):
 				set_state('IDLE')
 			else:
 				player.frame -= 1
+		states.NORMAL:
+			player.velocity.x = 0
+			if player.recovery and player.hitstopBuffer.size() > 0: # if the player buffered in hitstop
+				var attack = check_for_attacks(player.hitstopBuffer)
+				if !player.pressed.has(attack):
+					# TODO: cancel logic
+					player.pressed.append(attack)
+					spawnHitBox.get_child(0).disabled = true # remove the previous hitbox
+					any_attack(attack)
+				player.hitstopBuffer = {}
+			elif player.attack_ended:
+				player.attack_ended = false
+				player.animation.play("Idle")
+				set_state('IDLE')
 		states.DEAD:
 			player.is_dead = true
 			player.num_lives -= 1

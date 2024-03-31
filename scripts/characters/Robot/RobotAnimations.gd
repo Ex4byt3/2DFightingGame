@@ -868,6 +868,21 @@ extends FixedAnimator
 		"sprite": {
 			"texture": load("res://assets/characters/Robot/Hitstun/Hitstun.png"),
 			"hframes": 3,
+			"frame": 1,
+		},
+		"animation": {
+			"frameRate": 0,
+			"loop": false,
+			"reverse": false,
+			"startFrame": 1,
+			"endFrame": 1,
+			"simple": true
+		}
+	},
+	"HitstunEnd": { # TODO: Add a hitstun end animation
+		"sprite": {
+			"texture": load("res://assets/characters/Robot/Idle.png"),
+			"hframes": 42,
 			"frame": 0,
 		},
 		"animation": {
@@ -876,21 +891,6 @@ extends FixedAnimator
 			"reverse": false,
 			"startFrame": 0,
 			"endFrame": 0,
-			"simple": true
-		}
-	},
-	"HitstunEnd": {
-		"sprite": {
-			"texture": load("res://assets/characters/Robot/Hitstun/Hitstun.png"),
-			"hframes": 3,
-			"frame": 0,
-		},
-		"animation": {
-			"frameRate": 2,
-			"loop": false,
-			"reverse": false,
-			"startFrame": 0,
-			"endFrame": 2,
 			"simple": true
 		}
 	},

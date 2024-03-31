@@ -225,6 +225,9 @@ func _save_state() -> Dictionary:
 	var pressed_ = []
 	for item in pressed:
 		pressed_.append(item)
+	var hitstop_buffer = {}
+	for item in hitstopBuffer:
+		hitstop_buffer[item] = hitstopBuffer[item]
 	return {
 		playerState = stateMachine.state,
 		controlBuffer = control_buffer,
@@ -266,7 +269,9 @@ func _save_state() -> Dictionary:
 
 		hitstop = hitstop,
 		knockbackMultiplier = knockbackMultiplier,
-		hitstunMultiplier = hitstunMultiplier
+		hitstunMultiplier = hitstunMultiplier,
+
+		hitstopBuffer = hitstop_buffer
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -317,6 +322,10 @@ func _load_state(loadState: Dictionary) -> void:
 	hitstop = loadState['hitstop']
 	knockbackMultiplier = loadState['knockbackMultiplier']
 	hitstunMultiplier = loadState['hitstunMultiplier']
+
+	hitstopBuffer = {}
+	for item in loadState['hitstopBuffer']:
+		hitstopBuffer[item] = loadState['hitstopBuffer'][item]
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()

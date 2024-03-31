@@ -3,8 +3,6 @@ extends Node
 @onready var serverPlayer = get_node("../ServerPlayer")
 @onready var clientPlayer = get_node("../ClientPlayer")
 var frame = 0
-var serverHitstopBuffer = {}
-var clientHitstopBuffer = {}
 
 func _network_process(input: Dictionary) -> void:
 	sync_postions()
@@ -18,11 +16,13 @@ func _network_process(input: Dictionary) -> void:
 		frame = player_game_process()
 		animate_process()
 	elif frame > 0:
+		serverPlayer.get_node("StateMachine").update_pressed(serverPlayer.input)
+		clientPlayer.get_node("StateMachine").update_pressed(clientPlayer.input)
 		if serverPlayer.input.size() > 2:
-			serverHitstopBuffer = serverPlayer.hitstopBuffer
-			# print(str(serverHitstopBuffer))
+			serverPlayer.hitstopBuffer = serverPlayer.input
+			# print(str(serverPlayer.hitstopBuffer))
 		if clientPlayer.input.size() > 2:
-			clientHitstopBuffer = clientPlayer.hitstopBuffer
+			clientPlayer.hitstopBuffer = clientPlayer.input
 		frame -= 1
 
 # func sound_process() -> void:
@@ -72,23 +72,9 @@ func sync_hitboxes() -> void:
 		hitbox.sync_to_physics_engine()
 
 func _save_state() -> Dictionary:
-	var server_hitstop_buffer = {}
-	var client_hitstop_buffer = {}
-	for input in serverHitstopBuffer:
-		server_hitstop_buffer[input] = serverHitstopBuffer[input]
-	for input in clientHitstopBuffer:
-		client_hitstop_buffer[input] = clientHitstopBuffer[input]
 	return {
 		frame = frame,
-		serverHitstopBuffer = server_hitstop_buffer,
-		clientHitstopBuffer = client_hitstop_buffer
 	}
 
 func _load_state(loadState: Dictionary) -> void:
 	frame = loadState["frame"]
-	serverHitstopBuffer = {}
-	for input in loadState["serverHitstopBuffer"]:
-		serverHitstopBuffer[input] = loadState["serverHitstopBuffer"][input]
-	clientHitstopBuffer = {}
-	for input in loadState["clientHitstopBuffer"]:
-		clientHitstopBuffer[input] = loadState["clientHitstopBuffer"][input]
