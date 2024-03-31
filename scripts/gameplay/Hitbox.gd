@@ -13,7 +13,7 @@ var tick = 0 # Current tick the hitbox is on
 var used = false # If the hitbox is used
 var hitboxes = [] # The shapes of our hitbox over time (frames)
 
-var despawnAt = 0 # When our hitbox despawns
+var despawnAt = 30 # Max recovery frames before despawning
 var idx : int = 0
 
 # Spawns in the hitbox with all the data passed to it
@@ -28,6 +28,7 @@ func _network_spawn(data: Dictionary) -> void:
 		attacked_player = map.get_node("ClientPlayer")
 	
 	properties = data
+	attacking_player.prevAttack = data
 
 	# flipping the angle currently is not rollback safe
 	# if !attacking_player.facingRight:
@@ -42,15 +43,14 @@ func _network_spawn(data: Dictionary) -> void:
 
 # Processing the hitbox
 func _game_process() -> void:
-	# animate the hitbox
-	if idx >= len(hitboxes) - 1:
+	if idx > len(hitboxes) - 1:
+		set_shape(0, 0)
 		if tick >= despawnAt:
-			set_shape(0, 0)
 			attacking_player.thrownHits -= 1
 			attacking_player.attack_ended = true
 			attacking_player.recovery = false
 			SyncManager.despawn(self)
-	elif tick >= hitboxes[idx]["ticks"]:
+	else:
 		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
 		set_pos(hitboxes[idx]["x"], hitboxes[idx]["y"])
 		idx += 1
