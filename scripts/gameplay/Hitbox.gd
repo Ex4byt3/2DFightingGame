@@ -28,7 +28,6 @@ func _network_spawn(data: Dictionary) -> void:
 		attacked_player = map.get_node("ClientPlayer")
 	
 	properties = data
-	attacking_player.prevAttack = data
 
 	# flipping the angle currently is not rollback safe
 	# if !attacking_player.facingRight:
