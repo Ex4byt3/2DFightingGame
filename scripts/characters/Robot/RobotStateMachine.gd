@@ -494,11 +494,21 @@ func transition_state(input):
 				set_state('AIRBORNE')
 			else:
 				player.frame += 1
-
 				if player.isOnWallL or player.isOnWallR:
 					if player.changedVelocity == false and (abs(player.wallBounceVelocity.x/ONE) > player.wallBounceThreshold):
 						player.velocity.x = -player.wallBounceVelocity.x
 						player.changedVelocity = true
+				if player.frame >= player.hitstunFrames - 3:
+					if player.isOnFloor:
+						player.animation.play("HitstunEnd")
+					else:
+						player.animation.play("AirHitstunEnd")
+				else:
+					if player.isOnFloor:
+						player.animation.play("Hitstun")
+					else:
+						player.animation.play("AirHitstun")
+
 					#print("WALL")
 				# NOT IMPLEMENTED YET
 				# Expects player.frame to be set beforehand.
@@ -844,7 +854,10 @@ func do_hit():
 		player.frame = 0
 		player.hitstunMultiplier += onHit["gain"]
 		player.hitstop = onHit["hitstop"]
-		player.animation.play("Hitstun")
+		if player.velocity.y > 0:
+			player.animation.play("AirHitstun")
+		else:
+			player.animation.play("Hitstun")
 		set_state("HITSTUN")
 
 func do_knockback(knockback: Dictionary):
@@ -856,7 +869,6 @@ func do_knockback(knockback: Dictionary):
 		player.apply_knockback(knockback["force"], knockback["angle"])
 	else:
 		player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), knockback["angle"])
-	print(player.knockbackMultiplier)
 
 
 

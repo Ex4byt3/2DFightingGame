@@ -864,6 +864,66 @@ extends FixedAnimator
 			"simple": true
 		}
 	},
+	"Hitstun": {
+		"sprite": {
+			"texture": load("res://assets/characters/Robot/Hitstun/Hitstun.png"),
+			"hframes": 3,
+			"frame": 0,
+		},
+		"animation": {
+			"frameRate": 0,
+			"loop": false,
+			"reverse": false,
+			"startFrame": 0,
+			"endFrame": 0,
+			"simple": true
+		}
+	},
+	"HitstunEnd": {
+		"sprite": {
+			"texture": load("res://assets/characters/Robot/Hitstun/Hitstun.png"),
+			"hframes": 3,
+			"frame": 0,
+		},
+		"animation": {
+			"frameRate": 2,
+			"loop": false,
+			"reverse": false,
+			"startFrame": 0,
+			"endFrame": 2,
+			"simple": true
+		}
+	},
+	"AirHitstun": {
+		"sprite": {
+			"texture": load("res://assets/characters/Robot/Hitstun/AirHitstun.png"),
+			"hframes": 2,
+			"frame": 0,
+		},
+		"animation": {
+			"frameRate": 0,
+			"loop": false,
+			"reverse": false,
+			"startFrame": 0,
+			"endFrame": 0,
+			"simple": true
+		}
+	},
+	"AirHitstunEnd": {
+		"sprite": {
+			"texture": load("res://assets/characters/Robot/Hitstun/AirHitstun.png"),
+			"hframes": 2,
+			"frame": 0,
+		},
+		"animation": {
+			"frameRate": 2,
+			"loop": false,
+			"reverse": false,
+			"startFrame": 0,
+			"endFrame": 1,
+			"simple": true
+		}
+	},
 }
 
 func _ready():
