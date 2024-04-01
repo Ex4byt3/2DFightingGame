@@ -227,6 +227,7 @@ func check_collisions() -> void:
 
 # TODO: implement this function
 func take_damage(damage) -> void:
+	# TODO: can't be below 0, dying logic
 	health -= damage
 	MenuSignalBus.emit_update_health(health, self.name)
 

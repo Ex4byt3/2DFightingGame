@@ -488,7 +488,50 @@ extends FixedAnimator
 	# 		"frameCount": 3,
 	# 		"simple": true
 	# 	}
-	# }
+	# },
+	"NeutralLight": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [5, 3, 7]
+	},
+	"NeutralMedium":{
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [7, 5, 7]
+	},
+	"NeutralHeavy":{
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [11, 6, 18]
+	},
+	# neutral_impact
+	# crouching_light
+	# crouching_medium
+	# crouching_heavy
+	# crouching_impact
+	"ForwardHeavy": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [16, 4, 22]
+	},
+	# crouching_forward_medium
+	# air_light
+	# back_air_light
+	# air_medium
+	# back_air_medium
+	# air_heavy
+	# back_air_heavy
+	# air_impact
+	# back_air_impact
+	# qcf_light
 }
 
 func _ready():

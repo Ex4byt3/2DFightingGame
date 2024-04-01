@@ -2,8 +2,9 @@ extends Node
 class_name FixedAnimator
 
 # nodes to animate
-@onready var sprite = get_parent().get_node("AnimatedSprite2D")
-@onready var hurtBox = get_parent().get_node("HurtBox").get_node("SGCollisionShape2D")
+@onready var player = get_parent().get_parent()
+@onready var sprite = get_parent()
+@onready var hurtBox = player.get_node("HurtBox").get_node("SGCollisionShape2D")
 
 # animation data
 var tick : int = 0
@@ -26,11 +27,11 @@ func _game_process() -> void:
 					if animationsQueue:
 						play(animationsQueue.pop_front())
 		else:
-			if tick > animations[current]["frames"][counter]["ticks"]:
+			if tick > animations[current]["frames"][counter]:
 				tick = 0
 				counter += 1
 				sprite.frame = counter
-				print("frame: " + str(counter))
+				# print("frame: " + str(counter))
 				# TODO: animate other advnaced properties
 			else:
 				tick += 1

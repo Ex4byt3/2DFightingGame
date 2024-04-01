@@ -1,7 +1,7 @@
 extends Character
 
 # Our nodes that we use in the scene
-@onready var animation = $FixedAnimationPlayer
+@onready var animation = $AnimatedSprite2D/FixedAnimationPlayer
 @onready var sprite = $AnimatedSprite2D
 @onready var wallR = get_parent().get_node("WallStaticBody_R")
 @onready var wallL = get_parent().get_node("WallStaticBody_L")
@@ -87,6 +87,8 @@ func _ready():
 	_rotate_client_player()
 	_init_character_data(martial_hero_img, martial_hero_name, martial_hero_max_health)
 	$HurtBox.get_node("SGCollisionShape2D").shape = SGRectangleShape2D.new()
+	$HurtBox.get_node("SGCollisionShape2D").shape.set_extents(SGFixed.vector2(4487098, 6750123)) # default hurtbox size
+
 
 
 
@@ -164,6 +166,9 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func update_input_buffer(input: Dictionary) -> void:
+	var newInput = input.duplicate()
+	newInput.erase("input_vector_x")
+	newInput.erase("input_vector_y")
 	inputBuffer.append(input)
 	if inputBuffer.size() > 4: # 4 frames of input buffer
 		inputBuffer.remove_at(0)
