@@ -2,8 +2,7 @@ extends Character
 
 # Our nodes that we use in the scene
 @onready var animation = $FixedAnimationPlayer
-@onready var attackAnimationPlayer = $DebugAnimationPlayer
-@onready var sprite = $Sprite
+@onready var sprite = $AnimatedSprite2D
 @onready var wallR = get_parent().get_node("WallStaticBody_R")
 @onready var wallL = get_parent().get_node("WallStaticBody_L")
 @onready var ceiling = get_parent().get_node("CeilingStaticBody")
