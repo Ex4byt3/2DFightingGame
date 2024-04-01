@@ -164,6 +164,9 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 	return input
 
 func update_input_buffer(input: Dictionary) -> void:
+	var newInput = input.duplicate()
+	newInput.erase("input_vector_x")
+	newInput.erase("input_vector_y")
 	inputBuffer.append(input)
 	if inputBuffer.size() > 4: # 4 frames of input buffer
 		inputBuffer.remove_at(0)
