@@ -1,4 +1,4 @@
-[gd_scene load_steps=212 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=217 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://tmlr07qroacp" path="res://assets/characters/Robot/Attacks/Normals/NeutralLight.png" id="25_jg36s"]
 [ext_resource type="Texture2D" uid="uid://2c12736sucp8" path="res://assets/characters/Robot/Attacks/Normals/NeutralHeavy.png" id="25_okckt"]
 [ext_resource type="Texture2D" uid="uid://n3act365wyuy" path="res://assets/characters/Robot/Attacks/Normals/NeutralMedium.png" id="26_t7vtr"]
+[ext_resource type="Texture2D" uid="uid://caqvr062w4tcl" path="res://assets/characters/Robot/Attacks/Normals/NeutralImpact.png" id="27_c5orq"]
 
 [sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_flqoq"]
 extents_x = 4487128
@@ -605,6 +606,22 @@ region = Rect2(200, 0, 200, 200)
 [sub_resource type="AtlasTexture" id="AtlasTexture_38ukt"]
 atlas = ExtResource("25_okckt")
 region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k0sim"]
+atlas = ExtResource("27_c5orq")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l2axj"]
+atlas = ExtResource("27_c5orq")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nf3h4"]
+atlas = ExtResource("27_c5orq")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rwgqo"]
+atlas = ExtResource("27_c5orq")
+region = Rect2(600, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r7wka"]
 atlas = ExtResource("25_jg36s")
@@ -1348,6 +1365,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_k0sim")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2axj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nf3h4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rwgqo")
+}],
+"loop": true,
+"name": &"NeutralImpact",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_r7wka")
 }, {
 "duration": 1.0,
@@ -1508,7 +1542,7 @@ script = ExtResource("2_y2o11")
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_w520v")
-animation = &"ForwardHeavy"
+animation = &"NeutralImpact"
 
 [node name="FixedAnimationPlayer" type="Node" parent="AnimatedSprite2D" groups=["network_sync"]]
 script = ExtResource("3_4ojck")

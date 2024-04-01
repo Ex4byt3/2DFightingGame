@@ -510,7 +510,13 @@ extends FixedAnimator
 		},
 		"frames": [11, 6, 18]
 	},
-	# neutral_impact
+	"NeutralImpact": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [14, 5, 4, 24] # 2 startup frames, totaling to 20 but after 19 the hitsotp does not line up, strange
+	},
 	# crouching_light
 	# crouching_medium
 	# crouching_heavy

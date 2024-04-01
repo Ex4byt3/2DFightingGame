@@ -178,7 +178,7 @@ const attacks = {
 	"neutral_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20},
-				{"x": 70, "y": 0, "width": 80, "height": 180, "ticks": 4},
+				{"x": 190, "y": -20, "width": 250, "height": 190, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 24}
 			],
 		"cancelable": {
