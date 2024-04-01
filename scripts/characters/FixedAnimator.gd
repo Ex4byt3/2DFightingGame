@@ -73,7 +73,7 @@ func _game_process() -> void:
 		# 	tick += 1
 	
 		# sprite.frame = frame
-		# update_hurtbox()
+		update_hurtbox()
 
 func update_hurtbox() -> void:
 	if animations[current].has("hurtbox"):
@@ -110,16 +110,9 @@ func _save_state() -> Dictionary:
 	return {
 		"playing": playing,
 		"tick": tick,
-		# "frame": sprite.frame,
 		"current": current,
 		"counter": counter,
 		"animationsQueue": animations_queue,
-
-		# "sprite": {
-		# 	"texture": sprite.texture,
-		# 	"frame": sprite.frame,
-		# 	"hframes": sprite.hframes
-		# },
 
 		"hurtbox": {
 			"shape": {
@@ -134,17 +127,12 @@ func _save_state() -> Dictionary:
 func _load_state(loadState: Dictionary) -> void:
 	playing = loadState["playing"]
 	tick = loadState["tick"]
-	# sprite.frame = loadState["frame"]
 	current = loadState["current"]
 	sprite.play(current)
 	counter = loadState["counter"]
 	animationsQueue = []
 	for animation in loadState["animationsQueue"]:
 		animationsQueue.append(animation)
-
-	# sprite.texture = loadState["sprite"]["texture"]
-	# sprite.frame = loadState["sprite"]["frame"]
-	# sprite.hframes = loadState["sprite"]["hframes"]
 
 	hurtBox.shape.extents.x = loadState["hurtbox"]["shape"]["extents_x"]
 	hurtBox.shape.extents.y = loadState["hurtbox"]["shape"]["extents_y"]
