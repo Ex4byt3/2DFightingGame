@@ -193,8 +193,9 @@ func transition_state(input):
 	parse_motion_inputs()
 
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
-	if buffer_has("dash") and not player.isOnFloor:
+	if buffer_has("dash") and not player.isOnFloor and player.meterVal > 0:
 		# TODO: scaling meter cost
+		player.meterVal -= 1
 		start_dash(player.input_vector)
 
 	# ## DEBUG for HITSTOP
@@ -605,8 +606,9 @@ func transition_state(input):
 			# Expects player.frame to be set beforehand
 			# Quick get up from knockdown facing the current direction
 			# Can be interrupted with a dash
-			if input.get("dash", false):
+			if input.get("dash", false) and player.meterVal > 1:
 				# TODO: interrupt animation with dash
+				player.meterVal -= 1
 				player.frame = 0
 				if player.facingRight:
 					start_dash(SGFixed.vector2(ONE, 0))

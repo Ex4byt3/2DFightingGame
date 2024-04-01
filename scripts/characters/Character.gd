@@ -81,9 +81,11 @@ var num_lives: int
 var max_health: int
 var health: int
 var burst: int
-var meter: int
-var max_meter = 90000
-var meter_rate = 10
+var meterVal: int
+var meterCharge: int
+var meterValRate = 10000
+var max_meter = 10000
+var meter_rate = 100
 var is_dead: bool = false
 
 # Collision booleans
@@ -123,12 +125,12 @@ func _apply_match_settings(match_settings: Dictionary) -> void:
 	print("[COMBAT] " + self.name + " received settings!")
 	num_lives = match_settings.character_lives
 	burst = match_settings.initial_burst
-	meter = match_settings.initial_meter
+	meterCharge = match_settings.initial_meter
 	print("[COMBAT] " + self.name + "'s settings have been applied!")
 	
 	MenuSignalBus.emit_update_lives(num_lives, self.name)
 	MenuSignalBus.emit_update_burst(burst, self.name)
-	MenuSignalBus.emit_update_meter(meter, self.name)
+	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
 
 
 # Setting up the round health
@@ -191,19 +193,19 @@ func _get_local_input() -> Dictionary:
 # Increase meter function
 func increase_meter(amount: int) -> void:
 	# only ARMG will allow meter to go over max
-	if meter < max_meter:
-		meter += amount
-		if meter > max_meter:
-			meter = max_meter
+	if meterCharge < max_meter:
+		meterCharge += amount
+		if meterCharge > max_meter:
+			meterCharge = max_meter
 	#print("Meter increased by ", amount, ". New meter value: ", meter)
 
 # Decrease meter function
 func decrease_meter(amount: int) -> void:
-	if meter > 0:
-		meter -= amount
+	if meterCharge > 0:
+		meterCharge -= amount
 		# you can't have negative meter
-		if meter < 0:
-			meter = 0
+		if meterCharge < 0:
+			meterCharge = 0
 	#print("Meter decreased by ", amount, ". New meter value: ", meter)
 
 func check_collisions() -> void:

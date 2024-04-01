@@ -16,8 +16,6 @@ script = ExtResource("1_nvud5")
 
 [node name="StatusOverlay" parent="." instance=ExtResource("2_dd2hn")]
 layout_mode = 1
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="DebugOverlay" parent="." instance=ExtResource("3_7uhta")]
 layout_mode = 1

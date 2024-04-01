@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bpb3irbilm2vu"]
+[gd_scene load_steps=20 format=3 uid="uid://bpb3irbilm2vu"]
 
 [ext_resource type="Texture2D" uid="uid://vjxjlgsxp5l8" path="res://assets/menu/icons/timer_icon.png" id="1"]
 [ext_resource type="Theme" uid="uid://bomuf0lsbqw2o" path="res://assets/resources/gui/status_overlay_theme.tres" id="1_dj4ys"]
@@ -51,10 +51,16 @@ colors = PackedColorArray(0.0852661, 0.187973, 0.496094, 1)
 [sub_resource type="GradientTexture2D" id="15"]
 gradient = SubResource("14")
 
+[sub_resource type="SystemFont" id="SystemFont_bvbkv"]
+font_weight = 700
+font_stretch = 125
+
 [node name="StatusOverlay" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_dj4ys")
 script = ExtResource("5")
 
@@ -292,7 +298,7 @@ anchor_right = 0.7
 anchor_bottom = 0.65
 offset_top = 2.67029e-05
 offset_bottom = 2.28882e-05
-max_value = 170.0
+max_value = 10000.0
 step = 10.0
 nine_patch_stretch = true
 texture_under = SubResource("13")
@@ -308,6 +314,24 @@ anchor_bottom = 0.2
 texture = ExtResource("1")
 expand_mode = 1
 
+[node name="MeterLabel" type="Label" parent="Footer/P1Meter"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.202
+anchor_top = 0.5
+anchor_right = 0.203
+anchor_bottom = 0.5
+offset_left = -50.516
+offset_top = -52.0
+offset_right = 49.526
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0, 0.0745098, 0.415686, 1)
+theme_override_fonts/font = SubResource("SystemFont_bvbkv")
+theme_override_font_sizes/font_size = 80
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="P2Meter" type="Control" parent="Footer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -320,8 +344,9 @@ anchor_right = 0.755
 anchor_bottom = 0.65
 offset_top = 2.67029e-05
 offset_bottom = 2.28882e-05
-max_value = 170.0
+max_value = 10000.0
 step = 10.0
+fill_mode = 1
 nine_patch_stretch = true
 texture_under = SubResource("13")
 texture_progress = SubResource("15")
@@ -336,3 +361,21 @@ anchor_bottom = 0.2
 grow_horizontal = 0
 texture = ExtResource("1")
 expand_mode = 1
+
+[node name="MeterLabel" type="Label" parent="Footer/P2Meter"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.202
+anchor_top = 0.5
+anchor_right = 0.203
+anchor_bottom = 0.5
+offset_left = 520.484
+offset_top = -52.0
+offset_right = 620.526
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0, 0.0745098, 0.415686, 1)
+theme_override_fonts/font = SubResource("SystemFont_bvbkv")
+theme_override_font_sizes/font_size = 80
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1

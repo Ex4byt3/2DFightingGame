@@ -46,7 +46,8 @@ signal update_debug_visibility(button_checked)
 # Signals for status ui
 signal update_health(health_val, player_id)
 signal update_burst(burst_val, player_id)
-signal update_meter(meter_val, player_id)
+signal update_meter_charge(meter_charge, player_id)
+signal update_meter_val(meter_val, player_id)
 signal update_lives(num_lives, player_id)
 signal update_max_health(health_val, player_id)
 signal update_character_image(character_image, player_id)
@@ -183,8 +184,11 @@ func emit_update_health(health_val: int, player_id: String) -> void:
 func emit_update_burst(burst_val: int, player_id: String) -> void:
 	emit_signal("update_burst", burst_val, player_id)
 
-func emit_update_meter(meter_val: int, player_id: String) -> void:
-	emit_signal("update_meter", meter_val, player_id)
+func emit_update_meter_charge(meter_charge: int, player_id: String) -> void:
+	emit_signal("update_meter_charge", meter_charge, player_id)
+
+func emit_update_meter_val(meter_val: int, player_id: String) -> void:
+	emit_signal("update_meter_val", meter_val, player_id)
 
 func emit_update_lives(num_lives: int, player_id: String) -> void:
 	emit_signal("update_lives", num_lives, player_id)

@@ -51,7 +51,7 @@ var maxFallSpeed = 20
 var prevVelocity = SGFixed.vector2(0, 0)
 
 # Character meter variables
-var baseMeterRate = 10
+var baseMeterRate = 300
 var meter_frame_counter = 0 
 var meter_frame_rate = 60
 var totalGameFrames = 10800
@@ -169,9 +169,12 @@ func update_input_buffer(input: Dictionary) -> void:
 		inputBuffer.remove_at(0)
 
 func _game_process(input: Dictionary) -> int:
+	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
+	MenuSignalBus.emit_update_meter_val(meterVal, self.name)
+	
 	update_input_buffer(input)
 	currentGameFrame += 1
-	increase_meter_over_time() # This was currently not rollback safe, commented for rollback testing hitboxes
+	increase_meter_over_time()
 	
 	# Transition state and calculate velocity off of this logic
 	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
@@ -202,7 +205,9 @@ func _game_process(input: Dictionary) -> int:
 	# Update collision booleans, does not work if called before move_and_slide, works if called after though
 	isOnFloor = is_on_floor()
 	isOnCeiling = is_on_ceiling()
-
+	while meterCharge >= meterValRate:
+		meterVal += 1
+		meterCharge -= meterValRate
 	return hitstop
 
 func increase_meter_over_time() -> void:
@@ -213,6 +218,7 @@ func increase_meter_over_time() -> void:
 		var elapsedFrames = currentGameFrame
 		var time_multiplier = max(1, 100 * (totalGameFrames - remainingFrames) / totalGameFrames)
 		var adjustedMeterRate = baseMeterRate + (baseMeterRate * time_multiplier) / 100
+		print(adjustedMeterRate)
 		increase_meter(adjustedMeterRate)
 		meter_frame_counter = 0
 		#print("Meter increased over time", adjustedMeterRate)
@@ -268,7 +274,8 @@ func _save_state() -> Dictionary:
 		
 		health = health,
 		burst = burst,
-		meter = meter,
+		meterCharge = meterCharge,
+		meterVal = meterVal,
 		num_lives = num_lives,
 		
 		meter_frame_counter = meter_frame_counter,
@@ -325,7 +332,8 @@ func _load_state(loadState: Dictionary) -> void:
 	
 	health = loadState['health']
 	burst = loadState['burst']
-	meter = loadState['meter']
+	meterCharge = loadState['meterCharge']
+	meterVal = loadState['meterVal']
 	num_lives = num_lives
 
 	meter_frame_counter = loadState.get("meter_frame_counter", meter_frame_counter) # Provides a default in case it's missing

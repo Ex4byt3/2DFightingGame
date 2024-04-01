@@ -15,6 +15,8 @@ extends VBoxContainer
 @onready var p2_burst_bar = $Header/P2Info/BurstBar
 @onready var p1_meter_bar = $Footer/P1Meter/MeterBar
 @onready var p2_meter_bar = $Footer/P2Meter/MeterBar
+@onready var p1_meter_label = $Footer/P1Meter/MeterLabel
+@onready var p2_meter_label = $Footer/P2Meter/MeterLabel
 @onready var p1_lives_display = $Header/P1Info/HealthHeader/Lives
 @onready var p2_lives_display = $Header/P2Info/HealthHeader/Lives
 
@@ -35,6 +37,8 @@ var p1_health_val: int = 10000
 var p2_health_val: int = 10000
 var p1_burst_val: int = 0
 var p2_burst_val: int = 0
+var p1_meter_charge: int = 0
+var p2_meter_charge: int = 0
 var p1_meter_val: int = 0
 var p2_meter_val: int = 0
 
@@ -69,7 +73,8 @@ func _handle_connecting_signals() -> void:
 	
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_health", "_update_health")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_burst", "_update_burst")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_meter", "_update_meter")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_meter_charge", "_update_meter_charge")
+	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_meter_val", "_update_meter_val")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_lives", "_update_lives")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_max_health", "_update_max_health")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_character_image", "_update_character_image")
@@ -120,10 +125,13 @@ func _set_player_burst() -> void:
 	p2_burst_bar.value = p2_burst_val
 
 
-func _set_player_meter() -> void:
-	p1_meter_bar.value = p1_meter_val
-	p2_meter_bar.value = p2_meter_val
+func _set_player_meter_charge() -> void:
+	p1_meter_bar.value = p1_meter_charge
+	p2_meter_bar.value = p2_meter_charge
 
+func _set_player_meter_val() -> void:
+	p1_meter_label.text = (str)(p1_meter_val)
+	p2_meter_label.text = (str)(p2_meter_val)
 
 func _update_health(health_val: int, player_id: String) -> void:
 	match player_id:
@@ -148,7 +156,17 @@ func _update_burst(burst_val: int, player_id: String) -> void:
 	_set_player_burst()
 
 
-func _update_meter(meter_val: int, player_id: String) -> void:
+func _update_meter_charge(meter_charge: int, player_id: String) -> void:
+	match player_id:
+		"ServerPlayer": # Player 1
+			p1_meter_charge = meter_charge
+		"ClientPlayer": # Player 2
+			p2_meter_charge = meter_charge
+		_: # Player does not exist
+			print("[SYSTEM] ERROR: player does not exist")
+	_set_player_meter_charge()
+
+func _update_meter_val(meter_val: int, player_id: String) -> void:
 	match player_id:
 		"ServerPlayer": # Player 1
 			p1_meter_val = meter_val
@@ -156,7 +174,7 @@ func _update_meter(meter_val: int, player_id: String) -> void:
 			p2_meter_val = meter_val
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
-	_set_player_meter()
+	_set_player_meter_val()
 
 
 func _update_lives(num_lives: int, player_id: String) -> void:
