@@ -1,4 +1,4 @@
-[gd_scene load_steps=197 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=196 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -73,10 +73,6 @@ region = Rect2(0, 0, 200, 200)
 [sub_resource type="AtlasTexture" id="AtlasTexture_jbgpp"]
 atlas = ExtResource("4_u21h5")
 region = Rect2(200, 0, 200, 200)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fxpw5"]
-atlas = ExtResource("4_u21h5")
-region = Rect2(400, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jtmlr"]
 atlas = ExtResource("4_u21h5")
@@ -747,9 +743,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jbgpp")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fxpw5")
 }],
 "loop": true,
 "name": &"AirJump",
@@ -1407,7 +1400,7 @@ script = ExtResource("2_y2o11")
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_w520v")
-animation = &"AirHitstun"
+animation = &"AirJump"
 
 [node name="FixedAnimationPlayer" type="Node" parent="." groups=["network_sync"]]
 script = ExtResource("3_4ojck")

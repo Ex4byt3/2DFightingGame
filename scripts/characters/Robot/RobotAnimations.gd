@@ -141,7 +141,7 @@ extends FixedAnimator
 		"animation": {
 			"framerate": 4,
 			"loop": false,
-			"frameCount": 3,
+			"frameCount": 2,
 			"simple": true
 		}
 	},

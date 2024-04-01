@@ -136,6 +136,7 @@ func _load_state(loadState: Dictionary) -> void:
 	tick = loadState["tick"]
 	# sprite.frame = loadState["frame"]
 	current = loadState["current"]
+	sprite.play(current)
 	counter = loadState["counter"]
 	animationsQueue = []
 	for animation in loadState["animationsQueue"]:
@@ -149,4 +150,6 @@ func _load_state(loadState: Dictionary) -> void:
 	hurtBox.shape.extents.y = loadState["hurtbox"]["shape"]["extents_y"]
 	hurtBox.fixed_position.x = loadState["hurtbox"]["fixed_position_x"]
 	hurtBox.fixed_position.y = loadState["hurtbox"]["fixed_position_y"]
+
+	#sprite.set_frame(tick / animations[current]["animation"]["framerate"] % animations[current]["animation"]["frameCount"])
 
