@@ -51,7 +51,7 @@ const attacks = {
 	"neutral_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
-				{"x": 60, "y": 40, "width": 80, "height": 75, "ticks": 3},
+				{"x": 90, "y": 40, "width": 70, "height": 50, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
 		"cancelable": {
@@ -95,7 +95,7 @@ const attacks = {
 	"neutral_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7},
-				{"x": 60, "y": 10, "width": 125, "height": 85, "ticks": 5},
+				{"x": 85, "y": 10, "width": 80, "height": 40, "ticks": 5},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
 		"cancelable": {
@@ -137,7 +137,7 @@ const attacks = {
 	"neutral_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
-				{"x": 70, "y": 0, "width": 180, "height": 90, "ticks": 6},
+				{"x": 170, "y": -40, "width": 220, "height": 70, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
 			],
 		"cancelable": {
@@ -377,7 +377,7 @@ const attacks = {
 	"forward_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
-				{"x": 70, "y": 0, "width": 190, "height": 110, "ticks": 4},
+				{"x": 230, "y": -10, "width": 350, "height": 90, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 22}
 			],
 		"cancelable": {

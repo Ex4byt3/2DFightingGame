@@ -1,4 +1,4 @@
-[gd_scene load_steps=196 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=212 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -27,8 +27,12 @@
 [ext_resource type="Texture2D" uid="uid://b6o3ba2aoejs6" path="res://assets/characters/Robot/Block/Parry.png" id="12_wmup4"]
 [ext_resource type="Texture2D" uid="uid://ckdmnffc6djw1" path="res://assets/characters/Robot/Block/BlockCrouch.png" id="13_cxji0"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotAttackData.gd" id="18_7wveu"]
+[ext_resource type="Texture2D" uid="uid://cys4tljf7vtlg" path="res://assets/characters/Robot/Attacks/Normals/ForwardHeavy.png" id="19_dd86s"]
 [ext_resource type="Texture2D" uid="uid://bowvr1ocbq1qk" path="res://assets/characters/Robot/Idle.png" id="19_kru2y"]
 [ext_resource type="Texture2D" uid="uid://dwia3cbkrh376" path="res://assets/characters/Robot/Hitstun/Hitstun.png" id="19_n3bfw"]
+[ext_resource type="Texture2D" uid="uid://tmlr07qroacp" path="res://assets/characters/Robot/Attacks/Normals/NeutralLight.png" id="25_jg36s"]
+[ext_resource type="Texture2D" uid="uid://2c12736sucp8" path="res://assets/characters/Robot/Attacks/Normals/NeutralHeavy.png" id="25_okckt"]
+[ext_resource type="Texture2D" uid="uid://n3act365wyuy" path="res://assets/characters/Robot/Attacks/Normals/NeutralMedium.png" id="26_t7vtr"]
 
 [sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_flqoq"]
 extents_x = 4487128
@@ -342,6 +346,18 @@ region = Rect2(200, 0, 200, 200)
 atlas = ExtResource("5_sk1al")
 region = Rect2(400, 0, 200, 200)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ff6l"]
+atlas = ExtResource("19_dd86s")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28e2e"]
+atlas = ExtResource("19_dd86s")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_asoog"]
+atlas = ExtResource("19_dd86s")
+region = Rect2(400, 0, 200, 200)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_vlgoq"]
 atlas = ExtResource("19_n3bfw")
 region = Rect2(0, 0, 200, 200)
@@ -577,6 +593,42 @@ region = Rect2(200, 0, 200, 200)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ycpte"]
 atlas = ExtResource("11_c3xxe")
 region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rrv7i"]
+atlas = ExtResource("25_okckt")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uu8hy"]
+atlas = ExtResource("25_okckt")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_38ukt"]
+atlas = ExtResource("25_okckt")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7wka"]
+atlas = ExtResource("25_jg36s")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6xtls"]
+atlas = ExtResource("25_jg36s")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i41hr"]
+atlas = ExtResource("25_jg36s")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hiwni"]
+atlas = ExtResource("26_t7vtr")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_016tx"]
+atlas = ExtResource("26_t7vtr")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_apuhk"]
+atlas = ExtResource("26_t7vtr")
+region = Rect2(400, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_usjik"]
 atlas = ExtResource("12_wmup4")
@@ -1041,6 +1093,20 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_6ff6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28e2e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_asoog")
+}],
+"loop": true,
+"name": &"ForwardHeavy",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_vlgoq")
 }],
 "loop": true,
@@ -1268,6 +1334,48 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_rrv7i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uu8hy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_38ukt")
+}],
+"loop": true,
+"name": &"NeutralHeavy",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r7wka")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6xtls")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i41hr")
+}],
+"loop": true,
+"name": &"NeutralLight",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hiwni")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_016tx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_apuhk")
+}],
+"loop": true,
+"name": &"NeutralMedium",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_usjik")
 }, {
 "duration": 1.0,
@@ -1400,9 +1508,9 @@ script = ExtResource("2_y2o11")
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_w520v")
-animation = &"AirJump"
+animation = &"ForwardHeavy"
 
-[node name="FixedAnimationPlayer" type="Node" parent="." groups=["network_sync"]]
+[node name="FixedAnimationPlayer" type="Node" parent="AnimatedSprite2D" groups=["network_sync"]]
 script = ExtResource("3_4ojck")
 
 [node name="HurtBox" type="SGArea2D" parent="."]

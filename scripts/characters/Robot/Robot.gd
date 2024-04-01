@@ -1,7 +1,7 @@
 extends Character
 
 # Our nodes that we use in the scene
-@onready var animation = $FixedAnimationPlayer
+@onready var animation = $AnimatedSprite2D/FixedAnimationPlayer
 @onready var sprite = $AnimatedSprite2D
 @onready var wallR = get_parent().get_node("WallStaticBody_R")
 @onready var wallL = get_parent().get_node("WallStaticBody_L")
@@ -87,6 +87,8 @@ func _ready():
 	_rotate_client_player()
 	_init_character_data(martial_hero_img, martial_hero_name, martial_hero_max_health)
 	$HurtBox.get_node("SGCollisionShape2D").shape = SGRectangleShape2D.new()
+	$HurtBox.get_node("SGCollisionShape2D").shape.set_extents(SGFixed.vector2(4487098, 6750123)) # default hurtbox size
+
 
 
 

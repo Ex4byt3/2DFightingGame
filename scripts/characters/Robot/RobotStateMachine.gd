@@ -104,7 +104,7 @@ func neutral_attack(attack: String) -> bool:
 			player.pressed.append(attack)
 			player.animation.play("Neutral" + attack.capitalize())
 			do_attack("neutral_" + attack)
-			set_state('NORMAL')
+			set_state('NEUTRAL_' + attack.to_upper())
 			return true
 	return false
 
@@ -115,13 +115,13 @@ func crouching_attack(attack: String) -> bool:
 			if attack == "medium":
 				player.animation.play("CrouchingForwardMedium")
 				do_attack("crouching_forward_medium")
-				set_state('NORMAL')
+				set_state('CROUCHING_FORWARD_MEDIUM')
 				return true
 		elif buffer_has(attack):
 			player.pressed.append(attack)
 			player.animation.play("Crouching" + attack.capitalize())
 			do_attack("crouching_" + attack)
-			set_state('NORMAL')
+			set_state('CROUCHING_' + attack.to_upper())
 			return true
 	return false
 
@@ -131,7 +131,7 @@ func forward_attack(attack: String) -> bool:
 			player.pressed.append(attack)
 			player.animation.play("Forward" + attack.capitalize())
 			do_attack("forward_" + attack)
-			set_state('NORMAL')
+			set_state('FORWARD_HEAVY')
 			return true
 	else: # forward light and medium are the same as neutral light and medium
 		return neutral_attack(attack)
@@ -640,9 +640,7 @@ func transition_state(input):
 			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
 			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
 		states.NEUTRAL_LIGHT:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play neutral light animation
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				#print("RECOVERY")
