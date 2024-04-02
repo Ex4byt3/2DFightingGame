@@ -55,6 +55,7 @@ const attacks = {
 				{"x": 90, "y": 40, "width": 70, "height": 50, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
+		"duration": 15,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -99,6 +100,7 @@ const attacks = {
 				{"x": 85, "y": 10, "width": 80, "height": 40, "ticks": 5},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
+		"duration": 19,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -141,6 +143,7 @@ const attacks = {
 				{"x": 170, "y": -40, "width": 220, "height": 70, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
 			],
+		"duration": 35,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -182,6 +185,7 @@ const attacks = {
 				{"x": 190, "y": -20, "width": 250, "height": 190, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 24}
 			],
+		"duration": 48,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -220,6 +224,7 @@ const attacks = {
 				{"x": 60, "y": 30, "width": 70, "height": 70, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
+		"duration": 15,
 		"cancelable": {
 		"jump": false,
 			"type": 1,
@@ -264,6 +269,7 @@ const attacks = {
 				{"x": 50, "y": - 35, "width": 125, "height": 50, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
+		"duration": 22,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -304,6 +310,7 @@ const attacks = {
 				{"x": 60, "y": 0, "width": 80, "height": 60, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 25}
 			],
+		"duration": 39,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -343,6 +350,7 @@ const attacks = {
 				{"x": 50, "y": - 35, "width": 135, "height": 50, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
+		"duration": 36,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -381,6 +389,7 @@ const attacks = {
 				{"x": 230, "y": -10, "width": 350, "height": 90, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 22}
 			],
+		"duration": 42,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -419,6 +428,7 @@ const attacks = {
 				{"x": 50, "y": - 10, "width": 100, "height": 30, "ticks": 20},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3}
 			],
+		"duration": 37,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -457,6 +467,7 @@ const attacks = {
 				{"x": 60, "y": - 40, "width": 70, "height": 70, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
+		"duration": 19,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -503,6 +514,7 @@ const attacks = {
 				{"x": - 70, "y": - 20, "width": 75, "height": 65, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11}
 			],
+		"duration": 22,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -549,6 +561,7 @@ const attacks = {
 				{"x": 60, "y": 10, "width": 115, "height": 60, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 17}
 			],
+		"duration": 34,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -591,6 +604,7 @@ const attacks = {
 				{"x": - 70, "y": 20, "width": 110, "height": 60, "ticks": 5},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
 			],
+		"duration": 36,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -633,6 +647,7 @@ const attacks = {
 				{"x": 60, "y": - 10, "width": 100, "height": 140, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
+		"duration": 40,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -673,6 +688,7 @@ const attacks = {
 				{"x": - 60, "y": - 20, "width": 100, "height": 140, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 19}
 			],
+		"duration": 39,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -713,6 +729,7 @@ const attacks = {
 				{"x": 60, "y": - 35, "width": 120, "height": 90, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 26}
 			],
+		"duration": 48,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -751,6 +768,7 @@ const attacks = {
 				{"x": - 70, "y": - 45, "width": 120, "height": 80, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 27}
 			],
+		"duration": 49,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -790,6 +808,7 @@ const attacks = {
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 1},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 40}
 			],
+		"duration": 55,
 		"cancelable": {
 			"jump": false,
 			"type": 2,
