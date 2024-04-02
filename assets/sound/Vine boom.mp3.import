@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://crh77ntmkh1sn"
+path="res://.godot/imported/Vine boom.mp3-e553a407e0d50e8756535a6451e61752.mp3str"
+
+[deps]
+
+source_file="res://assets/sound/Vine boom.mp3"
+dest_files=["res://.godot/imported/Vine boom.mp3-e553a407e0d50e8756535a6451e61752.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

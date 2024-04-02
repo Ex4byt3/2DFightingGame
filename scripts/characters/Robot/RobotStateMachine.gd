@@ -741,6 +741,7 @@ func transition_state(input):
 		states.NEUTRAL_IMPACT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
+			#SyncManager.play_sound(str(get_path()) + ":neutral_impact", player.boom, player.boomINFO)
 			# play impact animation
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
@@ -938,6 +939,7 @@ func get_stun_frames(hitboxes: Array, advantage: int) -> int:
 	return moveFrames + advantage
 
 func do_hit():
+	SyncManager.play_sound(str(get_path()) + ":hit", player.oof, player.oofINFO)
 	# TODO: meter gain
 	if player.blockMask & player.hurtboxCollision["onBlock"]["mask"] == player.hurtboxCollision["onBlock"]["mask"]: # if blocked
 		# TODO: chip damage
