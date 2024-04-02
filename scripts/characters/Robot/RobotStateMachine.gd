@@ -253,7 +253,7 @@ func transition_state(input):
 					do_walk(player.walkSpeed, player.walkAcceleration)
 					player.animation.play("Walk")
 					set_state('WALK')
-			if jump_check(input):
+			if jump_check():
 				# The player is attempting to jump
 				start_jump()
 		states.CROUCH:
@@ -294,7 +294,7 @@ func transition_state(input):
 				player.animation.play("Crouching")
 				set_state('CROUCH')
 
-			if jump_check(input):
+			if jump_check():
 				start_jump()
 		states.WALK:
 			if forward_attack(check_buffer_for_attack()):
@@ -322,12 +322,12 @@ func transition_state(input):
 				player.velocity.x = 0
 				player.animation.play("Idle")
 				set_state('IDLE')
-			if jump_check(input):
+			if jump_check():
 				start_jump()
 		states.SLIDE:
 			if any_attack(check_buffer_for_attack()):
 				pass
-			if jump_check(input):
+			if jump_check():
 				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
 				start_jump()
 			if player.velocity.x > 0:
@@ -369,7 +369,7 @@ func transition_state(input):
 				player.animation.play("Idle")
 				set_state('IDLE')
 
-			if jump_check(input):
+			if jump_check():
 				start_jump()
 		states.DASH:
 			if player.isOnFloor: # if you ever hit the floor, you slide
@@ -397,7 +397,7 @@ func transition_state(input):
 			player.frame += 1
 			if player.isOnFloor:
 			# Stopped jumping before it would be fullhop, it turns into shorthop
-				if !jump_check(input):
+				if !jump_check():
 					player.velocity.y = player.shortHopForce
 					player.frame = 0
 					player.animation.play("Jump") # can have seperate animation for shothop without seperate state
@@ -419,7 +419,7 @@ func transition_state(input):
 				player.animation.play("Idle")
 				set_state('IDLE')
 			else:
-				if jump_check(input) and player.airJump > 0:
+				if jump_check() and player.airJump > 0:
 					start_jump()
 				if player.velocity.y > 0:
 					player.animation.play("Airborne")
@@ -457,7 +457,7 @@ func transition_state(input):
 				player.animation.play("BlockCrouch")
 				player.blockMask = 3 # 011
 				set_state("LOW_BLOCK")
-			elif jump_check(input):
+			elif jump_check():
 				player.blockMask = 0 # 000
 				start_jump()
 		states.LOW_BLOCK:
@@ -475,7 +475,7 @@ func transition_state(input):
 				player.animation.queue("Blocking")
 				player.blockMask = 6 # 110
 				set_state("BLOCK")
-			elif jump_check(input):
+			elif jump_check():
 				player.blockMask = 0 # 000
 				start_jump()
 		states.AIR_BLOCK:
@@ -489,7 +489,7 @@ func transition_state(input):
 				player.blockMask = 6 # 011
 				player.animation.play("Block")
 				set_state('BLOCK')
-			elif jump_check(input) and player.airJump > 0:
+			elif jump_check() and player.airJump > 0:
 				player.blockMask = 0 # 000
 				start_jump()
 		states.BLOCKSTUN:
@@ -909,7 +909,7 @@ func start_dash(input_vector):
 			print("Dash initiated. Current meter value:", player.meterVal)
 		
 
-func jump_check(input) -> bool: # might be redundant
+func jump_check() -> bool: # might be redundant
 	if player.input_vector.y == 1 or buffer_has("jump"):
 		return true
 	else:
