@@ -90,19 +90,23 @@ func play(animationName: String) -> void:
 	animationsQueue = []
 	if animationName in animations:
 		if current != animationName:
+			# print("Playing animation: " + animationName)
 			current = animationName
 			counter = 0
 			tick = 0
 			sprite.play(animationName)
+			# sprite.frame = 0
 			playing = true
 	else:
-		print("[ERROR] Animation not found: " + animationName)
+		pass
+		# print("[ERROR] Animation not found: " + animationName)
 
 func queue(animationName: String) -> void:
 	if animationName in animations:
 		animationsQueue.append(animationName)
 	else:
-		print("[ERROR] Animation not found: " + animationName)
+		pass
+		# print("[ERROR] Animation not found: " + animationName)
 
 func _save_state() -> Dictionary:
 	var animations_queue : Array = []

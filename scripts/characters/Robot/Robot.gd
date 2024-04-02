@@ -167,7 +167,7 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 
 func update_input_buffer(input: Dictionary) -> void:
 	var newInput = input.duplicate()
-	newInput.erase("input_vector_x")
+	# newInput.erase("input_vector_x")
 	newInput.erase("input_vector_y")
 	inputBuffer.append(input)
 	if inputBuffer.size() > 4: # 4 frames of input buffer
@@ -223,7 +223,7 @@ func increase_meter_over_time() -> void:
 		var elapsedFrames = currentGameFrame
 		var time_multiplier = max(1, 100 * (totalGameFrames - remainingFrames) / totalGameFrames)
 		var adjustedMeterRate = baseMeterRate + (baseMeterRate * time_multiplier) / 100
-		print(adjustedMeterRate)
+		# print(adjustedMeterRate)
 		increase_meter(adjustedMeterRate)
 		meter_frame_counter = 0
 		#print("Meter increased over time", adjustedMeterRate)
@@ -292,7 +292,8 @@ func _save_state() -> Dictionary:
 		hitstunMultiplier = hitstunMultiplier,
 
 		hitstopBuffer = hitstop_buffer,
-		inputBuffer = input_buffer
+		inputBuffer = input_buffer,
+		bufferedInput = bufferedInput
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -352,6 +353,7 @@ func _load_state(loadState: Dictionary) -> void:
 	hitstopBuffer = {}
 	for item in loadState['hitstopBuffer']:
 		hitstopBuffer[item] = loadState['hitstopBuffer'][item]
+	bufferedInput = loadState['bufferedInput']
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()

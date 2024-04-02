@@ -88,19 +88,27 @@ func buffer_has(btn: String) -> bool:
 	var result = false
 	for i in range(player.inputBuffer.size()):
 		result = result or player.inputBuffer[i].has(btn)
+	result = result or player.input.has(btn)
 	return result
 
-func check_for_attacks(input) -> String:
+func check_buffer_for_attack() -> String:
 	var inputs = ["light", "medium", "heavy", "impact"] # in order of priority
 	for i in inputs:
 		if buffer_has(i):
+			return i
+	return ""
+
+func check_for_attack(input) -> String:
+	var inputs = ["light", "medium", "heavy", "impact"] # in order of priority
+	for i in inputs:
+		if input.has(i):
 			return i
 	return ""
 	
 func neutral_attack(attack: String) -> bool:
 	# TODO: motion input for qcf_light
 	if attack != "":
-		if buffer_has(attack) and not player.pressed.has(attack):
+		if not player.pressed.has(attack):
 			player.pressed.append(attack)
 			player.animation.play("Neutral" + attack.capitalize())
 			do_attack("neutral_" + attack)
@@ -117,7 +125,7 @@ func crouching_attack(attack: String) -> bool:
 				do_attack("crouching_forward_medium")
 				set_state('CROUCHING_FORWARD_MEDIUM')
 				return true
-		elif buffer_has(attack):
+		else:
 			player.pressed.append(attack)
 			player.animation.play("Crouching" + attack.capitalize())
 			do_attack("crouching_" + attack)
@@ -127,7 +135,7 @@ func crouching_attack(attack: String) -> bool:
 
 func forward_attack(attack: String) -> bool:
 	if attack == "heavy": # forward heavy is the only forward attack
-		if buffer_has(attack) and not player.pressed.has(attack):
+		if not player.pressed.has(attack):
 			player.pressed.append(attack)
 			player.animation.play("Forward" + attack.capitalize())
 			do_attack("forward_" + attack)
@@ -143,13 +151,13 @@ func air_attack(attack: String) -> bool:
 			player.pressed.append(attack)
 			player.animation.play("BackAir" + attack.capitalize())
 			do_attack("back_air_" + attack)
-			set_state('NORMAL')
+			set_state('BACK_AIR_' + attack.to_upper())
 			return true
 		else:
 			player.pressed.append(attack)
 			player.animation.play("Air" + attack.capitalize())
 			do_attack("air_" + attack)
-			set_state('NORMAL')
+			set_state('AIR_' + attack.to_upper())
 			return true
 	return false
 
@@ -219,7 +227,7 @@ func transition_state(input):
 	match states[state]:
 		states.IDLE:
 			do_decerlerate(player.groundDeceleration)
-			if neutral_attack(check_for_attacks(player.input)):
+			if neutral_attack(check_buffer_for_attack()):
 				pass
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
@@ -248,7 +256,7 @@ func transition_state(input):
 				start_jump()
 		states.CROUCH:
 			do_decerlerate(player.groundDeceleration)
-			if crouching_attack(check_for_attacks(player.input)):
+			if crouching_attack(check_buffer_for_attack()):
 				pass
 			elif player.input_vector.y != -1:
 				player.animation.play("Stand")
@@ -266,7 +274,7 @@ func transition_state(input):
 				player.animation.play("Crawl")
 				set_state('CRAWL')
 		states.CRAWL:
-			if crouching_attack(check_for_attacks(player.input)):
+			if crouching_attack(check_buffer_for_attack()):
 				pass
 			elif buffer_has('shield'):
 				player.blockMask = 3 # 011
@@ -287,7 +295,7 @@ func transition_state(input):
 			if jump_check(input):
 				start_jump()
 		states.WALK:
-			if forward_attack(check_for_attacks(player.input)):
+			if forward_attack(check_buffer_for_attack()):
 				pass
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
@@ -315,7 +323,7 @@ func transition_state(input):
 			if jump_check(input):
 				start_jump()
 		states.SLIDE:
-			if any_attack(check_for_attacks(player.input)):
+			if any_attack(check_buffer_for_attack()):
 				pass
 			if jump_check(input):
 				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
@@ -339,7 +347,7 @@ func transition_state(input):
 					player.animation.play("Sprint")
 					set_state('SPRINT')
 		states.SPRINT:
-			if forward_attack(check_for_attacks(player.input)):
+			if forward_attack(check_buffer_for_attack()):
 				pass
 			if buffer_has("shield"):
 				player.blockMask = 6 # 110
@@ -428,7 +436,7 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
-			if air_attack(check_for_attacks(player.input)):
+			if air_attack(check_buffer_for_attack()):
 				pass
 			elif buffer_has('shield'):
 				player.animation.play("AirBlock")
@@ -620,20 +628,6 @@ func transition_state(input):
 				set_state('IDLE')
 			else:
 				player.frame -= 1
-		states.NORMAL:
-			player.velocity.x = 0
-			if player.recovery and player.hitstopBuffer.size() > 0: # if the player buffered in hitstop
-				var attack = check_for_attacks(player.hitstopBuffer)
-				if !player.pressed.has(attack):
-					# TODO: cancel logic
-					player.pressed.append(attack)
-					spawnHitBox.get_child(0).disabled = true # remove the previous hitbox
-					any_attack(attack)
-				player.hitstopBuffer = {}
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Idle")
-				set_state('IDLE')
 		states.DEAD:
 			player.is_dead = true
 			player.num_lives -= 1
@@ -643,15 +637,18 @@ func transition_state(input):
 			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				#print("RECOVERY")
-				pass
-			elif player.attack_ended:
-				player.attack_ended = false
+			if player.recovery and player.hitstopBuffer.size() > 0: # if the player buffered in hitstop
+				player.bufferedInput = check_for_attack(player.hitstopBuffer)
+				if !player.pressed.has(player.bufferedInput):
+					player.frame = 0
+					spawnHitBox.get_child(0).disabled = true # remove the previous hitbox
+					any_attack(player.bufferedInput)
+				player.hitstopBuffer = {}
+			elif player.frame >= player.attackDuration:
 				player.recovery = false
 				player.animation.play("Idle")
 				set_state('IDLE')
+			player.frame += 1
 		states.NEUTRAL_MEDIUM:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -944,6 +941,7 @@ func do_attack(attack_name: String):
 	# TODO: meter gain on hit
 	# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
 	# Throw attack
+	player.frame = 0
 	player.thrownHits += 1 # Increment number of thrown attacks
 	SyncManager.spawn("Hitbox", spawnHitBox, Hitbox, spawnHitBox.attacks[attack_name])
 

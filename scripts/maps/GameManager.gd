@@ -15,6 +15,7 @@ func _network_process(input: Dictionary) -> void:
 		hitbox_game_process()
 		frame = player_game_process()
 		animate_process()
+		# sound_process()
 	elif frame > 0:
 		serverPlayer.get_node("StateMachine").update_pressed(serverPlayer.input)
 		clientPlayer.get_node("StateMachine").update_pressed(clientPlayer.input)

@@ -28,13 +28,14 @@ func _network_spawn(data: Dictionary) -> void:
 		attacked_player = map.get_node("ClientPlayer")
 	
 	properties = data
+	attacking_player.attackDuration = properties["duration"]
 
 	# flipping the angle currently is not rollback safe
 	# if !attacking_player.facingRight:
 	# 	properties["onHit"]["knockback"]["angle"] = SGFixed.PI - properties["onHit"]["knockback"]["angle"]
 	# 	properties["onBlock"]["knockback"]["angle"] = SGFixed.PI - properties["onBlock"]["knockback"]["angle"]
 
-	attacking_player.attack_ended = false
+	# attacking_player.attack_ended = false
 	# set the first shape
 	hitboxes = properties['hitboxes']
 	$Hitbox_Shape.shape = SGRectangleShape2D.new()
@@ -47,16 +48,16 @@ func _game_process() -> void:
 		set_shape(0, 0)
 		attacking_player.thrownHits -= 1
 		attacking_player.recovery = false
-		attacking_player.attack_ended = true
+		# attacking_player.attack_ended = true
 		SyncManager.despawn(self)
 		return
-	elif tick >= hitboxes[idx]["ticks"]:
+	if tick >= hitboxes[idx]["ticks"]:
 		idx += 1
 		if idx > len(hitboxes) - 1:
 			set_shape(0, 0)
 			attacking_player.thrownHits -= 1
 			attacking_player.recovery = false
-			attacking_player.attack_ended = true
+			# attacking_player.attack_ended = true
 			SyncManager.despawn(self)
 			return
 		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
