@@ -648,8 +648,7 @@ func transition_state(input):
 				player.hitstopBuffer = {}
 			elif player.frame >= player.attackDuration:
 				player.recovery = false
-				player.animation.play("Idle")
-				set_state('IDLE')
+				set_actionable_state()
 			player.frame += 1
 		states.NEUTRAL_MEDIUM:
 			# currently stops all movement while the attack is happening
@@ -658,10 +657,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Idle")
-				set_state('IDLE')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.NEUTRAL_HEAVY:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -669,10 +668,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Idle")
-				set_state('IDLE')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.FORWARD_HEAVY:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -680,10 +679,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Walk")
-				set_state('WALK')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.CROUCHING_LIGHT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -691,10 +690,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Crouch")
-				set_state('CROUCH')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.CROUCHING_MEDIUM:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -702,10 +701,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Crouch")
-				set_state('CROUCH')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.CROUCHING_HEAVY:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -713,10 +712,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Crouch")
-				set_state('CROUCH')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.CROUCHING_FORWARD_MEDIUM:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -724,10 +723,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Crouch")
-				set_state('CROUCH')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.CROUCHING_IMPACT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -735,10 +734,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Crouch")
-				set_state('CROUCH')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.NEUTRAL_IMPACT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -746,10 +745,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Idle")
-				set_state('IDLE')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.AIR_LIGHT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -757,10 +756,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Airborne")
-				set_state('AIRBORNE')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.AIR_MEDIUM:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -768,10 +767,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Airborne")
-				set_state('AIRBORNE')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.AIR_HEAVY:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -779,10 +778,10 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Airborne")
-				set_state('AIRBORNE')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
 		states.AIR_IMPACT:
 			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
@@ -790,12 +789,42 @@ func transition_state(input):
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.attack_ended:
-				player.attack_ended = false
-				player.animation.play("Airborne")
-				set_state('AIRBORNE')
+			elif player.frame >= player.attackDuration:
+				player.recovery = false
+				set_actionable_state()
+			player.frame += 1
+
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
+
+# checks the current inputs and floor and sets the player's state
+func set_actionable_state():
+	if player.isOnFloor:
+		if player.input_vector.x != 0:
+			if player.input_vector.y == -1:
+				player.facingRight = player.input_vector.x > 0
+				do_walk(player.crawlSpeed, player.crawlAcceleration)
+				player.animation.play("Crawl")
+				set_state('CRAWL')
+			else:
+				if sprint_check(player.input):
+					do_walk(player.sprintSpeed, player.sprintAcceleration)
+					player.animation.play("Sprint")
+					set_state('SPRINT')
+				else:
+					do_walk(player.walkSpeed, player.walkAcceleration)
+					player.animation.play("Walk")
+					set_state('WALK')
+		else:
+			if player.input_vector.y == -1:
+				player.animation.play("Crouching")
+				set_state('CROUCH')
+			else:
+				player.animation.play("Idle")
+				set_state('IDLE')
+	else:
+		player.animation.play("Airborne")
+		set_state('AIRBORNE')
 
 func do_decerlerate(deceleration):
 	if player.velocity.x > 0:
