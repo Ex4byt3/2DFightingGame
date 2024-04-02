@@ -47,6 +47,7 @@ const dash_animaiton_map = {
 @onready var hurtBoxShape = $HurtBox/HurtBox
 @onready var pushBox = $PushBox
 @onready var gameManager = get_node("../GameManager")
+@onready var hitbox = $Hitbox
 
 @onready var FixedAnimator = $FixedAnimationPlayer
 
