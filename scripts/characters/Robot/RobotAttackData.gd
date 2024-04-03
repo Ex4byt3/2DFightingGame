@@ -220,7 +220,7 @@ const attacks = {
 	"crouching_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4},
-				{"x": 60, "y": 30, "width": 70, "height": 70, "ticks": 3},
+				{"x": 100, "y": -15, "width": 50, "height": 40, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
 			],
 		"duration": 15,
@@ -265,7 +265,7 @@ const attacks = {
 	"crouching_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
-				{"x": 50, "y": - 35, "width": 125, "height": 50, "ticks": 4},
+				{"x": 80, "y": -100, "width": 100, "height": 30, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
 		"duration": 22,
@@ -306,7 +306,7 @@ const attacks = {
 	"crouching_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
-				{"x": 60, "y": 0, "width": 80, "height": 60, "ticks": 3},
+				{"x": 150, "y": 30, "width": 180, "height": 300, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 25}
 			],
 		"duration": 39,
@@ -346,7 +346,7 @@ const attacks = {
 	"crouching_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 12},
-				{"x": 50, "y": - 35, "width": 135, "height": 50, "ticks": 6},
+				{"x": 80, "y": -100, "width": 400, "height": 20, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
 		"duration": 36,

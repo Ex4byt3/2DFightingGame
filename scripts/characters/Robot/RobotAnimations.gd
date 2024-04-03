@@ -517,10 +517,34 @@ extends FixedAnimator
 		},
 		"frames": [14, 5, 4, 24] # 2 startup frames, totaling to 20 but after 19 the hitsotp does not line up, strange
 	},
-	# crouching_light
-	# crouching_medium
-	# crouching_heavy
-	# crouching_impact
+	"CrouchingLight": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [4, 3, 7]
+	},
+	"CrouchingMedium": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [8, 4, 10]
+	},
+	"CrouchingHeavy": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [11, 3, 25]
+	},
+	"CrouchingImpact": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [7, 4, 6, 20]
+	},
 	"ForwardHeavy": {
 		"animation": {
 			"loop": false,

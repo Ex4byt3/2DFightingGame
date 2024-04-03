@@ -1,4 +1,4 @@
-[gd_scene load_steps=218 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=235 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -26,6 +26,10 @@
 [ext_resource type="Texture2D" uid="uid://by187movlu2yf" path="res://assets/characters/Robot/Movement/Dash/DashDR.png" id="12_4nc88"]
 [ext_resource type="Texture2D" uid="uid://b6o3ba2aoejs6" path="res://assets/characters/Robot/Block/Parry.png" id="12_wmup4"]
 [ext_resource type="Texture2D" uid="uid://ckdmnffc6djw1" path="res://assets/characters/Robot/Block/BlockCrouch.png" id="13_cxji0"]
+[ext_resource type="Texture2D" uid="uid://djhaqtq811x2i" path="res://assets/characters/Robot/Attacks/Normals/CrouchingHeavy.png" id="14_lv4bm"]
+[ext_resource type="Texture2D" uid="uid://b4eypuxcfwbr7" path="res://assets/characters/Robot/Attacks/Normals/CrouchingImpact.png" id="15_uj1jq"]
+[ext_resource type="Texture2D" uid="uid://dkp3oqsu0c0sv" path="res://assets/characters/Robot/Attacks/Normals/CrouchingLight.png" id="16_k0b8k"]
+[ext_resource type="Texture2D" uid="uid://bp2gm0tqdc5ei" path="res://assets/characters/Robot/Attacks/Normals/CrouchingMedium.png" id="17_ykws5"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotAttackData.gd" id="18_7wveu"]
 [ext_resource type="Texture2D" uid="uid://cys4tljf7vtlg" path="res://assets/characters/Robot/Attacks/Normals/ForwardHeavy.png" id="19_dd86s"]
 [ext_resource type="Texture2D" uid="uid://bowvr1ocbq1qk" path="res://assets/characters/Robot/Idle.png" id="19_kru2y"]
@@ -246,6 +250,58 @@ region = Rect2(400, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gwm1l"]
 atlas = ExtResource("5_muluu")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mt2rg"]
+atlas = ExtResource("14_lv4bm")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8h47"]
+atlas = ExtResource("14_lv4bm")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ei7dc"]
+atlas = ExtResource("14_lv4bm")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_we30v"]
+atlas = ExtResource("15_uj1jq")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rmu40"]
+atlas = ExtResource("15_uj1jq")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m44tu"]
+atlas = ExtResource("15_uj1jq")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7i85i"]
+atlas = ExtResource("15_uj1jq")
+region = Rect2(600, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mstom"]
+atlas = ExtResource("16_k0b8k")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fi1au"]
+atlas = ExtResource("16_k0b8k")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfpma"]
+atlas = ExtResource("16_k0b8k")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_thu3j"]
+atlas = ExtResource("17_ykws5")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1decl"]
+atlas = ExtResource("17_ykws5")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_okmji"]
+atlas = ExtResource("17_ykws5")
 region = Rect2(400, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pwiiu"]
@@ -1011,6 +1067,65 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_mt2rg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8h47")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ei7dc")
+}],
+"loop": true,
+"name": &"CrouchingHeavy",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_we30v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rmu40")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m44tu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7i85i")
+}],
+"loop": true,
+"name": &"CrouchingImpact",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mstom")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fi1au")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfpma")
+}],
+"loop": true,
+"name": &"CrouchingLight",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_thu3j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1decl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_okmji")
+}],
+"loop": true,
+"name": &"CrouchingMedium",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_pwiiu")
 }, {
 "duration": 1.0,
@@ -1543,7 +1658,7 @@ script = ExtResource("2_y2o11")
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_w520v")
-animation = &"NeutralImpact"
+animation = &"CrouchingHeavy"
 
 [node name="FixedAnimationPlayer" type="Node" parent="AnimatedSprite2D" groups=["network_sync"]]
 script = ExtResource("3_4ojck")
