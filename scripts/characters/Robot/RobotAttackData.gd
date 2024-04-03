@@ -23,7 +23,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 120,
+			"damage": 9999,
 			"adv": 0,
 			"gain": 0,
 			"hitstop": 30,

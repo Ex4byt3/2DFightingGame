@@ -141,7 +141,7 @@ func _reset_character() -> void:
 	health = max_health
 	print("[COMBAT] Reset " + self.name + "'s health: " + str(health))
 	
-	MenuSignalBus.emit_update_health(health, self.name)
+	#MenuSignalBus.emit_update_health(health, self.name)
 	MenuSignalBus.emit_player_ready(self.name)
 
 
@@ -232,7 +232,8 @@ func check_collisions() -> void:
 func take_damage(damage) -> void:
 	# TODO: can't be below 0, dying logic
 	health -= damage
-	MenuSignalBus.emit_update_health(health, self.name)
+	#MenuSignalBus.emit_update_health(health, self.name)
+
 
 func apply_knockback(force: int, angle_radians: int):
 	# Assuming 'force' is scaled already

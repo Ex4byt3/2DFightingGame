@@ -353,7 +353,7 @@ func _load_state(loadState: Dictionary) -> void:
 	wallBounceVelocity.x = loadState['wallBounceVelocity_x']
 	wallBounceVelocity.y = loadState['wallBounceVelocity_y']
 
-	health = loadState['health']
+	#health = loadState['health']
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	thrownHits = loadState['thrownHits']
@@ -366,7 +366,7 @@ func _load_state(loadState: Dictionary) -> void:
 	burst = loadState['burst']
 	meterCharge = loadState['meterCharge']
 	meterVal = loadState['meterVal']
-	num_lives = num_lives
+	num_lives = loadState['num_lives']
 
 	meter_frame_counter = loadState["meter_frame_counter"]
 	meter_frame_rate = loadState["meter_frame_rate"]
@@ -380,8 +380,9 @@ func _load_state(loadState: Dictionary) -> void:
 	last_dash_on_floor = loadState['last_dash_on_floor']
 	dash_meter_cost = loadState['dash_meter_cost']
 	
-	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()
+	
+	MenuSignalBus.emit_update_health(health, self.name)
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, player_weight: float) -> void:
 	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], player_weight)

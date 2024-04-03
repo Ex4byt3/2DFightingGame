@@ -206,8 +206,8 @@ func transition_state(input):
 	# 	set_state('HITSTOP')
 
 	if player.health <= 0:
-		if not player.is_dead:
-			set_state('DEAD')
+		player.is_dead = true
+		set_state('DEAD')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
 
@@ -619,12 +619,17 @@ func transition_state(input):
 			else:
 				player.frame -= 1
 		states.DEAD:
-			player.is_dead = true
-			player.num_lives -= 1
-			print("[COMBAT] " + str(player.name) + " has been KO'd!")
-			MenuSignalBus.emit_round_over()
-			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
-			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
+			#player.is_dead = true
+			if player.is_dead:
+				player.num_lives -= 1
+				print("[COMBAT] " + str(player.name) + " has been KO'd!")
+				MenuSignalBus.emit_round_over()
+				MenuSignalBus.emit_update_lives(player.num_lives, player.name)
+				print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
+				#player.health = player.max_health
+				player.is_dead = false
+			if player.health == player.max_health:
+				set_state('IDLE')
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
 			if player.hitstopBuffer > 0: # if the player buffered in hitstop
@@ -962,6 +967,8 @@ func do_hit():
 		player.frame = 0
 		player.hitstunMultiplier += onHit["gain"]
 		player.hitstop = onHit["hitstop"]
+		if player.health <= 0:
+			player.is_dead = true
 		if player.velocity.y < 0:
 			player.animation.play("AirHitstun")
 		else:

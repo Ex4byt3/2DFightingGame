@@ -33,10 +33,14 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "create_match", "_create_match")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "leave_match", "_leave_match")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_match_settings", "_update_match_settings")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "round_over", "_round_over")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "player_ready", "_player_ready")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "character_selected", "_on_character_selected")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "debug_name", "_debug_name")
+	
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "round_over", "_round_over")
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "player_ready", "_player_ready")
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "character_selected", "_on_character_selected")
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "debug_name", "_debug_name")
+	MenuSignalBus.round_over.connect(_round_over)
+	MenuSignalBus.player_ready.connect(_player_ready)
+	MenuSignalBus.start_round.connect(_start_round)
 
 
 ##################################################
@@ -71,14 +75,15 @@ func _update_match_settings(new_settings:Dictionary) -> void:
 
 
 func _player_ready(player_id: String) -> void:
+	print("[SYSTEM] player ready: " + player_id)
 	match player_id:
 		"ServerPlayer":
-			host_ready = not host_ready
+			host_ready = true
 		"ClientPlayer":
-			client_ready = not client_ready
+			client_ready = true
 	
 	if host_ready and client_ready:
-		MenuSignalBus.emit_start_match()
+		MenuSignalBus.emit_start_round()
 
 
 func _on_character_selected(character_id: String, selected_by: Dictionary) -> void:
@@ -118,6 +123,10 @@ func _round_over() -> void:
 		MenuSignalBus.emit_setup_round()
 	else:
 		MenuSignalBus.emit_combat_over()
+
+
+func _start_round() -> void:
+	pass
 
 
 func _debug_name(player_id: String) -> void:
