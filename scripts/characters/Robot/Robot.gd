@@ -78,6 +78,26 @@ var martial_hero_img = preload("res://assets/menu/images/ramlethal.jpg")
 var martial_hero_name = "Martial Hero"
 var martial_hero_max_health = 10000
 
+# Sound Effect Preloads
+const sounds := {
+	hit = preload("res://assets/sound/sound effects/roblox oof.mp3"),
+	hitI = {
+		# The following is an example of what settings can be set for the audio:
+		# World position to use positional audio.
+		#position = global_position,
+		# Change the volume (default = 0.0).
+		#volume_db = 1.5,
+		# Change the pitch (default = 1.0).
+		#pitch_scale = 0.5,
+		# Change the audio bus (default = 'Sound').
+		#bus = 'Music',
+	},
+	neutral_heavy = preload("res://assets/sound/sound effects/bonk.mp3"),
+	neutral_heavyI = {},
+	neutral_impact = preload("res://assets/sound/sound effects/Vine boom.mp3"),
+	neutral_impactI = {},
+}
+
 # Calling all onready functions
 func _ready():
 	animation.play("Idle")

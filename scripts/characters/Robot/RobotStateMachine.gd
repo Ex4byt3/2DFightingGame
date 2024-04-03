@@ -713,6 +713,11 @@ func transition_state(input):
 			player.velocity.x = 0
 			if player.hitstopBuffer > 0: # if the player buffered in hitstop
 				do_hitstop_buffer()
+			#SyncManager.play_sound(str(get_path()) + ":neutral_impact", player.boom, player.boomINFO)
+			# play impact animation
+			if player.recovery:
+				# TODO: add recovery frames/cancel logic
+				pass
 			elif player.frame >= player.attackDuration:
 				player.frame = 0
 				set_actionable_state()
@@ -932,6 +937,7 @@ func get_stun_frames(hitboxes: Array, advantage: int) -> int:
 	return moveFrames + advantage
 
 func do_hit():
+	SyncManager.play_sound(str(get_path()) + ":hit", player.sounds["hit"], player.sounds["hitI"])
 	# TODO: meter gain
 	if player.blockMask & player.hurtboxCollision["onBlock"]["mask"] == player.hurtboxCollision["onBlock"]["mask"]: # if blocked
 		# TODO: chip damage
@@ -986,6 +992,11 @@ func do_attack(attack_name: String):
 	player.frame = 0
 	player.hitbox.do_attack(attack_name)
 	player.animation.play(attack_name.to_pascal_case()) # TODO: attck animations
+	if attack_name in player.sounds:
+		SyncManager.play_sound(str(get_path()) + ":" + attack_name, player.sounds[attack_name], 
+		player.sounds[attack_name + "I"])
+
+	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
 	set_state(attack_name.to_upper())
 
 func update_debug_label(input_vector):

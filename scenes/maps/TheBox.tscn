@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://drausbesi8av4"]
+[gd_scene load_steps=6 format=3 uid="uid://drausbesi8av4"]
 
 [ext_resource type="Texture2D" uid="uid://rgop4j6sft35" path="res://assets/gameplay/debug/gridtexture.png" id="1_l0agw"]
 [ext_resource type="Texture2D" uid="uid://caoquouya0c2y" path="res://assets/gameplay/floor.png" id="2_8i3eh"]
+[ext_resource type="AudioStream" uid="uid://bxmdi6fqteui2" path="res://assets/sound/music/Battle with Beasts.ogg" id="3_qk2h8"]
 
 [sub_resource type="SGRectangleShape2D" id="1"]
 extents_x = 107348032
@@ -141,3 +142,8 @@ position = Vector2(0, 278)
 position = Vector2(2.28286e-05, 254.5)
 scale = Vector2(0.0754718, 1.43287)
 texture = ExtResource("2_8i3eh")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_qk2h8")
+autoplay = true
+bus = &"Music"

@@ -16,6 +16,7 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	handle_connecting_signals()
+	$AudioStreamPlayer.play(0)
 
 
 # Connect to button signals
