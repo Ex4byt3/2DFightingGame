@@ -83,19 +83,25 @@ func parse_motion_inputs():
 			# print(player.motion_inputs[motion])
 			return motion
 
-func buffer_has(btn: String) -> bool:
-	var result = false
-	for i in range(player.inputBuffer.size()):
-		result = result or player.inputBuffer[i].has(btn)
-	result = result or player.input.has(btn)
-	return result
+func parse_motion_input_int():
+	pass
+	# if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.down] < 9:
+	# 	if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.right] and player.held[ButtonsIndex.right] < 9:
+	# 		if player.held[ButtonsIndex.right]
 
-func check_buffer_for_attack() -> String:
-	var inputs = ["light", "medium", "heavy", "impact"] # in order of priority
-	for i in inputs:
-		if buffer_has(i):
+func check_buffer_for_attack() -> int:
+	var buttons = [player.Buttons.light, player.Buttons.medium, player.Buttons.heavy, player.Buttons.impact] # in order of priority
+	for i in buttons:
+		if player.inputBuffer & i:
 			return i
-	return ""
+	return -1
+
+func check_input(input: int) -> int:
+	var buttons = [player.Buttons.light, player.Buttons.medium, player.Buttons.heavy, player.Buttons.impact] # in order of priority
+	for i in buttons:
+		if input & i:
+			return i
+	return -1
 
 func check_for_attack(buffer) -> String: # to rewrite in the same format as the other normal inputs later
 	if buffer & 1:
@@ -115,48 +121,47 @@ func check_for_attack(buffer) -> String: # to rewrite in the same format as the 
 	else:
 		return ""
 
-func neutral_attack(attack: String) -> String:
+func neutral_attack(attack: int) -> String:
 	# TODO: motion input for qcf_light
-	if attack != "":
-		if not player.pressed.has(attack):
-			player.pressed.append(attack)
-			return "neutral_" + attack
+	if attack != -1:
+		if not player.pressed & attack:
+			player.pressed += attack
+			return "neutral_" + player.ReverseButtons[attack]
 	return ""
 
-func crouching_attack(attack: String) -> String:
-	if attack != "" and !player.pressed.has(attack):
+func crouching_attack(attack: int) -> String:
+	if attack != -1 and !player.pressed & attack:
+		player.pressed += attack
 		if player.input_vector.x != 0:
 			player.facingRight = player.input_vector.x > 0
-			if attack == "medium":
-				player.pressed.append(attack)
+			if attack == player.Buttons.medium:
 				return "crouching_forward_medium"
 		else:
-			player.pressed.append(attack)
-			return "crouching_" + attack
+			return "crouching_" + player.ReverseButtons[attack]
 	return ""
 
-func forward_attack(attack: String) -> String:
-	if attack == "heavy": # forward heavy is the only forward attack
-		if not player.pressed.has(attack):
-			player.pressed.append(attack)
+func forward_attack(attack: int) -> String:
+	if attack == player.Buttons.heavy: # forward heavy is the only forward attack
+		if not player.pressed & attack:
+			player.pressed += attack
 			return "forward_heavy"
 		else:
 			return ""
 	else: # forward light and medium are the same as neutral light and medium
 		return neutral_attack(attack)
 
-func air_attack(attack: String) -> String:
-	if attack != "" and !player.pressed.has(attack):
+func air_attack(attack: int) -> String:
+	if attack != -1 and !player.pressed & attack:
 		if player.input_vector.x > 0 == player.facingRight:
-			player.pressed.append(attack)
-			return "air_" + attack
+			player.pressed += attack
+			return "air_" + player.ReverseButtons[attack]
 		else:
-			player.pressed.append(attack)
-			return "back_air_" + attack
+			player.pressed += attack
+			return "back_air_" + player.ReverseButtons[attack]
 	return ""
 
-func any_attack(attack: String) -> String:
-	if attack != "":
+func any_attack(attack: int) -> String:
+	if attack != -1:
 		if player.isOnFloor:
 			if player.input_vector.y == -1:
 				return crouching_attack(attack)
@@ -167,6 +172,18 @@ func any_attack(attack: String) -> String:
 		else:
 			return air_attack(attack)
 	return ""
+
+func get_attack_button(input: int) -> int:
+	if input & player.Buttons.light:
+		return player.Buttons.light
+	elif input & player.Buttons.medium:
+		return player.Buttons.medium
+	elif input & player.Buttons.heavy:
+		return player.Buttons.heavy
+	elif input & player.Buttons.impact:
+		return player.Buttons.impact
+	else:
+		return -1
 
 func transition_state(input):
 	update_debug_label(player.input_vector)
@@ -193,9 +210,10 @@ func transition_state(input):
 	# TODO: parse_motion_inputs should only get called when we need to look for a possible motion input rahter thanevery frame
 	# if buffer_has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
 	parse_motion_inputs()
+	parse_motion_input_int()
 
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
-	if buffer_has("dash") and not player.isOnFloor and player.meterVal > 0:
+	if player.inputBuffer & player.Buttons.dash and not player.isOnFloor and player.meterVal > 0:
 		# TODO: scaling meter cost the first dash costs one meter - when you hit the floor it resets - if you don't hit the floor the dash increases every other +1 
 		player.meterVal -= 1
 		start_dash(player.input_vector)
@@ -226,7 +244,7 @@ func transition_state(input):
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
 				set_state('CROUCH')
-			elif buffer_has("shield"):
+			elif player.inputBuffer & player.Buttons.shield:
 				player.blockMask = 6 # 110
 				player.animation.play("Block")
 				set_state("BLOCK")
@@ -256,7 +274,7 @@ func transition_state(input):
 				player.animation.play("Stand")
 				player.animation.queue("Idle")
 				set_state('IDLE')
-			elif buffer_has("shield"):
+			elif player.inputBuffer & player.Buttons.shield:
 				player.blockMask = 6 # 110
 				# player.animation.play("LowBlock") # TODO: add low block animation
 				player.animation.play("LowBlocking")
@@ -270,7 +288,7 @@ func transition_state(input):
 		states.CRAWL:
 			if do_attack(crouching_attack(check_buffer_for_attack())):
 				pass
-			elif buffer_has('shield'):
+			elif player.inputBuffer & player.Buttons.shield:
 				player.blockMask = 3 # 011
 				# player.animation.play("LowBlock") # TODO: add low block animation
 				player.animation.play("LowBlocking")
@@ -294,7 +312,7 @@ func transition_state(input):
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
 				set_state('CROUCH')
-			elif buffer_has("shield"):
+			elif player.inputBuffer & player.Buttons.shield:
 				player.blockMask = 6 # 110
 				player.animation.play("Block")
 				set_state("BLOCK")
@@ -317,7 +335,7 @@ func transition_state(input):
 			if jump_check():
 				start_jump()
 		states.SLIDE:
-			if do_attack(any_attack(check_buffer_for_attack())):
+			if do_attack(any_attack(get_attack_button(player.inputBuffer))):
 				pass
 			if jump_check():
 				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
@@ -343,7 +361,7 @@ func transition_state(input):
 		states.SPRINT:
 			if do_attack(forward_attack(check_buffer_for_attack())):
 				pass
-			if buffer_has("shield"):
+			if player.inputBuffer & player.Buttons.shield:
 				player.blockMask = 6 # 110
 				player.animation.play("Block")
 				set_state("BLOCK")
@@ -432,7 +450,7 @@ func transition_state(input):
 					player.velocity.x = -player.maxAirSpeed
 			if do_attack(air_attack(check_buffer_for_attack())):
 				pass
-			elif buffer_has('shield'):
+			elif player.inputBuffer & player.Buttons.shield:
 				player.animation.play("AirBlock")
 				player.blockMask = 7 # 111, no high/lows in the air
 				set_state("AIR_BLOCK")
@@ -440,7 +458,7 @@ func transition_state(input):
 			do_decerlerate(player.groundDeceleration)
 			if player.input_vector.x != 0:
 				player.facingRight = player.input_vector.x > 0
-			if !buffer_has("shield"):
+			if !player.inputBuffer & player.Buttons.shield:
 				player.animation.play("Unblock")
 				player.blockMask = 0 # 000
 				player.animation.queue("Idle")
@@ -457,7 +475,7 @@ func transition_state(input):
 			player.animation.play("LowBlocking")
 			if player.input_vector.x != 0:
 				player.facingRight = player.input_vector.x > 0
-			if !buffer_has("shield"):
+			if !player.inputBuffer & player.Buttons.shield:
 				player.animation.play("LowUnblock")
 				player.animation.queue("Crouching")
 				player.blockMask = 0 # 000
@@ -471,7 +489,7 @@ func transition_state(input):
 				player.blockMask = 0 # 000
 				start_jump()
 		states.AIR_BLOCK:
-			if !buffer_has("shield"):
+			if !player.inputBuffer & player.Buttons.shield:
 				player.animation.play("AirUnblock")
 				player.animation.queue("Airborne")
 				player.blockMask = 0 # 000
@@ -785,11 +803,11 @@ func transition_state(input):
 func do_hitstop_buffer() -> void:
 	if player.hitbox.properties["cancelable"]["jump"]:
 		if player.hitstopBuffer & 16: # still don't have input vecotr here
-			player.pressed.append("jump")
+			player.pressed += player.Buttons.jump
 			start_jump()
 			return
 		
-	var attack = any_attack(check_for_attack(player.hitstopBuffer)) # check for [TODO: valid] buffered attack
+	var attack = any_attack(get_attack_button(player.inputBuffer)) # check for [TODO: valid] buffered attack
 	if attack in player.hitbox.properties["cancelable"]["moves"]: # TODO: not handling attack type cancels, only jump and by name
 		player.frame = 0
 		player.hitbox.disabled = true
@@ -847,8 +865,9 @@ func do_walk(speed, acceleration):
 			player.velocity.x = -speed
 
 func start_jump():
-	if !player.pressed.has("jump"):
-		player.pressed.append("jump")
+	if !player.pressed & player.Buttons.jump and !player.pressed & 8:
+		player.pressed += player.Buttons.jump
+		player.pressed += 8
 		if player.isOnFloor:
 			player.animation.play("Jumpsquat")
 		else:
@@ -856,19 +875,21 @@ func start_jump():
 			player.airJump -= 1
 		set_state('JUMPSQUAT')
 
-func update_pressed(input = {}) -> void:
-	if input != {}:
-		for button in player.pressed:
-			if !input.has(str(button)):
-				player.pressed.erase(button)
+func update_pressed(input: int = -1) -> void:
+	# player.pressed = player.inputBufferInt & (~player.pressed | player.inputBufferInt)
+	# player.pressed = (player.pressed & player.inputBufferInt) | (~player.pressed & ~player.inputBufferInt)
+	if input == -1:
+		player.pressed = player.pressed & player.inputBuffer
 	else:
-		for button in player.pressed:
-			if !buffer_has(str(button)):
-				player.pressed.erase(button)
+		player.pressed = player.pressed & input
+	# if player.pressed & player.Buttons['light'] and not player.inputBufferInt & player.Buttons['light']:
+	# 	player.pressed -= player.Buttons['light']
+	# if player.name == "ServerPlayer":
+	# 	print(str(player.pressed) + " " + str(player.inputInt) + " " + str(player.inputBufferInt))
 
 func start_dash(input_vector):
-	if !player.pressed.has("dash"):
-		player.pressed.append("dash")
+	if !player.pressed & player.Buttons.dash:
+		player.pressed += player.Buttons.dash
 		# if the input vector is neutral, dash in the direction the player is facing
 		player.dashVector = input_vector.normalized()
 		if player.dashVector.x == 0 and player.dashVector.y == 0:
@@ -916,7 +937,7 @@ func jump_check() -> bool: # might be redundant
 
 func sprint_check(input) -> bool:
 	# if a direction is double tapped, the player sprints, no more than sprintInputLeinency frames between taps
-	if input.get("sprint_macro", false):
+	if input & player.Buttons.sprint:
 		return true
 	elif player.controlBuffer.size() > 3: # if the top of the buffer hold a direction, then neutral, then the same direction, the player sprints
 		if player.controlBuffer[0][2] < player.sprintInputLeinency and player.controlBuffer[1][2] < player.sprintInputLeinency and player.controlBuffer[2][2] < player.sprintInputLeinency:

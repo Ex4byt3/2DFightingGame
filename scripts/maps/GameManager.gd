@@ -6,24 +6,6 @@ extends Node
 @onready var clientHitbox = clientPlayer.get_node("Hitbox")
 var frame = 0
 
-func input_to_int(input: Dictionary) -> int: # to rewrite in the same format as the other normal inputs later
-	var i : int = 0
-	if input.has("light"):
-		i += 1
-	if input.has("medium"):
-		i += 2
-	if input.has("heavy"):
-		i += 4
-	if input.has("impact"):
-		i += 8
-	if input.has("jump"):
-		i += 16
-	if input.has("dash"):
-		i += 32
-	if input.has("shield"):
-		i += 64
-	return i
-
 func _network_process(input: Dictionary) -> void:
 	sync_postions()
 	sync_hurtboxes()
@@ -39,8 +21,8 @@ func _network_process(input: Dictionary) -> void:
 	elif frame > 0:
 		serverPlayer.get_node("StateMachine").update_pressed(serverPlayer.input)
 		clientPlayer.get_node("StateMachine").update_pressed(clientPlayer.input)
-		serverPlayer.hitstopBuffer |= input_to_int(serverPlayer.input) # TODO: currently can't buffer input vector]
-		clientPlayer.hitstopBuffer |= input_to_int(clientPlayer.input)
+		serverPlayer.hitstopBuffer |= serverPlayer.input # note, input vector buffered this way get's fucky, don't use that
+		clientPlayer.hitstopBuffer |= clientPlayer.input
 		frame -= 1
 
 # func sound_process() -> void:

@@ -3,6 +3,41 @@ extends SGCharacterBody2D
 # Character class which contains variables/functions applicable to all character archetypes
 class_name Character
 
+# Constants
+enum Buttons {
+	# directions are their numpad notation in the first 4 bits (& 15)
+	light = 1 << 4,
+	medium = 1 << 5,
+	heavy = 1 << 6,
+	impact = 1 << 7,
+	dash = 1 << 8,
+	shield = 1 << 9,
+	sprint = 1 << 10,
+	jump = 1 << 11
+}
+const ReverseButtons = {
+	16: "light",
+	32: "medium",
+	64: "heavy",
+	128: "impact",
+	256: "dash",
+	512: "shield",
+	1024: "sprint",
+	2048: "jump"
+}
+const ButtonsIndex = {
+	"light": 2,
+	"medium": 3,
+	"heavy": 4,
+	"impact": 5,
+	"dash": 6,
+	"shield": 7,
+	"sprint": 8,
+	"jump": 9
+}
+
+var held = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
 # For our debug overlay
 const direction_mapping = {  # Numpad Notation:
 	[-1, -1]: "DOWN LEFT",   # 1
@@ -58,7 +93,7 @@ var controlBuffer := [[0, 0, 0]]
 var motionInputLeinency = 45
 var overlappingHurtbox := []
 var overlappingPushbox := []
-var pressed = []
+var pressed : int = 0
 var facingRight := true # for flipping the sprite
 var frame : int = 0 # Frame counter for anything that happens over time
 var recovery = false # If the attack has ended
@@ -96,11 +131,12 @@ var isOnWallL := false
 var isOnWallR := false
 var wallBounceVelocity := SGFixed.vector2(0, 0)
 
-var input := {} # Input dictionary
+var input : int = 0
 var hitstopBuffer : int = 0 # bit mask of any input pressed in hitstun
-# TODO: remake buffer with bit mask
-var inputBuffer := [] # Input buffer array, holds the last 4 frames of input
+var inputBufferArray := [0, 0, 0, 0]
+var inputBuffer : int = 0
 var attackDuration = 0 # How long the attack lasts
+var bufferIdx := 0
 
 func _ready():
 	_handle_connecting_signals()
@@ -146,50 +182,124 @@ func _reset_character() -> void:
 
 
 func _network_preprocess(userInput: Dictionary) -> void:
-	input = userInput
+	input = userInput["input"]
+	inputBufferArray[bufferIdx] = input
+	bufferIdx = (bufferIdx + 1) % 4
+	inputBuffer = 0
+	for i in inputBufferArray:
+		inputBuffer |= i
 
+	################################
+	# Capcom style of input buffer #
+	################################
+	if held[0] != input & 15:
+		held[0] = input & 15
+		held[1] = 1
+	else:
+		held[1] += 1
+
+	if input & Buttons.light:
+		held[ButtonsIndex.light] += 1
+	else:
+		if held[ButtonsIndex.light] > 0:
+			held[ButtonsIndex.light] = -1 # negative edge
+		else: 
+			held[ButtonsIndex.light] -= 1
+
+	if input & Buttons.medium:
+		held[ButtonsIndex.medium] += 1
+	else:
+		if held[ButtonsIndex.medium] > 0:
+			held[ButtonsIndex.medium] = -1 # negative edge
+		else: 
+			held[ButtonsIndex.medium] -= 1
+	
+	if input & Buttons.heavy:
+		held[ButtonsIndex.heavy] += 1
+	else:
+		if held[ButtonsIndex.heavy] > 0:
+			held[ButtonsIndex.heavy] = -1 # negative edge
+		else: 
+			held[ButtonsIndex.heavy] -= 1
+
+	if input & Buttons.impact:
+		held[ButtonsIndex.impact] += 1
+	else:
+		if held[ButtonsIndex.impact] > 0:
+			held[ButtonsIndex.impact] = -1 # negative edge
+		else: 
+			held[ButtonsIndex.impact] -= 1
+
+	held[ButtonsIndex.light] = held[ButtonsIndex.light] + 1 if input & Buttons.light else 0
+	held[ButtonsIndex.medium] = held[ButtonsIndex.medium] + 1 if input & Buttons.medium else 0
+	held[ButtonsIndex.heavy] = held[ButtonsIndex.heavy] + 1 if input & Buttons.heavy else 0
+	held[ButtonsIndex.impact] = held[ButtonsIndex.impact] + 1 if input & Buttons.impact else 0
+
+	held[ButtonsIndex.dash] = held[ButtonsIndex.dash] + 1 if input & Buttons.dash else 0
+	held[ButtonsIndex.shield] = held[ButtonsIndex.shield] + 1 if input & Buttons.shield else 0
+	held[ButtonsIndex.sprint] = held[ButtonsIndex.sprint] + 1 if input & Buttons.sprint else 0
+	held[ButtonsIndex.jump] = held[ButtonsIndex.jump] + 1 if input & Buttons.jump else 0
+
+	# if inputInt > 0:
+	# 	print(inputInt)
+	# 	print(held)
 
 # Input functions
 # Like Input.get_vector but for SGFixedVector2
-func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: String, positive_y: String) -> SGFixedVector2:
-	var new_vector = SGFixed.vector2(0, 0) # note: SGFixedVector2 is always passed by reference and can be copied with SGFixedVector2.copy()
-	new_vector.x = 0
-	new_vector.y = 0
+func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: String, positive_y: String) -> Array:
+	var new_vector = [0, 0]
 	if Input.is_action_pressed(negative_x):
-		new_vector.x -= 1
+		new_vector[0] -= 1
 	if Input.is_action_pressed(positive_x):
-		new_vector.x += 1
+		new_vector[0] += 1
 	if Input.is_action_pressed(negative_y):
-		new_vector.y -= 1
+		new_vector[1] -= 1
 	if Input.is_action_pressed(positive_y):
-		new_vector.y += 1
+		new_vector[1] += 1
 	return new_vector
 
 # Getting local input using SG Physics
 func _get_local_input() -> Dictionary:
-	input_vector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
-	var userInput := {}
-	if input_vector != SGFixed.vector2(0, 0):
-		userInput["input_vector_x"] = input_vector.x
-		userInput["input_vector_y"] = input_vector.y
-	if Input.is_action_pressed(input_prefix + "bomb"):
-		userInput["drop_bomb"] = true
+	var newInputVector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
+	var userInput := {"input": 0}
+	userInput["input_vector_x"] = newInputVector[0]
+	userInput["input_vector_y"] = newInputVector[1]
+	match newInputVector:
+		[-1, -1]:
+			userInput["input"] += 1
+		[0, -1]:
+			userInput["input"] += 2
+		[1, -1]:
+			userInput["input"] += 3
+		[-1, 0]:
+			userInput["input"] += 4
+		[0, 0]:
+			userInput["input"] += 5
+		[1, 0]:
+			userInput["input"] += 6
+		[-1, 1]:
+			userInput["input"] += 7
+		[0, 1]:
+			userInput["input"] += 8
+		[1, 1]:
+			userInput["input"] += 9
+
 	if Input.is_action_pressed(input_prefix + "light"):
-		userInput["light"] = true
+		userInput["input"] += Buttons.light
 	if Input.is_action_pressed(input_prefix + "medium"):
-		userInput["medium"] = true
+		userInput["input"] += Buttons.medium
 	if Input.is_action_pressed(input_prefix + "heavy"):
-		userInput["heavy"] = true
+		userInput["input"] += Buttons.heavy
 	if Input.is_action_pressed(input_prefix + "impact"):
-		userInput["impact"] = true
+		userInput["input"] += Buttons.impact
 	if Input.is_action_pressed(input_prefix + "dash"):
-		userInput["dash"] = true
+		userInput["input"] += Buttons.dash
 	if Input.is_action_pressed(input_prefix + "shield"):
-		userInput["shield"] = true
+		userInput["input"] += Buttons.shield
 	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
-		userInput["sprint_macro"] = true
-	if Input.is_action_pressed(input_prefix + "jump") or userInput["input_vector_y"] == 1: # pressing up doubles as a jump input
-		userInput["jump"] = true
+		userInput["input"] += Buttons.sprint
+	if Input.is_action_pressed(input_prefix + "jump"):
+		userInput["input"] += Buttons.jump
 	
 	return userInput
 

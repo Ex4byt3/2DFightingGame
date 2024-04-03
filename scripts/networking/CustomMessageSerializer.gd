@@ -9,23 +9,6 @@ const input_path_mapping_reverse = {
 	2: '/root/Main/MatchController/MapHolder/Map/ClientPlayer'
 }
 
-enum HeaderFlags {
-	HAS_INPUT_VECTOR = 1 << 0, # Bit 0
-	DROP_BOMB        = 1 << 1, # Bit 1
-	LIGHT            = 1 << 2, # Bit 2
-	MEDIUM           = 1 << 3, # Bit 3
-	HEAVY            = 1 << 4, # Bit 4
-	IMPACT           = 1 << 5, # Bit 5
-	DASH             = 1 << 6, # Bit 6
-	SHIELD           = 1 << 7, # Bit 7
-	SPRINT_MACRO     = 1 << 8, # Bit 8
-	JUMP             = 1 << 9, # Bit 9
-}
-
-#func _init():
-#	MenuSignalBus._connect_Signals(GameSignalBus, self, "network_button_pressed", "_on_network_button_pressed")
-#	GameSignalBus.connect("network_button_pressed", self, "_on_network_button_pressed")
-
 func serialize_input(all_input: Dictionary) -> PackedByteArray:
 	var buffer := StreamPeerBuffer.new()
 	buffer.resize(16) # size to be bigger than actual size
@@ -36,39 +19,13 @@ func serialize_input(all_input: Dictionary) -> PackedByteArray:
 		if path == '$':
 			continue
 		buffer.put_u16(input_path_mapping[path])
-		
-		var header := 0
-		
+
 		var input = all_input[path]
-		if input.has('input_vector_x') and input.has('input_vector_y'):
-			header |= HeaderFlags.HAS_INPUT_VECTOR
-		if input.get('drop_bomb', false):
-			header |= HeaderFlags.DROP_BOMB
-		if input.get('light', false):
-			header |= HeaderFlags.LIGHT
-		if input.get('medium', false):
-			header |= HeaderFlags.MEDIUM
-		if input.get('heavy', false):
-			header |= HeaderFlags.HEAVY
-		if input.get('impact', false):
-			header |= HeaderFlags.IMPACT
-		if input.get('dash', false):
-			header |= HeaderFlags.DASH
-		if input.get('shield', false):
-			header |= HeaderFlags.SHIELD
-		if input.get('sprint_macro', false):
-			header |= HeaderFlags.SPRINT_MACRO
-		if input.get('jump', false):
-			header |= HeaderFlags.JUMP
-		
-		buffer.put_u16(header)
-		
-		if input.has('input_vector_x') and input.has('input_vector_y'):
-			buffer.put_64(input['input_vector_x'])
-			buffer.put_64(input['input_vector_y'])
+		buffer.put_u16(input['input']) # or whatever key you're using in the dictionary for the bitmask
 	
 	buffer.resize(buffer.get_position()) # resize to actual size
 	return buffer.data_array
+
 
 func unserialize_input(serialized: PackedByteArray) -> Dictionary:
 	var buffer := StreamPeerBuffer.new()
@@ -86,45 +43,7 @@ func unserialize_input(serialized: PackedByteArray) -> Dictionary:
 	var path = input_path_mapping_reverse[buffer.get_u16()]
 	var input := {}
 	
-	var header = buffer.get_u16()
-	if header & HeaderFlags.HAS_INPUT_VECTOR:
-		input["input_vector_x"] = buffer.get_64()
-		input["input_vector_y"] = buffer.get_64()
-	if header & HeaderFlags.DROP_BOMB:
-		input["drop_bomb"] = true
-	if header & HeaderFlags.LIGHT:
-		input["light"] = true
-	if header & HeaderFlags.MEDIUM:
-		input["medium"] = true
-	if header & HeaderFlags.HEAVY:
-		input["heavy"] = true
-	if header & HeaderFlags.IMPACT:
-		input["impact"] = true
-	if header & HeaderFlags.DASH:
-		input["dash"] = true
-	if header & HeaderFlags.SHIELD:
-		input["shield"] = true
-	if header & HeaderFlags.SPRINT_MACRO:
-		input["sprint_macro"] = true
-	if header & HeaderFlags.JUMP:
-		input["jump"] = true
+	input['input'] = buffer.get_u16()
 	
 	all_input[path] = input
 	return all_input
-
-# This function used to set input_path_mapping but it is no longer needed as input_path_mapping is now static
-#func _on_network_button_pressed(network_type: int) -> void:
-#	input_path_mapping.clear()
-#	input_path_mapping_reverse.clear()
-	
-#	if network_type == 1:
-#		input_path_mapping['/root/RpcGame/ServerPlayer'] = 1
-#		input_path_mapping['/root/RpcGame/ClientPlayer'] = 2
-#	elif network_type == 2:
-#		input_path_mapping['/root/SteamGame/ServerPlayer'] = 1
-#		input_path_mapping['/root/SteamGame/ClientPlayer'] = 2
-#	else:
-#		input_path_mapping.clear()
-		
-#	for key in input_path_mapping:
-#		input_path_mapping_reverse[input_path_mapping[key]] = key

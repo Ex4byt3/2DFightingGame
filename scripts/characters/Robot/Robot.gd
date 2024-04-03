@@ -187,24 +187,46 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 		input.erase("input_vector")
 	return input
 
-func update_input_buffer(input: Dictionary) -> void:
-	var newInput = input.duplicate()
-	# newInput.erase("input_vector_x")
-	newInput.erase("input_vector_y")
-	inputBuffer.append(input)
-	if inputBuffer.size() > 4: # 4 frames of input buffer
-		inputBuffer.remove_at(0)
+func get_input_vector():
+	var vector = SGFixed.vector2(0, 0)
+	match held[0]: # the currently held direction
+		1:
+			vector.x = -1
+			vector.y = -1
+		2:
+			vector.x = 0
+			vector.y = -1
+		3:
+			vector.x = 1
+			vector.y = -1
+		4:
+			vector.x = -1
+			vector.y = 0
+		5:
+			pass
+		6:
+			vector.x = 1
+			vector.y = 0
+		7:
+			vector.x = -1
+			vector.y = 1
+		8:
+			vector.x = 0
+			vector.y = 1
+		9:
+			vector.x = 1
+			vector.y = 1
+	return vector
 
-func _game_process(input: Dictionary) -> int:
+func _game_process(input: int) -> int:
 	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
 	MenuSignalBus.emit_update_meter_val(meterVal, self.name)
-	
-	update_input_buffer(input)
 	currentGameFrame += 1
 	increase_meter_over_time()
 	
 	# Transition state and calculate velocity off of this logic
-	input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))
+	# input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))\
+	input_vector = get_input_vector()
 	stateMachine.transition_state(input)
 	
 	# Update position based off of velocity
@@ -262,16 +284,17 @@ func _save_state() -> Dictionary:
 	var control_buffer = []
 	for item in controlBuffer:
 		control_buffer.append(item.duplicate())
-	var pressed_ = []
-	for item in pressed:
-		pressed_.append(item)
-	var input_buffer = []
-	for item in inputBuffer:
-		input_buffer.append(item.duplicate())
+	var input_buffer_array = []
+	for item in inputBufferArray:
+		input_buffer_array.append(item)
 	return {
+		input = input,
+		inputBuffer = inputBuffer,
+		bufferIdx = bufferIdx,
+		inputBufferArray = input_buffer_array,
 		playerState = stateMachine.state,
 		controlBuffer = control_buffer,
-		pressed = pressed_,
+		pressed = pressed,
 		
 		fixed_position_x = fixed_position.x,
 		fixed_position_y = fixed_position.y,
@@ -313,21 +336,23 @@ func _save_state() -> Dictionary:
 		hitstunMultiplier = hitstunMultiplier,
 
 		hitstopBuffer = hitstopBuffer,
-		inputBuffer = input_buffer,
+
+		held = held.duplicate()
 	}
 
 func _load_state(loadState: Dictionary) -> void:
+	input = loadState['input']
+	inputBuffer = loadState['inputBuffer']
+	inputBufferArray = []
+	bufferIdx = loadState['bufferIdx']
+	for item in loadState['inputBufferArray']:
+		inputBufferArray.append(item)
+
 	stateMachine.state = loadState['playerState']
 	controlBuffer = []
 	for item in loadState['controlBuffer']:
 		controlBuffer.append(item.duplicate())
-	pressed = []
-	for item in loadState['pressed']:
-		pressed.append(item)
-	inputBuffer = []
-	for item in loadState['inputBuffer']:
-		inputBuffer.append(item.duplicate())
-	
+	pressed = loadState['pressed']
 	
 	fixed_position.x = loadState['fixed_position_x']
 	fixed_position.y = loadState['fixed_position_y']
@@ -371,6 +396,8 @@ func _load_state(loadState: Dictionary) -> void:
 	hitstunMultiplier = loadState['hitstunMultiplier']
 
 	hitstopBuffer = loadState['hitstopBuffer']
+
+	held = loadState['held']
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()
