@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bumvir3k0bi4r"]
+[gd_scene load_steps=12 format=3 uid="uid://bumvir3k0bi4r"]
 
 [ext_resource type="Script" path="res://scripts/gui/menu/main/MainMenu.gd" id="1_d2sm7"]
 [ext_resource type="Texture2D" uid="uid://03ubnt3gru1w" path="res://assets/menu/images/ScifiBackground.png" id="2_gs8w3"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cmdy87f36pdx1" path="res://assets/menu/icons/active_local_icon.png" id="5_uy2p4"]
 [ext_resource type="Texture2D" uid="uid://chwxudi850r5r" path="res://assets/menu/icons/active_training_icon.png" id="6_jxkhi"]
 [ext_resource type="Texture2D" uid="uid://bhlxdbmqg7k60" path="res://assets/menu/icons/active_records_icon.png" id="7_cc3v6"]
+[ext_resource type="AudioStream" uid="uid://bvj5ubonk2gs8" path="res://assets/sound/music/I've Got Your Back!.ogg" id="8_k534x"]
 
 [sub_resource type="Gradient" id="1"]
 colors = PackedColorArray(0, 0, 0, 0.392157, 0, 0, 0, 0)
@@ -256,3 +257,7 @@ offset_right = -10.0
 offset_bottom = -10.0
 text = "Welcome to Project Delta"
 horizontal_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_k534x")
+bus = &"Music"

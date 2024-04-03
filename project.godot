@@ -17,7 +17,7 @@ config/icon="res://assets/gameplay/icon.png"
 
 [audio]
 
-buses/default_bus_layout="res://assets/sound/buses/default_bus_layout.tres"
+buses/default_bus_layout="res://assets/sound/default_bus_layout.tres"
 
 [autoload]
 

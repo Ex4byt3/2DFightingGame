@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bxmdi6fqteui2"
+path="res://.godot/imported/Battle with Beasts.ogg-842125d18102073fa86bf13354b9d378.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sound/music/Battle with Beasts.ogg"
+dest_files=["res://.godot/imported/Battle with Beasts.ogg-842125d18102073fa86bf13354b9d378.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

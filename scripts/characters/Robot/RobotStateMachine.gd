@@ -939,7 +939,7 @@ func get_stun_frames(hitboxes: Array, advantage: int) -> int:
 	return moveFrames + advantage
 
 func do_hit():
-	SyncManager.play_sound(str(get_path()) + ":hit", player.oof, player.oofINFO)
+	SyncManager.play_sound(str(get_path()) + ":hit", player.sounds["hit"], player.sounds["hitI"])
 	# TODO: meter gain
 	if player.blockMask & player.hurtboxCollision["onBlock"]["mask"] == player.hurtboxCollision["onBlock"]["mask"]: # if blocked
 		# TODO: chip damage
@@ -994,6 +994,9 @@ func do_attack(attack_name: String):
 	player.frame = 0
 	player.thrownHits += 1 # Increment number of thrown attacks
 	SyncManager.spawn("Hitbox", spawnHitBox, Hitbox, spawnHitBox.attacks[attack_name])
+	if attack_name in player.sounds:
+		SyncManager.play_sound(str(get_path()) + ":" + attack_name, player.sounds[attack_name], 
+		player.sounds[attack_name + "I"])
 
 	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
 	set_state(attack_name.to_upper())
