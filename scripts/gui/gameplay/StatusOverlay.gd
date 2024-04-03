@@ -137,12 +137,16 @@ func _update_health(health_val: int, player_id: String) -> void:
 	match player_id:
 		"ServerPlayer": # Player 1
 			p1_health_val = health_val
+			p1_health_bar.value = p1_health_val
+			p1_current_health.set_text(str(p1_health_val) + "/" + str(p1_health_max))
 		"ClientPlayer": # Player 2
 			p2_health_val = health_val
+			p2_health_bar.value = p2_health_val
+			p2_current_health.set_text(str(p2_health_val) + "/" + str(p2_health_max))
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
-	_set_player_health()
-	_update_health_diplay()
+	#_set_player_health()
+	#_update_health_diplay()
 
 
 func _update_burst(burst_val: int, player_id: String) -> void:

@@ -3,9 +3,6 @@ extends StateMachine
 @onready var player = self.get_parent()
 #@onready var spawnHitBox = player.get_node("SpawnHitbox")
 var ONE = SGFixed.ONE
-var last_dash_on_floor = true
-var dash_meter_cost = 1
-
 #const Hitbox = preload("res://scenes//gameplay//Hitbox.tscn")
 
 func _ready():
@@ -215,7 +212,6 @@ func transition_state(input):
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
 	if player.inputBuffer & player.Buttons.dash and not player.isOnFloor and player.meterVal > 0:
 		# TODO: scaling meter cost the first dash costs one meter - when you hit the floor it resets - if you don't hit the floor the dash increases every other +1 
-		player.meterVal -= 1
 		start_dash(player.input_vector)
 
 	# ## DEBUG for HITSTOP
@@ -228,8 +224,8 @@ func transition_state(input):
 	# 	set_state('HITSTOP')
 
 	if player.health <= 0:
-		if not player.is_dead:
-			set_state('DEAD')
+		player.is_dead = true
+		set_state('DEAD')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
 
@@ -641,12 +637,17 @@ func transition_state(input):
 			else:
 				player.frame -= 1
 		states.DEAD:
-			player.is_dead = true
-			player.num_lives -= 1
-			print("[COMBAT] " + str(player.name) + " has been KO'd!")
-			MenuSignalBus.emit_round_over()
-			MenuSignalBus.emit_update_lives(player.num_lives, player.name)
-			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
+			#player.is_dead = true
+			if player.is_dead:
+				player.num_lives -= 1
+				print("[COMBAT] " + str(player.name) + " has been KO'd!")
+				MenuSignalBus.emit_round_over()
+				MenuSignalBus.emit_update_lives(player.num_lives, player.name)
+				print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
+				#player.health = player.max_health
+				player.is_dead = false
+			if player.health == player.max_health:
+				set_state('IDLE')
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
 			if player.hitstopBuffer > 0: # if the player buffered in hitstop
@@ -906,20 +907,19 @@ func start_dash(input_vector):
 				player.facingRight = false
 			
 		if player.isOnFloor:
-			if not last_dash_on_floor:
-				dash_meter_cost = 1
-				print("Player touched the floor. Dash meter cost reset to:", dash_meter_cost)
-			last_dash_on_floor = true
+			if not player.last_dash_on_floor:
+				player.dash_meter_cost = 1
+				print("Player touched the floor. Dash meter cost reset to:", player.dash_meter_cost)
+			player.last_dash_on_floor = true
 		else:
-			if last_dash_on_floor:
-				dash_meter_cost += 1
-				print("Player has not touched the floor since last dash. Dash meter cost increased to:", dash_meter_cost)
-			last_dash_on_floor = false
-			
+			if player.last_dash_on_floor:
+				player.dash_meter_cost += 1
+				print("Player has not touched the floor since last dash. Dash meter cost increased to:", player.dash_meter_cost)
+			player.last_dash_on_floor = false
 
 		# Transition to the DASH state
-		if player.meterVal >= dash_meter_cost:
-			player.meterVal -= dash_meter_cost
+		if player.meterVal >= player.dash_meter_cost:
+			player.meterVal -= player.dash_meter_cost
 			# Transition to the DASH state
 			player.velocity.x = 0
 			player.velocity.y = 0
@@ -988,6 +988,8 @@ func do_hit():
 		player.frame = 0
 		player.hitstunMultiplier += onHit["gain"]
 		player.hitstop = onHit["hitstop"]
+		if player.health <= 0:
+			player.is_dead = true
 		if player.velocity.y < 0:
 			player.animation.play("AirHitstun")
 		else:

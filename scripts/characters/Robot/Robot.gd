@@ -65,6 +65,9 @@ var blockstunFrames = 0
 var lastSlideCollision = null
 var changedVelocity = false
 
+var last_dash_on_floor = false
+var dash_meter_cost = 1
+
 # Valid motion inputs for the character, listed in priority
 const motion_inputs = {
 	623: 'DP',
@@ -183,8 +186,6 @@ func _rotate_client_player() -> void:
 func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 	var input = previous_input.duplicate()
 	# TODO: implement better input prediction
-	if ticks_since_real_input > 2:
-		input.erase("input_vector")
 	return input
 
 func get_input_vector():
@@ -287,6 +288,9 @@ func _save_state() -> Dictionary:
 	var input_buffer_array = []
 	for item in inputBufferArray:
 		input_buffer_array.append(item)
+	var held_ = []
+	for item in held:
+		held_.append(item)
 	return {
 		input = input,
 		inputBuffer = inputBuffer,
@@ -336,8 +340,11 @@ func _save_state() -> Dictionary:
 		hitstunMultiplier = hitstunMultiplier,
 
 		hitstopBuffer = hitstopBuffer,
+		
+		last_dash_on_floor = last_dash_on_floor,
+		dash_meter_cost = dash_meter_cost,
 
-		held = held.duplicate()
+		held = held_
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -347,7 +354,9 @@ func _load_state(loadState: Dictionary) -> void:
 	bufferIdx = loadState['bufferIdx']
 	for item in loadState['inputBufferArray']:
 		inputBufferArray.append(item)
-
+	held = []
+	for item in loadState['held']:
+		held.append(item)
 	stateMachine.state = loadState['playerState']
 	controlBuffer = []
 	for item in loadState['controlBuffer']:
@@ -372,7 +381,7 @@ func _load_state(loadState: Dictionary) -> void:
 	wallBounceVelocity.x = loadState['wallBounceVelocity_x']
 	wallBounceVelocity.y = loadState['wallBounceVelocity_y']
 
-	health = loadState['health']
+	#health = loadState['health']
 	facingRight = loadState['facingRight']
 	frame = loadState['frame']
 	thrownHits = loadState['thrownHits']
@@ -385,7 +394,7 @@ func _load_state(loadState: Dictionary) -> void:
 	burst = loadState['burst']
 	meterCharge = loadState['meterCharge']
 	meterVal = loadState['meterVal']
-	num_lives = num_lives
+	num_lives = loadState['num_lives']
 
 	meter_frame_counter = loadState["meter_frame_counter"]
 	meter_frame_rate = loadState["meter_frame_rate"]
@@ -396,11 +405,12 @@ func _load_state(loadState: Dictionary) -> void:
 	hitstunMultiplier = loadState['hitstunMultiplier']
 
 	hitstopBuffer = loadState['hitstopBuffer']
-
-	held = loadState['held']
+	last_dash_on_floor = loadState['last_dash_on_floor']
+	dash_meter_cost = loadState['dash_meter_cost']
+	
+	sync_to_physics_engine()
 	
 	MenuSignalBus.emit_update_health(health, self.name)
-	sync_to_physics_engine()
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, player_weight: float) -> void:
 	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], player_weight)

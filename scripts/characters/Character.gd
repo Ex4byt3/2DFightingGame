@@ -36,7 +36,7 @@ const ButtonsIndex = {
 	"jump": 9
 }
 
-var held = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+var held := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # For our debug overlay
 const direction_mapping = {  # Numpad Notation:
@@ -177,12 +177,13 @@ func _reset_character() -> void:
 	health = max_health
 	print("[COMBAT] Reset " + self.name + "'s health: " + str(health))
 	
-	MenuSignalBus.emit_update_health(health, self.name)
+	#MenuSignalBus.emit_update_health(health, self.name)
 	MenuSignalBus.emit_player_ready(self.name)
 
 
 func _network_preprocess(userInput: Dictionary) -> void:
 	input = userInput["input"]
+	inputBuffer = input
 	inputBufferArray[bufferIdx] = input
 	bufferIdx = (bufferIdx + 1) % 4
 	inputBuffer = 0
@@ -240,8 +241,7 @@ func _network_preprocess(userInput: Dictionary) -> void:
 	held[ButtonsIndex.sprint] = held[ButtonsIndex.sprint] + 1 if input & Buttons.sprint else 0
 	held[ButtonsIndex.jump] = held[ButtonsIndex.jump] + 1 if input & Buttons.jump else 0
 
-	# if inputInt > 0:
-	# 	print(inputInt)
+	# if name == "ServerPlayer":
 	# 	print(held)
 
 # Input functions
@@ -262,8 +262,6 @@ func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: 
 func _get_local_input() -> Dictionary:
 	var newInputVector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
 	var userInput := {"input": 0}
-	userInput["input_vector_x"] = newInputVector[0]
-	userInput["input_vector_y"] = newInputVector[1]
 	match newInputVector:
 		[-1, -1]:
 			userInput["input"] += 1
@@ -296,7 +294,7 @@ func _get_local_input() -> Dictionary:
 		userInput["input"] += Buttons.dash
 	if Input.is_action_pressed(input_prefix + "shield"):
 		userInput["input"] += Buttons.shield
-	if Input.is_action_pressed(input_prefix + "sprint_macro"): # pressed, not just pressed to allow for holding
+	if Input.is_action_pressed(input_prefix + "sprint_macro"):
 		userInput["input"] += Buttons.sprint
 	if Input.is_action_pressed(input_prefix + "jump"):
 		userInput["input"] += Buttons.jump
@@ -342,7 +340,8 @@ func check_collisions() -> void:
 func take_damage(damage) -> void:
 	# TODO: can't be below 0, dying logic
 	health -= damage
-	MenuSignalBus.emit_update_health(health, self.name)
+	#MenuSignalBus.emit_update_health(health, self.name)
+
 
 func apply_knockback(force: int, angle_radians: int):
 	# Assuming 'force' is scaled already
