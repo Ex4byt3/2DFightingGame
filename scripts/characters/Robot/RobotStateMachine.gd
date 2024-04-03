@@ -1,12 +1,12 @@
 extends StateMachine
 
 @onready var player = self.get_parent()
-@onready var spawnHitBox = player.get_node("SpawnHitbox")
+#@onready var spawnHitBox = player.get_node("SpawnHitbox")
 var ONE = SGFixed.ONE
 var last_dash_on_floor = true
 var dash_meter_cost = 1
 
-const Hitbox = preload("res://scenes//gameplay//Hitbox.tscn")
+#const Hitbox = preload("res://scenes//gameplay//Hitbox.tscn")
 
 func _ready():
 	add_state('IDLE')
@@ -32,9 +32,6 @@ func _ready():
 	add_state('DEAD')
 
 	# Normals
-	add_state('NORMAL')
-	# add_state('NEUTRAL_NORMAL')
-
 	add_state('NEUTRAL_LIGHT')
 	add_state('NEUTRAL_MEDIUM')
 	add_state('NEUTRAL_HEAVY')
@@ -100,70 +97,65 @@ func check_buffer_for_attack() -> String:
 			return i
 	return ""
 
-func check_for_attack(input) -> String:
-	var inputs = ["light", "medium", "heavy", "impact"] # in order of priority
-	for i in inputs:
-		if input.has(i):
-			return i
-	return ""
-	
-func neutral_attack(attack: String) -> bool:
+func check_for_attack(buffer) -> String: # to rewrite in the same format as the other normal inputs later
+	if buffer & 1:
+		return "light"
+	elif buffer & 2:
+		return "medium"
+	elif buffer & 4:
+		return "heavy"
+	elif buffer & 8:
+		return "impact"
+	elif buffer & 16:
+		return "jump"
+	elif buffer & 32:
+		return "dash"
+	elif buffer & 64:
+		return "shield"
+	else:
+		return ""
+
+func neutral_attack(attack: String) -> String:
 	# TODO: motion input for qcf_light
 	if attack != "":
 		if not player.pressed.has(attack):
 			player.pressed.append(attack)
-			player.animation.play("Neutral" + attack.capitalize())
-			do_attack("neutral_" + attack)
-			set_state('NEUTRAL_' + attack.to_upper())
-			return true
-	return false
+			return "neutral_" + attack
+	return ""
 
-func crouching_attack(attack: String) -> bool:
+func crouching_attack(attack: String) -> String:
 	if attack != "" and !player.pressed.has(attack):
 		if player.input_vector.x != 0:
 			player.facingRight = player.input_vector.x > 0
 			if attack == "medium":
-				player.animation.play("CrouchingForwardMedium")
-				do_attack("crouching_forward_medium")
-				set_state('CROUCHING_FORWARD_MEDIUM')
-				return true
+				player.pressed.append(attack)
+				return "crouching_forward_medium"
 		else:
 			player.pressed.append(attack)
-			player.animation.play("Crouching" + attack.capitalize())
-			do_attack("crouching_" + attack)
-			set_state('CROUCHING_' + attack.to_upper())
-			return true
-	return false
+			return "crouching_" + attack
+	return ""
 
-func forward_attack(attack: String) -> bool:
+func forward_attack(attack: String) -> String:
 	if attack == "heavy": # forward heavy is the only forward attack
 		if not player.pressed.has(attack):
 			player.pressed.append(attack)
-			player.animation.play("Forward" + attack.capitalize())
-			do_attack("forward_" + attack)
-			set_state('FORWARD_HEAVY')
-			return true
+			return "forward_heavy"
+		else:
+			return ""
 	else: # forward light and medium are the same as neutral light and medium
 		return neutral_attack(attack)
-	return false
 
-func air_attack(attack: String) -> bool:
+func air_attack(attack: String) -> String:
 	if attack != "" and !player.pressed.has(attack):
 		if player.input_vector.x > 0 == player.facingRight:
 			player.pressed.append(attack)
-			player.animation.play("BackAir" + attack.capitalize())
-			do_attack("back_air_" + attack)
-			set_state('BACK_AIR_' + attack.to_upper())
-			return true
+			return "air_" + attack
 		else:
 			player.pressed.append(attack)
-			player.animation.play("Air" + attack.capitalize())
-			do_attack("air_" + attack)
-			set_state('AIR_' + attack.to_upper())
-			return true
-	return false
+			return "back_air_" + attack
+	return ""
 
-func any_attack(attack: String) -> bool:
+func any_attack(attack: String) -> String:
 	if attack != "":
 		if player.isOnFloor:
 			if player.input_vector.y == -1:
@@ -174,7 +166,7 @@ func any_attack(attack: String) -> bool:
 				return neutral_attack(attack)
 		else:
 			return air_attack(attack)
-	return false
+	return ""
 
 func transition_state(input):
 	update_debug_label(player.input_vector)
@@ -229,7 +221,7 @@ func transition_state(input):
 	match states[state]:
 		states.IDLE:
 			do_decerlerate(player.groundDeceleration)
-			if neutral_attack(check_buffer_for_attack()):
+			if do_attack(neutral_attack(check_buffer_for_attack())):
 				pass
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
@@ -258,7 +250,7 @@ func transition_state(input):
 				start_jump()
 		states.CROUCH:
 			do_decerlerate(player.groundDeceleration)
-			if crouching_attack(check_buffer_for_attack()):
+			if do_attack(crouching_attack(check_buffer_for_attack())):
 				pass
 			elif player.input_vector.y != -1:
 				player.animation.play("Stand")
@@ -276,7 +268,7 @@ func transition_state(input):
 				player.animation.play("Crawl")
 				set_state('CRAWL')
 		states.CRAWL:
-			if crouching_attack(check_buffer_for_attack()):
+			if do_attack(crouching_attack(check_buffer_for_attack())):
 				pass
 			elif buffer_has('shield'):
 				player.blockMask = 3 # 011
@@ -297,7 +289,7 @@ func transition_state(input):
 			if jump_check():
 				start_jump()
 		states.WALK:
-			if forward_attack(check_buffer_for_attack()):
+			if do_attack(forward_attack(check_buffer_for_attack())):
 				pass
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
@@ -325,7 +317,7 @@ func transition_state(input):
 			if jump_check():
 				start_jump()
 		states.SLIDE:
-			if any_attack(check_buffer_for_attack()):
+			if do_attack(any_attack(check_buffer_for_attack())):
 				pass
 			if jump_check():
 				player.velocity.x = SGFixed.mul(player.velocity.x, player.slideJumpBoost) # boost the player's velocity when they jump out of a slide
@@ -349,7 +341,7 @@ func transition_state(input):
 					player.animation.play("Sprint")
 					set_state('SPRINT')
 		states.SPRINT:
-			if forward_attack(check_buffer_for_attack()):
+			if do_attack(forward_attack(check_buffer_for_attack())):
 				pass
 			if buffer_has("shield"):
 				player.blockMask = 6 # 110
@@ -438,7 +430,7 @@ func transition_state(input):
 					player.velocity.x = player.maxAirSpeed
 				elif player.velocity.x < -player.maxAirSpeed:
 					player.velocity.x = -player.maxAirSpeed
-			if air_attack(check_buffer_for_attack()):
+			if do_attack(air_attack(check_buffer_for_attack())):
 				pass
 			elif buffer_has('shield'):
 				player.animation.play("AirBlock")
@@ -639,164 +631,165 @@ func transition_state(input):
 			print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
-			if player.recovery and player.hitstopBuffer.size() > 0: # if the player buffered in hitstop
-				player.bufferedInput = check_for_attack(player.hitstopBuffer)
-				if !player.pressed.has(player.bufferedInput):
-					player.frame = 0
-					spawnHitBox.get_child(0).disabled = true # remove the previous hitbox
-					any_attack(player.bufferedInput)
-				player.hitstopBuffer = {}
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 		states.NEUTRAL_MEDIUM:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play neutral medium animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 		states.NEUTRAL_HEAVY:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play neutral heavy animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
-				set_actionable_state()
-			player.frame += 1
-		states.FORWARD_HEAVY:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play forward heavy animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.frame >= player.attackDuration:
-				player.recovery = false
-				set_actionable_state()
-			player.frame += 1
-		states.CROUCHING_LIGHT:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play crouching light animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.frame >= player.attackDuration:
-				player.recovery = false
-				set_actionable_state()
-			player.frame += 1
-		states.CROUCHING_MEDIUM:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play crouching medium animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.frame >= player.attackDuration:
-				player.recovery = false
-				set_actionable_state()
-			player.frame += 1
-		states.CROUCHING_HEAVY:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play crouching heavy animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.frame >= player.attackDuration:
-				player.recovery = false
-				set_actionable_state()
-			player.frame += 1
-		states.CROUCHING_FORWARD_MEDIUM:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play crouching forward animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.frame >= player.attackDuration:
-				player.recovery = false
-				set_actionable_state()
-			player.frame += 1
-		states.CROUCHING_IMPACT:
-			# currently stops all movement while the attack is happening
-			player.velocity.x = 0
-			# play crouching impact animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
-			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 		states.NEUTRAL_IMPACT:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play impact animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.FORWARD_HEAVY:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.CROUCHING_LIGHT:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.CROUCHING_MEDIUM:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.CROUCHING_HEAVY:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.CROUCHING_FORWARD_MEDIUM:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.CROUCHING_IMPACT:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 		states.AIR_LIGHT:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play air light animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.BACK_AIR_LIGHT:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 		states.AIR_MEDIUM:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play air medium animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.BACK_AIR_MEDIUM:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 		states.AIR_HEAVY:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play air heavy animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.BACK_AIR_HEAVY:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 		states.AIR_IMPACT:
-			# currently stops all movement while the attack is happening
 			player.velocity.x = 0
-			# play air impact animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
 			elif player.frame >= player.attackDuration:
-				player.recovery = false
+				player.frame = 0
+				set_actionable_state()
+			player.frame += 1
+		states.BACK_AIR_IMPACT:
+			player.velocity.x = 0
+			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+				do_hitstop_buffer()
+			elif player.frame >= player.attackDuration:
+				player.frame = 0
 				set_actionable_state()
 			player.frame += 1
 
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
 
+func do_hitstop_buffer() -> void:
+	if player.hitbox.properties["cancelable"]["jump"]:
+		if player.hitstopBuffer & 16: # still don't have input vecotr here
+			player.pressed.append("jump")
+			start_jump()
+			return
+		
+	var attack = any_attack(check_for_attack(player.hitstopBuffer)) # check for [TODO: valid] buffered attack
+	if attack in player.hitbox.properties["cancelable"]["moves"]: # TODO: not handling attack type cancels, only jump and by name
+		player.frame = 0
+		player.hitbox.disabled = true
+		do_attack(attack)
+	
 # checks the current inputs and floor and sets the player's state
 func set_actionable_state():
 	if player.isOnFloor:
@@ -849,7 +842,7 @@ func do_walk(speed, acceleration):
 			player.velocity.x = -speed
 
 func start_jump():
-	if !player.pressed.has("jump"): # you must let go of the jump button to jump again
+	if !player.pressed.has("jump"):
 		player.pressed.append("jump")
 		if player.isOnFloor:
 			player.animation.play("Jumpsquat")
@@ -910,7 +903,8 @@ func start_dash(input_vector):
 		
 
 func jump_check() -> bool: # might be redundant
-	if player.input_vector.y == 1 or buffer_has("jump"):
+	# this if statement might be fucked but I can't tell
+	if player.input_vector.y == 1 or player.hitstopBuffer & 16:
 		return true
 	else:
 		return false
@@ -983,17 +977,15 @@ func do_knockback(knockback: Dictionary):
 	else:
 		player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), knockback["angle"])
 
-
-
+# Throw attack
 func do_attack(attack_name: String):
+	if attack_name == "":
+		return
 	# TODO: meter gain on hit
 	# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
-	# Throw attack
 	player.frame = 0
-	player.thrownHits += 1 # Increment number of thrown attacks
-	SyncManager.spawn("Hitbox", spawnHitBox, Hitbox, spawnHitBox.attacks[attack_name])
-
-	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
+	player.hitbox.do_attack(attack_name)
+	player.animation.play(attack_name.to_pascal_case()) # TODO: attck animations
 	set_state(attack_name.to_upper())
 
 func update_debug_label(input_vector):

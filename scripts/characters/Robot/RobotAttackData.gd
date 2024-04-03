@@ -1,16 +1,15 @@
-extends SGFixedNode2D
-
+extends SGCollisionShape2D
 const ONE = SGFixed.ONE
 
 const attacks = {
 	# dubug attack
 	"_neutral_light": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
-				{"x": 60, "y": 40, "width": 120, "height": 75, "ticks": 3},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 60}
+				{"x": -200, "y": 40, "width": 150, "height": 150, "ticks": 5},
+				{"x": 60, "y": 40, "width": 150, "height": 150, "ticks": 30},
+				{"x": -90, "y": 40, "width": 150, "height": 150, "ticks": 30}
 			],
-		"duration": 68,
+		"duration": 65,
 		"cancelable": {
 			"jump": true,
 			"type": 1,

@@ -2,14 +2,34 @@ extends Node
 
 @onready var serverPlayer = get_node("../ServerPlayer")
 @onready var clientPlayer = get_node("../ClientPlayer")
+@onready var serverHitbox = serverPlayer.get_node("Hitbox")
+@onready var clientHitbox = clientPlayer.get_node("Hitbox")
 var frame = 0
+
+func input_to_int(input: Dictionary) -> int: # to rewrite in the same format as the other normal inputs later
+	var i : int = 0
+	if input.has("light"):
+		i += 1
+	if input.has("medium"):
+		i += 2
+	if input.has("heavy"):
+		i += 4
+	if input.has("impact"):
+		i += 8
+	if input.has("jump"):
+		i += 16
+	if input.has("dash"):
+		i += 32
+	if input.has("shield"):
+		i += 64
+	return i
 
 func _network_process(input: Dictionary) -> void:
 	sync_postions()
 	sync_hurtboxes()
 	sync_hitboxes()
-	check_collisions()
 	if !frame:
+		check_collisions()
 		serverPlayer.hitstop = 0
 		clientPlayer.hitstop = 0
 		hitbox_game_process()
@@ -19,11 +39,8 @@ func _network_process(input: Dictionary) -> void:
 	elif frame > 0:
 		serverPlayer.get_node("StateMachine").update_pressed(serverPlayer.input)
 		clientPlayer.get_node("StateMachine").update_pressed(clientPlayer.input)
-		if serverPlayer.input.size() > 2:
-			serverPlayer.hitstopBuffer = serverPlayer.input
-			# print(str(serverPlayer.hitstopBuffer))
-		if clientPlayer.input.size() > 2:
-			clientPlayer.hitstopBuffer = clientPlayer.input
+		serverPlayer.hitstopBuffer |= input_to_int(serverPlayer.input) # TODO: currently can't buffer input vector]
+		clientPlayer.hitstopBuffer |= input_to_int(clientPlayer.input)
 		frame -= 1
 
 # func sound_process() -> void:
@@ -39,13 +56,8 @@ func check_collisions() -> void:
 	clientPlayer.check_collisions()
 
 func hitbox_game_process() -> void:
-	var hitboxes = null
-	hitboxes = serverPlayer.get_node("SpawnHitbox").get_children()
-	for hitbox in hitboxes:
-		hitbox._game_process()
-	hitboxes = clientPlayer.get_node("SpawnHitbox").get_children()
-	for hitbox in hitboxes:
-		hitbox._game_process()
+	serverHitbox._game_process()
+	clientHitbox._game_process()
 
 func player_game_process() -> int:
 	var f : int = 0
@@ -64,13 +76,8 @@ func sync_hurtboxes() -> void:
 	clientPlayer.get_node("PushBox").sync_to_physics_engine()
 
 func sync_hitboxes() -> void:
-	var hitboxes = null
-	hitboxes = serverPlayer.get_node("SpawnHitbox").get_children()
-	for hitbox in hitboxes:
-		hitbox.sync_to_physics_engine()
-	hitboxes = clientPlayer.get_node("SpawnHitbox").get_children()
-	for hitbox in hitboxes:
-		hitbox.sync_to_physics_engine()
+	serverHitbox.sync_to_physics_engine()
+	clientHitbox.sync_to_physics_engine()
 
 func _save_state() -> Dictionary:
 	return {

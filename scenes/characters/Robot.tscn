@@ -1,4 +1,4 @@
-[gd_scene load_steps=217 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=218 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://2c12736sucp8" path="res://assets/characters/Robot/Attacks/Normals/NeutralHeavy.png" id="25_okckt"]
 [ext_resource type="Texture2D" uid="uid://n3act365wyuy" path="res://assets/characters/Robot/Attacks/Normals/NeutralMedium.png" id="26_t7vtr"]
 [ext_resource type="Texture2D" uid="uid://caqvr062w4tcl" path="res://assets/characters/Robot/Attacks/Normals/NeutralImpact.png" id="27_c5orq"]
+[ext_resource type="Script" path="res://scripts/gameplay/Hitbox.gd" id="34_dx2pi"]
 
 [sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_flqoq"]
 extents_x = 4487128
@@ -1553,9 +1554,6 @@ collision_mask = 2
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="HurtBox"]
 
-[node name="SpawnHitbox" type="SGFixedNode2D" parent="."]
-script = ExtResource("18_7wveu")
-
 [node name="PushBox" type="SGArea2D" parent="."]
 collision_layer = 8
 collision_mask = 8
@@ -1572,6 +1570,11 @@ position = Vector2(-2, 6)
 rotation = -0.00248701
 scale = Vector2(0.999985, 0.999985)
 
-[node name="Hitbox" type="SGArea2D" parent="."]
+[node name="Hitbox" type="SGArea2D" parent="." groups=["network_sync"]]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("34_dx2pi")
 
 [node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="Hitbox"]
+debug_color = Color(0.996078, 0, 0.227451, 0.419608)
+script = ExtResource("18_7wveu")

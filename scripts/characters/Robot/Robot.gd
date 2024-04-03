@@ -144,6 +144,8 @@ func _rotate_client_player() -> void:
 		# also flip hurtboxCollision layer and mask for client player
 		hurtBox.set_collision_mask_bit(1, false)
 		hurtBox.set_collision_mask_bit(2, true)
+		hitbox.set_collision_layer_bit(2, false)
+		hitbox.set_collision_layer_bit(1, true)
 
 ## Initializing the character data
 #func _init_character_data() -> void:
@@ -213,6 +215,8 @@ func _game_process(input: Dictionary) -> int:
 	while meterCharge >= meterValRate:
 		meterVal += 1
 		meterCharge -= meterValRate
+
+	hitstopBuffer = 0 # hitstop buffer only lives for 1 game process
 	return hitstop
 
 func increase_meter_over_time() -> void:
@@ -241,9 +245,6 @@ func _save_state() -> Dictionary:
 	var pressed_ = []
 	for item in pressed:
 		pressed_.append(item)
-	var hitstop_buffer = {}
-	for item in hitstopBuffer:
-		hitstop_buffer[item] = hitstopBuffer[item]
 	var input_buffer = []
 	for item in inputBuffer:
 		input_buffer.append(item.duplicate())
@@ -291,9 +292,8 @@ func _save_state() -> Dictionary:
 		knockbackMultiplier = knockbackMultiplier,
 		hitstunMultiplier = hitstunMultiplier,
 
-		hitstopBuffer = hitstop_buffer,
+		hitstopBuffer = hitstopBuffer,
 		inputBuffer = input_buffer,
-		bufferedInput = bufferedInput
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -342,18 +342,15 @@ func _load_state(loadState: Dictionary) -> void:
 	meterVal = loadState['meterVal']
 	num_lives = num_lives
 
-	meter_frame_counter = loadState.get("meter_frame_counter", meter_frame_counter) # Provides a default in case it's missing
-	meter_frame_rate = loadState.get("meter_frame_rate", meter_frame_rate)
+	meter_frame_counter = loadState["meter_frame_counter"]
+	meter_frame_rate = loadState["meter_frame_rate"]
 	currentGameFrame = loadState['currentGameFrame']
 
 	hitstop = loadState['hitstop']
 	knockbackMultiplier = loadState['knockbackMultiplier']
 	hitstunMultiplier = loadState['hitstunMultiplier']
 
-	hitstopBuffer = {}
-	for item in loadState['hitstopBuffer']:
-		hitstopBuffer[item] = loadState['hitstopBuffer'][item]
-	bufferedInput = loadState['bufferedInput']
+	hitstopBuffer = loadState['hitstopBuffer']
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()

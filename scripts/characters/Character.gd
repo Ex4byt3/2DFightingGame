@@ -97,10 +97,10 @@ var isOnWallR := false
 var wallBounceVelocity := SGFixed.vector2(0, 0)
 
 var input := {} # Input dictionary
-var hitstopBuffer := {} # Hitstop dictionary
+var hitstopBuffer : int = 0 # bit mask of any input pressed in hitstun
+# TODO: remake buffer with bit mask
 var inputBuffer := [] # Input buffer array, holds the last 4 frames of input
 var attackDuration = 0 # How long the attack lasts
-var bufferedInput = "" # Buffered input dictionary
 
 func _ready():
 	_handle_connecting_signals()
