@@ -3,9 +3,6 @@ extends StateMachine
 @onready var player = self.get_parent()
 #@onready var spawnHitBox = player.get_node("SpawnHitbox")
 var ONE = SGFixed.ONE
-var last_dash_on_floor = true
-var dash_meter_cost = 1
-
 #const Hitbox = preload("res://scenes//gameplay//Hitbox.tscn")
 
 func _ready():
@@ -197,7 +194,6 @@ func transition_state(input):
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
 	if buffer_has("dash") and not player.isOnFloor and player.meterVal > 0:
 		# TODO: scaling meter cost the first dash costs one meter - when you hit the floor it resets - if you don't hit the floor the dash increases every other +1 
-		player.meterVal -= 1
 		start_dash(player.input_vector)
 
 	# ## DEBUG for HITSTOP
@@ -885,20 +881,19 @@ func start_dash(input_vector):
 				player.facingRight = false
 			
 		if player.isOnFloor:
-			if not last_dash_on_floor:
-				dash_meter_cost = 1
-				print("Player touched the floor. Dash meter cost reset to:", dash_meter_cost)
-			last_dash_on_floor = true
+			if not player.last_dash_on_floor:
+				player.dash_meter_cost = 1
+				print("Player touched the floor. Dash meter cost reset to:", player.dash_meter_cost)
+			player.last_dash_on_floor = true
 		else:
-			if last_dash_on_floor:
-				dash_meter_cost += 1
-				print("Player has not touched the floor since last dash. Dash meter cost increased to:", dash_meter_cost)
-			last_dash_on_floor = false
-			
+			if player.last_dash_on_floor:
+				player.dash_meter_cost += 1
+				print("Player has not touched the floor since last dash. Dash meter cost increased to:", player.dash_meter_cost)
+			player.last_dash_on_floor = false
 
 		# Transition to the DASH state
-		if player.meterVal >= dash_meter_cost:
-			player.meterVal -= dash_meter_cost
+		if player.meterVal >= player.dash_meter_cost:
+			player.meterVal -= player.dash_meter_cost
 			# Transition to the DASH state
 			player.velocity.x = 0
 			player.velocity.y = 0

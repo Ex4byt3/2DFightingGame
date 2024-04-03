@@ -65,6 +65,9 @@ var blockstunFrames = 0
 var lastSlideCollision = null
 var changedVelocity = false
 
+var last_dash_on_floor = false
+var dash_meter_cost = 1
+
 # Valid motion inputs for the character, listed in priority
 const motion_inputs = {
 	623: 'DP',
@@ -314,6 +317,9 @@ func _save_state() -> Dictionary:
 
 		hitstopBuffer = hitstopBuffer,
 		inputBuffer = input_buffer,
+		
+		last_dash_on_floor = last_dash_on_floor,
+		dash_meter_cost = dash_meter_cost,
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -371,6 +377,8 @@ func _load_state(loadState: Dictionary) -> void:
 	hitstunMultiplier = loadState['hitstunMultiplier']
 
 	hitstopBuffer = loadState['hitstopBuffer']
+	last_dash_on_floor = loadState['last_dash_on_floor']
+	dash_meter_cost = loadState['dash_meter_cost']
 	
 	MenuSignalBus.emit_update_health(health, self.name)
 	sync_to_physics_engine()
