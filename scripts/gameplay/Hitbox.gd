@@ -1,20 +1,16 @@
 extends SGArea2D
-
 @onready var collisionShape = $SGCollisionShape2D
 @onready var map = get_parent().get_parent()
-
 # Hitbox parent class, all variables that are shared among all hitboxes
 @onready var player = get_parent()# Name of attacking player (client/server)
 @onready var opponet = map.get_node("ClientPlayer" if player.name == "ServerPlayer" else "ClientPlayer") # Name of attacked player (client/server)
-
 var properties = {} # Properties of the hitbox (damage, knockback, etc.)
-
-# var tick = 0 # Current tick the hitbox is on
 var used = false # If the hitbox is used
 var hitboxes = [] # The shapes of our hitbox over time (frames)
-
 var idx : int = 0
 var disabled = false
+
+var attack_string: String = ""
 
 # TODO: kb direction does not get fliped when player is flipped
 
@@ -62,6 +58,9 @@ func set_pos(x: int, y: int) -> void: # set_position was taken
 	fixed_position_y = y * SGFixed.NEG_ONE
 
 func _save_state() -> Dictionary:
+	var hit_boxes = []
+	for hitbox in hitboxes:
+		hit_boxes.append(hitbox)
 	return {
 		properties = properties,
 		# onHitKnockbackAngle = properties["onHit"]["knockback"]["angle"],
@@ -73,9 +72,15 @@ func _save_state() -> Dictionary:
 		used = used,
 		# tick = tick,
 		idx = idx,
+		disabled = disabled,
+		attack_string = attack_string,
+		hitboxes = hit_boxes,
 	}
 
 func _load_state(loadState: Dictionary) -> void:
+	hitboxes = []
+	for hitbox in loadState['hitboxes']:
+		hitboxes.append(hitbox)
 	properties = loadState['properties']
 	# properties["onHit"]["knockback"]["angle"] = loadState['onHitKnockbackAngle']
 	# properties["onBlock"]["knockback"]["angle"] = loadState['onBlockKnockbackAngle']
@@ -86,4 +91,6 @@ func _load_state(loadState: Dictionary) -> void:
 	used = loadState['used']
 	# tick = loadState['tick']
 	idx = loadState['idx']
+	disabled = loadState['disabled']
+	attack_string = loadState['attack_string']
 	sync_to_physics_engine()

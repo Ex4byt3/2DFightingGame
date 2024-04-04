@@ -785,7 +785,7 @@ func transition_state(input):
 
 func do_hitstop_buffer() -> void:
 	if player.hitbox.properties["cancelable"]["jump"]:
-		if player.hitstopBuffer & 16: # still don't have input vecotr here
+		if player.hitstopBuffer & 8: # still don't have input vecotr here
 			player.pressed += player.Buttons.jump
 			start_jump()
 			return
