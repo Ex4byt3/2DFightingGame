@@ -650,153 +650,135 @@ func transition_state(input):
 				set_state('IDLE')
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.NEUTRAL_MEDIUM:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.NEUTRAL_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.NEUTRAL_IMPACT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.FORWARD_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.CROUCHING_LIGHT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.CROUCHING_MEDIUM:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.CROUCHING_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.CROUCHING_FORWARD_MEDIUM:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.CROUCHING_IMPACT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.AIR_LIGHT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			#SyncManager.play_sound(str(get_path()) + ":neutral_impact", player.boom, player.boomINFO)
 			# play impact animation
 			if player.recovery:
 				# TODO: add recovery frames/cancel logic
 				pass
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.BACK_AIR_LIGHT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.AIR_MEDIUM:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.BACK_AIR_MEDIUM:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.AIR_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.BACK_AIR_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.AIR_IMPACT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer > player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 		states.BACK_AIR_IMPACT:
 			player.velocity.x = 0
-			if player.hitstopBuffer > 0: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
-			elif player.frame >= player.attackDuration:
+			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
-			player.frame += 1
 
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
@@ -1011,7 +993,7 @@ func do_attack(attack_name: String):
 	if attack_name == "":
 		return
 	# TODO: meter gain on hit
-	# TODO: know if an attack landed, we'll need to know if an attack hit for severl things
+	# TODO: know if an attack landed, we'll need to know if an attack hit for several things
 	player.frame = 0
 	player.hitbox.do_attack(attack_name)
 	player.animation.play(attack_name.to_pascal_case()) # TODO: attck animations
@@ -1036,6 +1018,7 @@ func update_debug_label(input_vector):
 		"state": str(state),
 		"knockback_multiplier": "%.3f" % (player.knockbackMultiplier / 65536.0),
 		"hitstun_multiplier": "%.3f" % (player.hitstunMultiplier / 65536.0),
+		"frame": str(player.frame)
 	}
 
 	MenuSignalBus.emit_update_debug(debug_data)

@@ -15,9 +15,9 @@ func _handle_connecting_signals() -> void:
 func _on_update_debug(debug_data: Dictionary) -> void:
 	var current_label = self.get_node(debug_data.player_type + "DebugLabel")
 	if debug_data.player_type == "ServerPlayer":
-		current_label.text = "PLAYER ONE DEBUG:\nPOSITION: " + debug_data.pos_x + ", " + debug_data.pos_y + "\nVELOCITY: " + debug_data.velocity_x + ", " + debug_data.velocity_y + "\nINPUT VECTOR: " + debug_data.input_vector_x + ", " + debug_data.input_vector_y + "\nKB_MULT: " + debug_data.knockback_multiplier + "\nHS_MULT: " + debug_data.hitstun_multiplier + "\nSTATE: " + debug_data.state
+		current_label.text = "PLAYER ONE DEBUG:\nPOSITION: " + debug_data.pos_x + ", " + debug_data.pos_y + "\nVELOCITY: " + debug_data.velocity_x + ", " + debug_data.velocity_y + "\nINPUT VECTOR: " + debug_data.input_vector_x + ", " + debug_data.input_vector_y + "\nKB_MULT: " + debug_data.knockback_multiplier + "\nHS_MULT: " + debug_data.hitstun_multiplier + "\nSTATE: " + debug_data.state + "\nFRAME: " + debug_data.frame
 	else:
-		current_label.text = "PLAYER TWO DEBUG:\nPOSITION: " + debug_data.pos_x + ", " + debug_data.pos_y + "\nVELOCITY: " + debug_data.velocity_x + ", " + debug_data.velocity_y + "\nINPUT VECTOR: " + debug_data.input_vector_x + ", " + debug_data.input_vector_y + "\nKB_MULT: " + debug_data.knockback_multiplier + "\nHS_MULT: " + debug_data.hitstun_multiplier + "\nSTATE: " + debug_data.state
+		current_label.text = "PLAYER TWO DEBUG:\nPOSITION: " + debug_data.pos_x + ", " + debug_data.pos_y + "\nVELOCITY: " + debug_data.velocity_x + ", " + debug_data.velocity_y + "\nINPUT VECTOR: " + debug_data.input_vector_x + ", " + debug_data.input_vector_y + "\nKB_MULT: " + debug_data.knockback_multiplier + "\nHS_MULT: " + debug_data.hitstun_multiplier + "\nSTATE: " + debug_data.state + "\nFRAME: " + debug_data.frame
 
 
 func _on_update_input_buffer(input_data: Dictionary) -> void:

@@ -9,49 +9,25 @@ extends SGArea2D
 
 var properties = {} # Properties of the hitbox (damage, knockback, etc.)
 
-var tick = 0 # Current tick the hitbox is on
+# var tick = 0 # Current tick the hitbox is on
 var used = false # If the hitbox is used
 var hitboxes = [] # The shapes of our hitbox over time (frames)
 
 var idx : int = 0
 var disabled = false
 
+# TODO: kb direction does not get fliped when player is flipped
+
 func do_attack(attack_name: String):
 	properties = collisionShape.attacks[attack_name]
 	hitboxes = properties['hitboxes']
 	used = false
 	idx = 0
-	tick = 0
+	player.frame = 0
 	player.attackDuration = properties["duration"]
 	set_shape(hitboxes[0]["width"], hitboxes[0]["height"])
 	set_pos(hitboxes[0]["x"], hitboxes[0]["y"])
 	disabled = false
-
-# Spawns in the hitbox with all the data passed to it
-# func _network_spawn(data: Dictionary) -> void:
-# 	# The name of the attacking player (Client or Server)
-# 	attacking_player = get_parent().get_parent()
-# 	if attacking_player.name == "ClientPlayer":
-# 		set_collision_layer_bit(2, false)
-# 		set_collision_layer_bit(1, true)
-# 		attacked_player = map.get_node("ServerPlayer")
-# 	else:
-# 		attacked_player = map.get_node("ClientPlayer")
-	
-# 	properties = data
-# 	attacking_player.attackDuration = properties["duration"]
-
-# 	# flipping the angle currently is not rollback safe
-# 	# if !attacking_player.facingRight:
-# 	# 	properties["onHit"]["knockback"]["angle"] = SGFixed.PI - properties["onHit"]["knockback"]["angle"]
-# 	# 	properties["onBlock"]["knockback"]["angle"] = SGFixed.PI - properties["onBlock"]["knockback"]["angle"]
-
-# 	# attacking_player.attack_ended = false
-# 	# set the first shape
-# 	hitboxes = properties['hitboxes']
-# 	$Hitbox_Shape.shape = SGRectangleShape2D.new()
-# 	set_shape(hitboxes[0]["width"], hitboxes[0]["height"])
-# 	set_pos(hitboxes[0]["x"], hitboxes[0]["y"])
 
 # Processing the hitbox
 func _game_process() -> void:
@@ -59,24 +35,20 @@ func _game_process() -> void:
 		return
 	if disabled:
 		set_shape(0, 0)
-		# player.recovery = false
 		properties = {}
+		player.frame = -1
 		return
-	if tick >= hitboxes[idx]["ticks"]:
+	if player.frame >= hitboxes[idx]["ticks"]:
 		idx += 1
 		if idx > len(hitboxes) - 1:
 			set_shape(0, 0)
-			# player.recovery = false
 			properties = {}
+			player.frame = -1
 			return
 		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
 		set_pos(hitboxes[idx]["x"], hitboxes[idx]["y"])
-		# if idx == len(hitboxes) - 1:
-		# 	player.recovery = true
-		tick = 0
-	tick += 1
-	if tick == 60:
-		print("Hitbox ticked 60 times")
+		player.frame = 0
+	player.frame += 1
 
 func set_shape(w: int, h: int) -> void:
 	collisionShape.shape._set_extents_x(w * SGFixed.HALF)
@@ -99,7 +71,7 @@ func _save_state() -> Dictionary:
 		width = collisionShape.shape._get_extents_x(), # TODO: make sure this is safe
 		height = collisionShape.shape._get_extents_y(),
 		used = used,
-		tick = tick,
+		# tick = tick,
 		idx = idx,
 	}
 
@@ -112,6 +84,6 @@ func _load_state(loadState: Dictionary) -> void:
 	collisionShape.shape._set_extents_x(loadState['width']) # TODO: make sure this is safe
 	collisionShape.shape._set_extents_y(loadState['height'])
 	used = loadState['used']
-	tick = loadState['tick']
+	# tick = loadState['tick']
 	idx = loadState['idx']
 	sync_to_physics_engine()
