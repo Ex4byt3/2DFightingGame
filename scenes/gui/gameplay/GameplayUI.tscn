@@ -18,6 +18,7 @@ script = ExtResource("1_nvud5")
 layout_mode = 1
 
 [node name="DebugOverlay" parent="." instance=ExtResource("3_7uhta")]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.12

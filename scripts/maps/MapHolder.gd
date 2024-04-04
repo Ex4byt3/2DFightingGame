@@ -103,10 +103,8 @@ func _add_client_character() -> void:
 
 func _reset_character_position() -> void:
 	print("[COMBAT] Reseting character positions...")
-	host_character.fixed_position_x = host_starting_pos_x
-	host_character.fixed_position_y = character_starting_pos_y
-	client_character.fixed_position_x = client_starting_pos_x
-	client_character.fixed_position_y = character_starting_pos_y
+	host_character.reset_round = true
+	client_character.reset_round = true
 
 
 func _set_network_script() -> void:

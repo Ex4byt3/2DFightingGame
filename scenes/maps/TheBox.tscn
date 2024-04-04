@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://drausbesi8av4"]
+[gd_scene load_steps=7 format=3 uid="uid://drausbesi8av4"]
 
 [ext_resource type="Texture2D" uid="uid://rgop4j6sft35" path="res://assets/gameplay/debug/gridtexture.png" id="1_l0agw"]
-[ext_resource type="Texture2D" uid="uid://caoquouya0c2y" path="res://assets/gameplay/floor.png" id="2_8i3eh"]
+[ext_resource type="Texture2D" uid="uid://duvpqopi4hvkh" path="res://assets/menu/images/anime-style-clouds.jpg" id="1_ys3qj"]
 [ext_resource type="AudioStream" uid="uid://bxmdi6fqteui2" path="res://assets/sound/music/Battle with Beasts.ogg" id="3_qk2h8"]
+[ext_resource type="Texture2D" uid="uid://djx8eqy73m773" path="res://assets/menu/images/black-old-fashioned-shapes-texture.jpg" id="4_v3xhb"]
 
 [sub_resource type="SGRectangleShape2D" id="1"]
 extents_x = 107348032
@@ -13,6 +14,11 @@ extents_x = 3276800
 extents_y = 56363324
 
 [node name="TheBox" type="Node2D"]
+
+[node name="CloudBackground" type="Sprite2D" parent="."]
+position = Vector2(1568.75, -2029)
+scale = Vector2(2.25884, 2.25119)
+texture = ExtResource("1_ys3qj")
 
 [node name="FloorStaticBody" type="SGStaticBody2D" parent="."]
 collision_layer = 0
@@ -30,13 +36,14 @@ scale = Vector2(1, 0.0499878)
 
 [node name="Sprite1" type="Sprite2D" parent="FloorStaticBody"]
 texture_filter = 1
-position = Vector2(-1057.25, 115)
-scale = Vector2(6, 5.741)
-texture = ExtResource("1_l0agw")
+position = Vector2(319, 249)
+scale = Vector2(1.24727, 0.253925)
+texture = ExtResource("4_v3xhb")
 flip_h = true
 flip_v = true
 
 [node name="Sprite2" type="Sprite2D" parent="FloorStaticBody"]
+visible = false
 texture_filter = 1
 position = Vector2(-673.25, 115)
 scale = Vector2(6, 5.741)
@@ -45,6 +52,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite3" type="Sprite2D" parent="FloorStaticBody"]
+visible = false
 texture_filter = 1
 position = Vector2(-289.25, 115)
 scale = Vector2(6, 5.741)
@@ -53,6 +61,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite4" type="Sprite2D" parent="FloorStaticBody"]
+visible = false
 texture_filter = 1
 position = Vector2(94.7501, 115)
 scale = Vector2(6, 5.741)
@@ -61,6 +70,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite5" type="Sprite2D" parent="FloorStaticBody"]
+visible = false
 texture_filter = 1
 position = Vector2(478.75, 115)
 scale = Vector2(6, 5.741)
@@ -69,6 +79,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite6" type="Sprite2D" parent="FloorStaticBody"]
+visible = false
 texture_filter = 1
 position = Vector2(862.75, 115)
 scale = Vector2(6, 5.741)
@@ -77,6 +88,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite7" type="Sprite2D" parent="FloorStaticBody"]
+visible = false
 texture_filter = 1
 position = Vector2(1245.75, 115)
 scale = Vector2(6, 5.741)
@@ -85,6 +97,7 @@ flip_h = true
 flip_v = true
 
 [node name="Sprite8" type="Sprite2D" parent="FloorStaticBody"]
+visible = false
 texture_filter = 1
 position = Vector2(1627.75, 115)
 scale = Vector2(6, 5.741)
@@ -98,7 +111,7 @@ fixed_position_x = 81920000
 fixed_position_y = 1900544
 position = Vector2(1250, 29)
 
-[node name="FloorCollisionShape" type="SGCollisionShape2D" parent="CeilingStaticBody"]
+[node name="CeilingCollisionShape" type="SGCollisionShape2D" parent="CeilingStaticBody"]
 shape = SubResource("1")
 fixed_position_x = 21626880
 fixed_position_y = -2621440
@@ -106,10 +119,10 @@ fixed_scale_y = 3276
 position = Vector2(330, -40)
 scale = Vector2(1, 0.0499878)
 
-[node name="FloorSprite" type="Sprite2D" parent="CeilingStaticBody"]
-position = Vector2(296.001, 0)
-scale = Vector2(2.33358, 0.05)
-texture = ExtResource("2_8i3eh")
+[node name="CeilingSprite" type="Sprite2D" parent="CeilingStaticBody"]
+position = Vector2(355, -297.699)
+scale = Vector2(1.7944, 0.25384)
+texture = ExtResource("4_v3xhb")
 
 [node name="WallStaticBody_L" type="SGStaticBody2D" parent="."]
 collision_layer = 0
@@ -123,9 +136,9 @@ fixed_position_y = 7602176
 position = Vector2(0, 116)
 
 [node name="WallSprite" type="Sprite2D" parent="WallStaticBody_L"]
-position = Vector2(2.28286e-05, 254.5)
-scale = Vector2(0.0754718, 1.43287)
-texture = ExtResource("2_8i3eh")
+position = Vector2(-325, 215.75)
+scale = Vector2(0.297516, 1.1062)
+texture = ExtResource("4_v3xhb")
 
 [node name="WallStaticBody_R" type="SGStaticBody2D" parent="."]
 collision_layer = 0
@@ -139,9 +152,9 @@ fixed_position_y = 18219008
 position = Vector2(0, 278)
 
 [node name="WallSprite" type="Sprite2D" parent="WallStaticBody_R"]
-position = Vector2(2.28286e-05, 254.5)
-scale = Vector2(0.0754718, 1.43287)
-texture = ExtResource("2_8i3eh")
+position = Vector2(336.273, 212)
+scale = Vector2(0.314181, 1.0984)
+texture = ExtResource("4_v3xhb")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_qk2h8")
