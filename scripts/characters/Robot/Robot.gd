@@ -123,7 +123,11 @@ func _ready():
 	hurtBox.get_node("SecondaryShape").shape.set_extents(SGFixed.vector2(0, 0)) # secondary hurtbox for attacks that are not disjointed
 	hitbox.get_node("MainShape").shape = SGRectangleShape2D.new()
 	hitbox.get_node("MainShape").shape.set_extents(SGFixed.vector2(0, 0)) # default hitbox size
-
+	if self.name == "ServerPlayer":
+		opponet = get_parent().get_node("ClientPlayer")
+	else:
+		opponet = get_parent().get_node("ServerPlayer")
+	
 
 # Scale appropriate variables to fixed point numbers
 func _scale_to_fixed() -> void:
@@ -224,6 +228,10 @@ func get_input_vector():
 	return vector
 
 func _game_process(input: int) -> int:
+	if self.name == "ServerPlayer":
+		opponet = get_parent().get_node("ClientPlayer")
+	else:
+		opponet = get_parent().get_node("ServerPlayer")
 	# reset round stuff
 	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
 	MenuSignalBus.emit_update_meter_val(meterVal, self.name)
