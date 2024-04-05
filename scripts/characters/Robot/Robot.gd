@@ -32,7 +32,7 @@ var crawlAcceleration = 1
 var sprintSpeed = 20
 var sprintAcceleration = 4
 var sprintInputLeinency = 6
-var advancingLowSpeed = 12
+var advancingLowSpeed = 24 # TODO: current pushboxes break this move kinda sorta
 
 var slideJumpBoost = 0 # set in ready
 
@@ -53,7 +53,7 @@ var maxFallSpeed = 20
 var prevVelocity = SGFixed.vector2(0, 0)
 
 # Character meter variables
-var baseMeterRate = 300
+var baseMeterRate = 3000
 var meter_frame_counter = 0 
 var meter_frame_rate = 60
 var totalGameFrames = 10800

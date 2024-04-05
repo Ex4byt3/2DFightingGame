@@ -734,7 +734,6 @@ func transition_state(input):
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_LIGHT:
-			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			#SyncManager.play_sound(str(get_path()) + ":neutral_impact", player.boom, player.boomINFO)
@@ -746,49 +745,42 @@ func transition_state(input):
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_LIGHT:
-			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_MEDIUM:
-			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_MEDIUM:
-			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_HEAVY:
-			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_HEAVY:
-			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_IMPACT:
-			player.velocity.x = 0
 			if player.hitstopBuffer > player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_IMPACT:
-			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
@@ -989,9 +981,9 @@ func do_hit():
 			player.animation.play("Hitstun")
 		set_state("HITSTUN")
 
-func do_knockback(knockback: Dictionary):
+func do_knockback(knockback: Dictionary): # TODO: static flag does not work
 	if knockback["mult"]:
-		player.knockbackMultiplier = SGFixed.mul(player.knockbackMultiplier, knockback["gain"])
+		player.knockbackMultiplier = SGFixed.mul(player.knockbackMultiplier, knockback["gain"] + ONE)
 	else:
 		player.knockbackMultiplier = player.knockbackMultiplier + knockback["gain"]
 	if knockback["static"]:

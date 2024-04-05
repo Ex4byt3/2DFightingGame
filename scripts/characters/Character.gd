@@ -181,6 +181,12 @@ func _reset_character() -> void:
 	health = max_health
 	#print("[COMBAT] Reset " + self.name + "'s health: " + str(health))
 	#MenuSignalBus.emit_player_ready(self.name)
+	knockbackMultiplier = SGFixed.ONE # reset knockback multiplier to 1
+	hitstunMultiplier = SGFixed.ONE # reset hitstun multiplier to 1
+	print("[COMBAT] Reset " + self.name + "'s health: " + str(health))
+	
+	#MenuSignalBus.emit_update_health(health, self.name)
+	#MenuSignalBus.emit_player_ready(self.name)
 
 
 func _network_preprocess(userInput: Dictionary) -> void:
@@ -342,6 +348,7 @@ func check_collisions() -> void:
 func take_damage(damage) -> void:
 	# TODO: can't be below 0, dying logic
 	health -= damage
+	MenuSignalBus.emit_update_health(health, self.name)
 
 
 func apply_knockback(force: int, angle_radians: int):

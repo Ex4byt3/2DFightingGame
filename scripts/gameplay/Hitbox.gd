@@ -18,7 +18,6 @@ func do_attack(attack_name: String):
 	used = false
 	idx = 0
 	player.frame = 0
-	player.attackDuration = properties["duration"]
 	set_shape(hitboxes[0]["width"], hitboxes[0]["height"])
 	set_pos(hitboxes[0]["x"], hitboxes[0]["y"])
 	disabled = false

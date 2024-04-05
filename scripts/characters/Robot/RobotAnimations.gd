@@ -494,21 +494,21 @@ extends FixedAnimator
 			"loop": false,
 			"simple": false
 		},
-		"frames": [5, 3, 7]
+		"frames": [4, 3, 5]
 	},
 	"NeutralMedium":{
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [7, 5, 7]
+		"frames": [6, 5, 6]
 	},
 	"NeutralHeavy":{
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [11, 6, 18]
+		"frames": [9, 6, 15]
 	},
 	"NeutralImpact": {
 		"animation": {
@@ -522,63 +522,63 @@ extends FixedAnimator
 			"loop": false,
 			"simple": false
 		},
-		"frames": [4, 3, 7]
+		"frames": [3, 3, 5]
 	},
 	"CrouchingMedium": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [8, 4, 10]
+		"frames": [7, 4, 10]
 	},
 	"CrouchingHeavy": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [11, 3, 25]
+		"frames": [8, 3, 20]
 	},
 	"CrouchingImpact": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [7, 4, 6, 20]
+		"frames": [6, 4, 6, 17]
 	},
 	"ForwardHeavy": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [16, 4, 22]
+		"frames": [13, 4, 22]
 	},
 	"CrouchingForwardMedium": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [14, 20, 3]
+		"frames": [10, 20, 5]
 	},
 	"AirLight": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [6, 3, 10]
+		"frames": [3, 2, 9]
 	},
 	"BackAirLight": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [8, 3, 11]
+		"frames": [4, 3, 9]
 	},
 	"AirMedium": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
-		"frames": [13, 4, 17]
+		"frames": [5, 12, 18]
 	},
 	# back_air_medium
 	"AirHeavy": {
@@ -586,7 +586,7 @@ extends FixedAnimator
 			"loop": false,
 			"simple": false
 		},
-		"frames": [16, 4, 20]
+		"frames": [14, 4, 10]
 	},
 	# back_air_heavy
 	# air_impact

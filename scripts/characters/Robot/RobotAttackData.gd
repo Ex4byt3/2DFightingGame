@@ -3,13 +3,12 @@ const ONE = SGFixed.ONE
 
 const attacks = {
 	# dubug attack
-	"neutral_light": {
+	"_neutral_light": {
 		"hitboxes": [
 				{"x": -200, "y": 40, "width": 150, "height": 150, "ticks": 5},
 				{"x": 60, "y": 40, "width": 150, "height": 150, "ticks": 30},
 				{"x": -90, "y": 40, "width": 150, "height": 150, "ticks": 30}
 			],
-		"duration": 65,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -48,13 +47,12 @@ const attacks = {
 		}
 	},
 
-	"_neutral_light": {
+	"neutral_light": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4},
 				{"x": 90, "y": 40, "width": 70, "height": 50, "ticks": 3},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5}
 			],
-		"duration": 15,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -68,7 +66,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 120, #120
+			"damage": 170,
 			"adv": 0,
 			"gain": 0,
 			"hitstop": 6,
@@ -76,9 +74,9 @@ const attacks = {
 			"knockback": {
 				"gain": 1966,
 				"static": false,
-				"mult": false,
+				"mult": true,
 				"force": 2 * ONE,
-				"angle": 0
+				"angle": 25735
 			},
 		},
 		"onBlock": {
@@ -95,11 +93,10 @@ const attacks = {
 
 	"neutral_medium": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6},
 				{"x": 85, "y": 10, "width": 80, "height": 40, "ticks": 5},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6}
 			],
-		"duration": 19,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -111,17 +108,17 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 160,
+			"damage": 250,
 			"adv": - 2,
 			"gain": 0,
 			"hitstop": 8,
 			"knockdown": 0,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3932,
 				"static": false,
 				"mult": false,
 				"force": 3 * ONE,
-				"angle": 0
+				"angle": 25735 
 			},
 		},
 		"onBlock": {
@@ -138,11 +135,10 @@ const attacks = {
 
 	"neutral_heavy": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 9},
 				{"x": 170, "y": -40, "width": 220, "height": 70, "ticks": 6},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 15}
 			],
-		"duration": 35,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -153,7 +149,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 200,
+			"damage": 274,
 			"adv": - 2,
 			"gain": 3276,
 			"hitstop": 10,
@@ -184,7 +180,6 @@ const attacks = {
 				{"x": 190, "y": -20, "width": 250, "height": 190, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 24}
 			],
-		"duration": 48,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -192,7 +187,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 200,
+			"damage": 223,
 			"adv": - 8,
 			"gain": 3276,
 			"hitstop": 10,
@@ -201,8 +196,8 @@ const attacks = {
 				"gain": 1966,
 				"static": true,
 				"mult": false,
-				"force": 5 * ONE,
-				"angle": - SGFixed.PI_DIV_2
+				"force": 6 * ONE,
+				"angle": SGFixed.PI_DIV_4
 			},
 		},
 		"onBlock": {
@@ -219,11 +214,10 @@ const attacks = {
 
 	"crouching_light": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3},
 				{"x": 100, "y": -15, "width": 50, "height": 40, "ticks": 3},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5}
 			],
-		"duration": 15,
 		"cancelable": {
 		"jump": false,
 			"type": 1,
@@ -237,7 +231,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 105,
+			"damage": 145,
 			"adv": 0,
 			"gain": 0,
 			"hitstop": 5,
@@ -247,7 +241,7 @@ const attacks = {
 				"static": true,
 				"mult": false,
 				"force": 2 * ONE,
-				"angle": 0
+				"angle": 25735
 			},
 		},
 		"onBlock": {
@@ -264,11 +258,10 @@ const attacks = {
 
 	"crouching_medium": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7},
 				{"x": 80, "y": -100, "width": 100, "height": 30, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
-		"duration": 22,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -278,7 +271,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 145,
+			"damage": 185,
 			"adv": - 2,
 			"gain": 0,
 			"hitstop": 8,
@@ -288,7 +281,7 @@ const attacks = {
 				"static": true,
 				"mult": false,
 				"force": 2 * ONE,
-				"angle": 0
+				"angle": 25735
 			},
 		},
 		"onBlock": {
@@ -305,11 +298,10 @@ const attacks = {
 
 	"crouching_heavy": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
 				{"x": 150, "y": 30, "width": 180, "height": 300, "ticks": 3},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 25}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
-		"duration": 39,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -318,7 +310,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 165,
+			"damage": 205,
 			"adv": - 10,
 			"gain": 3932,
 			"hitstop": 10,
@@ -327,8 +319,8 @@ const attacks = {
 				"gain": 1966,
 				"static": false,
 				"mult": false,
-				"force": 4 * ONE,
-				"angle": 77207
+				"force": 12 * ONE,
+				"angle": 93537
 			},
 		},
 		"onBlock": {
@@ -345,11 +337,10 @@ const attacks = {
 
 	"crouching_impact": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 12},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
 				{"x": 80, "y": -100, "width": 400, "height": 20, "ticks": 6},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 17}
 			],
-		"duration": 36,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -357,7 +348,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 160,
+			"damage": 166,
 			"adv": 0,
 			"gain": 0,
 			"hitstop": 10,
@@ -366,7 +357,7 @@ const attacks = {
 				"gain": 1966,
 				"static": false,
 				"mult": false,
-				"force": 1 * ONE,
+				"force": 2 * ONE,
 				"angle": SGFixed.PI_DIV_4
 			},
 		},
@@ -384,11 +375,10 @@ const attacks = {
 
 	"forward_heavy": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 13},
 				{"x": 230, "y": -10, "width": 350, "height": 90, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 22}
 			],
-		"duration": 42,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -396,7 +386,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 240,
+			"damage": 269,
 			"adv": + 1,
 			"gain": 2621,
 			"hitstop": 11,
@@ -405,7 +395,7 @@ const attacks = {
 				"gain": 1966,
 				"static": false,
 				"mult": false,
-				"force": 5 * ONE,
+				"force": 8 * ONE,
 				"angle": 25735
 			},
 		},
@@ -423,11 +413,10 @@ const attacks = {
 
 	"crouching_forward_medium": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10},
 				{"x": 75, "y": -100, "width": 80, "height": 30, "ticks": 20},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5}
 			],
-		"duration": 37,
 		"cancelable": {
 			"jump": false,
 			"type": 1,
@@ -435,7 +424,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 160,
+			"damage": 200,
 			"adv": - 12,
 			"gain": 0,
 			"hitstop": 8,
@@ -444,7 +433,7 @@ const attacks = {
 				"gain": 1966,
 				"static": false,
 				"mult": false,
-				"force": 3 * ONE,
+				"force": 4 * ONE,
 				"angle": SGFixed.PI_DIV_2
 			},
 		},
@@ -462,11 +451,10 @@ const attacks = {
 
 	"air_light": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6},
-				{"x": 110, "y": -35, "width": 60, "height": 40, "ticks": 3},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3},
+				{"x": 110, "y": -35, "width": 60, "height": 40, "ticks": 2},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 9}
 			],
-		"duration": 19,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -482,7 +470,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 100,
+			"damage": 150,
 			"adv": - 2,
 			"gain": 3276,
 			"hitstop": 5,
@@ -491,7 +479,7 @@ const attacks = {
 				"gain": 1966,
 				"static": false,
 				"mult": true,
-				"force": 1 * ONE,
+				"force": 2 * ONE,
 				"angle": SGFixed.PI_DIV_2
 			},
 		},
@@ -509,11 +497,10 @@ const attacks = {
 
 	"back_air_light": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4},
 				{"x": -90, "y": -20, "width": 75, "height": 20, "ticks": 3},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 9}
 			],
-		"duration": 22,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -529,7 +516,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 100,
+			"damage": 150,
 			"adv": - 2,
 			"gain": 3276,
 			"hitstop": 5,
@@ -538,7 +525,7 @@ const attacks = {
 				"gain": 1966,
 				"static": false,
 				"mult": true,
-				"force": 1 * ONE,
+				"force": 2 * ONE,
 				"angle": 180151
 			},
 		},
@@ -556,11 +543,10 @@ const attacks = {
 
 	"air_medium": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 13},
-				{"x": 95, "y": -60, "width": 80, "height": 40, "ticks": 4},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 17}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
+				{"x": 95, "y": -60, "width": 80, "height": 40,  "ticks": 12},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
 			],
-		"duration": 34,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -572,7 +558,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 140,
+			"damage": 190,
 			"adv": - 3,
 			"gain": 3276,
 			"hitstop": 7,
@@ -581,7 +567,7 @@ const attacks = {
 				"gain": 1966,
 				"static": false,
 				"mult": true,
-				"force": 3 * ONE,
+				"force": 4 * ONE,
 				"angle": 38603
 			},
 		},
@@ -599,11 +585,10 @@ const attacks = {
 
 	"back_air_medium": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 13},
-				{"x": - 70, "y": 20, "width": 110, "height": 60, "ticks": 5},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6},
+				{"x": - 70, "y": 20, "width": 110, "height": 60, "ticks": 3},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14}
 			],
-		"duration": 36,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -615,7 +600,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 155,
+			"damage": 195,
 			"adv": - 3,
 			"gain": 3276,
 			"hitstop": 7,
@@ -642,11 +627,10 @@ const attacks = {
 
 	"air_heavy": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
 				{"x": 100, "y": -80, "width": 230, "height": 250, "ticks": 4},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
-		"duration": 40,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -656,7 +640,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 185,
+			"damage": 225,
 			"adv": - 5,
 			"gain": 3932,
 			"hitstop": 7,
@@ -665,7 +649,7 @@ const attacks = {
 				"gain": 3932,
 				"static": false,
 				"mult": true,
-				"force": 6 * ONE,
+				"force": 7 * ONE,
 				"angle": 59707
 			},
 		},
@@ -683,11 +667,10 @@ const attacks = {
 
 	"back_air_heavy": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 15},
 				{"x": - 60, "y": - 20, "width": 100, "height": 140, "ticks": 4},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 19}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 12}
 			],
-		"duration": 39,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -697,7 +680,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 175,
+			"damage": 235,
 			"adv": - 5,
 			"gain": 3932,
 			"hitstop": 7,
@@ -706,8 +689,8 @@ const attacks = {
 				"gain": 3932,
 				"static": false,
 				"mult": true,
-				"force": 6 * ONE,
-				"angle": 146180
+				"force": 7 * ONE,
+				"angle": 160134
 			},
 		},
 		"onBlock": {
@@ -717,7 +700,7 @@ const attacks = {
 			"mask": 4, # high
 			"knockback": {
 				"force": 6 * ONE,
-				"angle": 146180
+				"angle": 160134
 			}
 		}
 	},
@@ -726,9 +709,8 @@ const attacks = {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18},
 				{"x": 60, "y": - 35, "width": 120, "height": 90, "ticks": 4},
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 26}
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
-		"duration": 48,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -736,7 +718,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 170,
+			"damage": 240,
 			"adv": - 5,
 			"gain": 4259,
 			"hitstop": 7,
@@ -745,7 +727,7 @@ const attacks = {
 				"gain": 3932,
 				"static": false,
 				"mult": true,
-				"force": 7 * ONE,
+				"force": 8 * ONE,
 				"angle": - 25735
 			},
 		},
@@ -763,11 +745,10 @@ const attacks = {
 
 	"back_air_impact": {
 		"hitboxes": [
-				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
 				{"x": - 70, "y": - 45, "width": 120, "height": 80, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 27}
 			],
-		"duration": 49,
 		"cancelable": {
 			"jump": true,
 			"type": 1,
@@ -775,7 +756,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 165,
+			"damage": 245,
 			"adv": - 5,
 			"gain": 4259,
 			"hitstop": 7,
@@ -784,7 +765,7 @@ const attacks = {
 				"gain": 3932,
 				"static": false,
 				"mult": true,
-				"force": 7 * ONE,
+				"force": 8 * ONE,
 				"angle": - 231623
 			},
 		},
@@ -807,7 +788,6 @@ const attacks = {
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 1},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 40}
 			],
-		"duration": 55,
 		"cancelable": {
 			"jump": false,
 			"type": 2,
@@ -840,4 +820,3 @@ const attacks = {
 		}
 	}
 }
-
