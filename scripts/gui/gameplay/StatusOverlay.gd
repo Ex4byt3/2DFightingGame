@@ -85,7 +85,7 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_character_name", "_update_character_name")
 	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "life_lost", "_life_lost")
 	
-	MatchSignalBus.combat_start.connect(_spawn_countdown_banner.bind(true))
+	#MatchSignalBus.combat_start.connect(_spawn_countdown_banner.bind(true))
 	MatchSignalBus.round_stop.connect(_spawn_round_stop_banners)
 	MatchSignalBus.combat_stop.connect(_spawn_victor_banner)
 	

@@ -92,7 +92,7 @@ func _setup_combat() -> void:
 
 
 func _combat_start() -> void:
-	await MatchSignalBus.banner_done
+	#await MatchSignalBus.banner_done
 	MatchSignalBus.emit_round_start()
 
 

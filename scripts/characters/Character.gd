@@ -190,6 +190,9 @@ func _reset_character() -> void:
 
 
 func _network_preprocess(userInput: Dictionary) -> void:
+	if !userInput.has("input"):
+		print("[NETWORKING] Missing input")
+		return
 	input = userInput["input"]
 	inputBuffer = input
 	inputBufferArray[bufferIdx] = input
