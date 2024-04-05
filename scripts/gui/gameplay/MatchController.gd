@@ -123,7 +123,7 @@ func _round_stop() -> void:
 	#if find_child("ServerPlayer").num_lives > 0 and find_child("ClientPlayer").num_lives > 0:
 		#print("[SYSTEM][COMBAT] Starting new round...")
 		MatchSignalBus._emit_setup_round()
-		await MatchSignalBus.banner_done
+		#await MatchSignalBus.banner_done
 		_round_start()
 	else:
 		#print("[SYSTEM][COMBAT] Stopping combat...")

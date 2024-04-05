@@ -12,6 +12,9 @@ extends VBoxContainer
 @onready var p2_character_image = $Header/P2Info/CharacterImage
 @onready var p2_character_name = $Header/P2Info/HealthHeader/CharacterName
 
+@onready var p1_combo_bar = $Header/P1Info/ComboDamage
+@onready var p2_combo_bar = $Header/P2Info/ComboDamage
+
 @onready var displayed_time = $Header/Timer/TimerBackground/DisplayedTime
 @onready var p1_health_bar = $Header/P1Info/HealthBar
 @onready var p2_health_bar = $Header/P2Info/HealthBar
@@ -39,8 +42,14 @@ var p2_health_max: int = 10000
 # Variables updated on process
 var p1_health_val: int = 10000
 var p2_health_val: int = 10000
+var p1_health_old: int = 10000
+var p2_health_old: int = 10000
 var p1_burst_val: int = 0
 var p2_burst_val: int = 0
+
+# Meter variables
+var p1_meter_max: int = 0
+var p2_meter_max: int = 0
 var p1_meter_charge: int = 0
 var p2_meter_charge: int = 0
 var p1_meter_val: int = 0
@@ -88,8 +97,6 @@ func _handle_connecting_signals() -> void:
 	#MatchSignalBus.combat_start.connect(_spawn_countdown_banner.bind(true))
 	MatchSignalBus.round_stop.connect(_spawn_round_stop_banners)
 	MatchSignalBus.combat_stop.connect(_spawn_victor_banner)
-	
-	
 
 
 func _init_timer() -> void:
@@ -139,13 +146,21 @@ func _set_player_meter_val() -> void:
 func _update_health(health_val: int, player_id: String) -> void:
 	match player_id:
 		"ServerPlayer": # Player 1
+			p1_health_old = p1_health_val
 			p1_health_val = health_val
 			p1_health_bar.value = p1_health_val
 			p1_current_health.set_text(str(p1_health_val) + "/" + str(p1_health_max))
+			if not p1_health_val == p1_health_old:
+				print("[COMBAT] Animating server health")
+				_animate_health(p1_combo_bar, health_val)
 		"ClientPlayer": # Player 2
+			p2_health_old = p2_health_val
 			p2_health_val = health_val
 			p2_health_bar.value = p2_health_val
 			p2_current_health.set_text(str(p2_health_val) + "/" + str(p2_health_max))
+			if not p2_health_val == p2_health_old:
+				print("[COMBAT] Animating client health")
+				_animate_health(p2_combo_bar, health_val)
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
 	#_set_player_health()
@@ -261,8 +276,9 @@ func _on_timeout() -> void:
 ##################################################
 # TWEEN FUNCTIONS
 ##################################################
-func _animate_health() -> void:
+func _animate_health(damage_bar, target_value: int) -> void:
 	var tween = create_tween()
+	tween.tween_property(damage_bar, "value", target_value, 1)
 
 
 ##################################################

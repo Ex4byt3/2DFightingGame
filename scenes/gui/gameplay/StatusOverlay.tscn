@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bpb3irbilm2vu"]
+[gd_scene load_steps=21 format=3 uid="uid://bpb3irbilm2vu"]
 
 [ext_resource type="Texture2D" uid="uid://vjxjlgsxp5l8" path="res://assets/menu/icons/timer_icon.png" id="1"]
 [ext_resource type="Theme" uid="uid://bomuf0lsbqw2o" path="res://assets/resources/gui/status_overlay_theme.tres" id="1_dj4ys"]
@@ -10,7 +10,7 @@ bg_color = Color(0.12549, 0.12549, 0.12549, 1)
 
 [sub_resource type="Gradient" id="1"]
 offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0.609375, 0.0975952, 0.0975952, 1)
+colors = PackedColorArray(0.607843, 0.0980392, 0.0980392, 1)
 
 [sub_resource type="GradientTexture2D" id="2"]
 gradient = SubResource("1")
@@ -35,6 +35,13 @@ colors = PackedColorArray(0.200226, 0.405029, 0.949219, 1)
 
 [sub_resource type="GradientTexture2D" id="10"]
 gradient = SubResource("9")
+
+[sub_resource type="Gradient" id="Gradient_0vpkk"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.607843, 0.0980392, 0.0980392, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_50uu2"]
+gradient = SubResource("Gradient_0vpkk")
 
 [sub_resource type="Gradient" id="12"]
 offsets = PackedFloat32Array(0)
@@ -110,6 +117,18 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 theme_override_styles/panel = SubResource("11")
 
+[node name="ComboDamage" type="TextureProgressBar" parent="Header/P1Info"]
+layout_mode = 0
+anchor_left = 0.15
+anchor_top = 0.25
+anchor_right = 1.0
+anchor_bottom = 0.5
+max_value = 10000.0
+value = 10000.0
+fill_mode = 1
+nine_patch_stretch = true
+texture_progress = SubResource("2")
+
 [node name="HealthBar" type="TextureProgressBar" parent="Header/P1Info"]
 layout_mode = 0
 anchor_left = 0.15
@@ -120,7 +139,6 @@ max_value = 10000.0
 value = 10000.0
 fill_mode = 1
 nine_patch_stretch = true
-texture_under = SubResource("2")
 texture_progress = SubResource("4")
 
 [node name="HealthOverlay" type="HBoxContainer" parent="Header/P1Info/HealthBar"]
@@ -222,6 +240,16 @@ anchor_right = 0.85
 anchor_bottom = 0.5
 theme_override_styles/panel = SubResource("11")
 
+[node name="ComboDamage" type="TextureProgressBar" parent="Header/P2Info"]
+layout_mode = 0
+anchor_top = 0.25
+anchor_right = 0.85
+anchor_bottom = 0.5
+max_value = 10000.0
+value = 10000.0
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture2D_50uu2")
+
 [node name="HealthBar" type="TextureProgressBar" parent="Header/P2Info"]
 layout_mode = 0
 anchor_top = 0.25
@@ -230,7 +258,6 @@ anchor_bottom = 0.5
 max_value = 10000.0
 value = 10000.0
 nine_patch_stretch = true
-texture_under = SubResource("2")
 texture_progress = SubResource("4")
 
 [node name="HealthOverlay" type="HBoxContainer" parent="Header/P2Info/HealthBar"]
@@ -293,8 +320,7 @@ anchor_right = 0.7
 anchor_bottom = 0.65
 offset_top = 2.67029e-05
 offset_bottom = 2.28882e-05
-max_value = 10000.0
-step = 10.0
+max_value = 100000.0
 nine_patch_stretch = true
 texture_under = SubResource("13")
 texture_progress = SubResource("15")
@@ -339,8 +365,7 @@ anchor_right = 0.755
 anchor_bottom = 0.65
 offset_top = 2.67029e-05
 offset_bottom = 2.28882e-05
-max_value = 10000.0
-step = 10.0
+max_value = 100000.0
 fill_mode = 1
 nine_patch_stretch = true
 texture_under = SubResource("13")
