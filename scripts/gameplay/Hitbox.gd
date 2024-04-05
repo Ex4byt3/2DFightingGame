@@ -1,5 +1,5 @@
 extends SGArea2D
-@onready var collisionShape = $SGCollisionShape2D
+@onready var collisionShape = $MainShape
 @onready var map = get_parent().get_parent()
 @onready var player = get_parent()# Name of attacking player (client/server)
 @onready var opponet = map.get_node("ClientPlayer" if player.name == "ServerPlayer" else "ClientPlayer") # Name of attacked player (client/server)

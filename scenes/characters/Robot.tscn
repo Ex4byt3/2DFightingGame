@@ -1793,7 +1793,9 @@ script = ExtResource("2_y2o11")
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_w520v")
-animation = &"BackAirLight"
+animation = &"Idle"
+frame = 8
+frame_progress = 0.190336
 
 [node name="FixedAnimationPlayer" type="Node" parent="AnimatedSprite2D" groups=["network_sync"]]
 script = ExtResource("3_4ojck")
@@ -1802,7 +1804,9 @@ script = ExtResource("3_4ojck")
 collision_layer = 0
 collision_mask = 2
 
-[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="HurtBox"]
+[node name="MainShape" type="SGCollisionShape2D" parent="HurtBox"]
+
+[node name="SecondaryShape" type="SGCollisionShape2D" parent="HurtBox"]
 
 [node name="PushBox" type="SGArea2D" parent="."]
 collision_layer = 8
@@ -1825,6 +1829,6 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("34_dx2pi")
 
-[node name="SGCollisionShape2D" type="SGCollisionShape2D" parent="Hitbox"]
+[node name="MainShape" type="SGCollisionShape2D" parent="Hitbox"]
 debug_color = Color(0.996078, 0, 0.227451, 0.419608)
 script = ExtResource("18_7wveu")

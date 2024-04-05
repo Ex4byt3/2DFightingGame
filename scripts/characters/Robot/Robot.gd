@@ -116,10 +116,12 @@ func _ready():
 	_scale_to_fixed()
 	_rotate_client_player()
 	_init_character_data(martial_hero_img, martial_hero_name, martial_hero_max_health)
-	hurtBox.get_node("SGCollisionShape2D").shape = SGRectangleShape2D.new()
-	hurtBox.get_node("SGCollisionShape2D").shape.set_extents(SGFixed.vector2(4487098, 6750123)) # default hurtbox size
-	hitbox.get_node("SGCollisionShape2D").shape = SGRectangleShape2D.new()
-	hitbox.get_node("SGCollisionShape2D").shape.set_extents(SGFixed.vector2(0, 0)) # default hitbox size
+	hurtBox.get_node("MainShape").shape = SGRectangleShape2D.new()
+	hurtBox.get_node("MainShape").shape.set_extents(SGFixed.vector2(4487098, 6750123)) # default hurtbox size
+	hurtBox.get_node("SecondaryShape").shape = SGRectangleShape2D.new()
+	hurtBox.get_node("SecondaryShape").shape.set_extents(SGFixed.vector2(0, 0)) # secondary hurtbox for attacks that are not disjointed
+	hitbox.get_node("MainShape").shape = SGRectangleShape2D.new()
+	hitbox.get_node("MainShape").shape.set_extents(SGFixed.vector2(0, 0)) # default hitbox size
 
 
 ## Connecting signals to our menu

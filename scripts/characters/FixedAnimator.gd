@@ -4,7 +4,7 @@ class_name FixedAnimator
 # nodes to animate
 @onready var player = get_parent().get_parent()
 @onready var sprite = get_parent()
-@onready var hurtBox = player.get_node("HurtBox").get_node("SGCollisionShape2D")
+@onready var hurtBox = player.get_node("HurtBox").get_node("MainShape")
 
 # animation data
 var tick : int = 0
