@@ -57,7 +57,7 @@ func on_online_button_toggled(button_pressed):
 func on_local_button_toggled(button_pressed):
 	if button_pressed == true:
 		NetworkGlobal.NETWORK_TYPE = 0
-		GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
+		#GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 #		MenuSignalBus._change_Scene(self, map_holder_scene)
 		MenuSignalBus.emit_create_match()
 #		var scene_change_error: int = get_tree().change_scene_to(local_scene)

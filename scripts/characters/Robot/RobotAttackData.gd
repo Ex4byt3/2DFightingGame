@@ -3,7 +3,7 @@ const ONE = SGFixed.ONE
 
 const attacks = {
 	# dubug attack
-	"_neutral_light": {
+	"neutral_light": {
 		"hitboxes": [
 				{"x": -200, "y": 40, "width": 150, "height": 150, "ticks": 5},
 				{"x": 60, "y": 40, "width": 150, "height": 150, "ticks": 30},
@@ -48,7 +48,7 @@ const attacks = {
 		}
 	},
 
-	"neutral_light": {
+	"_neutral_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
 				{"x": 90, "y": 40, "width": 70, "height": 50, "ticks": 3},
@@ -68,7 +68,7 @@ const attacks = {
 			],
 		},
 		"onHit": {
-			"damage": 12000, #120
+			"damage": 120, #120
 			"adv": 0,
 			"gain": 0,
 			"hitstop": 6,

@@ -82,9 +82,10 @@ const motion_inputs = {
 }
 
 # Local character data
-var martial_hero_img = preload("res://assets/menu/images/robot.png")
-var martial_hero_name = "Martial Hero"
-var martial_hero_max_health = 10000
+var robot_img = preload("res://assets/menu/images/RoboPort.png")
+var robot_name = "Robot"
+var robot_max_health = 10000
+
 
 # Sound Effect Preloads
 const sounds := {
@@ -115,20 +116,13 @@ func _ready():
 	_handle_connecting_signals()
 	_scale_to_fixed()
 	_rotate_client_player()
-	_init_character_data(martial_hero_img, martial_hero_name, martial_hero_max_health)
+	_init_character_data(robot_img, robot_name, robot_max_health)
 	hurtBox.get_node("MainShape").shape = SGRectangleShape2D.new()
 	hurtBox.get_node("MainShape").shape.set_extents(SGFixed.vector2(4487098, 6750123)) # default hurtbox size
 	hurtBox.get_node("SecondaryShape").shape = SGRectangleShape2D.new()
 	hurtBox.get_node("SecondaryShape").shape.set_extents(SGFixed.vector2(0, 0)) # secondary hurtbox for attacks that are not disjointed
 	hitbox.get_node("MainShape").shape = SGRectangleShape2D.new()
 	hitbox.get_node("MainShape").shape.set_extents(SGFixed.vector2(0, 0)) # default hitbox size
-
-
-## Connecting signals to our menu
-#func _handle_connecting_signals() -> void:
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_setup_round")
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
 
 
 # Scale appropriate variables to fixed point numbers
@@ -296,8 +290,7 @@ func increase_meter_over_time() -> void:
 
 func _reset_round() -> void:
 	animation.play("Idle")
-	stateMachine.set_state('IDLE')
-	reset_round = false
+	
 	meterVal += armg
 	armg = 1
 	
@@ -312,6 +305,10 @@ func _reset_round() -> void:
 		facingRight = false
 		fixed_position.x = 1515 * ONE
 		fixed_position.y = 1299 * ONE
+		
+	#is_disabled = true
+	reset_round = false
+	
 	
 ######################
 # ROLLBACK FUNCTIONS #
@@ -380,6 +377,9 @@ func _save_state() -> Dictionary:
 		dash_meter_cost = dash_meter_cost,
 		reset_round = reset_round,
 		armg = armg,
+		
+		is_dead = is_dead,
+		is_disabled = is_disabled,
 
 		held = held_
 	}
@@ -447,9 +447,13 @@ func _load_state(loadState: Dictionary) -> void:
 	reset_round = loadState['reset_round']
 	armg = loadState['armg']
 	
+	is_dead = loadState['is_dead']
+	is_disabled = loadState['is_disabled']
+	
 	sync_to_physics_engine()
 	
 	MenuSignalBus.emit_update_health(health, self.name)
+	MenuSignalBus.emit_update_lives(num_lives, self.name)
 
 func _interpolate_state(old_state: Dictionary, new_state: Dictionary, player_weight: float) -> void:
 	fixed_position = old_state['fixed_position'].lerp(new_state['fixed_position'], player_weight)

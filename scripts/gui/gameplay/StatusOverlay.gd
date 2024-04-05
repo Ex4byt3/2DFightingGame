@@ -2,6 +2,10 @@ extends VBoxContainer
 
 
 @onready var heart = preload("res://scenes/gui/gameplay/Life.tscn")
+@onready var countdown_banner = preload("res://scenes/gui/gameplay/CountdownBanner.tscn")
+@onready var player_win_banner = preload("res://scenes/gui/gameplay/PlayerWinBanner.tscn")
+
+@onready var center_pane = $CenterPane
 
 @onready var p1_character_image = $Header/P1Info/CharacterImage
 @onready var p1_character_name = $Header/P1Info/HealthHeader/CharacterName
@@ -79,7 +83,13 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_max_health", "_update_max_health")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_character_image", "_update_character_image")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_character_name", "_update_character_name")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "life_lost", "_life_lost")
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "life_lost", "_life_lost")
+	
+	MatchSignalBus.combat_start.connect(_spawn_countdown_banner.bind(true))
+	MatchSignalBus.round_stop.connect(_spawn_round_stop_banners)
+	MatchSignalBus.combat_stop.connect(_spawn_victor_banner)
+	
+	
 
 
 func _init_timer() -> void:
@@ -87,13 +97,6 @@ func _init_timer() -> void:
 	match_timer.set_one_shot(true)
 	match_timer.set_wait_time(match_time)
 	match_timer.start()
-
-
-func _init_health() -> void:
-	p1_health_bar.max_value = p1_health_max 
-	p2_health_bar.max_value = p2_health_max
-	p1_health_bar.value = p1_health_max 
-	p2_health_bar.value = p2_health_max
 
 
 func _apply_match_settings(match_settings: Dictionary) -> void:
@@ -185,24 +188,18 @@ func _update_lives(num_lives: int, player_id: String) -> void:
 	match player_id:
 		"ServerPlayer": # Player 1
 			p1_num_lives = num_lives
-			var p1_num_lives_displayed = p1_lives_display.get_child_count()
-			
-			if p1_num_lives_displayed < p1_num_lives:
-				for num in range(p1_num_lives_displayed, p1_num_lives):
-					p1_lives_display.add_child(heart.instantiate())
-			elif p1_num_lives_displayed > p1_num_lives:
-				for num in range(p1_num_lives, p1_num_lives_displayed):
-					p1_lives_display.get_child(0).queue_free()
+			if p1_lives_display.get_child_count() > 0:
+				for child in p1_lives_display.get_children():
+					child.queue_free()
+			for num in range(0, p1_num_lives):
+				p1_lives_display.add_child(heart.instantiate())
 		"ClientPlayer": # Player 2
 			p2_num_lives = num_lives
-			var p2_num_lives_displayed = p2_lives_display.get_child_count()
-			
-			if p2_num_lives_displayed < p2_num_lives:
-				for num in range(p2_num_lives_displayed, p2_num_lives):
-					p2_lives_display.add_child(heart.instantiate())
-			elif p2_num_lives_displayed > p2_num_lives:
-				for num in range(p2_num_lives, p2_num_lives_displayed):
-					p2_lives_display.get_child(0).queue_free()
+			if p2_lives_display.get_child_count() > 0:
+				for child in p2_lives_display.get_children():
+					child.queue_free()
+			for num in range(0, p2_num_lives):
+				p2_lives_display.add_child(heart.instantiate())
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")
 
@@ -267,3 +264,48 @@ func _on_timeout() -> void:
 func _animate_health() -> void:
 	var tween = create_tween()
 
+
+##################################################
+# BANNER FUNCTIONS
+##################################################
+func _spawn_round_stop_banners() -> void:
+	if not MatchData.winners.is_empty():
+		_spawn_round_win_banner()
+	await get_tree().create_timer(MatchData.winner_banner_time + MatchData.banner_gap_time).timeout
+	_spawn_countdown_banner(false)
+
+
+func _spawn_round_win_banner() -> void:
+	var new_banner = player_win_banner.instantiate()
+	center_pane.add_child(new_banner)
+	new_banner.text_display.set_text(MatchData.winners.back() + " Wins")
+	await get_tree().create_timer(MatchData.winner_banner_time).timeout
+	#if banner_timer.timeout:
+	new_banner.queue_free()
+
+
+func _spawn_countdown_banner(is_combat_start: bool) -> void:
+	if is_combat_start and not NetworkGlobal.NETWORK_TYPE == NetworkGlobal.NetworkType.LOCAL:
+		await SyncManager.sync_started # wait until the peer is connected
+	
+	var new_banner = player_win_banner.instantiate()
+	center_pane.add_child(new_banner)
+	new_banner.text_display.set_text("READY")
+	await get_tree().create_timer(1).timeout
+	for second in range(MatchData.countdown_banner_time, 0, -1):
+		new_banner.text_display.set_text(str(second))
+		await get_tree().create_timer(1).timeout
+	new_banner.text_display.set_text("START")
+	await get_tree().create_timer(1).timeout
+	new_banner.queue_free()
+	MatchSignalBus.emit_banner_done()
+
+
+func _spawn_victor_banner() -> void:
+	var new_banner = player_win_banner.instantiate()
+	center_pane.add_child(new_banner)
+	if p1_num_lives > 0:
+		new_banner.text_display.set_text("ServerPlayer Wins")
+	else:
+		new_banner.text_display.set_text("ClientPlayer Wins")
+	MatchSignalBus.emit_banner_done()

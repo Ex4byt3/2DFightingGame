@@ -26,10 +26,11 @@ SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
 SyncReplay="*res://addons/godot-rollback-netcode/SyncReplay.gd"
 SteamInit="*res://scripts/networking/SteamInit.gd"
 NetworkGlobal="*res://scripts/networking/NetworkGlobal.gd"
-GameSignalBus="*res://scripts/autoloads/GameSignalBus.gd"
+MatchSignalBus="*res://scripts/autoloads/MatchSignalBus.gd"
 MenuSignalBus="*res://scripts/autoloads/MenuSignalBus.gd"
 SettingsData="*res://scripts/autoloads/SettingsData.gd"
 SaveManager="*res://scripts/autoloads/SaveManager.gd"
+MatchData="*res://scripts/autoloads/MatchData.gd"
 
 [debug]
 

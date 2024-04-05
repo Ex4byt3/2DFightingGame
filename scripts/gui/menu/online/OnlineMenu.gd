@@ -279,7 +279,7 @@ func _show_direct_connect_dialogue() -> void:
 func _start_rpc_server() -> void:
 	direct_connect_dialogue.visible = false
 	NetworkGlobal.NETWORK_TYPE = 1
-	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
+	#GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.RPC_IS_HOST = true
 	NetworkGlobal.RPC_IP = ip_entry_line.text
 	NetworkGlobal.RPC_PORT = int(port_entry_line.text)
@@ -289,7 +289,7 @@ func _start_rpc_server() -> void:
 func _start_rpc_client() -> void:
 	direct_connect_dialogue.visible = false
 	NetworkGlobal.NETWORK_TYPE = 1
-	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
+	#GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	NetworkGlobal.RPC_IS_HOST = false
 	NetworkGlobal.RPC_IP = ip_entry_line.get_text()
 	NetworkGlobal.RPC_PORT = int(port_entry_line.get_text())

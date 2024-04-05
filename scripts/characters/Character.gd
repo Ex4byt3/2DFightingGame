@@ -123,6 +123,7 @@ var meterValRate = 10000
 var max_meter = 10000
 var meter_rate = 100
 var is_dead: bool = false
+var is_disabled: bool = false
 
 # Collision booleans
 var isOnCeiling := false
@@ -143,9 +144,12 @@ func _ready():
 
 
 func _handle_connecting_signals() -> void:
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "apply_match_settings", "_apply_match_settings")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_reset_character")
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "start_round", "_start_round")
+	MenuSignalBus.apply_match_settings.connect(_apply_match_settings)
+	MatchSignalBus.setup_round.connect(_reset_character)
+	#MenuSignalBus.setup_round.connect(_reset_character)
+	#MatchSignalBus.setup_round.connect(_reset_character)
+	#MenuSignalBus.start_round.connect(_start_round)
+	#MatchSignalBus.start_combat.connect(_start_combat)
 
 
 func _init_character_data(this_img, this_name, this_max_health) -> void:
@@ -175,10 +179,8 @@ func _apply_match_settings(match_settings: Dictionary) -> void:
 # Setting up the round health
 func _reset_character() -> void:
 	health = max_health
-	print("[COMBAT] Reset " + self.name + "'s health: " + str(health))
-	
-	#MenuSignalBus.emit_update_health(health, self.name)
-	MenuSignalBus.emit_player_ready(self.name)
+	#print("[COMBAT] Reset " + self.name + "'s health: " + str(health))
+	#MenuSignalBus.emit_player_ready(self.name)
 
 
 func _network_preprocess(userInput: Dictionary) -> void:
@@ -340,7 +342,6 @@ func check_collisions() -> void:
 func take_damage(damage) -> void:
 	# TODO: can't be below 0, dying logic
 	health -= damage
-	#MenuSignalBus.emit_update_health(health, self.name)
 
 
 func apply_knockback(force: int, angle_radians: int):

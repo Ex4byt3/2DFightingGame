@@ -27,6 +27,7 @@ func _ready():
 	add_state('KNOCKDOWN')
 	add_state('QGETUP')
 	add_state('DEAD')
+	add_state('DISABLED')
 
 	# Normals
 	add_state('NEUTRAL_LIGHT')
@@ -50,7 +51,8 @@ func _ready():
 	add_state('QCF_LIGHT')
 
 	# Initial State
-	set_state('IDLE')
+	#set_state('IDLE')
+	set_state('DISABLED')
 
 func convert_inputs_to_string(inputs):
 	var inputString = ""
@@ -224,11 +226,16 @@ func transition_state(input):
 	# 	player.isOnFloor = false
 	# 	set_state('HITSTOP')
 
-	if player.health <= 0:
+
+	if player.health <= 0 and not state == 'DEAD' and not state == 'DISABLED':
 		player.is_dead = true
 		set_state('DEAD')
+	elif MatchData.player_control_disabled and not player.is_dead:
+		player.is_disabled = true
+		set_state('DISABLED')
 	elif player.hurtboxCollision.size() > 0:
 		do_hit()
+
 
 	#################
 	# State Changes #
@@ -638,18 +645,20 @@ func transition_state(input):
 			else:
 				player.frame -= 1
 		states.DEAD:
-			#player.is_dead = true
-			if player.is_dead:
-				player.num_lives -= 1
-				print("[COMBAT] " + str(player.name) + " has been KO'd!")
-				MenuSignalBus.emit_round_over()
-				MenuSignalBus.emit_update_lives(player.num_lives, player.name)
-				print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
+			if player.is_dead and not player.is_disabled:
 				player.armg = 3
-				#player.health = player.max_health
+				player.num_lives -= 1
+				#print("[COMBAT] " + str(player.name) + " has been KO'd!")
+				#print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
 				player.is_dead = false
-			if player.health == player.max_health:
-				player.animation.play("Idle")
+				MatchData._update_winners(player.name)
+				MatchSignalBus.emit_round_stop()
+		states.DISABLED:
+			player.velocity.x = 0
+			player.animation.play("Idle")
+			if not MatchData.player_control_disabled:
+				player.is_disabled = false
+				#print("[SYSTEM][COMBAT] " + player.name +"'s controls enabled")
 				set_state('IDLE')
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
@@ -908,7 +917,6 @@ func start_dash(input_vector):
 			player.animation.play(player.dash_animaiton_map.get([input_vector.x, input_vector.y], "DashR"))
 			set_state('DASH')
 			print("Dash initiated. Current meter value:", player.meterVal)
-		
 
 func jump_check() -> bool: # might be redundant
 	# this if statement might be fucked but I can't tell
@@ -975,8 +983,6 @@ func do_hit():
 		player.frame = 0
 		player.hitstunMultiplier += onHit["gain"]
 		player.hitstop = onHit["hitstop"]
-		if player.health <= 0:
-			player.is_dead = true
 		if player.velocity.y < 0:
 			player.animation.play("AirHitstun")
 		else:

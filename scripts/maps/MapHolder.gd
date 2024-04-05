@@ -40,7 +40,9 @@ func _ready():
 
 
 func _handle_connecting_signals() -> void:
-	MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_reset_character_position")
+	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "setup_round", "_reset_character_position")
+	#MenuSignalBus.setup_round.connect(_reset_character_position)
+	MatchSignalBus.setup_round.connect(_reset_character_position)
 
 
 # The selected map is loaded, instanced then added as a child
@@ -102,7 +104,7 @@ func _add_client_character() -> void:
 
 
 func _reset_character_position() -> void:
-	print("[COMBAT] Reseting character positions...")
+	#print("[COMBAT] Reseting character positions...")
 	host_character.reset_round = true
 	client_character.reset_round = true
 

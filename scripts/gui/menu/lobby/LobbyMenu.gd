@@ -162,7 +162,7 @@ func _update_ongoing_matches() -> void:
 
 func _host_start() -> void:
 	NetworkGlobal.NETWORK_TYPE = 2
-	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
+	#GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	
 	NetworkGlobal.STEAM_IS_HOST = true
 	print("[STEAM] Started match as server")
@@ -175,7 +175,7 @@ func _host_start() -> void:
 func _client_start(sender_id: int) -> void:
 	var host_steam_id: int = sender_id
 	NetworkGlobal.NETWORK_TYPE = 2
-	GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
+	#GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	
 	NetworkGlobal.STEAM_IS_HOST = false
 	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
