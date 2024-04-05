@@ -1,19 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://bumvir3k0bi4r"]
+[gd_scene load_steps=10 format=3 uid="uid://bumvir3k0bi4r"]
 
 [ext_resource type="Script" path="res://scripts/gui/menu/main/MainMenu.gd" id="1_d2sm7"]
-[ext_resource type="Texture2D" uid="uid://03ubnt3gru1w" path="res://assets/menu/images/ScifiBackground.png" id="2_gs8w3"]
+[ext_resource type="Texture2D" uid="uid://bhefykhrhsh5a" path="res://assets/menu/images/roboguy.png" id="2_mp47n"]
 [ext_resource type="PackedScene" uid="uid://chacq67vdf2pc" path="res://scenes/gui/menu/main/SlinkyButton.tscn" id="3_1qv3g"]
 [ext_resource type="Texture2D" uid="uid://b8fmjjc38121v" path="res://assets/menu/icons/active_online_icon.png" id="4_30yut"]
 [ext_resource type="Texture2D" uid="uid://cmdy87f36pdx1" path="res://assets/menu/icons/active_local_icon.png" id="5_uy2p4"]
 [ext_resource type="Texture2D" uid="uid://chwxudi850r5r" path="res://assets/menu/icons/active_training_icon.png" id="6_jxkhi"]
 [ext_resource type="Texture2D" uid="uid://bhlxdbmqg7k60" path="res://assets/menu/icons/active_records_icon.png" id="7_cc3v6"]
 [ext_resource type="AudioStream" uid="uid://bvj5ubonk2gs8" path="res://assets/sound/music/I've Got Your Back!.ogg" id="8_k534x"]
-
-[sub_resource type="Gradient" id="1"]
-colors = PackedColorArray(0, 0, 0, 0.392157, 0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="2"]
-gradient = SubResource("1")
 
 [sub_resource type="StyleBoxFlat" id="3"]
 bg_color = Color(0, 0, 0, 0.784314)
@@ -37,31 +31,24 @@ anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="MainBackground" type="TextureRect" parent="MenuBackground"]
-show_behind_parent = true
-layout_mode = 0
+[node name="MainPane" type="Control" parent="."]
+layout_mode = 1
+anchor_top = 0.075
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="MainBackground" type="TextureRect" parent="MainPane"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 1080.0
+grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource("2_gs8w3")
-expand_mode = 1
-stretch_mode = 1
-
-[node name="MainPane" type="Control" parent="."]
-anchors_preset = 0
-anchor_top = 0.1
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="AccentGradient" type="TextureRect" parent="MainPane"]
-show_behind_parent = true
-layout_mode = 0
-anchor_right = 0.09
-anchor_bottom = 1.0
-texture = SubResource("2")
-expand_mode = 1
-stretch_mode = 1
+texture = ExtResource("2_mp47n")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="MenuButtons" type="Control" parent="MainPane"]
 anchors_preset = 0
@@ -94,6 +81,7 @@ icon_texture = ExtResource("5_uy2p4")
 button_text = "LOCAL"
 
 [node name="TrainingButton" parent="MainPane/MenuButtons" instance=ExtResource("3_1qv3g")]
+visible = false
 offset_top = 168.0
 offset_right = 400.0
 offset_bottom = 248.0
@@ -106,6 +94,7 @@ icon_texture = ExtResource("6_jxkhi")
 button_text = "TRAINING"
 
 [node name="RecordsButton" parent="MainPane/MenuButtons" instance=ExtResource("3_1qv3g")]
+visible = false
 offset_top = 252.0
 offset_right = 400.0
 offset_bottom = 332.0
