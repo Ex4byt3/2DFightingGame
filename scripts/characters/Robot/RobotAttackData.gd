@@ -424,7 +424,7 @@ const attacks = {
 	"crouching_forward_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
-				{"x": 50, "y": - 10, "width": 100, "height": 30, "ticks": 20},
+				{"x": 75, "y": -100, "width": 80, "height": 30, "ticks": 20},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3}
 			],
 		"duration": 37,
@@ -463,7 +463,7 @@ const attacks = {
 	"air_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6},
-				{"x": 60, "y": - 40, "width": 70, "height": 70, "ticks": 3},
+				{"x": 110, "y": -35, "width": 60, "height": 40, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
 		"duration": 19,
@@ -510,7 +510,7 @@ const attacks = {
 	"back_air_light": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
-				{"x": - 70, "y": - 20, "width": 75, "height": 65, "ticks": 3},
+				{"x": -90, "y": -20, "width": 75, "height": 20, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11}
 			],
 		"duration": 22,
@@ -557,7 +557,7 @@ const attacks = {
 	"air_medium": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 13},
-				{"x": 60, "y": 10, "width": 115, "height": 60, "ticks": 4},
+				{"x": 95, "y": -60, "width": 80, "height": 40, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 17}
 			],
 		"duration": 34,
@@ -643,7 +643,7 @@ const attacks = {
 	"air_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
-				{"x": 60, "y": - 10, "width": 100, "height": 140, "ticks": 4},
+				{"x": 100, "y": -80, "width": 230, "height": 250, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
 		"duration": 40,

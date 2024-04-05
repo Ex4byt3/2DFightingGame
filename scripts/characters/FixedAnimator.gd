@@ -32,7 +32,7 @@ func _game_process() -> void:
 				counter += 1
 				sprite.frame = counter
 				# print("frame: " + str(counter))
-				# TODO: animate other advnaced properties
+				# TODO: animate other advanced properties
 			else:
 				tick += 1
 
@@ -44,36 +44,6 @@ func _game_process() -> void:
 					playing = false
 					if animationsQueue:
 						play(animationsQueue.pop_front())
-
-
-		# if current["animation"]["simple"]:
-		# 	if tick >= current["animation"]["frameRate"]:
-		# 		if current["animation"]["reverse"] and sprite.frame > current["animation"]["endFrame"]:
-		# 				sprite.frame -= 1
-		# 		elif sprite.frame < current["animation"]["endFrame"]:
-		# 				sprite.frame += 1
-		# 		tick = 0
-		# 		
-		# 		# TODO: hurtbox updates			
-		# 	else:
-		# 		tick += 1
-		# elif tick >= current["frames"][counter]["frames"]:
-		# 	if counter > len(current["frames"]) - 1:
-		# 		if current["animation"]["loop"]:
-		# 			counter = 0
-		# 		else:
-		# 			playing = false
-		# 			if animationsQueue:
-		# 				play(animationsQueue.pop_front())
-		# 	else:
-		# 		for property in current["frames"][counter]["sprite"]:
-		# 			sprite.set(property, current["frames"][counter]["sprite"][property])
-		# 		counter += 1
-		# 	tick = 0
-		# else:
-		# 	tick += 1
-	
-		# sprite.frame = frame
 		update_hurtbox()
 
 func update_hurtbox() -> void:
@@ -95,7 +65,6 @@ func play(animationName: String) -> void:
 			counter = 0
 			tick = 0
 			sprite.play(animationName)
-			# sprite.frame = 0
 			playing = true
 	else:
 		pass
@@ -143,6 +112,4 @@ func _load_state(loadState: Dictionary) -> void:
 	hurtBox.shape.extents.y = loadState["hurtbox"]["shape"]["extents_y"]
 	hurtBox.fixed_position.x = loadState["hurtbox"]["fixed_position_x"]
 	hurtBox.fixed_position.y = loadState["hurtbox"]["fixed_position_y"]
-
-	#sprite.set_frame(tick / animations[current]["animation"]["framerate"] % animations[current]["animation"]["frameCount"])
 

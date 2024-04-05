@@ -552,12 +552,42 @@ extends FixedAnimator
 		},
 		"frames": [16, 4, 22]
 	},
-	# crouching_forward_medium
-	# air_light
-	# back_air_light
-	# air_medium
+	"CrouchingForwardMedium": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [14, 20, 3]
+	},
+	"AirLight": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [6, 3, 10]
+	},
+	"BackAirLight": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [8, 3, 11]
+	},
+	"AirMedium": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [13, 4, 17]
+	},
 	# back_air_medium
-	# air_heavy
+	"AirHeavy": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [16, 4, 20]
+	},
 	# back_air_heavy
 	# air_impact
 	# back_air_impact

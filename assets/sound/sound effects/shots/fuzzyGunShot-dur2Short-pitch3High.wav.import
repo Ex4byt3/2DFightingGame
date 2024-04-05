@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://du8qjb33sholv"
+path="res://.godot/imported/fuzzyGunShot-dur2Short-pitch3High.wav-8ace2acf01d17418d212df64900a8691.sample"
+
+[deps]
+
+source_file="res://assets/sound/sound effects/shots/fuzzyGunShot-dur2Short-pitch3High.wav"
+dest_files=["res://.godot/imported/fuzzyGunShot-dur2Short-pitch3High.wav-8ace2acf01d17418d212df64900a8691.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

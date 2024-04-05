@@ -6,6 +6,7 @@ extends Character
 @onready var wallR = get_parent().get_node("WallStaticBody_R")
 @onready var wallL = get_parent().get_node("WallStaticBody_L")
 @onready var ceiling = get_parent().get_node("CeilingStaticBody")
+@onready var opponet = get_parent().get_node("ClientPlayer") if self.name == "ServerPlayer" else get_parent().get_node("ServerPlayer")
 
 # SGFixed numbers
 var ONE = SGFixed.ONE
@@ -31,6 +32,7 @@ var crawlAcceleration = 1
 var sprintSpeed = 20
 var sprintAcceleration = 4
 var sprintInputLeinency = 6
+var advancingLowSpeed = 12
 
 var slideJumpBoost = 0 # set in ready
 
@@ -83,7 +85,9 @@ var martial_hero_max_health = 10000
 
 # Sound Effect Preloads
 const sounds := {
-	hit = preload("res://assets/sound/sound effects/roblox oof.mp3"),
+	hit0 = preload("res://assets/sound/sound effects/shots/fuzzyGunShot-dur2Short-pitch1Low.wav"),
+	hit1 = preload("res://assets/sound/sound effects/shots/fuzzyGunShot-dur2Short-pitch2Medium.wav"),
+	hit2 = preload("res://assets/sound/sound effects/shots/fuzzyGunShot-dur2Short-pitch3High.wav"),
 	hitI = {
 		# The following is an example of what settings can be set for the audio:
 		# World position to use positional audio.
@@ -95,10 +99,10 @@ const sounds := {
 		# Change the audio bus (default = 'Sound').
 		#bus = 'Music',
 	},
-	neutral_heavy = preload("res://assets/sound/sound effects/bonk.mp3"),
-	neutral_heavyI = {},
-	neutral_impact = preload("res://assets/sound/sound effects/Vine boom.mp3"),
-	neutral_impactI = {},
+	# neutral_heavy = preload("res://assets/sound/sound effects/shots/laserShot-dur3Medium-pitch1Low.wav"), # TODO: play at the wrong time, at start instead of at active frames
+	# neutral_heavyI = {},
+	# neutral_impact = preload("res://assets/sound/sound effects/shots/laserShot-dur3Medium-pitch1Low.wav"),
+	# neutral_impactI = {},
 }
 
 # Calling all onready functions
@@ -142,6 +146,7 @@ func _scale_to_fixed() -> void:
 	sprintSpeed *= ONE
 	sprintAcceleration *= ONE
 	# sprintInputLeinency = sprintInputLeinency
+	advancingLowSpeed *= ONE
 
 	slideJumpBoost *= ONE
 

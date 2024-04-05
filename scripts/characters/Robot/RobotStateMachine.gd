@@ -149,11 +149,12 @@ func forward_attack(attack: int) -> String:
 
 func air_attack(attack: int) -> String:
 	if attack != -1 and !player.pressed & attack:
-		if player.input_vector.x > 0 == player.facingRight:
-			player.pressed += attack
+		player.pressed += attack
+		if player.input_vector.x == 0:
+			return "air_" + player.ReverseButtons[attack]
+		elif player.input_vector.x > 0 == player.facingRight:
 			return "air_" + player.ReverseButtons[attack]
 		else:
-			player.pressed += attack
 			return "back_air_" + player.ReverseButtons[attack]
 	return ""
 
@@ -705,7 +706,10 @@ func transition_state(input):
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_FORWARD_MEDIUM:
-			player.velocity.x = 0
+			if player.hitbox.active:
+				player.velocity.x = player.advancingLowSpeed if player.facingRight else -player.advancingLowSpeed
+			else:
+				player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
 				do_hitstop_buffer()
 			elif player.frame == -1:
@@ -859,16 +863,10 @@ func start_jump():
 		set_state('JUMPSQUAT')
 
 func update_pressed(input: int = -1) -> void:
-	# player.pressed = player.inputBufferInt & (~player.pressed | player.inputBufferInt)
-	# player.pressed = (player.pressed & player.inputBufferInt) | (~player.pressed & ~player.inputBufferInt)
 	if input == -1:
-		player.pressed = player.pressed & player.inputBuffer
+		player.pressed &= player.inputBuffer
 	else:
-		player.pressed = player.pressed & input
-	# if player.pressed & player.Buttons['light'] and not player.inputBufferInt & player.Buttons['light']:
-	# 	player.pressed -= player.Buttons['light']
-	# if player.name == "ServerPlayer":
-	# 	print(str(player.pressed) + " " + str(player.inputInt) + " " + str(player.inputBufferInt))
+		player.pressed &= input
 
 func start_dash(input_vector):
 	if !player.pressed & player.Buttons.dash:
@@ -940,14 +938,19 @@ func get_stun_frames(hitboxes: Array, advantage: int) -> int:
 	return moveFrames + advantage
 
 func do_hit():
-	SyncManager.play_sound(str(get_path()) + ":hit", player.sounds["hit"], player.sounds["hitI"])
+	var sxfIdx : int = player.currentGameFrame % 3
+	var sfx : String = "hit" + str(sxfIdx)
+	SyncManager.play_sound(str(get_path()) + ":hit", player.sounds[sfx], player.sounds["hitI"])
 	# TODO: meter gain
 	if player.blockMask & player.hurtboxCollision["onBlock"]["mask"] == player.hurtboxCollision["onBlock"]["mask"]: # if blocked
 		# TODO: chip damage
 		var onBlock = player.hurtboxCollision["onBlock"]
 		player.frame = 0
 		player.blockstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onBlock["adv"])
-		player.apply_knockback(onBlock["knockback"]["force"], onBlock["knockback"]["angle"])
+		if player.opponet.facingRight:
+			player.apply_knockback(onBlock["knockback"]["force"], onBlock["knockback"]["angle"])
+		else:
+			player.apply_knockback(onBlock["knockback"]["force"], SGFixed.PI - onBlock["knockback"]["angle"])
 		player.hitstop = onBlock["blockstop"]
 		if player.isOnFloor and player.velocity.y < 0: # if blocked on the floor you can't be hit airborne
 			player.velocity.y = 0
@@ -984,9 +987,15 @@ func do_knockback(knockback: Dictionary):
 	else:
 		player.knockbackMultiplier = player.knockbackMultiplier + knockback["gain"]
 	if knockback["static"]:
-		player.apply_knockback(knockback["force"], knockback["angle"])
+		if player.opponet.facingRight:
+			player.apply_knockback(knockback["force"], knockback["angle"])
+		else:
+			player.apply_knockback(knockback["force"], SGFixed.PI - knockback["angle"])
 	else:
-		player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), knockback["angle"])
+		if player.opponet.facingRight:
+			player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), knockback["angle"])
+		else:
+			player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), SGFixed.PI - knockback["angle"])
 
 # Throw attack
 func do_attack(attack_name: String):
