@@ -58,6 +58,7 @@ var meter_frame_counter = 0
 var meter_frame_rate = 60
 var totalGameFrames = 10800
 var currentGameFrame = 0
+var armg = 1
 # TODO: other forms of meter gain
 
 # Character attack attributes
@@ -70,6 +71,8 @@ var changedVelocity = false
 var last_dash_on_floor = false
 var dash_meter_cost = 1
 
+var reset_round = false
+
 # Valid motion inputs for the character, listed in priority
 const motion_inputs = {
 	623: 'DP',
@@ -79,7 +82,7 @@ const motion_inputs = {
 }
 
 # Local character data
-var martial_hero_img = preload("res://assets/menu/images/ramlethal.jpg")
+var martial_hero_img = preload("res://assets/menu/images/robot.png")
 var martial_hero_name = "Martial Hero"
 var martial_hero_max_health = 10000
 
@@ -225,10 +228,13 @@ func get_input_vector():
 	return vector
 
 func _game_process(input: int) -> int:
+	# reset round stuff
 	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
 	MenuSignalBus.emit_update_meter_val(meterVal, self.name)
 	currentGameFrame += 1
-	increase_meter_over_time()
+	
+	if meterVal < 9:
+		increase_meter_over_time()
 	
 	# Transition state and calculate velocity off of this logic
 	# input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))\
@@ -265,6 +271,10 @@ func _game_process(input: int) -> int:
 		meterCharge -= meterValRate
 
 	hitstopBuffer = 0 # hitstop buffer only lives for 1 game process
+	
+	if reset_round:
+		_reset_round()
+	
 	return hitstop
 
 func increase_meter_over_time() -> void:
@@ -282,7 +292,25 @@ func increase_meter_over_time() -> void:
 	else:
 		meter_frame_counter += 1
 
-
+func _reset_round() -> void:
+	animation.play("Idle")
+	stateMachine.set_state('IDLE')
+	reset_round = false
+	meterVal += armg
+	armg = 1
+	
+	if meterVal >= 9:
+		meterCharge = 0
+	
+	if self.name == "ServerPlayer":
+		facingRight = true
+		fixed_position.x = 988 * ONE
+		fixed_position.y = 1299 * ONE
+	else:
+		facingRight = false
+		fixed_position.x = 1515 * ONE
+		fixed_position.y = 1299 * ONE
+	
 ######################
 # ROLLBACK FUNCTIONS #
 ######################
@@ -348,6 +376,8 @@ func _save_state() -> Dictionary:
 		
 		last_dash_on_floor = last_dash_on_floor,
 		dash_meter_cost = dash_meter_cost,
+		reset_round = reset_round,
+		armg = armg,
 
 		held = held_
 	}
@@ -412,6 +442,8 @@ func _load_state(loadState: Dictionary) -> void:
 	hitstopBuffer = loadState['hitstopBuffer']
 	last_dash_on_floor = loadState['last_dash_on_floor']
 	dash_meter_cost = loadState['dash_meter_cost']
+	reset_round = loadState['reset_round']
+	armg = loadState['armg']
 	
 	sync_to_physics_engine()
 	

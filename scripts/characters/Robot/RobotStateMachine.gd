@@ -645,9 +645,11 @@ func transition_state(input):
 				MenuSignalBus.emit_round_over()
 				MenuSignalBus.emit_update_lives(player.num_lives, player.name)
 				print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
+				player.armg = 3
 				#player.health = player.max_health
 				player.is_dead = false
 			if player.health == player.max_health:
+				player.animation.play("Idle")
 				set_state('IDLE')
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
