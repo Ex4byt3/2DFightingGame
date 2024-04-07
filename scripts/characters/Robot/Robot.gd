@@ -289,7 +289,6 @@ func increase_meter_over_time() -> void:
 		meter_frame_counter += 1
 
 func _meter_func() -> void:
-	print(meterCharge)
 	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
 	MenuSignalBus.emit_update_meter_val(meterVal, self.name)
 	currentGameFrame += 1
