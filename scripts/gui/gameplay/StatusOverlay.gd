@@ -151,7 +151,7 @@ func _update_health(health_val: int, player_id: String) -> void:
 			p1_health_bar.value = p1_health_val
 			p1_current_health.set_text(str(p1_health_val) + "/" + str(p1_health_max))
 			if not p1_health_val == p1_health_old:
-				print("[COMBAT] Animating server health")
+				#print ("[COMBAT] Animating server health")
 				_animate_health(p1_combo_bar, health_val)
 		"ClientPlayer": # Player 2
 			p2_health_old = p2_health_val
@@ -159,7 +159,7 @@ func _update_health(health_val: int, player_id: String) -> void:
 			p2_health_bar.value = p2_health_val
 			p2_current_health.set_text(str(p2_health_val) + "/" + str(p2_health_max))
 			if not p2_health_val == p2_health_old:
-				print("[COMBAT] Animating client health")
+				#print("[COMBAT] Animating client health")
 				_animate_health(p2_combo_bar, health_val)
 		_: # Player does not exist
 			print("[SYSTEM] ERROR: player does not exist")

@@ -34,8 +34,8 @@ func animate_process() -> void:
 	clientPlayer.get_node("AnimatedSprite2D/FixedAnimationPlayer")._game_process()
 
 func check_collisions() -> void:
-	serverPlayer.check_collisions()
-	clientPlayer.check_collisions()
+	clientPlayer.hit_landed = serverPlayer.check_collisions()
+	serverPlayer.hit_landed = clientPlayer.check_collisions()
 
 func hitbox_game_process() -> void:
 	serverHitbox._game_process()

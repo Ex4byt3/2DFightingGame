@@ -330,15 +330,17 @@ func decrease_meter(amount: int) -> void:
 			meterCharge = 0
 	#print("Meter decreased by ", amount, ". New meter value: ", meter)
 
-func check_collisions() -> void:
+func check_collisions() -> int:
+	var isHit = 0
 	hurtboxCollision = {}
 	pushboxCollision = {}
 	overlappingHurtbox = hurtBox.get_overlapping_areas() # should only ever return 1 hitbox so we always use index 0
-	if len(overlappingHurtbox) > 0: 
+	if len(overlappingHurtbox) > 0:
 		if !overlappingHurtbox[0].used:
 			# TODO: other hitbox properties
 			overlappingHurtbox[0].used = true
 			hurtboxCollision = overlappingHurtbox[0].properties
+			isHit = hurtboxCollision["onHit"]["damage"]
 	overlappingPushbox = pushBox.get_overlapping_areas()
 	if len(overlappingPushbox) > 0:
 		var pushDirection = (self.get_global_fixed_position().sub(overlappingPushbox[0].get_global_fixed_position())).normalized()
@@ -346,6 +348,8 @@ func check_collisions() -> void:
 		pushVector.y = 0
 	else:
 		pushVector = SGFixed.vector2(0, 0)
+	
+	return isHit
 
 # TODO: implement this function
 func take_damage(damage) -> void:

@@ -6,7 +6,7 @@ extends Character
 @onready var wallR = get_parent().get_node("WallStaticBody_R")
 @onready var wallL = get_parent().get_node("WallStaticBody_L")
 @onready var ceiling = get_parent().get_node("CeilingStaticBody")
-@onready var opponet = get_parent().get_node("ClientPlayer") if self.name == "ServerPlayer" else get_parent().get_node("ServerPlayer")
+@onready var opponent = get_parent().get_node("ClientPlayer") if self.name == "ServerPlayer" else get_parent().get_node("ServerPlayer")
 
 # SGFixed numbers
 var ONE = SGFixed.ONE
@@ -53,7 +53,7 @@ var maxFallSpeed = 20
 var prevVelocity = SGFixed.vector2(0, 0)
 
 # Character meter variables
-var baseMeterRate = 3000
+var baseMeterRate = 300
 var meter_frame_counter = 0 
 var meter_frame_rate = 60
 var totalGameFrames = 10800
@@ -72,6 +72,7 @@ var last_dash_on_floor = false
 var dash_meter_cost = 1
 
 var reset_round = false
+var hit_landed = 0
 
 # Valid motion inputs for the character, listed in priority
 const motion_inputs = {
@@ -124,9 +125,9 @@ func _ready():
 	hitbox.get_node("MainShape").shape = SGRectangleShape2D.new()
 	hitbox.get_node("MainShape").shape.set_extents(SGFixed.vector2(0, 0)) # default hitbox size
 	if self.name == "ServerPlayer":
-		opponet = get_parent().get_node("ClientPlayer")
+		opponent = get_parent().get_node("ClientPlayer")
 	else:
-		opponet = get_parent().get_node("ServerPlayer")
+		opponent = get_parent().get_node("ServerPlayer")
 	
 
 # Scale appropriate variables to fixed point numbers
@@ -228,17 +229,14 @@ func get_input_vector():
 	return vector
 
 func _game_process(input: int) -> int:
-	if self.name == "ServerPlayer":
-		opponet = get_parent().get_node("ClientPlayer")
-	else:
-		opponet = get_parent().get_node("ServerPlayer")
-	# reset round stuff
-	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
-	MenuSignalBus.emit_update_meter_val(meterVal, self.name)
-	currentGameFrame += 1
 	
-	if meterVal < 9:
-		increase_meter_over_time()
+	if self.name == "ServerPlayer":
+		opponent = get_parent().get_node("ClientPlayer")
+	else:
+		opponent = get_parent().get_node("ServerPlayer")
+	
+	# Deal with meter
+	_meter_func()
 	
 	# Transition state and calculate velocity off of this logic
 	# input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))\
@@ -246,40 +244,34 @@ func _game_process(input: int) -> int:
 	stateMachine.transition_state(input)
 	
 	# Update position based off of velocity
+	# Also update collision values
 	wallBounceVelocity.x = velocity.x
 	wallBounceVelocity.y = velocity.y
 	move_and_slide()
-	lastSlideCollision = get_last_slide_collision()
-	
-	if lastSlideCollision != null:
-		if lastSlideCollision.get_collider() == wallR:
-			isOnWallR = true
-			isOnWallL = false
-		elif lastSlideCollision.get_collider() == wallL:
-			isOnWallL = true
-			isOnWallR = false
-		else:
-			isOnWallR = false
-			isOnWallL = false
-			changedVelocity = false
-	else:
-		isOnWallR = false
-		isOnWallL = false
-		changedVelocity = false
+	_slide_collision()
 	
 	# Update collision booleans, does not work if called before move_and_slide, works if called after though
 	isOnFloor = is_on_floor()
 	isOnCeiling = is_on_ceiling()
-	while meterCharge >= meterValRate:
-		meterVal += 1
-		meterCharge -= meterValRate
-
 	hitstopBuffer = 0 # hitstop buffer only lives for 1 game process
 	
+	# Resetting round variables
 	if reset_round:
 		_reset_round()
 	
 	return hitstop
+
+func _slide_collision() -> void:
+	lastSlideCollision = get_last_slide_collision()
+	isOnWallR = false
+	isOnWallL = false
+	changedVelocity = false
+	
+	if lastSlideCollision != null:
+		if lastSlideCollision.get_collider() == wallR:
+			isOnWallR = true
+		elif lastSlideCollision.get_collider() == wallL:
+			isOnWallL = true
 
 func increase_meter_over_time() -> void:
 	#var time_multiplier = 1.0 + (1.0 - current_time / total_game_time)
@@ -295,6 +287,23 @@ func increase_meter_over_time() -> void:
 		#print("Meter increased over time", adjustedMeterRate)
 	else:
 		meter_frame_counter += 1
+
+func _meter_func() -> void:
+	print(meterCharge)
+	MenuSignalBus.emit_update_meter_charge(meterCharge, self.name)
+	MenuSignalBus.emit_update_meter_val(meterVal, self.name)
+	currentGameFrame += 1
+	
+	if meterVal < 9:
+		increase_meter_over_time()
+		if hit_landed > 0:
+			increase_meter(hit_landed * 2)
+	if hit_landed > 0:
+			hit_landed = 0
+	
+	while meterCharge >= meterValRate:
+		meterVal += 1
+		meterCharge -= meterValRate
 
 func _reset_round() -> void:
 	animation.play("Idle")
@@ -389,7 +398,8 @@ func _save_state() -> Dictionary:
 		is_dead = is_dead,
 		is_disabled = is_disabled,
 
-		held = held_
+		held = held_,
+		hit_landed = hit_landed,
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -457,6 +467,7 @@ func _load_state(loadState: Dictionary) -> void:
 	
 	is_dead = loadState['is_dead']
 	is_disabled = loadState['is_disabled']
+	hit_landed = loadState['hit_landed']
 	
 	sync_to_physics_engine()
 	

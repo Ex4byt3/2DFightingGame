@@ -892,12 +892,12 @@ func start_dash(input_vector):
 		if player.isOnFloor:
 			if not player.last_dash_on_floor:
 				player.dash_meter_cost = 1
-				print("Player touched the floor. Dash meter cost reset to:", player.dash_meter_cost)
+				#print("Player touched the floor. Dash meter cost reset to:", player.dash_meter_cost)
 			player.last_dash_on_floor = true
 		else:
 			if player.last_dash_on_floor:
 				player.dash_meter_cost += 1
-				print("Player has not touched the floor since last dash. Dash meter cost increased to:", player.dash_meter_cost)
+				#print("Player has not touched the floor since last dash. Dash meter cost increased to:", player.dash_meter_cost)
 			player.last_dash_on_floor = false
 
 		# Transition to the DASH state
@@ -908,7 +908,7 @@ func start_dash(input_vector):
 			player.velocity.y = 0
 			player.animation.play(player.dash_animaiton_map.get([input_vector.x, input_vector.y], "DashR"))
 			set_state('DASH')
-			print("Dash initiated. Current meter value:", player.meterVal)
+			#print("Dash initiated. Current meter value:", player.meterVal)
 
 func jump_check() -> bool: # might be redundant
 	# this if statement might be fucked but I can't tell
@@ -949,7 +949,7 @@ func do_hit():
 		var onBlock = player.hurtboxCollision["onBlock"]
 		player.frame = 0
 		player.blockstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onBlock["adv"])
-		if player.opponet.facingRight:
+		if player.opponent.facingRight:
 			player.apply_knockback(onBlock["knockback"]["force"], onBlock["knockback"]["angle"])
 		else:
 			player.apply_knockback(onBlock["knockback"]["force"], SGFixed.PI - onBlock["knockback"]["angle"])
@@ -987,12 +987,12 @@ func do_knockback(knockback: Dictionary): # TODO: static flag does not work
 	else:
 		player.knockbackMultiplier = player.knockbackMultiplier + knockback["gain"]
 	if knockback["static"]:
-		if player.opponet.facingRight:
+		if player.opponent.facingRight:
 			player.apply_knockback(knockback["force"], knockback["angle"])
 		else:
 			player.apply_knockback(knockback["force"], SGFixed.PI - knockback["angle"])
 	else:
-		if player.opponet.facingRight:
+		if player.opponent.facingRight:
 			player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), knockback["angle"])
 		else:
 			player.apply_knockback(SGFixed.mul(knockback["force"], player.knockbackMultiplier), SGFixed.PI - knockback["angle"])

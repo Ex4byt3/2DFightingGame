@@ -2,7 +2,7 @@ extends SGArea2D
 @onready var collisionShape = $MainShape
 @onready var map = get_parent().get_parent()
 @onready var player = get_parent()# Name of attacking player (client/server)
-@onready var opponet = map.get_node("ClientPlayer" if player.name == "ServerPlayer" else "ClientPlayer") # Name of attacked player (client/server)
+@onready var opponent = map.get_node("ClientPlayer" if player.name == "ServerPlayer" else "ClientPlayer") # Name of attacked player (client/server)
 var properties = {} # Properties of the hitbox (damage, knockback, etc.)
 var used = false # If the hitbox is used
 var hitboxes = [] # The shapes of our hitbox over time (frames)
