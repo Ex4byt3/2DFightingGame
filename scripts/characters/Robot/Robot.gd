@@ -199,33 +199,10 @@ func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: i
 
 func get_input_vector():
 	var vector = SGFixed.vector2(0, 0)
-	match held[0]: # the currently held direction
-		1:
-			vector.x = -1
-			vector.y = -1
-		2:
-			vector.x = 0
-			vector.y = -1
-		3:
-			vector.x = 1
-			vector.y = -1
-		4:
-			vector.x = -1
-			vector.y = 0
-		5:
-			pass
-		6:
-			vector.x = 1
-			vector.y = 0
-		7:
-			vector.x = -1
-			vector.y = 1
-		8:
-			vector.x = 0
-			vector.y = 1
-		9:
-			vector.x = 1
-			vector.y = 1
+	vector.y = vector.y + 1 if input & Buttons.up else vector.y
+	vector.y = vector.y - 1 if input & Buttons.down else vector.y
+	vector.x = vector.x - 1 if input & Buttons.left else vector.x
+	vector.x = vector.x + 1 if input & Buttons.right else vector.x
 	return vector
 
 func _game_process(input: int) -> int:
@@ -336,9 +313,9 @@ func _save_state() -> Dictionary:
 	var input_buffer_array = []
 	for item in inputBufferArray:
 		input_buffer_array.append(item)
-	var held_ = []
-	for item in held:
-		held_.append(item)
+	# var held_ = []
+	# for item in held:
+	# 	held_.append(item)
 	return {
 		input = input,
 		inputBuffer = inputBuffer,
@@ -397,7 +374,7 @@ func _save_state() -> Dictionary:
 		is_dead = is_dead,
 		is_disabled = is_disabled,
 
-		held = held_,
+		# held = held_,
 		hit_landed = hit_landed,
 	}
 
@@ -408,9 +385,9 @@ func _load_state(loadState: Dictionary) -> void:
 	bufferIdx = loadState['bufferIdx']
 	for item in loadState['inputBufferArray']:
 		inputBufferArray.append(item)
-	held = []
-	for item in loadState['held']:
-		held.append(item)
+	# held = []
+	# for item in loadState['held']:
+	# 	held.append(item)
 	stateMachine.state = loadState['playerState']
 	controlBuffer = []
 	for item in loadState['controlBuffer']:

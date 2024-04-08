@@ -6,6 +6,10 @@ class_name Character
 # Constants
 enum Buttons {
 	# directions are their numpad notation in the first 4 bits (& 15)
+	up = 1 << 0,
+	down = 1 << 1,
+	left = 1 << 2,
+	right = 1 << 3,
 	light = 1 << 4,
 	medium = 1 << 5,
 	heavy = 1 << 6,
@@ -16,6 +20,10 @@ enum Buttons {
 	jump = 1 << 11
 }
 const ReverseButtons = {
+	1: "up",
+	2: "down",
+	4: "left",
+	8: "right",
 	16: "light",
 	32: "medium",
 	64: "heavy",
@@ -25,18 +33,6 @@ const ReverseButtons = {
 	1024: "sprint",
 	2048: "jump"
 }
-const ButtonsIndex = {
-	"light": 2,
-	"medium": 3,
-	"heavy": 4,
-	"impact": 5,
-	"dash": 6,
-	"shield": 7,
-	"sprint": 8,
-	"jump": 9
-}
-
-var held := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 # For our debug overlay
 const direction_mapping = {  # Numpad Notation:
@@ -139,14 +135,16 @@ var inputBuffer : int = 0
 var attackDuration = 0 # How long the attack lasts
 var bufferIdx := 0
 
-# wip motion inputs
-const MotionInputs = {
-	1 >> 0: "QCF"
-}
+# var validNextInput := [] # List of valid inputs that can be pressed next
+# var motionInput := 0
+# var motionInputDuration := 0
 
-var validNextInput := [] # List of valid inputs that can be pressed next
-var motionInput := 0
-var motionInputDuration := 0
+var dirPress := 0
+var dirRelease := 0
+var dirHold := 0
+var btnPress := 0
+var btnRelease := 0
+var btnHold := 0
 
 func _ready():
 	_handle_connecting_signals()
@@ -198,25 +196,6 @@ func _reset_character() -> void:
 	#MenuSignalBus.emit_player_ready(self.name)
 
 
-
-# very not working yet
-# func update_motion_input():
-# 	if held[0] == 2:
-# 		motionInput = 1
-# 		motionInputDuration = 20
-# 		validNextInput.append(3)
-
-# 	if held[0] in validNextInput:
-# 		motionInput = held[0]
-# 		motionInputDuration = 20
-# 		validNextInput = []
-	
-# 	if motionInputDuration > 0:
-# 		motionInputDuration -= 1
-# 	else:
-# 		motionInput = 0
-# 		validNextInput = []
-
 func _network_preprocess(userInput: Dictionary) -> void:
 	if !userInput.has("input"):
 		print("[NETWORKING] Missing input")
@@ -229,98 +208,18 @@ func _network_preprocess(userInput: Dictionary) -> void:
 	for i in inputBufferArray:
 		inputBuffer |= i
 
-	################################
-	# Capcom style of input buffer #
-	################################
-	if held[0] != input & 15:
-		held[0] = input & 15
-		held[1] = 1
-	else:
-		held[1] += 1
-
-	# if input & Buttons.light:
-	# 	held[ButtonsIndex.light] += 1
-	# else:
-	# 	if held[ButtonsIndex.light] > 0:
-	# 		held[ButtonsIndex.light] = -1 # negative edge
-	# 	else: 
-	# 		held[ButtonsIndex.light] -= 1
-
-	# if input & Buttons.medium:
-	# 	held[ButtonsIndex.medium] += 1
-	# else:
-	# 	if held[ButtonsIndex.medium] > 0:
-	# 		held[ButtonsIndex.medium] = -1 # negative edge
-	# 	else: 
-	# 		held[ButtonsIndex.medium] -= 1
-	
-	# if input & Buttons.heavy:
-	# 	held[ButtonsIndex.heavy] += 1
-	# else:
-	# 	if held[ButtonsIndex.heavy] > 0:
-	# 		held[ButtonsIndex.heavy] = -1 # negative edge
-	# 	else: 
-	# 		held[ButtonsIndex.heavy] -= 1
-
-	# if input & Buttons.impact:
-	# 	held[ButtonsIndex.impact] += 1
-	# else:
-	# 	if held[ButtonsIndex.impact] > 0:
-	# 		held[ButtonsIndex.impact] = -1 # negative edge
-	# 	else: 
-	# 		held[ButtonsIndex.impact] -= 1
-
-	held[ButtonsIndex.light] = held[ButtonsIndex.light] + 1 if input & Buttons.light else 0
-	held[ButtonsIndex.medium] = held[ButtonsIndex.medium] + 1 if input & Buttons.medium else 0
-	held[ButtonsIndex.heavy] = held[ButtonsIndex.heavy] + 1 if input & Buttons.heavy else 0
-	held[ButtonsIndex.impact] = held[ButtonsIndex.impact] + 1 if input & Buttons.impact else 0
-
-	held[ButtonsIndex.dash] = held[ButtonsIndex.dash] + 1 if input & Buttons.dash else 0
-	held[ButtonsIndex.shield] = held[ButtonsIndex.shield] + 1 if input & Buttons.shield else 0
-	held[ButtonsIndex.sprint] = held[ButtonsIndex.sprint] + 1 if input & Buttons.sprint else 0
-	held[ButtonsIndex.jump] = held[ButtonsIndex.jump] + 1 if input & Buttons.jump else 0
-
-	# if name == "ServerPlayer":
-	# 	print(held)
-
-# Input functions
-# Like Input.get_vector but for SGFixedVector2
-func get_fixed_input_vector(negative_x: String, positive_x: String, negative_y: String, positive_y: String) -> Array:
-	var new_vector = [0, 0]
-	if Input.is_action_pressed(negative_x):
-		new_vector[0] -= 1
-	if Input.is_action_pressed(positive_x):
-		new_vector[0] += 1
-	if Input.is_action_pressed(negative_y):
-		new_vector[1] -= 1
-	if Input.is_action_pressed(positive_y):
-		new_vector[1] += 1
-	return new_vector
-
 # Getting local input using SG Physics
 func _get_local_input() -> Dictionary:
-	var newInputVector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
+	# var newInputVector = get_fixed_input_vector(input_prefix + "left", input_prefix + "right", input_prefix + "down", input_prefix + "up")
 	var userInput := {"input": 0}
-	match newInputVector:
-		[-1, -1]:
-			userInput["input"] += 1
-		[0, -1]:
-			userInput["input"] += 2
-		[1, -1]:
-			userInput["input"] += 3
-		[-1, 0]:
-			userInput["input"] += 4
-		[0, 0]:
-			userInput["input"] += 5
-		[1, 0]:
-			userInput["input"] += 6
-		[-1, 1]:
-			userInput["input"] += 7
-		[0, 1]:
-			userInput["input"] += 8
-		[1, 1]:
-			userInput["input"] += 9
-
+	if Input.is_action_pressed(input_prefix + "up"):
+		userInput["input"] += Buttons.up
+	if Input.is_action_pressed(input_prefix + "down"):
+		userInput["input"] += Buttons.down
+	if Input.is_action_pressed(input_prefix + "left"):
+		userInput["input"] += Buttons.left
+	if Input.is_action_pressed(input_prefix + "right"):
+		userInput["input"] += Buttons.right
 	if Input.is_action_pressed(input_prefix + "light"):
 		userInput["input"] += Buttons.light
 	if Input.is_action_pressed(input_prefix + "medium"):
@@ -369,6 +268,7 @@ func check_collisions() -> int:
 			overlappingHurtbox[0].used = true
 			hurtboxCollision = overlappingHurtbox[0].properties
 			# TODO: canceling a move out of CF M calls this with an empty hurtboxCollision dictionary
+				# or just CFM is buggy af
 			isHit = hurtboxCollision["onHit"]["damage"]
 	overlappingPushbox = pushBox.get_overlapping_areas()
 	if len(overlappingPushbox) > 0:

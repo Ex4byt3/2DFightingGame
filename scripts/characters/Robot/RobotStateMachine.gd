@@ -794,7 +794,7 @@ func transition_state(input):
 
 func do_hitstop_buffer() -> void:
 	if player.hitbox.properties["cancelable"]["jump"]:
-		if player.hitstopBuffer & 8: # still don't have input vecotr here
+		if player.hitstopBuffer & player.Buttons.up: # still don't have input vecotor here
 			player.pressed += player.Buttons.jump
 			start_jump()
 			return
@@ -857,7 +857,7 @@ func do_walk(speed, acceleration):
 			player.velocity.x = -speed
 
 func start_jump():
-	if !player.pressed & player.Buttons.jump and !player.pressed & 8:
+	if !player.pressed & player.Buttons.jump and !player.pressed & player.Buttons.up:
 		player.pressed += player.Buttons.jump
 		player.pressed += 8
 		if player.isOnFloor:
