@@ -580,7 +580,13 @@ extends FixedAnimator
 		},
 		"frames": [5, 12, 18]
 	},
-	# back_air_medium
+	"BackAirMedium": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [6, 3, 14]
+	},
 	"AirHeavy": {
 		"animation": {
 			"loop": false,
@@ -588,10 +594,48 @@ extends FixedAnimator
 		},
 		"frames": [14, 4, 10]
 	},
-	# back_air_heavy
-	# air_impact
-	# back_air_impact
-	# qcf_light
+	"BackAirHeavy": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [15, 4, 12]
+	},
+	"BackAirImpact": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [16, 4, 27]
+	},
+	"AirImpact": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [18, 4, 20]
+	},
+	"QCFLight": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [7, 7, 1, 40]
+	},
+	"QCFMedium": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [7, 7, 1, 40]
+	},
+	"QCFHeavy": {
+		"animation": {
+			"loop": false,
+			"simple": false
+		},
+		"frames": [7, 7, 1, 40]
+	},
 }
 
 func _ready():

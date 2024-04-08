@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccgmnrkj7f0n0"
-path="res://.godot/imported/AirHeavy.png-54f0343baa8fcce806bef6ae39f0f9fc.ctex"
+uid="uid://cctmax8qgx44m"
+path="res://.godot/imported/BackAirImpact.png-957ea28d145e2c40955ce8edf87a8aa4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/Robot/Attacks/Normals/AirHeavy.png"
-dest_files=["res://.godot/imported/AirHeavy.png-54f0343baa8fcce806bef6ae39f0f9fc.ctex"]
+source_file="res://assets/characters/Robot/Attacks/Normals/BackAirImpact.png"
+dest_files=["res://.godot/imported/BackAirImpact.png-957ea28d145e2c40955ce8edf87a8aa4.ctex"]
 
 [params]
 

@@ -74,13 +74,13 @@ var dash_meter_cost = 1
 var reset_round = false
 var hit_landed = 0
 
-# Valid motion inputs for the character, listed in priority
-const motion_inputs = {
-	623: 'DP',
-	236: 'QCF',
-	214: 'QCB'
-	# TODO: list actual special move inputs
-}
+# # Valid motion inputs for the character, listed in priority
+# const motion_inputs = {
+# 	623: 'DP',
+# 	236: 'QCF',
+# 	214: 'QCB'
+# 	# TODO: list actual special move inputs
+# }
 
 # Local character data
 var robot_img = preload("res://assets/menu/images/RoboPort.png")

@@ -139,6 +139,15 @@ var inputBuffer : int = 0
 var attackDuration = 0 # How long the attack lasts
 var bufferIdx := 0
 
+# wip motion inputs
+const MotionInputs = {
+	1 >> 0: "QCF"
+}
+
+var validNextInput := [] # List of valid inputs that can be pressed next
+var motionInput := 0
+var motionInputDuration := 0
+
 func _ready():
 	_handle_connecting_signals()
 
@@ -189,6 +198,25 @@ func _reset_character() -> void:
 	#MenuSignalBus.emit_player_ready(self.name)
 
 
+
+# very not working yet
+# func update_motion_input():
+# 	if held[0] == 2:
+# 		motionInput = 1
+# 		motionInputDuration = 20
+# 		validNextInput.append(3)
+
+# 	if held[0] in validNextInput:
+# 		motionInput = held[0]
+# 		motionInputDuration = 20
+# 		validNextInput = []
+	
+# 	if motionInputDuration > 0:
+# 		motionInputDuration -= 1
+# 	else:
+# 		motionInput = 0
+# 		validNextInput = []
+
 func _network_preprocess(userInput: Dictionary) -> void:
 	if !userInput.has("input"):
 		print("[NETWORKING] Missing input")
@@ -210,37 +238,37 @@ func _network_preprocess(userInput: Dictionary) -> void:
 	else:
 		held[1] += 1
 
-	if input & Buttons.light:
-		held[ButtonsIndex.light] += 1
-	else:
-		if held[ButtonsIndex.light] > 0:
-			held[ButtonsIndex.light] = -1 # negative edge
-		else: 
-			held[ButtonsIndex.light] -= 1
+	# if input & Buttons.light:
+	# 	held[ButtonsIndex.light] += 1
+	# else:
+	# 	if held[ButtonsIndex.light] > 0:
+	# 		held[ButtonsIndex.light] = -1 # negative edge
+	# 	else: 
+	# 		held[ButtonsIndex.light] -= 1
 
-	if input & Buttons.medium:
-		held[ButtonsIndex.medium] += 1
-	else:
-		if held[ButtonsIndex.medium] > 0:
-			held[ButtonsIndex.medium] = -1 # negative edge
-		else: 
-			held[ButtonsIndex.medium] -= 1
+	# if input & Buttons.medium:
+	# 	held[ButtonsIndex.medium] += 1
+	# else:
+	# 	if held[ButtonsIndex.medium] > 0:
+	# 		held[ButtonsIndex.medium] = -1 # negative edge
+	# 	else: 
+	# 		held[ButtonsIndex.medium] -= 1
 	
-	if input & Buttons.heavy:
-		held[ButtonsIndex.heavy] += 1
-	else:
-		if held[ButtonsIndex.heavy] > 0:
-			held[ButtonsIndex.heavy] = -1 # negative edge
-		else: 
-			held[ButtonsIndex.heavy] -= 1
+	# if input & Buttons.heavy:
+	# 	held[ButtonsIndex.heavy] += 1
+	# else:
+	# 	if held[ButtonsIndex.heavy] > 0:
+	# 		held[ButtonsIndex.heavy] = -1 # negative edge
+	# 	else: 
+	# 		held[ButtonsIndex.heavy] -= 1
 
-	if input & Buttons.impact:
-		held[ButtonsIndex.impact] += 1
-	else:
-		if held[ButtonsIndex.impact] > 0:
-			held[ButtonsIndex.impact] = -1 # negative edge
-		else: 
-			held[ButtonsIndex.impact] -= 1
+	# if input & Buttons.impact:
+	# 	held[ButtonsIndex.impact] += 1
+	# else:
+	# 	if held[ButtonsIndex.impact] > 0:
+	# 		held[ButtonsIndex.impact] = -1 # negative edge
+	# 	else: 
+	# 		held[ButtonsIndex.impact] -= 1
 
 	held[ButtonsIndex.light] = held[ButtonsIndex.light] + 1 if input & Buttons.light else 0
 	held[ButtonsIndex.medium] = held[ButtonsIndex.medium] + 1 if input & Buttons.medium else 0
@@ -340,6 +368,7 @@ func check_collisions() -> int:
 			# TODO: other hitbox properties
 			overlappingHurtbox[0].used = true
 			hurtboxCollision = overlappingHurtbox[0].properties
+			# TODO: canceling a move out of CF M calls this with an empty hurtboxCollision dictionary
 			isHit = hurtboxCollision["onHit"]["damage"]
 	overlappingPushbox = pushBox.get_overlapping_areas()
 	if len(overlappingPushbox) > 0:

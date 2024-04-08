@@ -1,4 +1,4 @@
-[gd_scene load_steps=255 format=3 uid="uid://b8j7225pk00us"]
+[gd_scene load_steps=276 format=3 uid="uid://b8j7225pk00us"]
 
 [ext_resource type="Script" path="res://scripts/characters/Robot/Robot.gd" id="1_jnbqb"]
 [ext_resource type="Script" path="res://scripts/characters/Robot/RobotStateMachine.gd" id="2_y2o11"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://baq1ljugdaprs" path="res://assets/characters/Robot/Block/AirBlock.png" id="4_bdfgl"]
 [ext_resource type="Texture2D" uid="uid://117xmbmeov26" path="res://assets/characters/Robot/Movement/Dash/DashR.png" id="4_ppwth"]
 [ext_resource type="Texture2D" uid="uid://i2q7mpaf3xre" path="res://assets/characters/Robot/Movement/AirJump.png" id="4_u21h5"]
-[ext_resource type="Texture2D" uid="uid://8q88dars2f0j" path="res://assets/characters/Robot/Attacks/Normals/AirHeavy.png" id="5_2bwyr"]
+[ext_resource type="Texture2D" uid="uid://ccgmnrkj7f0n0" path="res://assets/characters/Robot/Attacks/Normals/AirHeavy.png" id="5_2bwyr"]
 [ext_resource type="Texture2D" uid="uid://d34ogjm4ybrer" path="res://assets/characters/Robot/Block/AirBlockstun.png" id="5_gqwq6"]
 [ext_resource type="Texture2D" uid="uid://d16hwm1m5esq4" path="res://assets/characters/Robot/Crouch.png" id="5_muluu"]
 [ext_resource type="Texture2D" uid="uid://dyrsu7ye14wv0" path="res://assets/characters/Robot/Movement/Dash/DashUR.png" id="5_sk1al"]
@@ -18,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://b6s0q8tlil786" path="res://assets/characters/Robot/Movement/Walk.png" id="7_gqf1f"]
 [ext_resource type="Texture2D" uid="uid://di1p1yewk15wy" path="res://assets/characters/Robot/Block/Blockstun.png" id="7_kblnx"]
 [ext_resource type="Texture2D" uid="uid://dafwqbx1w8bbw" path="res://assets/characters/Robot/Block/AirParry.png" id="7_oxsc5"]
+[ext_resource type="Texture2D" uid="uid://b4r5coijtrs0s" path="res://assets/characters/Robot/Attacks/Normals/AirImpact.png" id="7_ttohv"]
 [ext_resource type="Texture2D" uid="uid://0dce3p4wwdf6" path="res://assets/characters/Robot/Attacks/Normals/AirLight.png" id="7_uupe0"]
 [ext_resource type="Texture2D" uid="uid://d00oxu1ty84co" path="res://assets/characters/Robot/Attacks/Normals/AirMedium.png" id="8_kyxab"]
 [ext_resource type="Texture2D" uid="uid://0tftllm1pg0v" path="res://assets/characters/Robot/Movement/Dash/DashD.png" id="9_fr02r"]
@@ -30,8 +31,11 @@
 [ext_resource type="Texture2D" uid="uid://cfm5qom3m2fgn" path="res://assets/characters/Robot/Attacks/Normals/BackAirLight.png" id="12_lrngd"]
 [ext_resource type="Texture2D" uid="uid://b6o3ba2aoejs6" path="res://assets/characters/Robot/Block/Parry.png" id="12_wmup4"]
 [ext_resource type="Texture2D" uid="uid://ckdmnffc6djw1" path="res://assets/characters/Robot/Block/BlockCrouch.png" id="13_cxji0"]
+[ext_resource type="Texture2D" uid="uid://cdx4rqd4in68j" path="res://assets/characters/Robot/Attacks/Normals/BackAirHeavy.png" id="13_fnvvo"]
 [ext_resource type="Texture2D" uid="uid://djhaqtq811x2i" path="res://assets/characters/Robot/Attacks/Normals/CrouchingHeavy.png" id="14_lv4bm"]
+[ext_resource type="Texture2D" uid="uid://cctmax8qgx44m" path="res://assets/characters/Robot/Attacks/Normals/BackAirImpact.png" id="14_p1kap"]
 [ext_resource type="Texture2D" uid="uid://b4eypuxcfwbr7" path="res://assets/characters/Robot/Attacks/Normals/CrouchingImpact.png" id="15_uj1jq"]
+[ext_resource type="Texture2D" uid="uid://bexrx7bnvf1ku" path="res://assets/characters/Robot/Attacks/Normals/BackAirMeduim.png" id="16_6x640"]
 [ext_resource type="Texture2D" uid="uid://dkp3oqsu0c0sv" path="res://assets/characters/Robot/Attacks/Normals/CrouchingLight.png" id="16_k0b8k"]
 [ext_resource type="Texture2D" uid="uid://c7j57r648vqw8" path="res://assets/characters/Robot/Attacks/Normals/CrouchingForwardMedium.png" id="17_y02y0"]
 [ext_resource type="Texture2D" uid="uid://bp2gm0tqdc5ei" path="res://assets/characters/Robot/Attacks/Normals/CrouchingMedium.png" id="17_ykws5"]
@@ -44,6 +48,7 @@
 [ext_resource type="Texture2D" uid="uid://n3act365wyuy" path="res://assets/characters/Robot/Attacks/Normals/NeutralMedium.png" id="26_t7vtr"]
 [ext_resource type="Texture2D" uid="uid://caqvr062w4tcl" path="res://assets/characters/Robot/Attacks/Normals/NeutralImpact.png" id="27_c5orq"]
 [ext_resource type="Script" path="res://scripts/gameplay/Hitbox.gd" id="34_dx2pi"]
+[ext_resource type="Texture2D" uid="uid://d00a6qr7ks0fc" path="res://assets/characters/Robot/Attacks/Normals/QCF.png" id="44_bxvm2"]
 
 [sub_resource type="SGRectangleShape2D" id="SGRectangleShape2D_flqoq"]
 extents_x = 4487128
@@ -77,21 +82,33 @@ region = Rect2(200, 0, 200, 200)
 atlas = ExtResource("5_gqwq6")
 region = Rect2(0, 0, 200, 200)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lyqek"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_des6d"]
 atlas = ExtResource("5_2bwyr")
 region = Rect2(0, 0, 200, 200)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hysml"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xqt8x"]
 atlas = ExtResource("5_2bwyr")
 region = Rect2(200, 0, 200, 200)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rp0ef"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_tp8kh"]
 atlas = ExtResource("5_2bwyr")
 region = Rect2(400, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_k6ryd"]
 atlas = ExtResource("6_wc84x")
 region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_64p21"]
+atlas = ExtResource("7_ttohv")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mkf4y"]
+atlas = ExtResource("7_ttohv")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_17fps"]
+atlas = ExtResource("7_ttohv")
+region = Rect2(400, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cfh1k"]
 atlas = ExtResource("4_u21h5")
@@ -161,6 +178,30 @@ region = Rect2(200, 0, 200, 200)
 atlas = ExtResource("5_wd8lj")
 region = Rect2(400, 0, 200, 200)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_by4ed"]
+atlas = ExtResource("13_fnvvo")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soegu"]
+atlas = ExtResource("13_fnvvo")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w1fwq"]
+atlas = ExtResource("13_fnvvo")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgjhu"]
+atlas = ExtResource("14_p1kap")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tnmpl"]
+atlas = ExtResource("14_p1kap")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qig8w"]
+atlas = ExtResource("14_p1kap")
+region = Rect2(400, 0, 200, 200)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_ckv43"]
 atlas = ExtResource("12_lrngd")
 region = Rect2(0, 0, 200, 200)
@@ -171,6 +212,18 @@ region = Rect2(200, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rx5vn"]
 atlas = ExtResource("12_lrngd")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oe7de"]
+atlas = ExtResource("16_6x640")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bt75v"]
+atlas = ExtResource("16_6x640")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7xo85"]
+atlas = ExtResource("16_6x640")
 region = Rect2(400, 0, 200, 200)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rbvft"]
@@ -785,6 +838,22 @@ region = Rect2(400, 0, 200, 200)
 atlas = ExtResource("12_wmup4")
 region = Rect2(600, 0, 200, 200)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_75sws"]
+atlas = ExtResource("44_bxvm2")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d01js"]
+atlas = ExtResource("44_bxvm2")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2wcc"]
+atlas = ExtResource("44_bxvm2")
+region = Rect2(400, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r56lp"]
+atlas = ExtResource("44_bxvm2")
+region = Rect2(600, 0, 200, 200)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_g707k"]
 atlas = ExtResource("7_cecr2")
 region = Rect2(0, 0, 200, 200)
@@ -922,13 +991,13 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lyqek")
+"texture": SubResource("AtlasTexture_des6d")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hysml")
+"texture": SubResource("AtlasTexture_xqt8x")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rp0ef")
+"texture": SubResource("AtlasTexture_tp8kh")
 }],
 "loop": true,
 "name": &"AirHeavy",
@@ -940,6 +1009,20 @@ animations = [{
 }],
 "loop": true,
 "name": &"AirHitstun",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_64p21")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mkf4y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_17fps")
+}],
+"loop": true,
+"name": &"AirImpact",
 "speed": 0.0
 }, {
 "frames": [{
@@ -1030,6 +1113,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_by4ed")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_soegu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w1fwq")
+}],
+"loop": true,
+"name": &"BackAirHeavy",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgjhu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tnmpl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qig8w")
+}],
+"loop": true,
+"name": &"BackAirImpact",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ckv43")
 }, {
 "duration": 1.0,
@@ -1040,6 +1151,20 @@ animations = [{
 }],
 "loop": true,
 "name": &"BackAirLight",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oe7de")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bt75v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7xo85")
+}],
+"loop": true,
+"name": &"BackAirMedium",
 "speed": 0.0
 }, {
 "frames": [{
@@ -1079,7 +1204,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"BlockStand",
-"speed": 5.0
+"speed": 0.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1678,6 +1803,57 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_75sws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d01js")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2wcc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r56lp")
+}],
+"loop": true,
+"name": &"QCFHeavy",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_75sws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d01js")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2wcc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r56lp")
+}],
+"loop": true,
+"name": &"QCFLight",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_75sws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d01js")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2wcc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r56lp")
+}],
+"loop": true,
+"name": &"QCFMedium",
+"speed": 0.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_g707k")
 }, {
 "duration": 1.0,
@@ -1793,9 +1969,7 @@ script = ExtResource("2_y2o11")
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_w520v")
-animation = &"Idle"
-frame = 8
-frame_progress = 0.190336
+animation = &"AirHeavy"
 
 [node name="FixedAnimationPlayer" type="Node" parent="AnimatedSprite2D" groups=["network_sync"]]
 script = ExtResource("3_4ojck")

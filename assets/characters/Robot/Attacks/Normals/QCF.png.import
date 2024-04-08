@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccgmnrkj7f0n0"
-path="res://.godot/imported/AirHeavy.png-54f0343baa8fcce806bef6ae39f0f9fc.ctex"
+uid="uid://d00a6qr7ks0fc"
+path="res://.godot/imported/QCF.png-716d37ab0dbbddd97ca7626487ba1abd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/characters/Robot/Attacks/Normals/AirHeavy.png"
-dest_files=["res://.godot/imported/AirHeavy.png-54f0343baa8fcce806bef6ae39f0f9fc.ctex"]
+source_file="res://assets/characters/Robot/Attacks/Normals/QCF.png"
+dest_files=["res://.godot/imported/QCF.png-716d37ab0dbbddd97ca7626487ba1abd.ctex"]
 
 [params]
 

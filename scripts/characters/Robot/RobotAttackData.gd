@@ -628,7 +628,7 @@ const attacks = {
 	"air_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
-				{"x": 100, "y": -80, "width": 230, "height": 250, "ticks": 4},
+				{"x": 120, "y": -20, "width": 200, "height": 220, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
 		"cancelable": {
@@ -668,7 +668,7 @@ const attacks = {
 	"back_air_heavy": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 15},
-				{"x": - 60, "y": - 20, "width": 100, "height": 140, "ticks": 4},
+				{"x": -120, "y": -20, "width": 200, "height": 220, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 12}
 			],
 		"cancelable": {
@@ -708,7 +708,7 @@ const attacks = {
 	"air_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18},
-				{"x": 60, "y": - 35, "width": 120, "height": 90, "ticks": 4},
+				{"x": 160, "y": -60, "width": 150, "height": 40, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
 		"cancelable": {
@@ -746,7 +746,7 @@ const attacks = {
 	"back_air_impact": {
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
-				{"x": - 70, "y": - 45, "width": 120, "height": 80, "ticks": 4},
+				{"x": -140, "y": -20, "width": 150, "height": 40, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 27}
 			],
 		"cancelable": {

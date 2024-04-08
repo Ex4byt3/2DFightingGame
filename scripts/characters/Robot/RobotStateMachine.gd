@@ -49,44 +49,46 @@ func _ready():
 	add_state('AIR_IMPACT')
 	add_state('BACK_AIR_IMPACT')
 	add_state('QCF_LIGHT')
+	add_state('QCF_MEDIUM')
+	add_state('QCF_HEAVY')
 
 	# Initial State
 	#set_state('IDLE')
 	set_state('DISABLED')
 
-func convert_inputs_to_string(inputs):
-	var inputString = ""
-	for input in inputs:
-		inputString = str(player.directions[input]) + inputString
-	return inputString
+# func convert_inputs_to_string(inputs):
+# 	var inputString = ""
+# 	for input in inputs:
+# 		inputString = str(player.directions[input]) + inputString
+# 	return inputString
 
-func parse_motion_inputs():
-	var remainingLeinency = player.motionInputLeinency
-	var validMotions = []
-	# make a dict of only inputs within the last motionInputLeinency ticks
-	for control in player.controlBuffer:
-		if control[0] != 0 or control[1] != 0: # if the input is not neutral
-			validMotions.append([control[0], control[1]]) # add the input to the validMotions list
-		remainingLeinency -= control[2] # subtract frames the input was held
-		if remainingLeinency <= 0:
-			break
+# func parse_motion_inputs():
+# 	var remainingLeinency = player.motionInputLeinency
+# 	var validMotions = []
+# 	# make a dict of only inputs within the last motionInputLeinency ticks
+# 	for control in player.controlBuffer:
+# 		if control[0] != 0 or control[1] != 0: # if the input is not neutral
+# 			validMotions.append([control[0], control[1]]) # add the input to the validMotions list
+# 		remainingLeinency -= control[2] # subtract frames the input was held
+# 		if remainingLeinency <= 0:
+# 			break
 
-	var inputString = convert_inputs_to_string(validMotions)
-	# print(inputString) # all currently valid inputs
+# 	var inputString = convert_inputs_to_string(validMotions)
+# 	# print(inputString) # all currently valid inputs
 
-	# // can use custom search to maybe be faster than regex
-	var regex = RegEx.new()
-	for motion in player.motion_inputs:
-		regex.compile(str(motion)) # compile the regex for the current motion
-		if regex.search(inputString) != null: # if any match is found
-			# print(player.motion_inputs[motion])
-			return motion
+# 	# // can use custom search to maybe be faster than regex
+# 	var regex = RegEx.new()
+# 	for motion in player.motion_inputs:
+# 		regex.compile(str(motion)) # compile the regex for the current motion
+# 		if regex.search(inputString) != null: # if any match is found
+# 			# print(player.motion_inputs[motion])
+# 			return motion
 
-func parse_motion_input_int():
-	pass
-	# if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.down] < 9:
-	# 	if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.right] and player.held[ButtonsIndex.right] < 9:
-	# 		if player.held[ButtonsIndex.right]
+# func parse_motion_input_int():
+# 	pass
+# 	# if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.down] < 9:
+# 	# 	if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.right] and player.held[ButtonsIndex.right] < 9:
+# 	# 		if player.held[ButtonsIndex.right]
 
 func check_buffer_for_attack() -> int:
 	var buttons = [player.Buttons.light, player.Buttons.medium, player.Buttons.heavy, player.Buttons.impact] # in order of priority
@@ -101,24 +103,6 @@ func check_input(input: int) -> int:
 		if input & i:
 			return i
 	return -1
-
-func check_for_attack(buffer) -> String: # to rewrite in the same format as the other normal inputs later
-	if buffer & 1:
-		return "light"
-	elif buffer & 2:
-		return "medium"
-	elif buffer & 4:
-		return "heavy"
-	elif buffer & 8:
-		return "impact"
-	elif buffer & 16:
-		return "jump"
-	elif buffer & 32:
-		return "dash"
-	elif buffer & 64:
-		return "shield"
-	else:
-		return ""
 
 func neutral_attack(attack: int) -> String:
 	# TODO: motion input for qcf_light
@@ -209,8 +193,8 @@ func transition_state(input):
 
 	# TODO: parse_motion_inputs should only get called when we need to look for a possible motion input rahter thanevery frame
 	# if buffer_has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
-	parse_motion_inputs()
-	parse_motion_input_int()
+	# parse_motion_inputs()
+	# parse_motion_input_int()
 
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
 	if player.inputBuffer & player.Buttons.dash and not player.isOnFloor and player.meterVal > 0:
@@ -243,7 +227,7 @@ func transition_state(input):
 	match states[state]:
 		states.IDLE:
 			do_decerlerate(player.groundDeceleration)
-			if do_attack(neutral_attack(check_buffer_for_attack())):
+			if do_attack(any_attack(check_buffer_for_attack())):
 				pass
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
@@ -272,7 +256,7 @@ func transition_state(input):
 				start_jump()
 		states.CROUCH:
 			do_decerlerate(player.groundDeceleration)
-			if do_attack(crouching_attack(check_buffer_for_attack())):
+			if do_attack(any_attack(check_buffer_for_attack())):
 				pass
 			elif player.input_vector.y != -1:
 				player.animation.play("Stand")
@@ -290,7 +274,7 @@ func transition_state(input):
 				player.animation.play("Crawl")
 				set_state('CRAWL')
 		states.CRAWL:
-			if do_attack(crouching_attack(check_buffer_for_attack())):
+			if do_attack(any_attack(check_buffer_for_attack())):
 				pass
 			elif player.inputBuffer & player.Buttons.shield:
 				player.blockMask = 3 # 011
@@ -311,7 +295,7 @@ func transition_state(input):
 			if jump_check():
 				start_jump()
 		states.WALK:
-			if do_attack(forward_attack(check_buffer_for_attack())):
+			if do_attack(any_attack(check_buffer_for_attack())):
 				pass
 			elif player.input_vector.y == -1:
 				player.animation.play("Crouch")
@@ -363,7 +347,7 @@ func transition_state(input):
 					player.animation.play("Sprint")
 					set_state('SPRINT')
 		states.SPRINT:
-			if do_attack(forward_attack(check_buffer_for_attack())):
+			if do_attack(any_attack(check_buffer_for_attack())):
 				pass
 			if player.inputBuffer & player.Buttons.shield:
 				player.blockMask = 6 # 110
@@ -662,56 +646,56 @@ func transition_state(input):
 				set_state('IDLE')
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.NEUTRAL_MEDIUM:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.NEUTRAL_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.NEUTRAL_IMPACT:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.FORWARD_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_LIGHT:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_MEDIUM:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_HEAVY:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
@@ -721,20 +705,20 @@ func transition_state(input):
 				player.velocity.x = player.advancingLowSpeed if player.facingRight else -player.advancingLowSpeed
 			else:
 				player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_IMPACT:
 			player.velocity.x = 0
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_LIGHT:
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			#SyncManager.play_sound(str(get_path()) + ":neutral_impact", player.boom, player.boomINFO)
 			# play impact animation
@@ -745,43 +729,61 @@ func transition_state(input):
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_LIGHT:
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_MEDIUM:
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_MEDIUM:
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_HEAVY:
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_HEAVY:
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_IMPACT:
-			if player.hitstopBuffer > player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer > player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_IMPACT:
-			if player.hitstopBuffer >= player.Buttons.light: # if the player buffered in hitstop
+			if player.hitstopBuffer >= player.Buttons.light:
+				do_hitstop_buffer()
+			elif player.frame == -1:
+				player.frame = 0
+				set_actionable_state()
+		states.QCF_LIGHT:
+			if player.hitstopBuffer >= player.Buttons.light:
+				do_hitstop_buffer()
+			elif player.frame == -1:
+				player.frame = 0
+				set_actionable_state()
+		states.QCF_MEDIUM:
+			if player.hitstopBuffer >= player.Buttons.light:
+				do_hitstop_buffer()
+			elif player.frame == -1:
+				player.frame = 0
+				set_actionable_state()
+		states.QCF_HEAVY:
+			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
@@ -912,7 +914,7 @@ func start_dash(input_vector):
 
 func jump_check() -> bool: # might be redundant
 	# this if statement might be fucked but I can't tell
-	if player.input_vector.y == 1 or player.hitstopBuffer & 16:
+	if player.input_vector.y == 1: # or player.hitstopBuffer & 8:
 		return true
 	else:
 		return false
