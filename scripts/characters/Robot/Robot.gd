@@ -211,10 +211,6 @@ func _game_process(input: int) -> int:
 		opponent = get_parent().get_node("ClientPlayer")
 	else:
 		opponent = get_parent().get_node("ServerPlayer")
-
-	# projectile process
-	for child in $Projectiles.get_children():
-		child._game_process()
 	
 	# Deal with meter
 	_meter_func()

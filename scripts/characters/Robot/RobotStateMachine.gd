@@ -1029,7 +1029,7 @@ func do_knockback(knockback: Dictionary): # TODO: static flag does not work
 
 # Throw attack
 func do_attack(attack_name: String):
-	if attack_name == "":
+	if attack_name == "" or !player.hitbox.collisionShape.attacks.has(attack_name):
 		return
 	# TODO: meter gain on hit
 	# TODO: know if an attack landed, we'll need to know if an attack hit for several things

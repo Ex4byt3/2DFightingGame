@@ -273,9 +273,6 @@ func check_collisions() -> int:
 	if len(overlappingHurtbox) > 0:
 		if !overlappingHurtbox[0].used:
 			# TODO: other hitbox properties
-			if overlappingHurtbox[0].properties.size() == 0:
-				print("Empty hurtboxCollision dictionary") # TODO: projectile properties are empty for a moment if spawned ontop of opponent
-				return 0
 			overlappingHurtbox[0].used = true
 			hurtboxCollision = overlappingHurtbox[0].properties
 			if overlappingHurtbox[0].properties["projectile"]:

@@ -40,6 +40,10 @@ func check_collisions() -> void:
 func hitbox_game_process() -> void:
 	serverHitbox._game_process()
 	clientHitbox._game_process()
+	for child in serverPlayer.get_node("Projectiles").get_children():
+		child._game_process()
+	for child in clientPlayer.get_node("Projectiles").get_children():
+		child._game_process()
 
 func player_game_process() -> int:
 	var f : int = 0
@@ -60,6 +64,10 @@ func sync_hurtboxes() -> void:
 func sync_hitboxes() -> void:
 	serverHitbox.sync_to_physics_engine()
 	clientHitbox.sync_to_physics_engine()
+	for child in serverPlayer.get_node("Projectiles").get_children():
+		child.sync_to_physics_engine()
+	for child in clientPlayer.get_node("Projectiles").get_children():
+		child.sync_to_physics_engine()
 
 func _save_state() -> Dictionary:
 	return {

@@ -38,7 +38,6 @@ func _game_process() -> void:
 		SyncManager.despawn(self)
 	lifespan -= 1
 	fixed_position = fixed_position.add(velocity)
-	sync_to_physics_engine()
 
 func _save_state() -> Dictionary:
 	return {
@@ -50,6 +49,8 @@ func _save_state() -> Dictionary:
 		velocity_x = velocity.x,
 		velocity_y = velocity.y,
 		lifespan = lifespan,
+		used = used,
+		spawnDelay = spawnDelay,
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -61,5 +62,7 @@ func _load_state(loadState: Dictionary) -> void:
 	velocity.x = loadState["velocity_x"]
 	velocity.y = loadState["velocity_y"]
 	lifespan = loadState["lifespan"]
+	used = loadState["used"]
+	spawnDelay = loadState["spawnDelay"]
 
 	sync_to_physics_engine()
