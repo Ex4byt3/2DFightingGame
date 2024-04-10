@@ -74,13 +74,12 @@ var dash_meter_cost = 1
 var reset_round = false
 var hit_landed = 0
 
-# # Valid motion inputs for the character, listed in priority
-# const motion_inputs = {
-# 	623: 'DP',
-# 	236: 'QCF',
-# 	214: 'QCB'
-# 	# TODO: list actual special move inputs
-# }
+# Valid motion inputs for the character, listed in priority
+const motion_inputs = {
+	# 623: 'DP',
+	236: 'QCF',
+	214: 'QCB'
+}
 
 # Local character data
 var robot_img = preload("res://assets/menu/images/RoboPort.png")
@@ -313,9 +312,9 @@ func _save_state() -> Dictionary:
 	var input_buffer_array = []
 	for item in inputBufferArray:
 		input_buffer_array.append(item)
-	# var held_ = []
-	# for item in held:
-	# 	held_.append(item)
+	# var input_history = []
+	# for item in inputHistory:
+	# 	input_history.append(item)
 	return {
 		input = input,
 		inputBuffer = inputBuffer,
@@ -376,6 +375,8 @@ func _save_state() -> Dictionary:
 
 		# held = held_,
 		hit_landed = hit_landed,
+		# inputHistory = input_history,
+		# inputHistoryIdx = inputHistoryIdx
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -444,6 +445,11 @@ func _load_state(loadState: Dictionary) -> void:
 	is_dead = loadState['is_dead']
 	is_disabled = loadState['is_disabled']
 	hit_landed = loadState['hit_landed']
+
+	# inputHistory = []
+	# for item in loadState['inputHistory']:
+	# 	inputHistory.append(item)
+	# inputHistoryIdx = loadState['inputHistoryIdx']
 	
 	sync_to_physics_engine()
 	

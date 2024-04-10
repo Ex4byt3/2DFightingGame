@@ -68,14 +68,14 @@ func play(animationName: String) -> void:
 			playing = true
 	else:
 		pass
-		# print("[ERROR] Animation not found: " + animationName)
+		print("[ERROR] Animation not found: " + animationName)
 
 func queue(animationName: String) -> void:
 	if animationName in animations:
 		animationsQueue.append(animationName)
 	else:
 		pass
-		# print("[ERROR] Animation not found: " + animationName)
+		print("[ERROR] Animation not found: " + animationName)
 
 func _save_state() -> Dictionary:
 	var animations_queue : Array = []

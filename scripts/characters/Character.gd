@@ -46,6 +46,18 @@ const direction_mapping = {  # Numpad Notation:
 	[0, 1]:   "UP",          # 8
 	[1, 1]:   "UP RIGHT"     # 9
 }
+# UDLR
+# const directions = {
+# 	0b0110: 1, # Down Left
+# 	0b0100: 2, # Down
+# 	0b0101: 3, # Down Right
+# 	0b0010: 4, # Left
+# 	0b0000: 5, # Neutral
+# 	0b0001: 6, # Right
+# 	0b1010: 7, # Up Left
+# 	0b1000: 8, # Up
+# 	0b1001: 9  # Up Right
+# }
 
 # Convert vector to Numpad Notation
 const directions = {
@@ -130,25 +142,18 @@ var wallBounceVelocity := SGFixed.vector2(0, 0)
 
 var input : int = 0
 var hitstopBuffer : int = 0 # bit mask of any input pressed in hitstun
+# buffers are all circular to avoid reindexing
 var inputBufferArray := [0, 0, 0, 0]
 var inputBuffer : int = 0
 var attackDuration = 0 # How long the attack lasts
 var bufferIdx := 0
 
-# var validNextInput := [] # List of valid inputs that can be pressed next
-# var motionInput := 0
-# var motionInputDuration := 0
-
-var dirPress := 0
-var dirRelease := 0
-var dirHold := 0
-var btnPress := 0
-var btnRelease := 0
-var btnHold := 0
+# this is a little silly
+# var inputHistory := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+# var inputHistoryIdx := 0
 
 func _ready():
 	_handle_connecting_signals()
-
 
 func _handle_connecting_signals() -> void:
 	MenuSignalBus.apply_match_settings.connect(_apply_match_settings)
@@ -203,10 +208,14 @@ func _network_preprocess(userInput: Dictionary) -> void:
 	input = userInput["input"]
 	inputBuffer = input
 	inputBufferArray[bufferIdx] = input
-	bufferIdx = (bufferIdx + 1) % 4
+	bufferIdx = (bufferIdx + 1) % 4 # 4 frame buffer
 	inputBuffer = 0
 	for i in inputBufferArray:
 		inputBuffer |= i
+
+	# note: currently holds exactly 30 frames but can copy the logic from control buffer and have it store the number of frames the input was pressed aswell
+	# inputHistory[inputHistoryIdx] = input
+	# inputHistoryIdx = (inputHistoryIdx + 1) % 30 # 30 frame buffer
 
 # Getting local input using SG Physics
 func _get_local_input() -> Dictionary:

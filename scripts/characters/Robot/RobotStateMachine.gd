@@ -56,39 +56,35 @@ func _ready():
 	#set_state('IDLE')
 	set_state('DISABLED')
 
-# func convert_inputs_to_string(inputs):
-# 	var inputString = ""
-# 	for input in inputs:
-# 		inputString = str(player.directions[input]) + inputString
-# 	return inputString
+### Prase Motion Inputs ###
+func convert_inputs_to_string(inputs):
+	var inputString = ""
+	for input in inputs:
+		inputString = str(player.directions[input]) + inputString
+	return inputString
 
-# func parse_motion_inputs():
-# 	var remainingLeinency = player.motionInputLeinency
-# 	var validMotions = []
-# 	# make a dict of only inputs within the last motionInputLeinency ticks
-# 	for control in player.controlBuffer:
-# 		if control[0] != 0 or control[1] != 0: # if the input is not neutral
-# 			validMotions.append([control[0], control[1]]) # add the input to the validMotions list
-# 		remainingLeinency -= control[2] # subtract frames the input was held
-# 		if remainingLeinency <= 0:
-# 			break
+func parse_motion_inputs():
+	var remainingLeinency = player.motionInputLeinency
+	var validMotions = []
+	# make a dict of only inputs within the last motionInputLeinency ticks
+	for control in player.controlBuffer:
+		if control[0] != 0 or control[1] != 0: # if the input is not neutral
+			validMotions.append([control[0], control[1]]) # add the input to the validMotions list
+		remainingLeinency -= control[2] # subtract frames the input was held
+		if remainingLeinency <= 0:
+			break
 
-# 	var inputString = convert_inputs_to_string(validMotions)
-# 	# print(inputString) # all currently valid inputs
+	var inputString = convert_inputs_to_string(validMotions)
+	# print(inputString) # all currently valid inputs
 
-# 	# // can use custom search to maybe be faster than regex
-# 	var regex = RegEx.new()
-# 	for motion in player.motion_inputs:
-# 		regex.compile(str(motion)) # compile the regex for the current motion
-# 		if regex.search(inputString) != null: # if any match is found
-# 			# print(player.motion_inputs[motion])
-# 			return motion
-
-# func parse_motion_input_int():
-# 	pass
-# 	# if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.down] < 9:
-# 	# 	if player.held[ButtonsIndex.down] and player.held[ButtonsIndex.right] and player.held[ButtonsIndex.right] < 9:
-# 	# 		if player.held[ButtonsIndex.right]
+	# // can use custom search to maybe be faster than regex
+	var regex = RegEx.new()
+	for motion in player.motion_inputs:
+		regex.compile(str(motion)) # compile the regex for the current motion
+		if regex.search(inputString) != null: # if any match is found
+			# print(player.motion_inputs[motion])
+			return motion
+### End Parse Motion Inputs ###
 
 func check_buffer_for_attack() -> int:
 	var buttons = [player.Buttons.light, player.Buttons.medium, player.Buttons.heavy, player.Buttons.impact] # in order of priority
@@ -123,6 +119,12 @@ func crouching_attack(attack: int) -> String:
 			return "crouching_" + player.ReverseButtons[attack]
 	return ""
 
+func qcf_attack(attack: int) -> String:
+	if attack != -1 and !player.pressed & attack:
+		player.pressed += attack
+		return "qcf_" + player.ReverseButtons[attack]
+	return ""
+
 func forward_attack(attack: int) -> String:
 	if attack == player.Buttons.heavy: # forward heavy is the only forward attack
 		if not player.pressed & attack:
@@ -145,9 +147,12 @@ func air_attack(attack: int) -> String:
 	return ""
 
 func any_attack(attack: int) -> String:
+	var motionInput = parse_motion_inputs()
 	if attack != -1:
 		if player.isOnFloor:
-			if player.input_vector.y == -1:
+			if (player.facingRight and motionInput == 236) or (!player.facingRight and motionInput == 214):
+				return qcf_attack(attack)
+			elif player.input_vector.y == -1:
 				return crouching_attack(attack)
 			elif player.input_vector.x != 0:
 				return forward_attack(attack)
@@ -193,8 +198,7 @@ func transition_state(input):
 
 	# TODO: parse_motion_inputs should only get called when we need to look for a possible motion input rahter thanevery frame
 	# if buffer_has("light"): # enable to only check when light gets pressed, also for debugging, otherwise checks every frame, this is inefficient
-	# parse_motion_inputs()
-	# parse_motion_input_int()
+	parse_motion_inputs()
 
 	# can currently almost *always* dash, this will work for now but there will later be states where you cannot
 	if player.inputBuffer & player.Buttons.dash and not player.isOnFloor and player.meterVal > 0:
@@ -771,18 +775,21 @@ func transition_state(input):
 				player.frame = 0
 				set_actionable_state()
 		states.QCF_LIGHT:
+			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.QCF_MEDIUM:
+			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.QCF_HEAVY:
+			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
 			elif player.frame == -1:

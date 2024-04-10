@@ -1815,7 +1815,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_r56lp")
 }],
 "loop": true,
-"name": &"QCFHeavy",
+"name": &"QcfHeavy",
 "speed": 0.0
 }, {
 "frames": [{
@@ -1832,7 +1832,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_r56lp")
 }],
 "loop": true,
-"name": &"QCFLight",
+"name": &"QcfLight",
 "speed": 0.0
 }, {
 "frames": [{
@@ -1849,7 +1849,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_r56lp")
 }],
 "loop": true,
-"name": &"QCFMedium",
+"name": &"QcfMedium",
 "speed": 0.0
 }, {
 "frames": [{
@@ -1969,7 +1969,7 @@ script = ExtResource("2_y2o11")
 texture_filter = 1
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_w520v")
-animation = &"AirHeavy"
+animation = &"QcfLight"
 
 [node name="FixedAnimationPlayer" type="Node" parent="AnimatedSprite2D" groups=["network_sync"]]
 script = ExtResource("3_4ojck")

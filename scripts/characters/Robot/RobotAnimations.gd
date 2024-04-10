@@ -615,21 +615,21 @@ extends FixedAnimator
 		},
 		"frames": [18, 4, 20]
 	},
-	"QCFLight": {
+	"QcfLight": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
 		"frames": [7, 7, 1, 40]
 	},
-	"QCFMedium": {
+	"QcfMedium": {
 		"animation": {
 			"loop": false,
 			"simple": false
 		},
 		"frames": [7, 7, 1, 40]
 	},
-	"QCFHeavy": {
+	"QcfHeavy": {
 		"animation": {
 			"loop": false,
 			"simple": false

@@ -818,5 +818,83 @@ const attacks = {
 				"angle": 0
 			}
 		}
+	},
+
+	"qcf_medium": {
+		"hitboxes": [
+		#good luck, projectile is a moving hitbox that spawns most likely thats the system i see most of the time Also they dont work with Adv Good Luck!
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 1},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 40}
+			],
+		"cancelable": {
+			"jump": false,
+			"type": 2,
+			"moves": [
+			],
+		},
+		"onHit": {
+			"damage": 140,
+			"adv": - 5,
+			"gain": 0,
+			"hitstop": 7,
+			"knockdown": 2,
+			"knockback": {
+				"gain": 3932,
+				"static": false,
+				"mult": true,
+				"force": 10 * ONE,
+				"angle": 0
+			},
+		},
+		"onBlock": {
+			"damage": 0,
+			"blockstop": 7,
+			"adv": - 6,
+			"mask": 2, # mid
+			"knockback": {
+				"force": 10 * ONE,
+				"angle": 0
+			}
+		}
+	},
+
+	"qcf_heavy": {
+		"hitboxes": [
+		#good luck, projectile is a moving hitbox that spawns most likely thats the system i see most of the time Also they dont work with Adv Good Luck!
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 1},
+				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 40}
+			],
+		"cancelable": {
+			"jump": false,
+			"type": 2,
+			"moves": [
+			],
+		},
+		"onHit": {
+			"damage": 140,
+			"adv": - 5,
+			"gain": 0,
+			"hitstop": 7,
+			"knockdown": 2,
+			"knockback": {
+				"gain": 3932,
+				"static": false,
+				"mult": true,
+				"force": 10 * ONE,
+				"angle": 0
+			},
+		},
+		"onBlock": {
+			"damage": 0,
+			"blockstop": 7,
+			"adv": - 6,
+			"mask": 2, # mid
+			"knockback": {
+				"force": 10 * ONE,
+				"angle": 0
+			}
+		}
 	}
 }
