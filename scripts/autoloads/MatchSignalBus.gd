@@ -1,5 +1,6 @@
 extends Node
 
+signal update_ui_visibility(button_checked)
 
 signal apply_match_settings
 
@@ -13,6 +14,9 @@ signal round_stop
 
 signal banner_done
 
+
+func emit_update_ui_visibility(button_checked: bool) -> void:
+	emit_signal("update_ui_visibility", button_checked)
 
 func emit_apply_match_settings() -> void:
 	emit_signal("apply_match_settings")

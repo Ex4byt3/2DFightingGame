@@ -17,6 +17,7 @@ func _ready():
 ##################################################
 func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_debug_visibility", "_on_update_debug_visibility")
+	MatchSignalBus.update_ui_visibility.connect(_on_update_ui_visibility)
 
 
 ##################################################
@@ -29,6 +30,16 @@ func _on_update_debug_visibility(button_checked: bool) -> void:
 	else:
 		print("[SYSTEM] Hiding debug overlay")
 		debug_overlay.visible = false
+
+
+func _on_update_ui_visibility(button_checked: bool) -> void:
+	if button_checked:
+		print("[SYSTEM] Showing status overlay")
+		status_overlay.visible = true
+	else:
+		print("[SYSTEM] Hiding status overlay")
+		status_overlay.visible = false
+
 
 ##################################################
 # INPUT FUNCTIONS
