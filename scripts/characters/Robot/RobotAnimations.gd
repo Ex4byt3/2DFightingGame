@@ -34,6 +34,14 @@ extends FixedAnimator
 		}
 	},
 	"Sprint": {
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"framerate": 4,
 			"loop": true,
@@ -616,6 +624,14 @@ extends FixedAnimator
 		"frames": [18, 4, 20]
 	},
 	"QcfLight": {
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"loop": false,
 			"simple": false
@@ -623,6 +639,14 @@ extends FixedAnimator
 		"frames": [7, 7, 1, 40]
 	},
 	"QcfMedium": {
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"loop": false,
 			"simple": false
@@ -630,6 +654,14 @@ extends FixedAnimator
 		"frames": [7, 7, 1, 40]
 	},
 	"QcfHeavy": {
+		"hurtbox": {
+			"shape": {
+				"extents_x": 4487098,
+				"extents_y": 6750123
+			},
+				"fixed_position_x": -131072,
+				"fixed_position_y": 589799
+		},
 		"animation": {
 			"loop": false,
 			"simple": false

@@ -29,6 +29,8 @@ func _game_process() -> void:
 	if disabled:
 		set_shape(0, 0)
 		properties = {}
+		used = true
+		active = false
 		player.frame = -1
 		return
 	if player.frame >= hitboxes[idx]["ticks"]:
@@ -36,8 +38,9 @@ func _game_process() -> void:
 		if idx > len(hitboxes) - 1:
 			set_shape(0, 0)
 			properties = {}
-			player.frame = -1
+			used = true
 			active = false
+			player.frame = -1
 			return
 		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
 		if hitboxes[idx]["width"] > 0:

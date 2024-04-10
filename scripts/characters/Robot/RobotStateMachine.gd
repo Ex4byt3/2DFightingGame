@@ -764,7 +764,7 @@ func transition_state(input):
 				set_actionable_state()
 		states.AIR_IMPACT:
 			if player.hitstopBuffer > player.Buttons.light:
-				do_hitstop_buffer("air_impace")
+				do_hitstop_buffer("air_impact")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
