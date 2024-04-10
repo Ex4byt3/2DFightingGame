@@ -2006,3 +2006,5 @@ script = ExtResource("34_dx2pi")
 [node name="MainShape" type="SGCollisionShape2D" parent="Hitbox"]
 debug_color = Color(0.996078, 0, 0.227451, 0.419608)
 script = ExtResource("18_7wveu")
+
+[node name="Projectiles" type="Node" parent="."]

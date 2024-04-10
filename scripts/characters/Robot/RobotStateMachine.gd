@@ -221,7 +221,7 @@ func transition_state(input):
 	elif MatchData.player_control_disabled and not player.is_dead:
 		player.is_disabled = true
 		set_state('DISABLED')
-	elif player.hurtboxCollision.size() > 0:
+	elif player.hurtboxCollision.size() > 0 and !player.involnrable:
 		do_hit()
 
 
@@ -778,23 +778,38 @@ func transition_state(input):
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
-			elif player.frame == -1:
+			elif player.frame == player.attacks["qcf_light"]["spawnDelay"]:
+				SyncManager.spawn("Projectile", player.get_node("Projectiles"), player.projectile, player.attacks["qcf_light"])
+				player.frame += 1
+			elif player.frame == player.attacks["qcf_light"]["castTime"]:
 				player.frame = 0
 				set_actionable_state()
+			else:
+				player.frame += 1
 		states.QCF_MEDIUM:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
-			elif player.frame == -1:
+			elif player.frame == player.attacks["qcf_medium"]["spawnDelay"]:
+				SyncManager.spawn("Projectile", player.get_node("Projectiles"), player.projectile, player.attacks["qcf_medium"])
+				player.frame += 1
+			elif player.frame == player.attacks["qcf_medium"]["castTime"]:
 				player.frame = 0
 				set_actionable_state()
+			else:
+				player.frame += 1
 		states.QCF_HEAVY:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer()
-			elif player.frame == -1:
+			elif player.frame == player.attacks["qcf_heavy"]["spawnDelay"]:
+				SyncManager.spawn("Projectile", player.get_node("Projectiles"), player.projectile, player.attacks["qcf_heavy"])
+				player.frame += 1
+			elif player.frame == player.attacks["qcf_heavy"]["castTime"]:
 				player.frame = 0
 				set_actionable_state()
+			else:
+				player.frame += 1
 
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
@@ -957,7 +972,10 @@ func do_hit():
 		# TODO: chip damage
 		var onBlock = player.hurtboxCollision["onBlock"]
 		player.frame = 0
-		player.blockstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onBlock["adv"])
+		if !player.hurtboxCollision["projectile"]:
+			player.blockstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onBlock["adv"])
+		else:
+			player.blockstunFrames = onBlock["blockstun"]
 		if player.opponent.facingRight:
 			player.apply_knockback(onBlock["knockback"]["force"], onBlock["knockback"]["angle"])
 		else:
@@ -980,7 +998,10 @@ func do_hit():
 		var onHit = player.hurtboxCollision["onHit"]
 		player.take_damage(onHit["damage"])
 		do_knockback(onHit["knockback"])
-		player.hitstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onHit["adv"])
+		if !player.hurtboxCollision["projectile"]:
+			player.hitstunFrames = get_stun_frames(player.hurtboxCollision["hitboxes"], onHit["adv"])
+		else:
+			player.hitstunFrames = onHit["hitstun"]
 		player.frame = 0
 		player.hitstunMultiplier += onHit["gain"]
 		player.hitstop = onHit["hitstop"]
@@ -1012,15 +1033,16 @@ func do_attack(attack_name: String):
 		return
 	# TODO: meter gain on hit
 	# TODO: know if an attack landed, we'll need to know if an attack hit for several things
+
 	player.frame = 0
-	player.hitbox.do_attack(attack_name)
-	player.animation.play(attack_name.to_pascal_case()) # TODO: attck animations
+	if !player.hitbox.collisionShape.attacks[attack_name]["projectile"]: # projectile attacks spawn their hitboxes in state
+		player.hitbox.do_attack(attack_name)
+	player.animation.play(attack_name.to_pascal_case())
 	if attack_name in player.sounds:
 		SyncManager.play_sound(str(get_path()) + ":" + attack_name, player.sounds[attack_name], 
 		player.sounds[attack_name + "I"])
-
-	# player.animation.play(attack_type.to_pascal_case()) # TODO: attck animations
 	set_state(attack_name.to_upper())
+	# print("state is now " + attack_name.to_upper())
 
 func update_debug_label(input_vector):
 	var player_type: String = self.get_parent().name

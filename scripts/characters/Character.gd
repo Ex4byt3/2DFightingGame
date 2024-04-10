@@ -145,7 +145,6 @@ var hitstopBuffer : int = 0 # bit mask of any input pressed in hitstun
 # buffers are all circular to avoid reindexing
 var inputBufferArray := [0, 0, 0, 0]
 var inputBuffer : int = 0
-var attackDuration = 0 # How long the attack lasts
 var bufferIdx := 0
 
 # this is a little silly
@@ -276,6 +275,8 @@ func check_collisions() -> int:
 			# TODO: other hitbox properties
 			overlappingHurtbox[0].used = true
 			hurtboxCollision = overlappingHurtbox[0].properties
+			if overlappingHurtbox[0].properties["projectile"]:
+				SyncManager.despawn(overlappingHurtbox[0])
 			# TODO: canceling a move out of CF M calls this with an empty hurtboxCollision dictionary
 				# or just CFM is buggy af
 			isHit = hurtboxCollision["onHit"]["damage"]

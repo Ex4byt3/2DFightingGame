@@ -66,7 +66,7 @@ func _save_state() -> Dictionary:
 		properties = properties,
 		fixed_position_x = fixed_position_x,
 		fixed_position_y = fixed_position_y,
-		width = collisionShape.shape._get_extents_x(), # TODO: make sure this is safe
+		width = collisionShape.shape._get_extents_x(),
 		height = collisionShape.shape._get_extents_y(),
 		used = used,
 		idx = idx,
@@ -83,7 +83,7 @@ func _load_state(loadState: Dictionary) -> void:
 	properties = loadState['properties']
 	fixed_position_x = loadState['fixed_position_x']
 	fixed_position_y = loadState['fixed_position_y']
-	collisionShape.shape._set_extents_x(loadState['width']) # TODO: make sure this is safe
+	collisionShape.shape._set_extents_x(loadState['width'])
 	collisionShape.shape._set_extents_y(loadState['height'])
 	used = loadState['used']
 	idx = loadState['idx']

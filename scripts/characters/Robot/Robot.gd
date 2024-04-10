@@ -7,6 +7,8 @@ extends Character
 @onready var wallL = get_parent().get_node("WallStaticBody_L")
 @onready var ceiling = get_parent().get_node("CeilingStaticBody")
 @onready var opponent = get_parent().get_node("ClientPlayer") if self.name == "ServerPlayer" else get_parent().get_node("ServerPlayer")
+@onready var projectile = preload("res://scenes/gameplay/Projectile.tscn")
+@onready var attacks = $Hitbox.get_node("MainShape").attacks
 
 # SGFixed numbers
 var ONE = SGFixed.ONE
@@ -205,11 +207,14 @@ func get_input_vector():
 	return vector
 
 func _game_process(input: int) -> int:
-	
 	if self.name == "ServerPlayer":
 		opponent = get_parent().get_node("ClientPlayer")
 	else:
 		opponent = get_parent().get_node("ServerPlayer")
+
+	# projectile process
+	for child in $Projectiles.get_children():
+		child._game_process()
 	
 	# Deal with meter
 	_meter_func()
@@ -376,7 +381,7 @@ func _save_state() -> Dictionary:
 		# held = held_,
 		hit_landed = hit_landed,
 		# inputHistory = input_history,
-		# inputHistoryIdx = inputHistoryIdx
+		# inputHistoryIdx = inputHistoryIdx,
 	}
 
 func _load_state(loadState: Dictionary) -> void:
