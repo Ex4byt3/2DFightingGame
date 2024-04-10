@@ -803,13 +803,13 @@ const attacks = {
 	"qcf_light": {
 		"projectile": true,
 		"castTime": 55,
-		"width": 90 * ONE,
-		"height": 135 * ONE, # TODO: replace small and medium projectiles with correct sprite and l/w
+		"width": 85 * ONE,
+		"height": 110 * ONE,
 		"startPos": [180 * ONE, 0],
 		"velocity": [10 * ONE, 0],
 		"lifespan": 180,
 		"spawnDelay": 14,
-		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFProjectile.png"),
+		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFSmall.png"),
 		"cancelable": { 
 			"jump": false,
 			"type": 2,
@@ -844,13 +844,13 @@ const attacks = {
 	"qcf_medium": {
 		"projectile": true,
 		"castTime": 55,
-		"width": 90 * ONE,
-		"height": 135 * ONE,
+		"width": 85 * ONE,
+		"height": 110 * ONE,
 		"startPos": [180 * ONE, 0],
 		"velocity": [7 * ONE, 0],
 		"lifespan": 180,
 		"spawnDelay": 14,
-		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFProjectile.png"),
+		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFSmall.png"),
 		"cancelable": {
 			"jump": false,
 			"type": 2,
@@ -891,7 +891,7 @@ const attacks = {
 		"velocity": [5 * ONE, 0],
 		"lifespan": 120,
 		"spawnDelay": 14,
-		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFProjectile.png"),
+		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFBig.png"),
 		"cancelable": {
 			"jump": false,
 			"type": 2,

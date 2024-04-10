@@ -651,56 +651,56 @@ func transition_state(input):
 		states.NEUTRAL_LIGHT:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("neutral_light")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.NEUTRAL_MEDIUM:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("neutral_medium")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.NEUTRAL_HEAVY:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("neutral_heavy")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.NEUTRAL_IMPACT:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("neutral_impact")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.FORWARD_HEAVY:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("forward_heavy")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_LIGHT:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("crouching_light")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_MEDIUM:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("crouching_medium")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_HEAVY:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("crouching_heavy")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
@@ -710,20 +710,20 @@ func transition_state(input):
 			else:
 				player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("crouching_forward_medium")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.CROUCHING_IMPACT:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("crouching_impact")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_LIGHT:
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("air_light")
 			#SyncManager.play_sound(str(get_path()) + ":neutral_impact", player.boom, player.boomINFO)
 			# play impact animation
 			if player.recovery:
@@ -734,50 +734,50 @@ func transition_state(input):
 				set_actionable_state()
 		states.BACK_AIR_LIGHT:
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("back_air_light")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_MEDIUM:
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("air_medium")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_MEDIUM:
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("back_air_medium")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_HEAVY:
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("air_heavy")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_HEAVY:
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("back_air_heavy")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.AIR_IMPACT:
 			if player.hitstopBuffer > player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("air_impace")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.BACK_AIR_IMPACT:
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("back_air_impact")
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
 		states.QCF_LIGHT:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("qcf_light")
 			elif player.frame == player.attacks["qcf_light"]["spawnDelay"]:
 				SyncManager.spawn("Projectile", player.get_node("Projectiles"), player.projectile, player.attacks["qcf_light"])
 				player.frame += 1
@@ -789,7 +789,7 @@ func transition_state(input):
 		states.QCF_MEDIUM:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("qcf_medium")
 			elif player.frame == player.attacks["qcf_medium"]["spawnDelay"]:
 				SyncManager.spawn("Projectile", player.get_node("Projectiles"), player.projectile, player.attacks["qcf_medium"])
 				player.frame += 1
@@ -801,7 +801,7 @@ func transition_state(input):
 		states.QCF_HEAVY:
 			player.velocity.x = 0
 			if player.hitstopBuffer >= player.Buttons.light:
-				do_hitstop_buffer()
+				do_hitstop_buffer("qcf_heavy")
 			elif player.frame == player.attacks["qcf_heavy"]["spawnDelay"]:
 				SyncManager.spawn("Projectile", player.get_node("Projectiles"), player.projectile, player.attacks["qcf_heavy"])
 				player.frame += 1
@@ -814,15 +814,16 @@ func transition_state(input):
 	# Updating input buffer
 	update_input_buffer(player.input_vector)
 
-func do_hitstop_buffer() -> void:
-	if player.hitbox.properties["cancelable"]["jump"]:
+func do_hitstop_buffer(attack_name: String) -> void:
+	var properties = player.attacks[attack_name]
+	if properties["cancelable"]["jump"]:
 		if player.hitstopBuffer & player.Buttons.up: # still don't have input vecotor here
 			player.pressed += player.Buttons.jump
 			start_jump()
 			return
 		
 	var attack = any_attack(get_attack_button(player.inputBuffer)) # check for [TODO: valid] buffered attack
-	if attack in player.hitbox.properties["cancelable"]["moves"]: # TODO: not handling attack type cancels, only jump and by name
+	if attack in properties["cancelable"]["moves"]: # TODO: not handling attack type cancels, only jump and by name
 		player.frame = 0
 		player.hitbox.disabled = true
 		do_attack(attack)
@@ -969,7 +970,6 @@ func do_hit():
 	SyncManager.play_sound(str(get_path()) + ":hit", player.sounds[sfx], player.sounds["hitI"])
 	# TODO: meter gain
 	if player.blockMask & player.hurtboxCollision["onBlock"]["mask"] == player.hurtboxCollision["onBlock"]["mask"]: # if blocked
-		# TODO: chip damage
 		var onBlock = player.hurtboxCollision["onBlock"]
 		player.frame = 0
 		if !player.hurtboxCollision["projectile"]:
