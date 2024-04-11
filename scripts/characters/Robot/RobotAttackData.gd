@@ -52,7 +52,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4},
-				{"x": 90, "y": 40, "width": 70, "height": 50, "ticks": 3},
+				{"x": 90, "y": 40, "width": 90, "height": 70, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5}
 			],
 		"cancelable": {
@@ -97,7 +97,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6},
-				{"x": 85, "y": 10, "width": 80, "height": 40, "ticks": 5},
+				{"x": 85, "y": 10, "width": 100, "height": 60, "ticks": 5},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6}
 			],
 		"cancelable": {
@@ -140,7 +140,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 9},
-				{"x": 170, "y": -40, "width": 220, "height": 70, "ticks": 6},
+				{"x": 170, "y": -40, "width": 240, "height": 90, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 15}
 			],
 		"cancelable": {
@@ -182,7 +182,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20},
-				{"x": 190, "y": -20, "width": 250, "height": 190, "ticks": 4},
+				{"x": 190, "y": -20, "width": 270, "height": 210, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 24}
 			],
 		"cancelable": {
@@ -221,7 +221,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3},
-				{"x": 100, "y": -15, "width": 50, "height": 40, "ticks": 3},
+				{"x": 100, "y": -15, "width": 70, "height": 60, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5}
 			],
 		"cancelable": {
@@ -266,7 +266,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 7},
-				{"x": 80, "y": -100, "width": 100, "height": 30, "ticks": 4},
+				{"x": 80, "y": -100, "width": 120, "height": 50, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
 		"cancelable": {
@@ -307,7 +307,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 8},
-				{"x": 150, "y": 30, "width": 180, "height": 300, "ticks": 3},
+				{"x": 150, "y": 30, "width": 200, "height": 320, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
 		"cancelable": {
@@ -347,7 +347,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 11},
-				{"x": 80, "y": -100, "width": 400, "height": 20, "ticks": 6},
+				{"x": 80, "y": -100, "width": 420, "height": 40, "ticks": 6},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 17}
 			],
 		"cancelable": {
@@ -386,7 +386,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 13},
-				{"x": 230, "y": -10, "width": 350, "height": 90, "ticks": 4},
+				{"x": 230, "y": -10, "width": 370, "height": 110, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 22}
 			],
 		"cancelable": {
@@ -425,7 +425,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10},
-				{"x": 75, "y": -100, "width": 80, "height": 30, "ticks": 20},
+				{"x": 75, "y": -100, "width": 100, "height": 50, "ticks": 20},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5}
 			],
 		"cancelable": {
@@ -464,7 +464,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 3},
-				{"x": 110, "y": -35, "width": 60, "height": 40, "ticks": 2},
+				{"x": 110, "y": -35, "width": 80, "height": 60, "ticks": 2},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 9}
 			],
 		"cancelable": {
@@ -511,7 +511,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 4},
-				{"x": -90, "y": -20, "width": 75, "height": 20, "ticks": 3},
+				{"x": -90, "y": -20, "width": 95, "height": 40, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 9}
 			],
 		"cancelable": {
@@ -558,7 +558,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 5},
-				{"x": 95, "y": -60, "width": 80, "height": 40,  "ticks": 12},
+				{"x": 95, "y": -60, "width": 100, "height": 60,  "ticks": 12},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18}
 			],
 		"cancelable": {
@@ -601,7 +601,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 6},
-				{"x": - 70, "y": 20, "width": 110, "height": 60, "ticks": 3},
+				{"x": - 70, "y": 20, "width": 120, "height": 80, "ticks": 3},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14}
 			],
 		"cancelable": {
@@ -644,7 +644,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 14},
-				{"x": 120, "y": -20, "width": 200, "height": 220, "ticks": 4},
+				{"x": 120, "y": -20, "width": 220, "height": 240, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 10}
 			],
 		"cancelable": {
@@ -685,7 +685,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 15},
-				{"x": -120, "y": -20, "width": 200, "height": 220, "ticks": 4},
+				{"x": -120, "y": -20, "width": 220, "height": 240, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 12}
 			],
 		"cancelable": {
@@ -726,7 +726,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 18},
-				{"x": 160, "y": -60, "width": 150, "height": 40, "ticks": 4},
+				{"x": 160, "y": -60, "width": 170, "height": 60, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 20}
 			],
 		"cancelable": {
@@ -765,7 +765,7 @@ const attacks = {
 		"projectile": false,
 		"hitboxes": [
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 16},
-				{"x": -140, "y": -20, "width": 150, "height": 40, "ticks": 4},
+				{"x": -140, "y": -20, "width": 170, "height": 60, "ticks": 4},
 				{"x": 0, "y": 0, "width": 0, "height": 0, "ticks": 27}
 			],
 		"cancelable": {
@@ -803,8 +803,8 @@ const attacks = {
 	"qcf_light": {
 		"projectile": true,
 		"castTime": 55,
-		"width": 85 * ONE,
-		"height": 110 * ONE,
+		"width": 105 * ONE,
+		"height": 130 * ONE,
 		"startPos": [180 * ONE, 0],
 		"velocity": [30 * ONE, 0],
 		"lifespan": 180,
@@ -844,8 +844,8 @@ const attacks = {
 	"qcf_medium": {
 		"projectile": true,
 		"castTime": 55,
-		"width": 85 * ONE,
-		"height": 110 * ONE,
+		"width": 105 * ONE,
+		"height": 130 * ONE,
 		"startPos": [180 * ONE, 0],
 		"velocity": [40 * ONE, 0],
 		"lifespan": 180,
@@ -885,8 +885,8 @@ const attacks = {
 	"qcf_heavy": {
 		"projectile": true,
 		"castTime": 55,
-		"width": 90 * ONE,
-		"height": 135 * ONE,
+		"width": 110 * ONE,
+		"height": 155 * ONE,
 		"startPos": [180 * ONE, 0],
 		"velocity": [50 * ONE, 0],
 		"lifespan": 120,
