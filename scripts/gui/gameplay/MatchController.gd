@@ -24,6 +24,7 @@ var match_settings: Dictionary = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_handle_connecting_signals()
+	Steam.setIdentitySteamID64("STEAM_OPP_ID", NetworkGlobal.STEAM_OPP_ID)
 
 
 ##################################################
