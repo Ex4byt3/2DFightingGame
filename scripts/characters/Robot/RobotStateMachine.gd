@@ -725,10 +725,6 @@ func transition_state(input):
 			if player.hitstopBuffer >= player.Buttons.light:
 				do_hitstop_buffer("air_light")
 			#SyncManager.play_sound(str(get_path()) + ":neutral_impact", player.boom, player.boomINFO)
-			# play impact animation
-			if player.recovery:
-				# TODO: add recovery frames/cancel logic
-				pass
 			elif player.frame == -1:
 				player.frame = 0
 				set_actionable_state()
@@ -881,8 +877,8 @@ func do_walk(speed, acceleration):
 
 func start_jump():
 	if !player.pressed & player.Buttons.jump and !player.pressed & player.Buttons.up:
-		player.pressed += player.Buttons.jump
-		player.pressed += 8
+		# player.pressed += player.Buttons.jump
+		player.pressed += player.Buttons.up
 		if player.isOnFloor:
 			player.animation.play("Jumpsquat")
 		else:

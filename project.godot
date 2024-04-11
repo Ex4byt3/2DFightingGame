@@ -44,6 +44,7 @@ multirun/other_window_args="join"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 window/size/resizable=false
 window/size/window_width_override=720
 window/size/window_height_override=480
@@ -305,8 +306,6 @@ limits/debugger/max_chars_per_second=21105
 rollback/sound_manager/default_sound_bus="Sound"
 rollback/classes/network_adaptor="res://addons/godot-rollback-netcode/RPCNetworkAdaptor.gd"
 rollback/classes/message_serializer="res://scripts/networking/CustomMessageSerializer.gd"
-rollback/debug/rollback_ticks=4
-rollback/debug/random_rollback_ticks=10
 rollback/log_inspector/replay_match_scene_path="res://scenes/Main.tscn"
 
 [physics]

@@ -70,11 +70,11 @@ const attacks = {
 		"onHit": {
 			"damage": 170,
 			"adv": 0,
-			"gain": 0,
+			"gain": 1000,
 			"hitstop": 6,
 			"knockdown": 0,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3000,
 				"static": false,
 				"mult": true,
 				"force": 2 * ONE,
@@ -113,13 +113,13 @@ const attacks = {
 		"onHit": {
 			"damage": 250,
 			"adv": - 2,
-			"gain": 0,
+			"gain": 2000,
 			"hitstop": 8,
 			"knockdown": 0,
 			"knockback": {
-				"gain": 3932,
+				"gain": 6000,
 				"static": false,
-				"mult": false,
+				"mult": true,
 				"force": 3 * ONE,
 				"angle": 25735 
 			},
@@ -159,7 +159,7 @@ const attacks = {
 			"hitstop": 10,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 4000,
 				"static": false,
 				"mult": false,
 				"force": 3 * ONE,
@@ -198,7 +198,7 @@ const attacks = {
 			"hitstop": 10,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3000,
 				"static": true,
 				"mult": false,
 				"force": 6 * ONE,
@@ -239,11 +239,11 @@ const attacks = {
 		"onHit": {
 			"damage": 145,
 			"adv": 0,
-			"gain": 0,
+			"gain": 1000,
 			"hitstop": 5,
 			"knockdown": 0,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3500,
 				"static": true,
 				"mult": false,
 				"force": 2 * ONE,
@@ -280,11 +280,11 @@ const attacks = {
 		"onHit": {
 			"damage": 185,
 			"adv": - 2,
-			"gain": 0,
+			"gain": 2000,
 			"hitstop": 8,
 			"knockdown": 0,
 			"knockback": {
-				"gain": 1966,
+				"gain": 4000,
 				"static": true,
 				"mult": false,
 				"force": 2 * ONE,
@@ -324,7 +324,7 @@ const attacks = {
 			"hitstop": 10,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 6000,
 				"static": false,
 				"mult": false,
 				"force": 12 * ONE,
@@ -359,11 +359,11 @@ const attacks = {
 		"onHit": {
 			"damage": 166,
 			"adv": 0,
-			"gain": 0,
+			"gain": 6000,
 			"hitstop": 10,
 			"knockdown": 2,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3500,
 				"static": false,
 				"mult": false,
 				"force": 2 * ONE,
@@ -398,11 +398,11 @@ const attacks = {
 		"onHit": {
 			"damage": 269,
 			"adv": + 1,
-			"gain": 2621,
+			"gain": 6300,
 			"hitstop": 11,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3000,
 				"static": false,
 				"mult": false,
 				"force": 8 * ONE,
@@ -437,11 +437,11 @@ const attacks = {
 		"onHit": {
 			"damage": 200,
 			"adv": - 12,
-			"gain": 0,
+			"gain": 4000,
 			"hitstop": 8,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3000,
 				"static": false,
 				"mult": false,
 				"force": 4 * ONE,
@@ -484,11 +484,11 @@ const attacks = {
 		"onHit": {
 			"damage": 150,
 			"adv": - 2,
-			"gain": 3276,
+			"gain": 3500,
 			"hitstop": 5,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3000,
 				"static": false,
 				"mult": true,
 				"force": 2 * ONE,
@@ -531,11 +531,11 @@ const attacks = {
 		"onHit": {
 			"damage": 150,
 			"adv": - 2,
-			"gain": 3276,
+			"gain": 3500,
 			"hitstop": 5,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 3000,
 				"static": false,
 				"mult": true,
 				"force": 2 * ONE,
@@ -574,11 +574,11 @@ const attacks = {
 		"onHit": {
 			"damage": 190,
 			"adv": - 3,
-			"gain": 3276,
+			"gain": 5000,
 			"hitstop": 7,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 4000,
 				"static": false,
 				"mult": true,
 				"force": 4 * ONE,
@@ -617,11 +617,11 @@ const attacks = {
 		"onHit": {
 			"damage": 195,
 			"adv": - 3,
-			"gain": 3276,
+			"gain": 5000,
 			"hitstop": 7,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 1966,
+				"gain": 4000,
 				"static": false,
 				"mult": true,
 				"force": 4 * ONE,
@@ -658,11 +658,11 @@ const attacks = {
 		"onHit": {
 			"damage": 225,
 			"adv": - 5,
-			"gain": 3932,
+			"gain": 8500,
 			"hitstop": 7,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 3932,
+				"gain": 7000,
 				"static": false,
 				"mult": true,
 				"force": 7 * ONE,
@@ -699,11 +699,11 @@ const attacks = {
 		"onHit": {
 			"damage": 235,
 			"adv": - 5,
-			"gain": 3932,
+			"gain": 8500,
 			"hitstop": 7,
 			"knockdown": 1,
 			"knockback": {
-				"gain": 3932,
+				"gain": 7000,
 				"static": false,
 				"mult": true,
 				"force": 7 * ONE,
@@ -738,11 +738,11 @@ const attacks = {
 		"onHit": {
 			"damage": 240,
 			"adv": - 5,
-			"gain": 4259,
+			"gain": 9000,
 			"hitstop": 7,
 			"knockdown": 2,
 			"knockback": {
-				"gain": 3932,
+				"gain": 8000,
 				"static": false,
 				"mult": true,
 				"force": 8 * ONE,
@@ -777,11 +777,11 @@ const attacks = {
 		"onHit": {
 			"damage": 245,
 			"adv": - 5,
-			"gain": 4259,
+			"gain": 9000,
 			"hitstop": 7,
 			"knockdown": 2,
 			"knockback": {
-				"gain": 3932,
+				"gain": 8000,
 				"static": false,
 				"mult": true,
 				"force": 8 * ONE,
@@ -806,7 +806,7 @@ const attacks = {
 		"width": 85 * ONE,
 		"height": 110 * ONE,
 		"startPos": [180 * ONE, 0],
-		"velocity": [10 * ONE, 0],
+		"velocity": [30 * ONE, 0],
 		"lifespan": 180,
 		"spawnDelay": 14,
 		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFSmall.png"),
@@ -822,11 +822,11 @@ const attacks = {
 			"hitstop": 7,
 			"knockdown": 2,
 			"knockback": {
-				"gain": 3932,
+				"gain": 6000,
 				"static": false,
 				"mult": true,
 				"force": 10 * ONE,
-				"angle": 0
+				"angle": 25735
 			},
 		},
 		"onBlock": {
@@ -847,7 +847,7 @@ const attacks = {
 		"width": 85 * ONE,
 		"height": 110 * ONE,
 		"startPos": [180 * ONE, 0],
-		"velocity": [7 * ONE, 0],
+		"velocity": [40 * ONE, 0],
 		"lifespan": 180,
 		"spawnDelay": 14,
 		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFSmall.png"),
@@ -859,15 +859,15 @@ const attacks = {
 		"onHit": {
 			"damage": 200,
 			"hitstun": 40,
-			"gain": 0,
+			"gain": 7000,
 			"hitstop": 7,
 			"knockdown": 2,
 			"knockback": {
-				"gain": 3932,
+				"gain": 6000,
 				"static": false,
 				"mult": true,
 				"force": 10 * ONE,
-				"angle": 0
+				"angle": 25735
 			},
 		},
 		"onBlock": {
@@ -888,7 +888,7 @@ const attacks = {
 		"width": 90 * ONE,
 		"height": 135 * ONE,
 		"startPos": [180 * ONE, 0],
-		"velocity": [5 * ONE, 0],
+		"velocity": [50 * ONE, 0],
 		"lifespan": 120,
 		"spawnDelay": 14,
 		"sprite": preload("res://assets/characters/Robot/Attacks/Normals/QCFBig.png"),
@@ -900,15 +900,15 @@ const attacks = {
 		"onHit": {
 			"damage": 280,
 			"hitstun": 40,
-			"gain": 0,
+			"gain": 8000,
 			"hitstop": 7,
 			"knockdown": 2,
 			"knockback": {
-				"gain": 3932,
+				"gain": 6000,
 				"static": false,
 				"mult": true,
 				"force": 10 * ONE,
-				"angle": 0
+				"angle": 25735
 			},
 		},
 		"onBlock": {
