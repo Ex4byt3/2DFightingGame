@@ -9,10 +9,12 @@ var hitboxes = [] # The shapes of our hitbox over time (frames)
 var idx : int = 0
 var disabled = false
 var active = false # assumes first hitbox is never active
+var collisionLayer = 2 # layer to enable to hit the other player
 
 var attack_string: String = ""
 
 func do_attack(attack_name: String):
+	set_collision_layer_bit(collisionLayer, false) # start disabled
 	properties = collisionShape.attacks[attack_name]
 	hitboxes = properties['hitboxes']
 	used = false
@@ -27,6 +29,7 @@ func _game_process() -> void:
 	if properties == {}:
 		return
 	if disabled:
+		set_collision_layer_bit(collisionLayer, false)
 		set_shape(0, 0)
 		properties = {}
 		used = true
@@ -45,6 +48,7 @@ func _game_process() -> void:
 		set_shape(hitboxes[idx]["width"], hitboxes[idx]["height"])
 		if hitboxes[idx]["width"] > 0:
 			active = true
+			set_collision_layer_bit(collisionLayer, true)
 		set_pos(hitboxes[idx]["x"], hitboxes[idx]["y"])
 		player.frame = 0
 	player.frame += 1

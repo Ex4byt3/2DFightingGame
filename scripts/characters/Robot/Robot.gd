@@ -179,6 +179,7 @@ func _rotate_client_player() -> void:
 		hurtBox.set_collision_mask_bit(2, true)
 		hitbox.set_collision_layer_bit(2, false)
 		hitbox.set_collision_layer_bit(1, true)
+		hitbox.collisionLayer = 1
 
 ## Initializing the character data
 #func _init_character_data() -> void:
@@ -214,6 +215,8 @@ func _game_process(input: int) -> int:
 	
 	# Deal with meter
 	_meter_func()
+
+	meterVal = 12 # for testing, remove later
 	
 	# Transition state and calculate velocity off of this logic
 	# input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))\
