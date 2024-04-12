@@ -960,6 +960,7 @@ func get_stun_frames(hitboxes: Array, advantage: int) -> int:
 	return moveFrames + advantage
 
 func do_hit():
+	player.hitbox.disabled = true
 	var sxfIdx : int = player.currentGameFrame % 3
 	var sfx : String = "hit" + str(sxfIdx)
 	SyncManager.play_sound(str(get_path()) + ":hit", player.sounds[sfx], player.sounds["hitI"])
