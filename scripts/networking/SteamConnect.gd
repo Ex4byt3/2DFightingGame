@@ -7,9 +7,10 @@ const SteamNetworkAdaptor = preload("res://scripts/networking/SteamNetworkAdapto
 @onready var server_player = $ServerPlayer
 @onready var client_player = $ClientPlayer
 
-const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
+@onready var executable_path = OS.get_executable_path()
+const LOG_FILE_DIRECTORY = "/ProjectDeltaLogs"
 
-var logging_enabled := true
+var logging_enabled := false
 var emptyData: PackedByteArray = [1]
 
 enum NETWORK_TYPE {

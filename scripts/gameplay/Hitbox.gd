@@ -80,6 +80,7 @@ func _save_state() -> Dictionary:
 		disabled = disabled,
 		attack_string = attack_string,
 		hitboxes = hit_boxes,
+		collision_layer_bit = get_collision_layer_bit(collisionLayer)
 	}
 
 func _load_state(loadState: Dictionary) -> void:
@@ -96,4 +97,5 @@ func _load_state(loadState: Dictionary) -> void:
 	idx = loadState['idx']
 	disabled = loadState['disabled']
 	attack_string = loadState['attack_string']
+	set_collision_layer_bit(collisionLayer, loadState['collision_layer_bit'])
 	sync_to_physics_engine()

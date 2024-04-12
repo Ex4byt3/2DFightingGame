@@ -1,13 +1,13 @@
 extends Node
 
-const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
+const LOG_FILE_DIRECTORY = "/ProjectDeltaLogs"
 
 @onready var message_label = $Messages/MessageLabel
 @onready var sync_lost_label = $Messages/SyncLostLabel
 @onready var reset_button = $Messages/ResetButton
 #@onready var johnny = $Johnny
 
-var logging_enabled := true
+var logging_enabled := false
 
 
 func _ready() -> void:
