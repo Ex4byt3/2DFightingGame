@@ -217,6 +217,8 @@ func _game_process(input: int) -> int:
 	_meter_func()
 
 	meterVal = 12 # for testing, remove later
+	if Input.is_action_just_pressed("quick_reset"): # for testing, remove later and add to training mode
+		MatchSignalBus._emit_setup_round()
 	
 	# Transition state and calculate velocity off of this logic
 	# input_vector = SGFixed.vector2(input.get("input_vector_x", 0), input.get("input_vector_y", 0))\
