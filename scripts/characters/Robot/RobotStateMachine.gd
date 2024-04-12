@@ -560,6 +560,7 @@ func transition_state(input):
 					if player.changedVelocity == false and (abs(player.wallBounceVelocity.x/ONE) > player.wallBounceThreshold):
 						player.velocity.x = -player.wallBounceVelocity.x
 						player.changedVelocity = true
+						player.hitstop = 10 # hitstop for wallbounce
 				if player.frame >= player.hitstunFrames - 3:
 					if player.isOnFloor:
 						player.animation.play("HitstunEnd")

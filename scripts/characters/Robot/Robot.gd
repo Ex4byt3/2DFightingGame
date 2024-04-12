@@ -26,7 +26,7 @@ var dashDuration = 18
 var dashVector = SGFixed.vector2(0, 0)
 
 var groundDeceleration = 2
-var wallBounceThreshold = 20
+var wallBounceThreshold = 10
 var walkSpeed = 8
 var walkAcceleration = 2
 var crawlSpeed = 2
