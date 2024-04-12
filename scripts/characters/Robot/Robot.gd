@@ -208,6 +208,9 @@ func get_input_vector():
 	return vector
 
 func _game_process(input: int) -> int:
+	MenuSignalBus.emit_update_health(health, self.name)
+	MenuSignalBus.emit_update_lives(num_lives, self.name)
+	
 	if self.name == "ServerPlayer":
 		opponent = get_parent().get_node("ClientPlayer")
 	else:
