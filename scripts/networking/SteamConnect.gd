@@ -117,9 +117,13 @@ func peer_connected():
 	message_label.text = "Connected!"
 	
 	if NetworkGlobal.STEAM_IS_HOST:
-		SyncManager.add_peer(2)
+		NetworkGlobal.STEAM_PEER_ID = 1
+		NetworkGlobal.STEAM_OPP_PEER_ID = 2
 	else:
-		SyncManager.add_peer(1)
+		NetworkGlobal.STEAM_PEER_ID = 2
+		NetworkGlobal.STEAM_OPP_PEER_ID = 1
+		
+	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_PEER_ID)
 	
 	server_player.set_multiplayer_authority(1)
 	client_player.set_multiplayer_authority(2)
