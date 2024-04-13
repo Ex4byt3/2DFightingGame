@@ -29,4 +29,5 @@ func _on_interface_toggled(button_checked: bool) -> void:
 
 
 func _on_leave_match_button_pressed() -> void:
-	MenuSignalBus.emit_leave_match()
+	#MenuSignalBus.emit_leave_match()
+	MatchSignalBus.emit_quit_to_menu()

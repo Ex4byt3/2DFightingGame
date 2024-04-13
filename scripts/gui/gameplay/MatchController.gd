@@ -31,23 +31,12 @@ func _ready():
 # ONREADY FUNCTIONS
 ##################################################
 func _handle_connecting_signals() -> void:
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "create_match", "_create_match")
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "leave_match", "_leave_match")
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_match_settings", "_update_match_settings")
 	MenuSignalBus.create_match.connect(_create_match)
 	MenuSignalBus.leave_match.connect(_leave_match)
+	
 	MenuSignalBus.update_match_settings.connect(_update_match_settings)
 	
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "round_over", "_round_over")
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "player_ready", "_player_ready")
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "character_selected", "_on_character_selected")
-	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "debug_name", "_debug_name")
-	#MenuSignalBus.round_over.connect(_round_over)
-	#MenuSignalBus.player_ready.connect(_player_ready)
-	#MenuSignalBus.start_round.connect(_start_round)
-	
 	MatchSignalBus.combat_start.connect(_combat_start)
-	#MatchSignalBus.combat_stop.connect()
 	MatchSignalBus.round_start.connect(_round_start)
 	MatchSignalBus.round_stop.connect(_round_stop)
 
@@ -62,19 +51,19 @@ func _create_match() -> void:
 
 # TODO: Move networking logic
 func _leave_match() -> void: 
-	match NetworkGlobal.NETWORK_TYPE:
-		NetworkGlobal.NetworkType.ENET:
-			var peer = multiplayer.multiplayer_peer
-			if peer:
-				peer.close()
-		NetworkGlobal.NetworkType.STEAM:
-			Steam.closeSessionWithUser("STEAM_OPP_ID")
-		_:
-			print("Sync error, but not in a networked game")
-	
-	SyncManager.stop()
-	SyncManager.clear_peers()
-	SyncManager.reset_network_adaptor()
+	#match NetworkGlobal.NETWORK_TYPE:
+		#NetworkGlobal.NetworkType.ENET:
+			#var peer = multiplayer.multiplayer_peer
+			#if peer:
+				#peer.close()
+		#NetworkGlobal.NetworkType.STEAM:
+			#Steam.closeSessionWithUser("STEAM_OPP_ID")
+		#_:
+			#print("Sync error, but not in a networked game")
+	#
+	#SyncManager.stop()
+	#SyncManager.clear_peers()
+	#SyncManager.reset_network_adaptor()
 	
 	for child in get_children():
 		child.queue_free()
@@ -88,7 +77,6 @@ func _setup_combat() -> void:
 	var new_map_holder = map_holder.instantiate()
 	add_child(new_map_holder)
 	MenuSignalBus.emit_send_match_settings()
-	#MenuSignalBus.emit_apply_match_settings(match_settings)
 	MatchSignalBus.emit_combat_start()
 
 
@@ -99,7 +87,11 @@ func _combat_start() -> void:
 
 func _combat_stop() -> void:
 	await MatchSignalBus.banner_done
-	MenuSignalBus.emit_leave_match()
+	
+	if NetworkGlobal.STEAM_IS_HOST:
+		#MenuSignalBus.emit_leave_match()
+		MatchSignalBus.emit_match_over()
+		
 	print("[SYSTEM][COMBAT] Combat has been stopped")
 
 

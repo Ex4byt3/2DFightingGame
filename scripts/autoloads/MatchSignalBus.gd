@@ -14,6 +14,9 @@ signal round_stop
 
 signal banner_done
 
+signal quit_to_menu
+signal match_over
+
 
 func emit_update_ui_visibility(button_checked: bool) -> void:
 	emit_signal("update_ui_visibility", button_checked)
@@ -40,3 +43,10 @@ func emit_round_stop() -> void:
 
 func emit_banner_done() -> void:
 	emit_signal("banner_done")
+
+
+func emit_quit_to_menu() -> void:
+	emit_signal("quit_to_menu")
+
+func emit_match_over() -> void:
+	emit_signal("match_over")

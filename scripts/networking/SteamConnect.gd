@@ -40,6 +40,8 @@ func _ready() -> void:
 #	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
 	
 	MenuSignalBus._connect_Signals(Steam, self, "network_messages_session_request", "_on_network_messages_session_request")
+	MatchSignalBus.quit_to_menu.connect(_on_quit_to_menu)
+	MatchSignalBus.match_over.connect(_on_match_over)
 #	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
 	Steam.setIdentitySteamID64("STEAM_OPP_ID", NetworkGlobal.STEAM_OPP_ID)
 	
@@ -191,7 +193,6 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 			
 	SyncManager.clear_peers()
 
-	
 func _on_ResetButton_pressed() -> void:
 	SyncManager.stop()
 	SyncManager.clear_peers()
@@ -201,6 +202,11 @@ func _on_ResetButton_pressed() -> void:
 	print("Resetting to main menu...")
 	get_tree().reload_current_scene()
 
+func _on_quit_to_menu() -> void:
+	pass
+
+func _on_match_over() -> void:
+	pass
 
 # When one peer attempts to communicate with another peer directly, they need to 
 # either send an arbitrary message back as a handshake, or accept their inital message
@@ -220,7 +226,9 @@ func _on_network_messages_session_request(sender_id: String):
 	if sender_id_int != NetworkGlobal.STEAM_OPP_ID:
 		print("A user (Steam Opp ID: " + str(NetworkGlobal.STEAM_OPP_ID) + ", Sender ID: " + str(sender_id_int) + ") attempted to connect that wasn't our current opponent!")
 		return
-		
+	
+	print("Accepting a session with a new opponent: " + sender_id)
+	
 	Steam.acceptSessionWithUser(sender_id)
 	
 	# We don't know what this user wants yet, but we're going to tell them
