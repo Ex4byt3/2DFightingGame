@@ -214,7 +214,7 @@ func _on_network_messages_session_request(sender_id: String):
 	var sender_id_int = sender_id.to_int()
 	
 	if sender_id_int != NetworkGlobal.STEAM_OPP_ID:
-		print("A user attempted to connect that wasn't our current opponent!")
+		print("A user (Steam Opp ID: " + str(NetworkGlobal.STEAM_OPP_ID) + ", Sender ID: " + str(sender_id_int) + ") attempted to connect that wasn't our current opponent!")
 		return
 		
 	Steam.acceptSessionWithUser(sender_id)

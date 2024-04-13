@@ -160,11 +160,12 @@ func _update_ongoing_matches() -> void:
 				print("[STEAM] Connecting to accept button failed: "+str(spectate_signal))
 
 
-func _host_start() -> void:
+func _host_start(recipient_id: int) -> void:
+	var client_steam_id: int = recipient_id
 	NetworkGlobal.NETWORK_TYPE = 2
-	#GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	
 	NetworkGlobal.STEAM_IS_HOST = true
+	NetworkGlobal.STEAM_OPP_ID = int(client_steam_id)
 	print("[STEAM] Started match as server")
 	
 	_set_lobby_match_settings()
@@ -175,7 +176,6 @@ func _host_start() -> void:
 func _client_start(sender_id: int) -> void:
 	var host_steam_id: int = sender_id
 	NetworkGlobal.NETWORK_TYPE = 2
-	#GameSignalBus.emit_network_button_pressed(NetworkGlobal.NETWORK_TYPE)
 	
 	NetworkGlobal.STEAM_IS_HOST = false
 	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
@@ -351,7 +351,7 @@ func _recieve_command(command: String) -> void:
 		var sender_id: int  = int(participants[1])
 		var recipient_id: int = int(participants[2])
 		if Steam.getSteamID() == sender_id:
-			_host_start()
+			_host_start(recipient_id)
 		elif Steam.getSteamID() == recipient_id:
 			_client_start(sender_id)
 		
