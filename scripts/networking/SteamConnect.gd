@@ -117,13 +117,9 @@ func peer_connected():
 	message_label.text = "Connected!"
 	
 	if NetworkGlobal.STEAM_IS_HOST:
-		NetworkGlobal.STEAM_PEER_ID = 1
-		NetworkGlobal.STEAM_OPP_PEER_ID = 2
+		SyncManager.add_peer(2)
 	else:
-		NetworkGlobal.STEAM_PEER_ID = 2
-		NetworkGlobal.STEAM_OPP_PEER_ID = 1
-		
-	SyncManager.add_peer(NetworkGlobal.STEAM_OPP_PEER_ID)
+		SyncManager.add_peer(1)
 	
 	server_player.set_multiplayer_authority(1)
 	client_player.set_multiplayer_authority(2)
@@ -217,10 +213,10 @@ func _on_network_messages_session_request(sender_id: String):
 	
 	var sender_id_int = sender_id.to_int()
 	
-	# Identity_Reference is equal to the steam id as a string, assigned to the
-	# int value of the steam id
-	NetworkGlobal.STEAM_OPP_ID = sender_id_int
-	Steam.setIdentitySteamID64("STEAM_OPP_ID", sender_id_int)
+	if sender_id_int != NetworkGlobal.STEAM_OPP_ID:
+		print("A user attempted to connect that wasn't our current opponent!")
+		return
+		
 	Steam.acceptSessionWithUser(sender_id)
 	
 	# We don't know what this user wants yet, but we're going to tell them
