@@ -103,7 +103,7 @@ func process_networking_message(msg: Dictionary) -> void:
 			peer_connected()
 		SYNC_TYPE.STOP:
 			print("SYNC,STOP")
-			pass
+			reset_sync_data()
 		_: # Default
 			print("Could not match packet types from message")
 
@@ -202,11 +202,33 @@ func _on_ResetButton_pressed() -> void:
 	print("Resetting to main menu...")
 	get_tree().reload_current_scene()
 
+# When the user is quitting to lobby, send a STOP packet to the other person,
+# wait 1 second, and reset any relevant data.
 func _on_quit_to_menu() -> void:
-	pass
+	var stop_packet = create_networking_message(SYNC_TYPE.STOP, emptyData)
+	Steam.sendMessageToUser("STEAM_OPP_ID", stop_packet, 0, 1)
+	
+	# Wait 1 second, then reset and relevant data.
+	await get_tree().create_timer(2.0).timeout
+	reset_sync_data()
 
 func _on_match_over() -> void:
-	pass
+	reset_sync_data()
+	
+# Resets any relevant data for a users connection with another user.
+# SyncManager, and NetworkGlobal.
+func reset_sync_data() -> void:
+	SyncManager.stop()
+	SyncManager.clear_peers()
+	SyncManager.reset_network_adaptor()
+	
+	Steam.closeSessionWithUser("STEAM_OPP_ID")
+	Steam.setIdentitySteamID64("STEAM_OPP_ID", -1)
+	
+	NetworkGlobal.STEAM_IS_HOST = false
+	NetworkGlobal.STEAM_OPP_ID = 1
+	NetworkGlobal.STEAM_PEER_ID = 1
+	NetworkGlobal.STEAM_OPP_PEER_ID = 1
 
 # When one peer attempts to communicate with another peer directly, they need to 
 # either send an arbitrary message back as a handshake, or accept their inital message
