@@ -287,6 +287,7 @@ func _animate_health(damage_bar, target_value: int) -> void:
 func _spawn_round_stop_banners() -> void:
 	if not MatchData.winners.is_empty():
 		_spawn_round_win_banner()
+	MatchData.player_control_disabled = true
 	await get_tree().create_timer(MatchData.winner_banner_time + MatchData.banner_gap_time).timeout
 	_spawn_countdown_banner(false)
 
@@ -315,6 +316,7 @@ func _spawn_countdown_banner(is_combat_start: bool) -> void:
 	await get_tree().create_timer(1).timeout
 	new_banner.queue_free()
 	MatchSignalBus.emit_banner_done()
+	MatchData.player_control_disabled = false
 
 
 func _spawn_victor_banner() -> void:

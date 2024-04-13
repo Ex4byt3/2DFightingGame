@@ -213,8 +213,7 @@ func transition_state(input):
 	# 	player.apply_knockback(40 * ONE, SGFixed.mul(SGFixed.PI_DIV_4, 7*ONE))
 	# 	player.isOnFloor = false
 	# 	set_state('HITSTOP')
-
-
+	
 	if player.health <= 0 and not state == 'DEAD' and not state == 'DISABLED':
 		player.is_dead = true
 		set_state('DEAD')
@@ -637,6 +636,8 @@ func transition_state(input):
 			if player.is_dead and not player.is_disabled:
 				player.armg = 3
 				player.num_lives -= 1
+				player.velocity.x = 0
+				player.velocity.y = 0
 				#print("[COMBAT] " + str(player.name) + " has been KO'd!")
 				#print("[COMBAT] " + player.name + "'s lives: " + str(player.num_lives))
 				player.is_dead = false
@@ -644,6 +645,7 @@ func transition_state(input):
 				MatchSignalBus.emit_round_stop()
 		states.DISABLED:
 			player.velocity.x = 0
+			player.velocity.y = 0
 			player.animation.play("Idle")
 			if not MatchData.player_control_disabled:
 				player.is_disabled = false
