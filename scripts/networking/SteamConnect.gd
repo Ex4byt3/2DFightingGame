@@ -178,6 +178,7 @@ func _on_SyncManager_sync_started() -> void:
 		SyncManager.start_logging(LOG_FILE_DIRECTORY + '/' + log_file_name)
 
 func _on_SyncManager_sync_stopped() -> void:
+	print("Sync stop recieved")
 	if logging_enabled:
 		SyncManager.stop_logging()
 	reset_sync_data()
@@ -234,6 +235,7 @@ func reset_sync_data() -> void:
 	for key in steamConnectionInfo.keys():
 		print(key + ": " + str(steamConnectionInfo.get(key)))
 	
+	SyncManager.clear_peers()
 	SyncManager.reset_network_adaptor()
 	
 	Steam.closeSessionWithUser("STEAM_OPP_ID")
