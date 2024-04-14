@@ -10,11 +10,11 @@ var STEAM_ID: int = 0
 var STEAM_USERNAME: String = "No one"
 
 func _ready() -> void:
-	print("Starting the GodotSteam Example project...")
+	print("Initializing Steam...")
 	_initialize_Steam()
 
 	if IS_ON_STEAM_DECK:
-		OS.set_window_fullscreen(true)
+		get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (true) else Window.MODE_WINDOWED
 
 func _initialize_Steam() -> void:
 	if Engine.has_singleton("Steam"):

@@ -20,3 +20,7 @@ assets/resources/save_data/*
 
 # VSCode-specific ignores
 .vscode
+
+# addon ignores
+addons/godotsteam/win64/~godotsteam.debug.x86_64.dll
+addons/sg-physics-2d/lib/~libsgphysics2d.windows.template_debug.x86_64.dll

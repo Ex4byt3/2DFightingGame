@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://b7ua60tmfg5j3"]
+
+[ext_resource type="FontFile" uid="uid://bw2e5jfrt8qme" path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" id="1_bpli7"]
+
+[resource]
+base_font = ExtResource("1_bpli7")

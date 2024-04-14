@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://lnmvic1sbcuk"]
+
+[ext_resource type="Script" path="res://scripts/gui/menu/settings/WindowModeButton.gd" id="1"]
+
+[node name="WindowModeButton" type="MarginContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 43.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1")
+
+[node name="Panel" type="Button" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Window Mode"
+
+[node name="WindowModeOptions" type="OptionButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+action_mode = 1

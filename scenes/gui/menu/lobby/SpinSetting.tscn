@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dwrql3a4v1lau"]
+
+[node name="SpinSetting" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="SettingName" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Starting Lives"
+
+[node name="SettingSpin" type="SpinBox" parent="HBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10.0
+value = 2.0

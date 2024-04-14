@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://7c6tbeaeury1"]
+
+[ext_resource type="Script" path="res://scripts/gui/menu/character_select/CharacterSelectButton.gd" id="1_korrb"]
+[ext_resource type="Texture2D" uid="uid://dniqas512whmb" path="res://assets/menu/icons/player_icon.png" id="2_6wbq4"]
+
+[node name="CharacterSelectButton" type="PanelContainer"]
+script = ExtResource("1_korrb")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="CharacterIcon" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_6wbq4")

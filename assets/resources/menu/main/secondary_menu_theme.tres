@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=6 format=2]
 
-[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/fonts/Orbitron/Orbitron-VariableFont_wght.ttf" type="FontFile" id=1]
 <<<<<<<< HEAD:resources/menu/main/primary_menu_theme.tres
 ========
 [ext_resource path="res://resources/menu/main/styleboxflat_pressed.tres" type="StyleBox" id=2]
@@ -21,7 +21,7 @@ border_width_bottom = 2
 expand_margin_left = 5.0
 expand_margin_right = 5.0
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="FontFile" id=1]
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )

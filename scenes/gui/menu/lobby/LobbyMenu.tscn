@@ -1,0 +1,446 @@
+[gd_scene load_steps=3 format=3 uid="uid://h12l3d1hcmap"]
+
+[ext_resource type="Theme" uid="uid://bka6i68urcl7m" path="res://assets/resources/gui/lobbymenu_theme.tres" id="1_ranky"]
+[ext_resource type="Script" path="res://scripts/gui/menu/lobby/LobbyMenu.gd" id="2_04whh"]
+
+[node name="LobbyMenu" type="Control"]
+layout_mode = 3
+anchor_top = 0.075
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ranky")
+script = ExtResource("2_04whh")
+
+[node name="MainPane" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane"]
+layout_mode = 2
+
+[node name="LeftPane" type="MarginContainer" parent="MainPane/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPane/HBoxContainer/LeftPane"]
+layout_mode = 2
+
+[node name="TitleBox" type="VBoxContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="LobbyNameLabel" type="Label" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
+text = "ERR: LOBBY_NAME"
+vertical_alignment = 1
+
+[node name="LobbyInfo" type="HBoxContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox"]
+layout_mode = 2
+
+[node name="LobbyMode" type="PanelContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/LobbyInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/LobbyInfo/LobbyMode"]
+layout_mode = 2
+text = "ERR: LOBBY_MODE"
+
+[node name="LobbyType" type="PanelContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/LobbyInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/LobbyInfo/LobbyType"]
+layout_mode = 2
+text = "ERR: LOBBY_TYPE"
+
+[node name="LobbyState" type="PanelContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/LobbyInfo"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/LobbyInfo/LobbyState"]
+layout_mode = 2
+text = "ERR: LOBBY_STATE"
+
+[node name="HSeparator" type="HSeparator" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox"]
+layout_mode = 2
+
+[node name="ActionBox" type="HBoxContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox"]
+layout_mode = 2
+
+[node name="PasswordEdit" type="LineEdit" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/ActionBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Entering a password here will add a password to the current lobby"
+placeholder_text = "lobby password"
+max_length = 20
+clear_button_enabled = true
+
+[node name="ExitButton" type="Button" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox/ActionBox"]
+layout_mode = 2
+text = "Exit Lobby"
+
+[node name="HSeparator2" type="HSeparator" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/TitleBox"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="Members" type="VBoxContainer" parent="MainPane/HBoxContainer/LeftPane/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RightPane" type="MarginContainer" parent="MainPane/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LobbyTabs" type="TabContainer" parent="MainPane/HBoxContainer/RightPane"]
+layout_mode = 2
+
+[node name="Chat" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Chat"]
+layout_mode = 2
+
+[node name="ChatDisplay" type="RichTextLabel" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer"]
+layout_mode = 2
+
+[node name="ChatEntryLine" type="LineEdit" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "enter message"
+caret_blink = true
+
+[node name="SendButton" type="Button" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Send
+"
+
+[node name="Challenges" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs"]
+visible = false
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Challenges"]
+layout_mode = 2
+
+[node name="Challenges" type="VBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Challenges/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Matches" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs"]
+visible = false
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Matches"]
+layout_mode = 2
+
+[node name="Matches" type="VBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Matches/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="History" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs"]
+visible = false
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/History"]
+layout_mode = 2
+
+[node name="PreviousMatches" type="VBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/History/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Match Settings" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs"]
+visible = false
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings"]
+layout_mode = 2
+
+[node name="MatchSettings" type="VBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SuddenDeathSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/SuddenDeathSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/SuddenDeathSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/SuddenDeathSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/SuddenDeathSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Sudden Death Type"
+
+[node name="SDOptionButton" type="OptionButton" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/SuddenDeathSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="TimeSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/TimeSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/TimeSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/TimeSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/TimeSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Round Length"
+
+[node name="TimeSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/TimeSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 300.0
+value = 60.0
+
+[node name="LivesSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/LivesSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/LivesSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/LivesSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/LivesSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Number of Lives"
+
+[node name="LivesSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/LivesSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+value = 2.0
+
+[node name="InitialBurstSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialBurstSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialBurstSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialBurstSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialBurstSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Initial Burst"
+
+[node name="InitBurstSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialBurstSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="BurstMultSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/BurstMultSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/BurstMultSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/BurstMultSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/BurstMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Meter Gain Multiplier"
+
+[node name="BurstMultSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/BurstMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+value = 1.0
+
+[node name="InitialMeterSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialMeterSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialMeterSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialMeterSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialMeterSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Initial Meter"
+
+[node name="InitMeterSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/InitialMeterSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 17.0
+
+[node name="MeterMultSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/MeterMultSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/MeterMultSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/MeterMultSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/MeterMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Meter Gain Multiplier"
+
+[node name="MeterMultSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/MeterMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+value = 1.0
+
+[node name="DamageMultSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/DamageMultSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/DamageMultSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/DamageMultSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/DamageMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Damage Multiplier"
+
+[node name="DamageMultSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/DamageMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+value = 1.0
+
+[node name="KnockStunMultSet" type="Control" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/KnockStunMultSet"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/KnockStunMultSet/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/KnockStunMultSet/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/KnockStunMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Knockback / Hitstun Multiplier"
+
+[node name="KnockStunMultSpinBox" type="SpinBox" parent="MainPane/HBoxContainer/RightPane/LobbyTabs/Match Settings/ScrollContainer/MatchSettings/KnockStunMultSet/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+value = 1.0

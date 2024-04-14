@@ -1,0 +1,215 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqe2gswayr71u"]
+
+[ext_resource type="Script" path="res://scripts/gui/menu/character_select/CharacterSelect.gd" id="1_gqwjy"]
+[ext_resource type="PackedScene" uid="uid://7c6tbeaeury1" path="res://scenes/gui/menu/character_select/CharacterSelectButton.tscn" id="2_yld5j"]
+[ext_resource type="Texture2D" uid="uid://dh5yc7ob8l0fi" path="res://assets/menu/images/background.jpeg" id="4_r35y0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pmv4b"]
+
+[node name="CharacterSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gqwjy")
+
+[node name="MainDisplay" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HostPane" type="Control" parent="MainDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="CharacterImage" type="TextureRect" parent="MainDisplay/HostPane"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InfoPane" type="PanelContainer" parent="MainDisplay/HostPane"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainDisplay/HostPane/InfoPane"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PlayerNameLabel" type="Label" parent="MainDisplay/HostPane/InfoPane/MarginContainer"]
+layout_mode = 2
+text = "ERR: PLAYER_NAME"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="PlayerVsDisplay" type="VBoxContainer" parent="MainDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HostCharacterLabel" type="Label" parent="MainDisplay/PlayerVsDisplay"]
+layout_mode = 2
+text = "ERR: CHARACTER_NAME"
+vertical_alignment = 1
+
+[node name="VsLabel" type="Label" parent="MainDisplay/PlayerVsDisplay"]
+layout_mode = 2
+text = "VS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ClientCharacterLabel" type="Label" parent="MainDisplay/PlayerVsDisplay"]
+layout_mode = 2
+text = "ERR: CHARACTER_NAME"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ClientPane" type="Control" parent="MainDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="CharacterImage" type="TextureRect" parent="MainDisplay/ClientPane"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1282.5
+offset_right = -1282.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InfoPane" type="PanelContainer" parent="MainDisplay/ClientPane"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainDisplay/ClientPane/InfoPane"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PlayerNameLabel" type="Label" parent="MainDisplay/ClientPane/InfoPane/MarginContainer"]
+layout_mode = 2
+text = "ERR: PLAYER_NAME"
+vertical_alignment = 1
+
+[node name="CharacterChoiceDisplay" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CharacterChoiceDisplay"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="FlowContainer" type="HFlowContainer" parent="CharacterChoiceDisplay/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="RobotButton" parent="CharacterChoiceDisplay/MarginContainer/FlowContainer" instance=ExtResource("2_yld5j")]
+layout_mode = 2
+character_id = "Robot"
+
+[node name="RobotButton2" parent="CharacterChoiceDisplay/MarginContainer/FlowContainer" instance=ExtResource("2_yld5j")]
+layout_mode = 2
+character_id = "Robot"
+
+[node name="RobotButton3" parent="CharacterChoiceDisplay/MarginContainer/FlowContainer" instance=ExtResource("2_yld5j")]
+layout_mode = 2
+character_id = "Robot"
+
+[node name="RobotButton4" parent="CharacterChoiceDisplay/MarginContainer/FlowContainer" instance=ExtResource("2_yld5j")]
+layout_mode = 2
+character_id = "Robot"
+
+[node name="RobotButton5" parent="CharacterChoiceDisplay/MarginContainer/FlowContainer" instance=ExtResource("2_yld5j")]
+layout_mode = 2
+character_id = "Robot"
+
+[node name="MatchDataDisplay" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_right = 0.7
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MatchDataDisplay"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MatchDataDisplay/MarginContainer"]
+layout_mode = 2
+
+[node name="SettingsInfo" type="VBoxContainer" parent="MatchDataDisplay/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LivesBox" type="HBoxContainer" parent="MatchDataDisplay/MarginContainer/HBoxContainer/SettingsInfo"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MatchDataDisplay/MarginContainer/HBoxContainer/SettingsInfo/LivesBox"]
+layout_mode = 2
+text = "Lives:"
+
+[node name="LivesLabel" type="Label" parent="MatchDataDisplay/MarginContainer/HBoxContainer/SettingsInfo/LivesBox"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MatchDataDisplay/MarginContainer/HBoxContainer/SettingsInfo"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/separator = SubResource("StyleBoxEmpty_pmv4b")
+
+[node name="SettingsButton" type="Button" parent="MatchDataDisplay/MarginContainer/HBoxContainer/SettingsInfo"]
+layout_mode = 2
+text = "Settings"
+
+[node name="MatchType" type="CenterContainer" parent="MatchDataDisplay/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+
+[node name="MatchTypeLabel" type="Label" parent="MatchDataDisplay/MarginContainer/HBoxContainer/MatchType"]
+layout_mode = 2
+text = "ERR: MATCH TYPE"
+
+[node name="MapInfo" type="VBoxContainer" parent="MatchDataDisplay/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MapImage" type="TextureRect" parent="MatchDataDisplay/MarginContainer/HBoxContainer/MapInfo"]
+layout_mode = 2
+texture = ExtResource("4_r35y0")
+expand_mode = 5
+
+[node name="MapButton" type="Button" parent="MatchDataDisplay/MarginContainer/HBoxContainer/MapInfo"]
+layout_mode = 2
+text = "Change Map"

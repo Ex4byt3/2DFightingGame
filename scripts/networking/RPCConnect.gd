@@ -1,35 +1,32 @@
 extends Node
 
-const LOG_FILE_DIRECTORY = 'res://assets/resources/logs'
+const LOG_FILE_DIRECTORY = "/ProjectDeltaLogs"
 
-onready var message_label = $Messages/MessageLabel
-onready var sync_lost_label = $Messages/SyncLostLabel
-onready var reset_button = $Messages/ResetButton
-onready var johnny = $Johnny
+@onready var message_label = $Messages/MessageLabel
+@onready var sync_lost_label = $Messages/SyncLostLabel
+@onready var reset_button = $Messages/ResetButton
+#@onready var johnny = $Johnny
 
-var logging_enabled := true
+var logging_enabled := false
+
 
 func _ready() -> void:
-	MenuSignalBus._connect_Signals(get_tree(), self, "network_peer_connected", "_on_network_peer_connected")
-	MenuSignalBus._connect_Signals(get_tree(), self, "network_peer_disconnected", "_on_network_peer_disconnected")
-	MenuSignalBus._connect_Signals(get_tree(), self, "server_disconnected", "_on_server_disconnected")
-#	get_tree().connect("network_peer_connected", self, "_on_network_peer_connected")
-#	get_tree().connect("network_peer_disconnected", self, "_on_network_peer_disconnected")
-#	get_tree().connect("server_disconnected", self, "_on_server_disconnected")
+	_handle_connecting_signals()
+	setup_match()
+
+
+func _handle_connecting_signals() -> void:
+	MenuSignalBus._connect_Signals(multiplayer, self, "peer_connected", "_on_network_peer_connected")
+	MenuSignalBus._connect_Signals(multiplayer, self, "peer_disconnected", "_on_network_peer_disconnected")
+	MenuSignalBus._connect_Signals(multiplayer, self, "server_disconnected", "_on_server_disconnected")
 	
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_started", "_on_SyncManager_sync_started")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_stopped", "_on_SyncManager_sync_stopped")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_lost", "_on_SyncManager_sync_lost")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_regained", "_on_SyncManager_sync_regained")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_error", "_on_SyncManager_sync_error")
-#	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
-#	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
-#	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
-#	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
-#	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
-	
-	setup_match()
-	
+
+
 func setup_match() -> void:
 	
 	if NetworkGlobal.NETWORK_TYPE != 1:
@@ -42,40 +39,40 @@ func setup_match() -> void:
 		on_rpc_client_start(NetworkGlobal.RPC_IP, NetworkGlobal.RPC_PORT)
 
 func on_rpc_server_start(_host: String, port: int) -> void:
-	johnny.randomize()
-	var peer = NetworkedMultiplayerENet.new()
+	#johnny.randomize()
+	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, 1)
-	get_tree().network_peer = peer
+	multiplayer.multiplayer_peer = peer
 	message_label.text = "Listening..."
 
 func on_rpc_client_start(host: String, port: int) -> void:
-	var peer = NetworkedMultiplayerENet.new()
+	var peer = ENetMultiplayerPeer.new()
 	peer.create_client(host, port)
-	get_tree().network_peer = peer
+	multiplayer.multiplayer_peer = peer
 	message_label.text = "Connecting..."
 
 func _on_network_peer_connected(peer_id: int):
 	message_label.text = "Connected!"
 	SyncManager.add_peer(peer_id)
 	
-	$ServerPlayer.set_network_master(1)
-	if get_tree().is_network_server():
-		$ClientPlayer.set_network_master(peer_id)
+	$ServerPlayer.set_multiplayer_authority(1)
+	if multiplayer.is_server():
+		$ClientPlayer.set_multiplayer_authority(peer_id)
 	else:
-		$ClientPlayer.set_network_master(get_tree().get_network_unique_id())
+		$ClientPlayer.set_multiplayer_authority(multiplayer.get_unique_id())
 	
-	if get_tree().is_network_server():
+	if multiplayer.is_server():
 		message_label.text = "Starting..."
-		rpc("set_match_rng", {mother_seed = johnny.get_seed()})
+		#rpc("set_match_rng", {mother_seed = johnny.get_seed()})
 		
 		# Give a little time to get ping data.
-		yield(get_tree().create_timer(2.0), "timeout")
+		await get_tree().create_timer(2.0).timeout
 		SyncManager.start()
 
-remotesync func set_match_rng(info: Dictionary) -> void:
-	johnny.set_seed(info['mother_seed'])
-	$ClientPlayer.rng.set_seed(johnny.randi())
-	$ServerPlayer.rng.set_seed(johnny.randi())
+#@rpc("any_peer", "call_local") func set_match_rng(info: Dictionary) -> void:
+	#johnny.set_seed(info['mother_seed'])
+	#$ClientPlayer.rng.set_seed(johnny.randi())
+	#$ServerPlayer.rng.set_seed(johnny.randi())
 
 func _on_network_peer_disconnected(peer_id: int):
 	message_label.text = "Disconnected"
@@ -87,20 +84,20 @@ func _on_server_disconnected() -> void:
 func _on_ResetButton_pressed() -> void:
 	SyncManager.stop()
 	SyncManager.clear_peers()
-	var peer = get_tree().network_peer
+	var peer = multiplayer.multiplayer_peer
 	if peer:
-		peer.close_connection()
+		peer.close()
 	get_tree().reload_current_scene()
 
 func _on_SyncManager_sync_started() -> void:
 	message_label.text = "Started!"
 	
 	if logging_enabled and not SyncReplay.active:
-		var dir = Directory.new()
-		if not dir.dir_exists(LOG_FILE_DIRECTORY):
-			dir.make_dir(LOG_FILE_DIRECTORY)
+		var dir = DirAccess.open(LOG_FILE_DIRECTORY)
+		if not dir:
+			DirAccess.make_dir_absolute(LOG_FILE_DIRECTORY)
 		
-		var datetime = OS.get_datetime(true)
+		var datetime = Time.get_datetime_dict_from_system(true)
 		var log_file_name = "%04d%02d%02d-%02d%02d%02d-peer-%d.log" % [
 			datetime['year'],
 			datetime['month'],
@@ -108,7 +105,7 @@ func _on_SyncManager_sync_started() -> void:
 			datetime['hour'],
 			datetime['minute'],
 			datetime['second'],
-			SyncManager.network_adaptor.get_network_unique_id(),
+			SyncManager.network_adaptor.get_unique_id(),
 		]
 		
 		SyncManager.start_logging(LOG_FILE_DIRECTORY + '/' + log_file_name)
@@ -127,9 +124,9 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 	message_label.text = "Fatal sync error: " + msg
 	sync_lost_label.visible = false
 	
-	var peer = get_tree().network_peer
+	var peer = multiplayer.multiplayer_peer
 	if peer:
-		peer.close_connection()
+		peer.close()
 		
 	Steam.closeSessionWithUser("OPPONENT_ID")
 	SyncManager.clear_peers()

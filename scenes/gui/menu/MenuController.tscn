@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bs70o7gme8ukv"]
+
+[ext_resource type="Script" path="res://scripts/gui/menu/MenuController.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://cydhey8sfj7w4" path="res://scenes/gui/menu/title/TitleScreen.tscn" id="2_dmgu4"]
+
+[node name="MenuController" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1")
+
+[node name="TitleScreen" parent="." instance=ExtResource("2_dmgu4")]
+layout_mode = 1

@@ -14,6 +14,7 @@ var match_scene_path: String
 var match_scene_method: String = 'setup_match_for_replay'
 
 var _setting_up_match := false
+var _scene_change_result := FAILED
 
 func _ready() -> void:
 	if "replay" in OS.get_cmdline_args():
@@ -58,6 +59,7 @@ func poll() -> void:
 	if not active:
 		return
 	if connection:
+		connection.poll()
 		var status = connection.get_status()
 		if status == StreamPeerTCP.STATUS_CONNECTED:
 			while not _setting_up_match and connection.get_available_bytes() >= 4:
@@ -96,6 +98,9 @@ func process_message(msg: Dictionary) -> void:
 		_:
 			push_error("SyncReplay message has unknown type: %s" % type)
 
+func _change_scene(scene_path: String) -> void:
+	_scene_change_result = get_tree().change_scene_to_file(scene_path)
+
 func _do_setup_match1(my_peer_id: int, peer_ids: Array, match_info: Dictionary) -> void:
 	SyncManager.stop()
 	SyncManager.clear_peers()
@@ -106,12 +111,16 @@ func _do_setup_match1(my_peer_id: int, peer_ids: Array, match_info: Dictionary) 
 	for peer_id in peer_ids:
 		SyncManager.add_peer(peer_id)
 
-	if get_tree().change_scene(match_scene_path) != OK:
+	# Workaround for breaking change in 4.2.
+	_change_scene.bind(match_scene_path).call_deferred()
+	await get_tree().process_frame
+
+	if _scene_change_result != OK:
 		_show_error_and_quit("Unable to change scene to: %s" % match_scene_path)
 		return
 
 	_setting_up_match = true
-	call_deferred("_do_setup_match2", my_peer_id, peer_ids, match_info)
+	_do_setup_match2.call_deferred(my_peer_id, peer_ids, match_info)
 
 func _do_setup_match2(my_peer_id: int, peer_ids: Array, match_info: Dictionary) -> void:
 	_setting_up_match = false

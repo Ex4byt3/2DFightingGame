@@ -5,14 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "GDScript Godot",
+            "name": "GDScript: Launch Project",
             "type": "godot",
             "request": "launch",
-            "project": "${workspaceFolder}",
-            "port": 6007,
-            "address": "127.0.0.1",
-            "launch_game_instance": true,
-            "launch_scene": false
+            "project": "",
+            "debug_collisions": true,
+            "debug_paths": false,
+            "debug_navigation": false,
+            "additional_options": ""
         }
     ]
 }

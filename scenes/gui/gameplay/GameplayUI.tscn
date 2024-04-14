@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://8moo65tj8xpu"]
+
+[ext_resource type="Script" path="res://scripts/gui/gameplay/GameplayUI.gd" id="1_nvud5"]
+[ext_resource type="PackedScene" uid="uid://bpb3irbilm2vu" path="res://scenes/gui/gameplay/StatusOverlay.tscn" id="2_dd2hn"]
+[ext_resource type="PackedScene" uid="uid://bo5gkvwxxinew" path="res://scenes/debug/DebugOverlay.tscn" id="3_7uhta"]
+[ext_resource type="PackedScene" uid="uid://dmo02hsleajx4" path="res://scenes/gui/gameplay/PauseMenu.tscn" id="4_gvmt7"]
+
+[node name="GameplayUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nvud5")
+
+[node name="StatusOverlay" parent="." instance=ExtResource("2_dd2hn")]
+layout_mode = 1
+
+[node name="DebugOverlay" parent="." instance=ExtResource("3_7uhta")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.12
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="PauseMenu" parent="." instance=ExtResource("4_gvmt7")]
+visible = false
+layout_mode = 1

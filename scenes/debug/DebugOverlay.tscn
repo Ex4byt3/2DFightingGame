@@ -1,33 +1,46 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=3 uid="uid://bo5gkvwxxinew"]
+
+[ext_resource type="Theme" uid="uid://ddx20onevwkcn" path="res://assets/resources/debug_theme.tres" id="1"]
+[ext_resource type="Script" path="res://scripts/debug/DebugLabels.gd" id="2"]
 
 [node name="DebugOverlay" type="Control"]
-margin_right = 1280.0
-margin_bottom = 40.0
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme = ExtResource("1")
 
-[node name="ServerPlayerDebugLabel" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -384.0
-margin_right = -252.0
-margin_bottom = 14.0
-text = "PLAYER ONE DEBUG:"
+[node name="DebugLabels" type="HBoxContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+offset_left = 10.0
+offset_right = -10.0
+script = ExtResource("2")
 
-[node name="ClientPlayerDebugLabel" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = 248.0
-margin_right = 383.0
-margin_bottom = 14.0
-text = "PLAYER TWO DEBUG:"
-
-[node name="ServerPlayerInputBuffer" type="Label" parent="."]
-margin_right = 178.0
-margin_bottom = 31.0
+[node name="ServerPlayerInputBuffer" type="Label" parent="DebugLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
 text = "PLAYER ONE INPUT BUFFER:"
 
-[node name="ClientPlayerInputBuffer" type="Label" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -181.0
-margin_bottom = 31.0
+[node name="ServerPlayerDebugLabel" type="Label" parent="DebugLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.7
+text = "PLAYER ONE DEBUG:"
+
+[node name="ClientPlayerDebugLabel" type="Label" parent="DebugLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.7
+text = "PLAYER TWO DEBUG:"
+horizontal_alignment = 2
+
+[node name="ClientPlayerInputBuffer" type="Label" parent="DebugLabels"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
 text = "PLAYER TWO INPUT BUFFER:"
+horizontal_alignment = 2

@@ -1,0 +1,89 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmo02hsleajx4"]
+
+[ext_resource type="Script" path="res://scripts/gui/gameplay/PauseMenu.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.784314)
+
+[sub_resource type="StyleBoxFlat" id="2"]
+bg_color = Color(0.168627, 0.372549, 0.635294, 1)
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1")
+
+[node name="Shader" type="Panel" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("1")
+
+[node name="MainPane" type="Control" parent="."]
+anchors_preset = 0
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 0.7
+
+[node name="Background" type="Panel" parent="MainPane"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("2")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainPane"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Contents" type="Control" parent="MainPane/MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MainPane/MarginContainer/Contents"]
+layout_mode = 0
+theme_override_font_sizes/font_size = 20
+text = "PAUSE MENU"
+
+[node name="LeaveMatchButton" type="Button" parent="MainPane/MarginContainer/Contents"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -133.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Return to Lobby"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainPane/MarginContainer/Contents"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="DebugToggle" type="CheckButton" parent="MainPane/MarginContainer/Contents/HBoxContainer"]
+layout_mode = 2
+text = "Debug Overlay"
+
+[node name="InterfaceToggle" type="CheckButton" parent="MainPane/MarginContainer/Contents/HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+text = "User Interface"
