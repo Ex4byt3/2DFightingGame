@@ -109,7 +109,7 @@ func process_networking_message(msg: Dictionary) -> void:
 			peer_connected()
 		SYNC_TYPE.STOP:
 			print("SYNC,STOP")
-			reset_sync_data()
+			SyncManager.stop()
 		_: # Default
 			print("Could not match packet types from message")
 
@@ -180,6 +180,7 @@ func _on_SyncManager_sync_started() -> void:
 func _on_SyncManager_sync_stopped() -> void:
 	if logging_enabled:
 		SyncManager.stop_logging()
+	reset_sync_data()
 
 func _on_SyncManager_sync_lost() -> void:
 	sync_lost_label.visible = true
@@ -216,15 +217,15 @@ func _on_ResetButton_pressed() -> void:
 # When the user is quitting to lobby, send a STOP packet to the other person,
 # wait 1 second, and reset any relevant data.
 func _on_quit_to_menu() -> void:
-	var stop_packet = create_networking_message(SYNC_TYPE.STOP, emptyData)
-	Steam.sendMessageToUser("STEAM_OPP_ID", stop_packet, 0, 1)
-	
-	# Wait 1 second, then reset and relevant data.
-	await get_tree().create_timer(2.0).timeout
-	reset_sync_data()
+	if NetworkGlobal.STEAM_IS_HOST:
+		SyncManager.stop()
+	else:
+		var stop_packet = create_networking_message(SYNC_TYPE.STOP, emptyData)
+		Steam.sendMessageToUser("STEAM_OPP_ID", stop_packet, 0, 1)
 
 func _on_match_over() -> void:
-	reset_sync_data()
+	pass
+	#reset_sync_data()
 	
 # Resets any relevant data for a users connection with another user.
 # SyncManager, and NetworkGlobal.
@@ -233,8 +234,6 @@ func reset_sync_data() -> void:
 	for key in steamConnectionInfo.keys():
 		print(key + ": " + str(steamConnectionInfo.get(key)))
 	
-	SyncManager.stop()
-	SyncManager.clear_peers()
 	SyncManager.reset_network_adaptor()
 	
 	Steam.closeSessionWithUser("STEAM_OPP_ID")
