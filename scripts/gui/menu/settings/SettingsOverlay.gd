@@ -64,6 +64,14 @@ func _update_music_volume(val_changed: bool) -> void:
 		MenuSignalBus.emit_music_volume_changed(music_slider.value)
 
 
+func _load_music_volume(volume: int) -> void:
+	music_slider.value = volume
+
+
 func _update_effects_volume(val_changed:bool) -> void:
 	if val_changed:
 		MenuSignalBus.emit_effects_volume_changed(effects_slider.value)
+
+
+func _load_effects_volume(volume: int) -> void:
+	effects_slider.value = volume

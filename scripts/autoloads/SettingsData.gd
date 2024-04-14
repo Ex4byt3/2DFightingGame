@@ -73,8 +73,8 @@ func _handle_connecting_signals() -> void:
 func _load_settings_data(data: Dictionary) -> void:
 	print("[SYSTEM] Loading saved settings...")
 	loaded_settings = data
-	_on_window_mode_selected(loaded_settings.window_mode_index)
 	_on_resolution_selected(loaded_settings.resolution_index)
+	_on_window_mode_selected(loaded_settings.window_mode_index)
 	_on_keybindings_loaded(loaded_settings.keybindings_dictionary)
 	_on_music_volume_changed(loaded_settings.music_volume)
 	_on_effects_volume_changed(loaded_settings.effects_volume)
@@ -173,7 +173,7 @@ func _on_window_mode_selected(index: int) -> void:
 			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (true) else Window.MODE_WINDOWED
 	
 	#storage_dictionary.window_mode_index = window_mode_index
-	SaveManager.call("save_settings")
+	#SaveManager.call("save_settings")
 	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
 
 
@@ -192,21 +192,21 @@ func _on_resolution_selected(index: int) -> void:
 			get_window().set_size(RESOLUTION_DICTIONARY.values()[3])
 	
 	#storage_dictionary.resolution_index = resolution_index
-	SaveManager.call("save_settings")
+	#SaveManager.call("save_settings")
 	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
 
 
 func _on_music_volume_changed(volume: int) -> void:
 	music_volume = volume
 	#storage_dictionary.music_volume = music_volume
-	SaveManager.call("save_settings")
+	#SaveManager.call("save_settings")
 	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
 
 
 func _on_effects_volume_changed(volume: int) -> void:
 	effects_volume = volume
 	#storage_dictionary.effects_volume = effects_volume
-	SaveManager.call("save_settings")
+	#SaveManager.call("save_settings")
 	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
 
 

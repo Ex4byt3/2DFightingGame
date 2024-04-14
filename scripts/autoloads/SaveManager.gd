@@ -10,7 +10,7 @@ const SETTINGS_FILE_NAME = "config.dat"
 func _ready():
 	load_settings_data()
 	#MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_settings_dict", "save_settings")
-	MenuSignalBus.set_settings_dict.connect(save_settings)
+	#MenuSignalBus.set_settings_dict.connect(save_settings)
 
 
 # Save the current settings to a .dat file
@@ -25,6 +25,7 @@ func save_settings() -> void:
 	
 	# Store the save dictionary as a new line in the save file.
 	config_file.store_line(json_string)
+	print("saved")
 
 
 # Load saved data from .dat file

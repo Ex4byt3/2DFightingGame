@@ -83,6 +83,8 @@ func _toggle_settings_visibility() -> void:
 	var settings_node = get_child(2)
 	if settings_node.visible:
 		settings_node.visible = false
+		print("saving")
+		SaveManager.call("save_settings")
 	else:
 		settings_node.visible = true
 

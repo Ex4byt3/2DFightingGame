@@ -1,0 +1,202 @@
+[gd_scene load_steps=7 format=3 uid="uid://cq4h4y04dcrr2"]
+
+[ext_resource type="Theme" uid="uid://cp5ajgmj1htek" path="res://assets/resources/menu/settings/settingsmenu_theme.tres" id="1_ulwpd"]
+[ext_resource type="Script" path="res://scripts/gui/menu/settings/SettingsOverlay.gd" id="2_bap8v"]
+[ext_resource type="Texture2D" uid="uid://b8fmjjc38121v" path="res://assets/menu/icons/active_online_icon.png" id="3_gu7yx"]
+[ext_resource type="PackedScene" uid="uid://lnmvic1sbcuk" path="res://scenes/gui/menu/settings/WindowModeButton.tscn" id="4_08htj"]
+[ext_resource type="PackedScene" uid="uid://b1m6lmyf5akv8" path="res://scenes/gui/menu/settings/WindowResolutionButton.tscn" id="5_4et07"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6jo1w"]
+bg_color = Color(0.192157, 0.192157, 0.192157, 1)
+
+[node name="SettingsOverlay" type="Control"]
+layout_mode = 3
+anchor_left = 0.6
+anchor_top = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ulwpd")
+script = ExtResource("2_bap8v")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6jo1w")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HeaderBox" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HeaderBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "GAME SETTINGS"
+vertical_alignment = 1
+
+[node name="Searchbar" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HeaderBox"]
+layout_mode = 2
+placeholder_text = "enter text to search"
+
+[node name="FilterBox" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HeaderBox"]
+layout_mode = 2
+
+[node name="MainBox" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftEdge" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/LeftEdge"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SettingChecks" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/LeftEdge/MarginContainer"]
+layout_mode = 2
+
+[node name="GraphicsCheck" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/LeftEdge/MarginContainer/SettingChecks"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("3_gu7yx")
+icon_alignment = 1
+expand_icon = true
+
+[node name="SettingsBox" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GraphicsSection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox"]
+layout_mode = 2
+
+[node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection/SectionHeader"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "GRAPHICS"
+
+[node name="WindowModeButton" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection" instance=ExtResource("4_08htj")]
+layout_mode = 2
+
+[node name="WindowResolutionButton" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection" instance=ExtResource("5_4et07")]
+layout_mode = 2
+
+[node name="SoundSection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox"]
+layout_mode = 2
+
+[node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/SectionHeader"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "SOUND"
+
+[node name="MusicSlider" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/MusicSlider"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/MusicSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/MusicSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 20.0
+value = 10.0
+
+[node name="EffectsSlider" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/EffectsSlider"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/EffectsSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Effects Volume"
+
+[node name="EffectsSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/EffectsSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 20.0
+value = 10.0
+
+[node name="NetworkSection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox"]
+layout_mode = 2
+
+[node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection/SectionHeader"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "NETWORK
+"
+
+[node name="AccessibilitySection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox"]
+layout_mode = 2
+
+[node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection/SectionHeader"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "ACCESSIBILITY"
