@@ -30,7 +30,7 @@ func update_position():
 	for i in players:
 		playerAvg += i.position
 	playerAvg /= players.size()
-	self.position = Vector2(playerAvg.x, cam_y_pos)
+	self.position = Vector2(playerAvg.x, playerAvg.y)
 
 func zoom_camera(): # TODO: optimize for only 2 players
 	# Zoom camera based on the distance of the 2 furthest players. Accounts for min X/Y zoom settings.
