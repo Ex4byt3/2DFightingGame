@@ -23,8 +23,8 @@ extends Control
 @onready var close_dc_dialogue_button = $DirectConnectDialogue/VBoxContainer/CloseDCDialogueButton
 @onready var ip_entry_line = $DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer/IPEntryLine
 @onready var port_entry_line = $DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer/PortEntryLine
-@onready var direct_connect_server_button = $DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/DCServerButton
-@onready var direct_connect_client_button = $DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/DCClientButton
+@onready var direct_connect_server_button = $DirectConnectDialogue/VBoxContainer/HBoxContainer/DCServerButton
+@onready var direct_connect_client_button = $DirectConnectDialogue/VBoxContainer/HBoxContainer/DCClientButton
 
 var LOBBY_ID: int = 0
 var LOBBY_NAME: String
@@ -38,7 +38,7 @@ const LOBBY_TYPE: Array = ["All Lobbies", "Public", "Private"]
 const LOBBY_STATE: Array = ["Open", "Full"]
 
 # Variables for lobby match settings
-var MATCH_SETTINGS: Dictionary = SettingsData.match_settings
+#var MATCH_SETTINGS: Dictionary = SettingsData.match_settings
 
 
 # Called when the node enters the scene tree for the first time.
@@ -156,7 +156,7 @@ func _on_Lobby_Created(connect: int, lobby_id: int) -> void:
 		if name_entry_line.text:
 			LOBBY_NAME = name_entry_line.text
 		else:
-			LOBBY_NAME = str(Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby_id))) + "'s Lobby "
+			LOBBY_NAME = str(Steam.getFriendPersonaName(Steam.getLobbyOwner(lobby_id))) + "'s Lobby"
 		
 		var lobby_data: bool = false
 		lobby_data = Steam.setLobbyData(lobby_id, "name", LOBBY_NAME)
@@ -170,7 +170,11 @@ func _on_Lobby_Created(connect: int, lobby_id: int) -> void:
 		lobby_data = Steam.setLobbyData(lobby_id, "lobby_password", "")
 		print("[STEAM] Setting lobby password data successful: "+str(lobby_data))
 		
-		_set_lobby_match_settings(lobby_id, MATCH_SETTINGS)
+		# Clear popup entry lines
+		name_entry_line.set_text("")
+		password_entry_line.set_text("")
+		
+		#_set_lobby_match_settings(lobby_id, MATCH_SETTINGS)
 		#_set_lobby_character_settings(lobby_id, CHARACTER_SETTINGS)
 	
 	else:
@@ -250,8 +254,8 @@ func _create_steam_lobby() -> void:
 	print("[STEAM] Attempting to create new lobby...\n")
 	
 	# Clear popup entry lines
-	name_entry_line.set_text("")
-	password_entry_line.set_text("")
+	#name_entry_line.set_text("")
+	#password_entry_line.set_text("")
 
 
 func _join_steam_lobby(lobby_id: int) -> void:

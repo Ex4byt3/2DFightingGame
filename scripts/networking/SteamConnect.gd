@@ -28,22 +28,7 @@ enum SYNC_TYPE {
 
 func _ready() -> void:
 	SyncManager.network_adaptor = SteamNetworkAdaptor.new()
-	MenuSignalBus._connect_Signals(SyncManager, self, "sync_started", "_on_SyncManager_sync_started")
-	MenuSignalBus._connect_Signals(SyncManager, self, "sync_stopped", "_on_SyncManager_sync_stopped")
-	MenuSignalBus._connect_Signals(SyncManager, self, "sync_lost", "_on_SyncManager_sync_lost")
-	MenuSignalBus._connect_Signals(SyncManager, self, "sync_regained", "_on_SyncManager_sync_regained")
-	MenuSignalBus._connect_Signals(SyncManager, self, "sync_error", "_on_SyncManager_sync_error")
-#	SyncManager.connect("sync_started", self, "_on_SyncManager_sync_started")
-#	SyncManager.connect("sync_stopped", self, "_on_SyncManager_sync_stopped")
-#	SyncManager.connect("sync_lost", self, "_on_SyncManager_sync_lost")
-#	SyncManager.connect("sync_regained", self, "_on_SyncManager_sync_regained")
-#	SyncManager.connect("sync_error", self, "_on_SyncManager_sync_error")
-	
-	MenuSignalBus._connect_Signals(Steam, self, "network_messages_session_request", "_on_network_messages_session_request")
-	MatchSignalBus.quit_to_menu.connect(_on_quit_to_menu)
-	MatchSignalBus.match_over.connect(_on_match_over)
-#	Steam.connect("network_messages_session_request", self, "_on_network_messages_session_request")
-	Steam.setIdentitySteamID64("STEAM_OPP_ID", NetworkGlobal.STEAM_OPP_ID)
+	_handle_connecting_signals()
 	
 	setup_match()
 	
@@ -51,18 +36,39 @@ func _process(delta):
 	var listOfMessages = Steam.receiveMessagesOnChannel(1, 999) #channel 1 #read up to 999 messages in buffer
 	for message in listOfMessages:
 		process_networking_message(message)
-		
+
+func _handle_connecting_signals() -> void:
+	SyncManager.sync_started.connect(_on_SyncManager_sync_started)
+	SyncManager.sync_stopped.connect(_on_SyncManager_sync_stopped)
+	SyncManager.sync_lost.connect(_on_SyncManager_sync_lost)
+	SyncManager.sync_regained.connect(_on_SyncManager_sync_regained)
+	SyncManager.sync_error.connect(_on_SyncManager_sync_error)
+	
+	Steam.network_messages_session_request.connect(_on_network_messages_session_request)
+	
+	MatchSignalBus.quit_to_menu.connect(_on_quit_to_menu)
+	MatchSignalBus.match_over.connect(_on_match_over)
+
 func setup_match() -> void:
+	Steam.setIdentitySteamID64("STEAM_OPP_ID", NetworkGlobal.STEAM_OPP_ID)
 	
 	print("Network Globals: ", NetworkGlobal.NETWORK_TYPE, NetworkGlobal.STEAM_IS_HOST, NetworkGlobal.STEAM_OPP_ID)
+	var steamConnectionInfo = Steam.getSessionConnectionInfo("STEAM_OPP_ID", true, false)
+	#print("Steam connection state: " + str(steamConnectionInfo.state))
+	for key in steamConnectionInfo.keys():
+		print(key + ": " + str(steamConnectionInfo.get(key)))
+	
 	
 	if NetworkGlobal.NETWORK_TYPE != 2:
 		print("Networking type is not set to STEAM, aborting...")
 		get_tree().quit()
 	
 	if NetworkGlobal.STEAM_IS_HOST:
-		message_label.text = "Listening..."
+		#message_label.text = "Listening..."
+		print("Listening...")
 	else:
+		#message_label.text = "Searching..."
+		print("Searching...")
 		var packet = create_networking_message(SYNC_TYPE.HANDSHAKE, emptyData)
 		Steam.sendMessageToUser("STEAM_OPP_ID", packet, 0, 1)
 
@@ -117,6 +123,7 @@ func connect_to_server() -> void:
 func peer_connected():
 	
 	message_label.text = "Connected!"
+	print("Connected!")
 	
 	if NetworkGlobal.STEAM_IS_HOST:
 		NetworkGlobal.STEAM_PEER_ID = 1
@@ -131,7 +138,8 @@ func peer_connected():
 	client_player.set_multiplayer_authority(2)
 	
 	if NetworkGlobal.STEAM_IS_HOST:
-		message_label.text = "Starting..."
+		#message_label.text = "Starting..."
+		print("Starting...")
 		var setup_packet = create_networking_message(SYNC_TYPE.START, emptyData)
 		Steam.sendMessageToUser("STEAM_OPP_ID", setup_packet, 0, 1)
 		
@@ -140,14 +148,16 @@ func peer_connected():
 		SyncManager.start()
 		
 func peer_disconnected(peer_id: int):
-	message_label.text = "Disconnected"
+	#message_label.text = "Disconnected"
+	print("Disconnected")
 	SyncManager.remove_peer(peer_id)
 
 func _on_server_disconnected() -> void:
 	peer_disconnected(NetworkGlobal.STEAM_OPP_ID)
 	
 func _on_SyncManager_sync_started() -> void:
-	message_label.text = "Started!"
+	#message_label.text = "Started!"
+	print("Started!")
 	
 	if logging_enabled and not SyncReplay.active:
 		var dir = DirAccess.open(LOG_FILE_DIRECTORY)
@@ -178,7 +188,8 @@ func _on_SyncManager_sync_regained() -> void:
 	sync_lost_label.visible = false
 
 func _on_SyncManager_sync_error(msg: String) -> void:
-	message_label.text = "Fatal sync error: " + msg
+	#message_label.text = "Fatal sync error: " + msg
+	print("Fatal sync error: " + msg)
 	sync_lost_label.visible = false
 	
 	match NetworkGlobal.NETWORK_TYPE:
@@ -218,6 +229,10 @@ func _on_match_over() -> void:
 # Resets any relevant data for a users connection with another user.
 # SyncManager, and NetworkGlobal.
 func reset_sync_data() -> void:
+	var steamConnectionInfo = Steam.getSessionConnectionInfo("STEAM_OPP_ID", true, false)
+	for key in steamConnectionInfo.keys():
+		print(key + ": " + str(steamConnectionInfo.get(key)))
+	
 	SyncManager.stop()
 	SyncManager.clear_peers()
 	SyncManager.reset_network_adaptor()
@@ -229,6 +244,8 @@ func reset_sync_data() -> void:
 	NetworkGlobal.STEAM_OPP_ID = 1
 	NetworkGlobal.STEAM_PEER_ID = 1
 	NetworkGlobal.STEAM_OPP_PEER_ID = 1
+	
+	MenuSignalBus.emit_leave_match()
 
 # When one peer attempts to communicate with another peer directly, they need to 
 # either send an arbitrary message back as a handshake, or accept their inital message

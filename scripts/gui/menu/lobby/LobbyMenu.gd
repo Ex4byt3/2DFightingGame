@@ -14,13 +14,26 @@ extends Control
 @onready var members = $MainPane/HBoxContainer/LeftPane/VBoxContainer/ScrollContainer/Members
 
 @onready var lobby_tabs = $MainPane/HBoxContainer/RightPane/LobbyTabs
-@onready var chat_display = $MainPane/HBoxContainer/RightPane/LobbyTabs/ChatTab/VBoxContainer/ChatDisplay
-@onready var chat_entry_line = $MainPane/HBoxContainer/RightPane/LobbyTabs/ChatTab/VBoxContainer/HBoxContainer/ChatEntryLine
-@onready var send_button = $MainPane/HBoxContainer/RightPane/LobbyTabs/ChatTab/VBoxContainer/HBoxContainer/SendButton
-@onready var challenges = $MainPane/HBoxContainer/RightPane/LobbyTabs/ChallengeTab/ScrollContainer/Challenges
-@onready var matches = $MainPane/HBoxContainer/RightPane/LobbyTabs/MatchesTab/ScrollContainer/Matches
-@onready var previous_matches = $MainPane/HBoxContainer/RightPane/LobbyTabs/HistoryTab/ScrollContainer/PreviousMatches
-@onready var match_settings = $MainPane/HBoxContainer/RightPane/LobbyTabs/MatchSettingsTab/ScrollContainer/MatchSettings
+@onready var match_settings_tab = get_node("Match Settings")
+
+@onready var chat_display = $MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer/ChatDisplay
+@onready var chat_entry_line = $MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer/HBoxContainer/ChatEntryLine
+@onready var send_button = $MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer/HBoxContainer/SendButton
+@onready var challenges = $MainPane/HBoxContainer/RightPane/LobbyTabs/Challenges/ScrollContainer/Challenges
+@onready var matches = $MainPane/HBoxContainer/RightPane/LobbyTabs/Matches/ScrollContainer/Matches
+@onready var previous_matches = $MainPane/HBoxContainer/RightPane/LobbyTabs/History/ScrollContainer/PreviousMatches
+@onready var match_settings = $MainPane/HBoxContainer/RightPane/LobbyTabs/"Match Settings"/ScrollContainer/MatchSettings
+
+
+@onready var sd_option_button = get_node("SDOptionButton")
+@onready var time_spinbox = get_node("TimeSpinBox")
+@onready var lives_spinbox = get_node("LivesSpinBox")
+@onready var initial_burst_spinbox = get_node("InitBurstSpinBox")
+@onready var burst_mult_spinbox = get_node("BurstMultSpinbox")
+@onready var initial_meter_spinbox = get_node("InitMeterSpinBox")
+@onready var meter_mult_spinbox = get_node("MeterMultSpinBox")
+@onready var damage_mult_spinbox = get_node("DamageMultSpinBox")
+@onready var knock_stun_mult_spinbox = get_node("KnockStunMultSpinBox")
 
 var LOBBY_ID: int = 0
 var LOBBY_NAME: String = "Default"
@@ -61,8 +74,8 @@ func _init_lobby() -> void:
 	type_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_type"))
 	state_label.set_text(Steam.getLobbyData(LOBBY_ID, "lobby_state"))
 	MenuSignalBus.emit_set_match_settings_source(using_owner_settings)
-	_update_lobby_match_settings()
-	_set_lobby_match_settings()
+	#_update_lobby_match_settings()
+	#_set_lobby_match_settings()
 
 
 ##################################################
@@ -168,7 +181,7 @@ func _host_start(recipient_id: int) -> void:
 	NetworkGlobal.STEAM_OPP_ID = int(client_steam_id)
 	print("[STEAM] Started match as server")
 	
-	_set_lobby_match_settings()
+	#_set_lobby_match_settings()
 	
 	MenuSignalBus.emit_create_match()
 
@@ -181,7 +194,7 @@ func _client_start(sender_id: int) -> void:
 	NetworkGlobal.STEAM_OPP_ID = int(host_steam_id)
 	print("[STEAM] Started match as client")
 	
-	_set_lobby_match_settings()
+	#_set_lobby_match_settings()
 	
 	MenuSignalBus.emit_create_match()
 
@@ -317,10 +330,14 @@ func _update_lobby_match_settings() -> void:
 	lobby_data.erase("lobby_password")
 	MATCH_SETTINGS = lobby_data
 
+func _set_match_settings_tab_visibility() -> void:
+	if not (Steam.getLobbyOwner(LOBBY_ID) == Steam.getSteamID() and using_owner_settings) or not using_owner_settings:
+		match_settings_tab.visible = false
 
-func _set_lobby_match_settings() -> void:
-	SettingsData.is_using_lobby = using_owner_settings
-	SettingsData.match_settings
+## TODO: This needs to be done on the networking side of things
+#func _set_lobby_match_settings() -> void:
+	#SettingsData.is_using_lobby = using_owner_settings
+	#SettingsData.server_match_settings
 
 
 func _send_command(command: String) -> void:

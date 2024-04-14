@@ -8,6 +8,7 @@ signal change_screen(current_screen, new_screen, is_backout)
 signal exit_lobby
 
 # Signals for the settings menu
+signal toggle_match_settings_visibility
 signal toggle_settings_visibility
 signal update_section_visibility(section_title, is_pressed)
 signal window_mode_selected(index)

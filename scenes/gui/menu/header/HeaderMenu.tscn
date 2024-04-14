@@ -62,6 +62,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
+[node name="MatchSettingsButton" type="Button" parent="Bars/TopBar/MarginContainer/HBoxContainer/ButtonContainer"]
+visible = false
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("3_ukfnk")
+icon_alignment = 1
+expand_icon = true
+
 [node name="SettingsButton" type="Button" parent="Bars/TopBar/MarginContainer/HBoxContainer/ButtonContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2

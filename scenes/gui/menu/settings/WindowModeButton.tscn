@@ -27,7 +27,7 @@ theme_override_styles/separator = SubResource("1")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "WINDOW MODE"
+text = "Window Mode"
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
 layout_mode = 2

@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://b4ert6b0gtk7m"]
+[gd_scene load_steps=5 format=3 uid="uid://b4ert6b0gtk7m"]
 
 [ext_resource type="Theme" uid="uid://citcf1vymhp3" path="res://assets/resources/gui/onlinemenu_theme.tres" id="1_a14vf"]
 [ext_resource type="Script" path="res://scripts/gui/menu/online/OnlineMenu.gd" id="2_uvya8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stayn"]
+bg_color = Color(0.294118, 0.294118, 0.294118, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ticlr"]
+bg_color = Color(0.294118, 0.294118, 0.294118, 1)
 
 [node name="OnlineMenu" type="Control"]
 layout_mode = 3
@@ -86,6 +92,7 @@ anchor_left = 0.01
 anchor_top = 0.064
 anchor_right = 0.2
 anchor_bottom = 0.25
+theme_override_styles/panel = SubResource("StyleBoxFlat_stayn")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LobbyCreationDialogue"]
 layout_mode = 2
@@ -131,6 +138,7 @@ anchor_left = 0.01
 anchor_top = 0.064
 anchor_right = 0.2
 anchor_bottom = 0.25
+theme_override_styles/panel = SubResource("StyleBoxFlat_ticlr")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DirectConnectDialogue"]
 layout_mode = 2
@@ -166,13 +174,16 @@ text = "Port"
 layout_mode = 2
 text = "6000"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="DirectConnectDialogue/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 8
 
-[node name="DCServerButton" type="Button" parent="DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="DCServerButton" type="Button" parent="DirectConnectDialogue/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Server"
 
-[node name="DCClientButton" type="Button" parent="DirectConnectDialogue/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="DCClientButton" type="Button" parent="DirectConnectDialogue/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Client"

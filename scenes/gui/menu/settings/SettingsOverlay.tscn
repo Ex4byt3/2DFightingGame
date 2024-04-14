@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://cq4h4y04dcrr2"]
+[gd_scene load_steps=7 format=3 uid="uid://cq4h4y04dcrr2"]
 
 [ext_resource type="Theme" uid="uid://cp5ajgmj1htek" path="res://assets/resources/menu/settings/settingsmenu_theme.tres" id="1_ulwpd"]
 [ext_resource type="Script" path="res://scripts/gui/menu/settings/SettingsOverlay.gd" id="2_bap8v"]
 [ext_resource type="Texture2D" uid="uid://b8fmjjc38121v" path="res://assets/menu/icons/active_online_icon.png" id="3_gu7yx"]
 [ext_resource type="PackedScene" uid="uid://lnmvic1sbcuk" path="res://scenes/gui/menu/settings/WindowModeButton.tscn" id="4_08htj"]
 [ext_resource type="PackedScene" uid="uid://b1m6lmyf5akv8" path="res://scenes/gui/menu/settings/WindowResolutionButton.tscn" id="5_4et07"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6jo1w"]
+bg_color = Color(0.192157, 0.192157, 0.192157, 1)
 
 [node name="SettingsOverlay" type="Control"]
 layout_mode = 3
@@ -24,6 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6jo1w")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -40,7 +44,8 @@ layout_mode = 2
 
 [node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HeaderBox"]
 layout_mode = 2
-text = "Settings"
+theme_override_font_sizes/font_size = 25
+text = "GAME SETTINGS"
 vertical_alignment = 1
 
 [node name="Searchbar" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/HeaderBox"]
@@ -85,9 +90,16 @@ layout_mode = 2
 [node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection/SectionHeader"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection/SectionHeader"]
 layout_mode = 2
-text = "Graphics"
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "GRAPHICS"
 
 [node name="WindowModeButton" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/GraphicsSection" instance=ExtResource("4_08htj")]
 layout_mode = 2
@@ -101,9 +113,16 @@ layout_mode = 2
 [node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/SectionHeader"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/SectionHeader"]
 layout_mode = 2
-text = "Sound"
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "SOUND"
 
 [node name="NetworkSection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox"]
 layout_mode = 2
@@ -111,9 +130,17 @@ layout_mode = 2
 [node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection/SectionHeader"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection/SectionHeader"]
 layout_mode = 2
-text = "Network"
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "NETWORK
+"
 
 [node name="AccessibilitySection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox"]
 layout_mode = 2
@@ -121,6 +148,13 @@ layout_mode = 2
 [node name="SectionHeader" type="PanelContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection/SectionHeader"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection/SectionHeader"]
 layout_mode = 2
-text = "Accessibility"
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection/SectionHeader/MarginContainer"]
+layout_mode = 2
+text = "ACCESSIBILITY"

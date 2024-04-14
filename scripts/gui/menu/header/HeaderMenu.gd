@@ -3,6 +3,7 @@ extends Control
 
 var menu_tree_button = preload("res://scenes/gui/menu/header/MenuTreeButton.tscn")
 
+@onready var match_settings_button = $Bars/TopBar/MarginContainer/HBoxContainer/ButtonContainer/MatchSettingsButton
 @onready var settings_button = $Bars/TopBar/MarginContainer/HBoxContainer/ButtonContainer/SettingsButton
 @onready var quit_button = $Bars/TopBar/MarginContainer/HBoxContainer/ButtonContainer/QuitButton
 @onready var menu_tree_button_container = $Bars/BottomBar/MarginContainer/HBoxContainer/MenuTreeButtonContainer
@@ -45,6 +46,8 @@ func _update_menu_tree_return() -> void:
 				print("[SYSTEM] Connecting to menu tree button failed: "+str(previous_menu_signal))
 			count += 1
 
+func _on_match_settings_button_pressed() -> void:
+	MenuSignalBus.emit_toggle_match_settings_visibility()
 
 func _on_settings_button_pressed() -> void:
 	MenuSignalBus.emit_toggle_settings_visibility()

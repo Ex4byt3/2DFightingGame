@@ -7,20 +7,23 @@ extends Node
 var window_mode_index: int = 0
 var resolution_index: int = 0
 
+# Dictionaries and variables for loading match and character settings
+var is_using_lobby: bool = false
+
 # Dictionary for match settings
-var match_settings: Dictionary = {
+var personal_match_settings: Dictionary = {
+	"sudden_death_type": 0,
 	"time_limit": 180,
 	"character_lives": 4,
 	"initial_burst": 100,
-	"initial_meter": 3,
-	"damage_mult": 1,
 	"burst_mult": 1,
+	"initial_meter": 3,
 	"meter_mult": 1,
-	"knockback_mult": 1
+	"damage_mult": 1,
+	"knockstun_mult": 1
 }
 
-# Dictionaries and variables for loading match and character settings
-var is_using_lobby: bool = false
+var server_match_settings: Dictionary = {}
 
 # Dictionaries for saving and loading settings
 var storage_dictionary: Dictionary = {}
@@ -74,7 +77,10 @@ func _load_settings_data(data: Dictionary) -> void:
 func _send_match_settings() -> void:
 	print("[SYSTEM] Sending match settings...")
 	
-	MenuSignalBus.call_deferred("emit_update_match_settings", match_settings)
+	if not server_match_settings.is_empty():
+		MenuSignalBus.call_deferred("emit_update_match_settings", server_match_settings)
+	else:
+		MenuSignalBus.call_deferred("emit_update_match_settings", personal_match_settings)
 
 
 ##################################################
@@ -180,7 +186,7 @@ func create_storage_dictionary() -> Dictionary:
 		"window_mode_index": window_mode_index,
 		"resolution_index": resolution_index,
 		"keybindings_dictionary" : create_keybindings_dictionary(),
-		"match_settings_dictionary": match_settings
+		"match_settings_dictionary": personal_match_settings
 	}
 
 	return settings_container_dict
