@@ -124,6 +124,48 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 text = "SOUND"
 
+[node name="MusicSlider" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/MusicSlider"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/MusicSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/MusicSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 20.0
+value = 10.0
+
+[node name="EffectsSlider" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/EffectsSlider"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/EffectsSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Effects Volume"
+
+[node name="EffectsSlider" type="HSlider" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/EffectsSlider/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -5.0
+max_value = 20.0
+value = 10.0
+
 [node name="NetworkSection" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox"]
 layout_mode = 2
 

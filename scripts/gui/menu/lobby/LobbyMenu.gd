@@ -321,14 +321,14 @@ func _on_Persona_Changed(steam_id: int, change_flag: int) -> void:
 	_get_lobby_members()
 
 
-func _update_lobby_match_settings() -> void:
-	var lobby_data: Dictionary = Steam.getAllLobbyData(LOBBY_ID)
-	lobby_data.erase("name")
-	lobby_data.erase("mode")
-	lobby_data.erase("lobby_type")
-	lobby_data.erase("lobby_state")
-	lobby_data.erase("lobby_password")
-	MATCH_SETTINGS = lobby_data
+#func _update_lobby_match_settings() -> void:
+	#var lobby_data: Dictionary = Steam.getAllLobbyData(LOBBY_ID)
+	#lobby_data.erase("name")
+	#lobby_data.erase("mode")
+	#lobby_data.erase("lobby_type")
+	#lobby_data.erase("lobby_state")
+	#lobby_data.erase("lobby_password")
+	#MATCH_SETTINGS = lobby_data
 
 func _set_match_settings_tab_visibility() -> void:
 	if not (Steam.getLobbyOwner(LOBBY_ID) == Steam.getSteamID() and using_owner_settings) or not using_owner_settings:

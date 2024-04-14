@@ -13,6 +13,8 @@ signal toggle_settings_visibility
 signal update_section_visibility(section_title, is_pressed)
 signal window_mode_selected(index)
 signal resolution_selected(index)
+signal music_volume_changed(volume)
+signal effects_volume_changed(volume)
 signal set_settings_dict(settings_dict)
 signal load_settings_data(settings_dict)
 
@@ -92,6 +94,12 @@ func emit_window_mode_selected(index: int) -> void:
 
 func emit_resolution_selected(index: int) -> void:
 	emit_signal("resolution_selected", index)
+
+func emit_music_volume_changed(volume: int) -> void:
+	emit_signal("music_volume_changed", volume)
+
+func emit_effects_volume_changed(volume: int) -> void:
+	emit_signal("effects_volume_changed", volume)
 
 func emit_set_settings_dict(settings_dict: Dictionary) -> void:
 	emit_signal("set_settings_dict", settings_dict)

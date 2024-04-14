@@ -9,6 +9,9 @@ extends Control
 @onready var network_section = $PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/NetworkSection
 @onready var accessibility_section = $PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/AccessibilitySection
 
+@onready var music_slider = $PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/MusicSlider/HBoxContainer/MusicSlider
+@onready var effects_slider = $PanelContainer/MarginContainer/VBoxContainer/MainBox/SettingsBox/SoundSection/EffectsSlider/HBoxContainer/EffectsSlider
+
 var sections: Dictionary = {
 	"Graphics": graphics_section,
 	"Sound": sound_section,
@@ -25,6 +28,8 @@ func _ready():
 func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(searchbar, self, "text_changed", "_search_settings")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "update_section_visibility", "_update_section_visibility")
+	music_slider.drag_ended.connect(_update_music_volume)
+	effects_slider.drag_ended.connect(_update_effects_volume)
 
 
 ##################################################
@@ -52,3 +57,13 @@ func contains_search_text(setting, search_text: String):
 		return true
 	else:
 		return false
+
+
+func _update_music_volume(val_changed: bool) -> void:
+	if val_changed:
+		MenuSignalBus.emit_music_volume_changed(music_slider.value)
+
+
+func _update_effects_volume(val_changed:bool) -> void:
+	if val_changed:
+		MenuSignalBus.emit_effects_volume_changed(effects_slider.value)

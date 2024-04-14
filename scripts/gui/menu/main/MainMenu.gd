@@ -16,11 +16,16 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	handle_connecting_signals()
+	$AudioStreamPlayer.volume_db = SettingsData.music_volume
 	$AudioStreamPlayer.play(0)
+	
 
 
 # Connect to button signals
 func handle_connecting_signals() -> void:
+	# Connect signal for sound
+	MenuSignalBus.music_volume_changed.connect(_on_music_volume_changed)
+	
 	# Connect signals for the menu's primary buttons
 	MenuSignalBus._connect_Signals(online_button.base_button, self, "toggled", "on_online_button_toggled")
 	MenuSignalBus._connect_Signals(local_button.base_button, self, "toggled", "on_local_button_toggled")
@@ -29,6 +34,10 @@ func handle_connecting_signals() -> void:
 	
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "mouse_entered_slinky", "_change_footer_text")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "mouse_exited_slinky", "_change_footer_text")
+
+
+func _on_music_volume_changed(volume: int) -> void:
+	$AudioStreamPlayer.volume_db = volume
 
 
 func _change_footer_text(hovered_button: String) -> void:

@@ -3,9 +3,33 @@ extends Node
 
 @onready var player_keybind_resource = preload("res://assets/resources/game_settings/playerkeybinds_default.tres")
 
+# Dictionaries for saving and loading settings
+var storage_dictionary: Dictionary = {}
+var loaded_settings: Dictionary = {}
+
 # Variables for display settings
 var window_mode_index: int = 0
 var resolution_index: int = 0
+
+# Define an array for the window options
+const WINDOW_MODE_ARRAY: Array = [
+	"     Bordered Window",
+	"     Borderless Window",
+	"     Fullscreen",
+	"     Borderless Fullscreen",
+]
+
+# Dictionary for screen resolution options
+const RESOLUTION_DICTIONARY: Dictionary = {
+	"     640 x 360" : Vector2(640, 360),
+	"     853 x 480" : Vector2(853, 480),
+	"     1280 x 720" : Vector2(1280, 720),
+	"     1920 x 1080" : Vector2(1920, 1080),
+}
+
+# Variables for sound settings
+var music_volume: int = 10
+var effects_volume: int = 10
 
 # Dictionaries and variables for loading match and character settings
 var is_using_lobby: bool = false
@@ -25,31 +49,11 @@ var personal_match_settings: Dictionary = {
 
 var server_match_settings: Dictionary = {}
 
-# Dictionaries for saving and loading settings
-var storage_dictionary: Dictionary = {}
-var loaded_settings: Dictionary = {}
-
-# Define an array for the window options
-const WINDOW_MODE_ARRAY: Array = [
-	"     Bordered Window",
-	"     Borderless Window",
-	"     Fullscreen",
-	"     Borderless Fullscreen",
-]
-
-# Dictionary for screen resolution options
-const RESOLUTION_DICTIONARY: Dictionary = {
-	"     640 x 360" : Vector2(640, 360),
-	"     853 x 480" : Vector2(853, 480),
-	"     1280 x 720" : Vector2(1280, 720),
-	"     1920 x 1080" : Vector2(1920, 1080),
-}
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_handle_connecting_signals()
-	create_storage_dictionary()
+	storage_dictionary = create_storage_dictionary()
 
 
 # Connect relevant signals from the MenuSignalBus
@@ -60,15 +64,22 @@ func _handle_connecting_signals() -> void:
 	
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "send_match_settings", "_send_match_settings")
 	MenuSignalBus._connect_Signals(MenuSignalBus, self, "set_match_settings_source", "_set_match_settings_source")
+	
+	MenuSignalBus.music_volume_changed.connect(_on_music_volume_changed)
+	MenuSignalBus.effects_volume_changed.connect(_on_effects_volume_changed)
 
 
 # Loads all relevant setting data upon game launch
 func _load_settings_data(data: Dictionary) -> void:
+	print("[SYSTEM] Loading saved settings...")
 	loaded_settings = data
 	_on_window_mode_selected(loaded_settings.window_mode_index)
 	_on_resolution_selected(loaded_settings.resolution_index)
 	_on_keybindings_loaded(loaded_settings.keybindings_dictionary)
+	_on_music_volume_changed(loaded_settings.music_volume)
+	_on_effects_volume_changed(loaded_settings.effects_volume)
 	#_on_match_settings_loaded(loaded_settings.match_settings_dictionary)
+	print("[SYSTEM] Saved settings loaded!")
 
 
 ##################################################
@@ -160,6 +171,10 @@ func _on_window_mode_selected(index: int) -> void:
 		3: # borderless fullscreen
 			get_window().borderless = (true)
 			get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (true) else Window.MODE_WINDOWED
+	
+	#storage_dictionary.window_mode_index = window_mode_index
+	SaveManager.call("save_settings")
+	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
 
 
 # Updates resolution setting to be saved when modified in the settings menu
@@ -175,6 +190,24 @@ func _on_resolution_selected(index: int) -> void:
 			get_window().set_size(RESOLUTION_DICTIONARY.values()[2])
 		3: # 1920 x 1080
 			get_window().set_size(RESOLUTION_DICTIONARY.values()[3])
+	
+	#storage_dictionary.resolution_index = resolution_index
+	SaveManager.call("save_settings")
+	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
+
+
+func _on_music_volume_changed(volume: int) -> void:
+	music_volume = volume
+	#storage_dictionary.music_volume = music_volume
+	SaveManager.call("save_settings")
+	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
+
+
+func _on_effects_volume_changed(volume: int) -> void:
+	effects_volume = volume
+	#storage_dictionary.effects_volume = effects_volume
+	SaveManager.call("save_settings")
+	#MenuSignalBus.emit_set_settings_dict(storage_dictionary)
 
 
 ##################################################
@@ -185,10 +218,12 @@ func create_storage_dictionary() -> Dictionary:
 	var settings_container_dict = {
 		"window_mode_index": window_mode_index,
 		"resolution_index": resolution_index,
+		"music_volume": music_volume,
+		"effects_volume": effects_volume,
 		"keybindings_dictionary" : create_keybindings_dictionary(),
 		"match_settings_dictionary": personal_match_settings
 	}
-
+	
 	return settings_container_dict
 
 
