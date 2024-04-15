@@ -225,8 +225,11 @@ func _on_quit_to_menu() -> void:
 		Steam.sendMessageToUser("STEAM_OPP_ID", stop_packet, 0, 1)
 
 func _on_match_over() -> void:
-	pass
-	#reset_sync_data()
+	if NetworkGlobal.STEAM_IS_HOST:
+		SyncManager.stop()
+	else:
+		var stop_packet = create_networking_message(SYNC_TYPE.STOP, emptyData)
+		Steam.sendMessageToUser("STEAM_OPP_ID", stop_packet, 0, 1)
 	
 # Resets any relevant data for a users connection with another user.
 # SyncManager, and NetworkGlobal.

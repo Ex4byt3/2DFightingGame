@@ -14,7 +14,7 @@ extends Control
 @onready var members = $MainPane/HBoxContainer/LeftPane/VBoxContainer/ScrollContainer/Members
 
 @onready var lobby_tabs = $MainPane/HBoxContainer/RightPane/LobbyTabs
-@onready var match_settings_tab = get_node("Match Settings")
+@onready var match_settings_tab = find_child("Match Settings", true)
 
 @onready var chat_display = $MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer/ChatDisplay
 @onready var chat_entry_line = $MainPane/HBoxContainer/RightPane/LobbyTabs/Chat/VBoxContainer/HBoxContainer/ChatEntryLine
@@ -25,15 +25,15 @@ extends Control
 @onready var match_settings = $MainPane/HBoxContainer/RightPane/LobbyTabs/"Match Settings"/ScrollContainer/MatchSettings
 
 
-@onready var sd_option_button = get_node("SDOptionButton")
-@onready var time_spinbox = get_node("TimeSpinBox")
-@onready var lives_spinbox = get_node("LivesSpinBox")
-@onready var initial_burst_spinbox = get_node("InitBurstSpinBox")
-@onready var burst_mult_spinbox = get_node("BurstMultSpinbox")
-@onready var initial_meter_spinbox = get_node("InitMeterSpinBox")
-@onready var meter_mult_spinbox = get_node("MeterMultSpinBox")
-@onready var damage_mult_spinbox = get_node("DamageMultSpinBox")
-@onready var knock_stun_mult_spinbox = get_node("KnockStunMultSpinBox")
+@onready var sd_option_button = find_child("SDOptionButton", true)
+@onready var time_spinbox = find_child("TimeSpinBox", true)
+@onready var lives_spinbox = find_child("LivesSpinBox", true)
+@onready var initial_burst_spinbox = find_child("InitBurstSpinBox", true)
+@onready var burst_mult_spinbox = find_child("BurstMultSpinbox", true)
+@onready var initial_meter_spinbox = find_child("InitMeterSpinBox", true)
+@onready var meter_mult_spinbox = find_child("MeterMultSpinBox", true)
+@onready var damage_mult_spinbox = find_child("DamageMultSpinBox", true)
+@onready var knock_stun_mult_spinbox = find_child("KnockStunMultSpinBox", true)
 
 var LOBBY_ID: int = 0
 var LOBBY_NAME: String = "Default"

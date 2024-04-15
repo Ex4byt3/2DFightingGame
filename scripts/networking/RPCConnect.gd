@@ -25,6 +25,9 @@ func _handle_connecting_signals() -> void:
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_lost", "_on_SyncManager_sync_lost")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_regained", "_on_SyncManager_sync_regained")
 	MenuSignalBus._connect_Signals(SyncManager, self, "sync_error", "_on_SyncManager_sync_error")
+	
+	MatchSignalBus.quit_to_menu.connect(_on_quit_to_menu)
+	MatchSignalBus.match_over.connect(_on_match_over)
 
 
 func setup_match() -> void:
@@ -113,6 +116,8 @@ func _on_SyncManager_sync_started() -> void:
 func _on_SyncManager_sync_stopped() -> void:
 	if logging_enabled:
 		SyncManager.stop_logging()
+	
+	MenuSignalBus.emit_leave_match()
 
 func _on_SyncManager_sync_lost() -> void:
 	sync_lost_label.visible = true
@@ -133,3 +138,23 @@ func _on_SyncManager_sync_error(msg: String) -> void:
 
 func setup_match_for_replay(my_peer_id: int, peer_ids: Array, match_info: Dictionary) -> void:
 	reset_button.visible = false
+
+func _on_quit_to_menu() -> void:
+	var peer = multiplayer.multiplayer_peer
+	if peer:
+		peer.close()
+	
+	SyncManager.stop()
+	SyncManager.clear_peers()
+	SyncManager.reset_network_adaptor()
+	
+
+func _on_match_over() -> void:
+	var peer = multiplayer.multiplayer_peer
+	if peer:
+		peer.close()
+	
+	SyncManager.stop()
+	SyncManager.clear_peers()
+	SyncManager.reset_network_adaptor()
+	#MenuSignalBus.emit_leave_match()
