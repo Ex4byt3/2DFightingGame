@@ -136,6 +136,10 @@ func _update_challenges() -> void:
 		
 		if Steam.getSteamID() == challenge.sender_id:
 			new_challenge_tile.is_challenger = true
+		elif Steam.getSteamID() == challenge.recipient_id:
+			new_challenge_tile.is_challenger = false
+		else:
+			new_challenge_tile.visible = false
 			
 		challenges.add_child(new_challenge_tile)
 		
@@ -367,6 +371,11 @@ func _recieve_command(command: String) -> void:
 		var participants: PackedStringArray = command.split(" ", true)
 		var sender_id: int  = int(participants[1])
 		var recipient_id: int = int(participants[2])
+		
+		for challenge in CHALLENGES:
+			if challenge.recipient_id == Steam.getSteamID() or challenge.sender_id == Steam.getSteamID():
+				challenge.queue_free()
+		
 		if Steam.getSteamID() == sender_id:
 			_host_start(recipient_id)
 		elif Steam.getSteamID() == recipient_id:
