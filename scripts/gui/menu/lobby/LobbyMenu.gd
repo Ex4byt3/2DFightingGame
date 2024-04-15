@@ -373,9 +373,9 @@ func _recieve_command(command: String) -> void:
 		var sender_id: int  = int(participants[1])
 		var recipient_id: int = int(participants[2])
 		
-		for challenge in CHALLENGES:
-			if challenge.recipient_id == Steam.getSteamID() or challenge.sender_id == Steam.getSteamID():
-				challenge.pop()
+		#for challenge in CHALLENGES:
+			#if challenge.recipient_id == Steam.getSteamID() or challenge.sender_id == Steam.getSteamID():
+				#challenge.pop()
 		
 		if Steam.getSteamID() == sender_id:
 			_host_start(recipient_id)
