@@ -334,6 +334,7 @@ func _on_Persona_Changed(steam_id: int, change_flag: int) -> void:
 	#lobby_data.erase("lobby_password")
 	#MATCH_SETTINGS = lobby_data
 
+
 func _set_match_settings_tab_visibility() -> void:
 	if not (Steam.getLobbyOwner(LOBBY_ID) == Steam.getSteamID() and using_owner_settings) or not using_owner_settings:
 		match_settings_tab.visible = false
@@ -374,7 +375,7 @@ func _recieve_command(command: String) -> void:
 		
 		for challenge in CHALLENGES:
 			if challenge.recipient_id == Steam.getSteamID() or challenge.sender_id == Steam.getSteamID():
-				challenge.queue_free()
+				challenge.pop()
 		
 		if Steam.getSteamID() == sender_id:
 			_host_start(recipient_id)

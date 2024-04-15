@@ -19,6 +19,10 @@ var sections: Dictionary = {
 	"Accessibility": accessibility_section
 }
 
+# Variables for sound settings
+var music_volume = 0
+var effects_volume= 0
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -59,6 +63,9 @@ func contains_search_text(setting, search_text: String):
 		return false
 
 
+##################################################
+# SOUND SETTINGS
+##################################################
 func _update_music_volume(val_changed: bool) -> void:
 	if val_changed:
 		MenuSignalBus.emit_music_volume_changed(music_slider.value)
